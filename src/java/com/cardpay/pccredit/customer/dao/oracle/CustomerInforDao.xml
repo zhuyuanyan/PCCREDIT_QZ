@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.customer.dao.CustomerInforDao">
+<resultMap id="ResultMap" type="com.cardpay.pccredit.customer.model.CustomerInfor">
+		<result property="chineseName" column="chinese_name" />
+		<result property="cardType" column="card_type" />
+		<result property="cardId" column="card_id" />
+		<result property="eesidentialAddress" column="residential_address" />
+		<result property="telephone" column="telephone" />
+</resultMap>
+
+<resultMap id="customerCareersInformationMap" type="com.cardpay.pccredit.customer.model.CustomerCareersInformation">
+		<result property="customerId" column="customer_Id" />
+		<result property="customerCode" column="customer_Code" />
+		<result property="nameUnit" column="name_Unit" />
+		<result property="departmentName" column="department_Name" />
+		<result property="unitAddress" column="unit_Address" />
+		<result property="zipCode" column="zip_Code" />
+		<result property="unitPhone" column="unit_Phone" />
+		<result property="unitNature" column="unit_Nature" />
+		<result property="industryType" column="industry_Type" />
+		<result property="positio" column="positio" />
+		<result property="title" column="title" />
+		<result property="annualIncome" column="annual_Income" />
+		<result property="yearWorkUnit" column="year_Work_Unit" />
+		<result property="beforeNameUnit" column="before_Name_Unit" />
+		<result property="beforeYearWorkUnit" column="before_Year_Work_Unit" />
+		<result property="workTime" column="work_Time" />
+</resultMap>
+
+<select id="findcloneCustomerCareersByCustomerId" resultMap="customerCareersInformationMap">
+	select * from customer_careers_information_s t 
+	where t.customer_id=#{customerId}
+	and t.application_id=#{applicationId}
+</select>
+
+<select id="findNationality" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type like 'CMMSCNTC%'
+</select>
+<select id="findCardType" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type like 'CMMSCCST%'
+</select>
+<select id="findTypeNameByTypeCode" resultType="String" parameterType="String">
+	select Type_Name as TypeName
+	from Dict
+	where 1=1
+	and
+	Type_Code = #{typecode}
+</select>
+<select id="findMaritalStatus" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type like 'CMMSCMRC%'
+</select>
+<select id="findResidentialPropertie" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type like 'CMMSCHOM%'
+</select>
+
+<select id="findSex" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict where dict_type='GENDER'
+</select>
+<select id="findPositio" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type like 'CMCI%'
+</select>
+<select id="findTitle" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type like 'CMCT%'
+</select>
+<select id="findUnitPropertis" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type like 'CMMSCCOM%'
+</select>
+<select id="findIndustryType" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from INDUSTRY_DICT
+	where 1=1 
+</select>
+<select id="findCollectionMethod" resultType="com.cardpay.pccredit.system.model.Dict">
+	select Type_code as TypeCode,Type_name as TypeName 
+	from Dict
+	where 1=1 
+	and 
+	Dict_Type = 'CMMJXFS-催收方式'
+</select>
+<select id="findCustomerInforByName" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+	select t.chinese_name as chineseName, t.card_id as cardId, t.telephone as telephone from basic_customer_information t where t.user_id=#{userId} and t.chinese_name like '%'||#{name}||'%'
+</select>
+
+<update id="updateCustomerInfor">
+	update basic_customer_information
+	set user_id=#{customerManagerId},
+	divisional_status=#{status}
+	where id=#{id}
+</update>
+
+<select id="findCustomerManagerIdById" resultType="string">
+	select t.user_id from basic_customer_information t where id=#{customerId}
+</select>
+<sql id="Base_Column_List" >
+	b.id,
+	b.chinese_name as chineseName,
+	b.nationality,
+	b.sex,
+	b.pinyinenglish_name as pinyinenglishName,
+	b.birthday,
+	b.card_type as cardType,
+	b.card_id as cardId,  
+	b.residential_address as residentialAddress,
+	b.zip_code as zipCode,
+	b.home_Phone as homePhone,
+	b.telephone,
+	b.mail,
+	b.residential_propertie residentialPropertie,
+	b.marital_status as maritalStatus,
+	b.degree_education as degreeEducation,
+	b.household_address as householdAddress,
+	b.zip_code_address as zipCodeAddress,
+	u.display_name as userName
+</sql>
+<select id="findCustomerInforWebById" resultType="com.cardpay.pccredit.customer.model.CustomerInforWeb">
+	select 
+	<include refid="Base_Column_List" />
+	from basic_customer_information b
+	left join sys_user u
+	on b.user_Id=u.id
+	where b.id=#{id}
+</select>
+<update id="updateCustomerInforDivisionalStatus">
+	update basic_customer_information b
+	set b.divisional_status=#{status}
+	where b.id=#{id}
+</update>
+
+<select id="getCustomerInforDivisionalStatus" resultType="String">
+	select divisional_status
+	from basic_customer_information
+	where id=#{id}
+</select>
+
+<insert id="cloneBasicCustomerInfo">
+	insert into basic_customer_information_s select t.*,'${applicationId}' from basic_customer_information t WHERE t.id = #{customerId}
+</insert>
+
+<insert id="cloneCustomerCareersInf">
+	insert into customer_careers_information_s select t.*,'${applicationId}' from customer_careers_information t WHERE t.customer_id = #{customerId}
+</insert>
+
+<insert id="cloneCustomerMainManager">
+	insert into customer_main_manager_s select t.*,'${applicationId}' from customer_main_manager t WHERE t.customer_id = #{customerId}
+</insert>
+
+<insert id="cloneCustomerQuestionInfo">
+	insert into customer_question_info_s select t.*,'${applicationId}' from customer_question_info t WHERE t.customer_id = #{customerId}
+</insert>
+
+<insert id="cloneCustomerWorkshipInfo">
+	insert into customer_worship_information_s select t.*,'${applicationId}' from customer_worship_information t WHERE t.customer_id = #{customerId}
+</insert>
+
+<insert id="cloneDimensionalModelCredit">
+	insert into dimensional_model_credit_s select t.*,'${applicationId}' from dimensional_model_credit t WHERE t.customer_id = #{customerId}
+</insert>
+
+<insert id="cloneCustomerVideoAccessories">
+	insert into video_accessories_s select t.id,'${applicationId}',t.server_url_path,t.created_time,t.modified_time,t.image_type,t.file_path,
+		t.file_name,t.remark,t.customer_id,t.created_by,t.modified_by from video_accessories t WHERE t.customer_id = #{customerId}
+</insert>
+
+<select id="findCloneCustomerInforByAppId" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+	select 
+	b.id,
+	b.chinese_name as chineseName,
+	b.nationality,
+	b.sex,
+	b.pinyinenglish_name as pinyinenglishName,
+	b.birthday,
+	b.card_type as cardType,
+	b.card_id as cardId,
+	b.residential_address as residentialAddress,
+	b.zip_code as zipCode,
+	b.home_phone as homePhone,
+	b.telephone,
+	b.mail,
+	b.residential_propertie as residentialPropertie,
+	b.marital_status as maritalStatus,
+	b.degree_education as degreeEducation,
+	b.household_address as householdAddress,
+	b.zip_code_address as zipCodeAddress,
+	b.user_id as userId,
+	b.divisional_status as divisionalStatus,
+	b.created_time as createdTime,
+	b.created_by as createdBy,
+	b.modified_time as modifiedTime,
+	b.modified_by as modifiedBy
+	from basic_customer_information_s b
+	where b.application_id=#{applicationId}
+</select>
+<select id="findCustomerInforCountByUserId" resultType="int">
+	select count(*)
+	from basic_customer_information
+	where user_id=#{userId}
+</select>
+
+
+<delete id="deleteCloneBasicCustomerInfo">
+	delete basic_customer_information_s t WHERE t.id = #{customerId} and t.application_id = #{applicationId}
+</delete>
+
+<delete id="deleteCloneCustomerCareersInf">
+	delete customer_careers_information_s t WHERE t.customer_id = #{customerId} and t.application_id = #{applicationId}
+</delete>
+
+<delete id="deleteCloneCustomerMainManager">
+	delete customer_main_manager_s t WHERE t.customer_id = #{customerId} and t.application_id = #{applicationId}
+</delete>
+
+<delete id="deleteCloneCustomerQuestionInfo">
+	delete customer_question_info_s t WHERE t.customer_id = #{customerId} and t.application_id = #{applicationId}
+</delete>
+
+<delete id="deleteCloneCustomerWorkshipInfo">
+	delete customer_worship_information_s t WHERE t.customer_id = #{customerId} and t.application_id = #{applicationId}
+</delete>
+
+<delete id="deleteCloneDimensionalModelCredit">
+	delete dimensional_model_credit_s t WHERE t.customer_id = #{customerId} and t.application_id = #{applicationId}
+</delete>
+
+<delete id="deleteCloneCustomerVideoAccessories">
+	delete video_accessories_s t WHERE t.customer_id = #{customerId} and t.application_id = #{applicationId}
+</delete>
+
+</mapper>
