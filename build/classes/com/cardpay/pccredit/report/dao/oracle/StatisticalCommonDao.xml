@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.StatisticalCommonDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.NameValueRecord">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="value" column="value" />
+	</resultMap>
+	
+	<select id="statisticalApplicationStatus" resultMap="ResultMap" >
+		select t.name,
+	       t.id,
+	       (case
+	         when t.id = 'return' then
+	          t.value
+	         else
+	          count_num.value
+	       end) value
+	
+	  from (select app_status.name, app_status.id, return_num.value
+	          from (select '新增' as name, 'succeed' as id
+	                  from dual
+	                union all
+	                select '审批中' as name, 'audit' as id
+	                  from dual
+	                union all
+	                select '已审批' as name, 'approved' as id
+	                  from dual
+	                union all
+	                select '退回' as name, 'return' as id
+	                  from dual
+	                union all
+	                select '拒绝' as name, 'refuse' as id from dual) app_status
+	          left join (select count(0) as value, 'return' as id
+	                      from CUSTOMER_APPLICATION_INFO cai
+	                     inner join CUSTOMER_APPLICATION_PROCESS cap
+	                        on cai.id = cap.application_id
+	                       and cap.process_op_status = 'RETURNAPPROVE') return_num
+	            on return_num.id = app_status.id) t
+	  left join (select count(0) as value, app_info.status as id
+	               from customer_application_info app_info
+	              group by app_info.status) count_num
+	    on t.id = count_num.id
+	</select>
+	
+	<select id="statisticalCreditStatus" resultMap="ResultMap" >
+		select '正常' name, nvl(sum(t.principal_overdraft), 0)/1000000 value
+		  from AVERAGE_DAILY_OVERDRAFT t
+		union all
+		select '不良' name, nvl(sum(t.VERIFICATION_ACCOUNT), 0)/1000000 value
+		  from npls_information t
+		union all
+		select '逾期' name,
+		       sum(case
+		             when name = '逾期' then
+		              a.value
+		             else
+		              -a.value
+		           end)/1000000 value
+		  from (select '逾期' name, nvl(sum(t.CURRENT_BALANCE), 0) value
+		          from customer_overdue t
+		        union all
+		        select '逾期' name, nvl(sum(t.OVERDUE_AMOUNT), 0) value
+		          from customer_overdue_history t
+		        union all
+		        select '不良' name, nvl(sum(t.VERIFICATION_ACCOUNT), 0)
+		          from npls_information t) a
+	</select>
+	
+	<select id="statisticalCardStatus" resultMap="ResultMap" >
+		select '核销卡' name, count(0) value
+		  from CUSTOMER_ACCOUNT_INFORMATION t
+		 where t.charge_logo = 1
+		union all
+		select '有效卡' name, count(0) value
+		  from customer_card_information t
+		 where t.year = to_char(sysdate, 'yyyy')
+		   and t.month = to_char(sysdate, 'MM')
+		   and t.effective_status = 1
+		union all
+		select '激活卡' name, count(0) value
+		  from customer_card_information t
+		 where t.year = to_char(sysdate, 'yyyy')
+		   and t.month = to_char(sysdate, 'MM')
+		   and t.activation_status = 1
+	</select>
+</mapper>
