@@ -1,0 +1,510 @@
+package com.cardpay.pccredit.QZBankInterface.service;
+
+/**
+ * 循环贷接口，经ESB转发
+ * Created by johhny on 15/4/13.
+ */
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+@Service
+public class IESBForCircleCredit {
+    /**
+     * 组装CompositeData报文
+     * @return
+     */
+    public CompositeData createCircleCreditRequest(){
+        CompositeData cd = new CompositeData();
+
+        //SYS_HEAD
+        CompositeData syaHead_struct = new CompositeData();
+        //在syaHead_struct中加SERVICECODE
+        Field serviceCodeField = new Field(new FieldAttr(FieldType.FIELD_STRING, 11));
+        serviceCodeField.setValue("02002000010");//循环贷服务服务码
+        syaHead_struct.addField("SERVICE_CODE", serviceCodeField);
+
+        //在syaHead_struct中加SERVICESCENE
+        Field serviceSceneField = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
+        serviceSceneField.setValue("01"); //循环贷对应服务场景01
+        syaHead_struct.addField("SERVICE_SCENE", serviceSceneField);
+        cd.addStruct("SYS_HEAD", syaHead_struct);
+
+        //BODY
+        CompositeData body_struct = new CompositeData();
+
+        //合同号
+        Field CONTRACT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        CONTRACT_NO.setValue("");//todo:传入合同号
+        body_struct.addField("CONTRACT_NO", CONTRACT_NO);
+
+        //卡号
+        Field CARD_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        CARD_NO.setValue("");//todo:传入卡号
+        body_struct.addField("CARD_NO", CARD_NO);
+
+        //客户号
+        Field CLIENT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        CLIENT_NO.setValue("");//todo:传入客户号
+        body_struct.addField("CLIENT_NO", CLIENT_NO);
+
+        //担保方式
+        Field GUARANTEE_MODE=new Field(new FieldAttr(FieldType.FIELD_STRING,10));
+        GUARANTEE_MODE.setValue("B");//抵押 todo:置后担保，需确认
+        body_struct.addField("GUARANTEE_MODE", GUARANTEE_MODE);
+
+        //担保方式细分
+        Field GUARANTEE_MODE_DETAIL=new Field(new FieldAttr(FieldType.FIELD_STRING,10));
+        GUARANTEE_MODE_DETAIL.setValue("");// todo:担保方式细分，需确认
+        body_struct.addField("GUARANTEE_MODE_DETAIL", GUARANTEE_MODE_DETAIL);
+
+        //币种
+        Field CCY=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        CCY.setValue("CNY");//人民币
+        body_struct.addField("CCY", CCY);
+
+        //合同金额
+        Field CONTRACT_AMT=new Field(new FieldAttr(FieldType.FIELD_DOUBLE,20,2));
+        CONTRACT_AMT.setValue("");//todo：传入合同金额
+        body_struct.addField("CONTRACT_AMT", CONTRACT_AMT);
+
+        //贷款起始日期
+        Field START_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        START_DATE.setValue("");//todo:传入起始日期 YYYYMMdd
+        body_struct.addField("START_DATE", START_DATE);
+
+        //贷款结束日期
+        Field END_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        END_DATE.setValue("");//todo:传入结束日期
+        body_struct.addField("END_DATE", END_DATE);
+
+        //外币时需要换算
+        Field EXCHANGE_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE,20,2));
+        EXCHANGE_RATE.setValue("");//todo：传入外币需要换算汇率
+        body_struct.addField("EXCHANGE_RATE", EXCHANGE_RATE);
+
+        //管理机构
+        Field MANA_ORG=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        MANA_ORG.setValue("");//todo:传入管理机构
+        body_struct.addField("MANA_ORG", MANA_ORG);
+
+        //登记人
+        Field REGISTERED_ID=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        REGISTERED_ID.setValue("");//todo:传入当前客户经理柜员号
+        body_struct.addField("REGISTERED_ID", REGISTERED_ID);
+
+        //登记机构
+        Field REGIST_ORG_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        REGIST_ORG_NO.setValue("");//todo:传入登记机构
+        body_struct.addField("REGIST_ORG_NO", REGIST_ORG_NO);
+
+        //入账机构码
+        Field INCOME_ORG_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        INCOME_ORG_NO.setValue("");//todo:传入入账机构码
+        body_struct.addField("INCOME_ORG_NO", INCOME_ORG_NO);
+
+        //登记日期
+        Field REGISTERED_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        REGISTERED_DATE.setValue("");//todo:传入登记日期
+        body_struct.addField("REGISTERED_DATE", REGISTERED_DATE);
+
+        //期限
+        Field TERM=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        TERM.setValue("");//todo:传入期限
+        body_struct.addField("TERM", TERM);
+
+        //期限类型 todo:缺少数据字典
+        Field TERM_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        TERM_TYPE.setValue("");//todo:传入期限类型
+        body_struct.addField("TERM_TYPE", TERM_TYPE);
+
+        //顺延标志 todo:缺少数据字典
+        Field DEFER_FLAG=new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
+        DEFER_FLAG.setValue("");//todo:传入顺延标志
+        body_struct.addField("DEFER_FLAG", DEFER_FLAG);
+
+        //执行利率
+        Field ACT_INT_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,7));
+        ACT_INT_RATE.setValue("");//todo:传入执行利率
+        body_struct.addField("ACT_INT_RATE", ACT_INT_RATE);
+
+        //逾期利率
+        Field OVERDUE_INT_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,7));
+        OVERDUE_INT_RATE.setValue("");//todo:传入逾期利率
+        body_struct.addField("OVERDUE_INT_RATE", OVERDUE_INT_RATE);
+
+        //违约利率
+        Field PENALTY_INT_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,7));
+        PENALTY_INT_RATE.setValue("");//todo:传入违约利率
+        body_struct.addField("PENALTY_INT_RATE", PENALTY_INT_RATE);
+
+        //还款方式 todo:缺少数据字典
+        Field REPAY_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        REPAY_TYPE.setValue("");//todo:传入还款方式
+        body_struct.addField("REPAY_TYPE", REPAY_TYPE);
+
+        //还款日期
+        Field REPAY_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        REPAY_DATE.setValue("");//todo:传入还款日期
+        body_struct.addField("REPAY_DATE", REPAY_DATE);
+
+        //五级分类
+        Field FIVE_LEVEL_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        FIVE_LEVEL_TYPE.setValue("");//todo:传入五级分类
+        body_struct.addField("FIVE_LEVEL_TYPE", FIVE_LEVEL_TYPE);
+
+        //特殊贷款类型 todo：缺少数据字典
+        Field SPE_LOAN_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        SPE_LOAN_TYPE.setValue("");//todo:传入特殊贷款类型
+        body_struct.addField("SPE_LOAN_TYPE", SPE_LOAN_TYPE);
+
+        //额度占用类型 todo:缺少数据字典
+        Field LIMIT_USEED_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        LIMIT_USEED_TYPE.setValue("");//todo:传入额度占用类型
+        body_struct.addField("LIMIT_USEED_TYPE", LIMIT_USEED_TYPE);
+
+        //借款用途
+        Field DR_USAGE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        DR_USAGE.setValue("");//todo:传入借款用途
+        body_struct.addField("DR_USAGE", DR_USAGE);
+
+        //工业转型升级标识
+        Field FLAG=new Field(new FieldAttr(FieldType.FIELD_STRING, 1));
+        FLAG.setValue("");//todo:传入工业转型升级标识
+        body_struct.addField("FLAG", FLAG);
+
+        //贷款种类 todo:缺少数据字典
+        Field LOAN_KIND=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        LOAN_KIND.setValue("");//todo:传入贷款种类
+        body_struct.addField("LOAN_KIND", LOAN_KIND);
+
+        //涉农贷款类型 todo:缺少数据字典
+        Field AGRI_LOAN_KIND=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        AGRI_LOAN_KIND.setValue("");//todo:传入涉农贷款类型
+        body_struct.addField("AGRI_LOAN_KIND", AGRI_LOAN_KIND);
+
+        //个人经营性贷款类型 todo:缺少数据字典
+        Field PERSON_LOAN_KIND=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        PERSON_LOAN_KIND.setValue("");//todo:传入个人经营性贷款类型
+        body_struct.addField("PERSON_LOAN_KIND", PERSON_LOAN_KIND);
+
+        //调整类型 todo:缺少数据字典
+        Field ADJUST_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 1));
+        ADJUST_TYPE.setValue("");//todo:传入调整类型
+        body_struct.addField("ADJUST_TYPE", ADJUST_TYPE);
+
+        //新兴产业类型 todo:缺少数据字典
+        Field NEW_PRD_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        NEW_PRD_TYPE.setValue("");//todo:传入新兴产业类型
+        body_struct.addField("NEW_PRD_TYPE", NEW_PRD_TYPE);
+
+        //新兴产业贷款
+        Field NEW_PRD_LOAN=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        NEW_PRD_LOAN.setValue("");//todo:传入新兴产业贷款
+        body_struct.addField("NEW_PRD_LOAN", NEW_PRD_LOAN);
+
+        //贷款投向
+        Field LOAN_DIRECTION=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        LOAN_DIRECTION.setValue("");//todo:传入贷款投向
+        body_struct.addField("LOAN_DIRECTION", LOAN_DIRECTION);
+
+        //贷款归属1
+        Field LOAN_BELONG1=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        LOAN_BELONG1.setValue("");//todo:传入贷款归属1
+        body_struct.addField("LOAN_BELONG1", LOAN_BELONG1);
+
+        //贷款归属2
+        Field LOAN_BELONG2=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        LOAN_BELONG2.setValue("");//todo:传入贷款归属2
+        body_struct.addField("LOAN_BELONG2", LOAN_BELONG2);
+
+        //贷款归属3
+        Field LOAN_BELONG3=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        LOAN_BELONG3.setValue("");//todo:传入贷款归属3
+        body_struct.addField("LOAN_BELONG3", LOAN_BELONG3);
+
+        //贷款归属4
+        Field LOAN_BELONG4=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        LOAN_BELONG4.setValue("");//todo:传入贷款归属4
+        body_struct.addField("LOAN_BELONG4", LOAN_BELONG4);
+
+        //业务类型
+        Field BUSS_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 50));
+        BUSS_TYPE.setValue("");//todo:传入业务类型 001 消费类 002 经营类
+        body_struct.addField("BUSS_TYPE", BUSS_TYPE);
+
+        //主管客户经理
+        Field CHI_CUST_MANAGER=new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        CHI_CUST_MANAGER.setValue("");//todo:传入主管客户经理
+        body_struct.addField("CHI_CUST_MANAGER", CHI_CUST_MANAGER);
+
+
+        /*
+        客户信息数组 todo:需要在前端补录应在前端补录
+         */
+        Array CLIENT_ARRAY = new Array(); //CLIENT_NO数组
+        CompositeData CusArrayStruct = new CompositeData();
+
+        //客户号
+        Field A_CLIENT_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        GLOBAL_TYPE.setValue("");//todo:传入客户号
+        CusArrayStruct.addField("A_CLIENT_NO", A_CLIENT_NO);
+
+        //客户名称
+        Field CLIENT_NAME = new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
+        CLIENT_NAME.setValue("");//todo:传入客户名称
+        CusArrayStruct.addField("CLIENT_NAME", CLIENT_NAME);
+
+        //性别
+        Field SEX = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
+        SEX.setValue("");//todo:传入性别，男：01 ；女：02； 未知：03
+        CusArrayStruct.addField("SEX", SEX);
+
+        //客户类型
+        Field CLIENT_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 6));
+        CLIENT_TYPE.setValue("Z");//个人客户 todo:文档中多个个人客户码，测试需明确
+        CusArrayStruct.addField("CLIENT_TYPE", CLIENT_TYPE);
+
+        //证件类型
+        Field GLOBAL_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 5));
+        GLOBAL_TYPE.setValue("100");//身份证
+        CusArrayStruct.addField("GLOBAL_TYPE", GLOBAL_TYPE);
+
+        //证件号码
+        Field GLOBAL_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        GLOBAL_ID.setValue();//todo:传入证件号码
+        CusArrayStruct.addField("GLOBAL_ID", GLOBAL_ID);
+
+        //长期证件标志 todo:数据字典缺失
+        Field LONG_GLOBAL_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        LONG_GLOBAL_TYPE.setValue("");//todo:传入标识
+        CusArrayStruct.addField("LONG_GLOBAL_TYPE", LONG_GLOBAL_TYPE);
+
+        //签发日期
+        Field ISS_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        ISS_DATE.setValue("");//todo:传入数值，无则置空
+        CusArrayStruct.addField("ISS_DATE", ISS_DATE);
+
+        //证件有效日期
+        Field GLOBAL_EFF_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        GLOBAL_EFF_DATE.setValue("");//todo:传入数值，无则置空
+        CusArrayStruct.addField("GLOBAL_EFF_DATE", GLOBAL_EFF_DATE);
+
+        //农户标识 todo:数据字典缺失
+        Field AGRI_FLAG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        AGRI_FLAG.setValue("");//todo:传入数值，无则置空
+        CusArrayStruct.addField("AGRI_FLAG", AGRI_FLAG);
+
+        //国家代码
+        Field COUNTRY_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        COUNTRY_CODE.setValue("CNY");//中国
+        CusArrayStruct.addField("COUNTRY_CODE", COUNTRY_CODE);
+
+        //民族代码
+        Field NATIONALITY_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        NATIONALITY_CODE.setValue("");//todo:传入民族，例如 “汉”
+        CusArrayStruct.addField("NATIONALITY_CODE", NATIONALITY_CODE);
+
+        //户籍所在地
+        Field REG_PERM_RESIDENCE = new Field(new FieldAttr(FieldType.FIELD_STRING, 60));
+        REG_PERM_RESIDENCE.setValue("");//todo:传入户籍所在地
+        CusArrayStruct.addField("REG_PERM_RESIDENCE", REG_PERM_RESIDENCE);
+
+        //地址
+        Field ADDRESS = new Field(new FieldAttr(FieldType.FIELD_STRING, 300));
+        ADDRESS.setValue("");//todo:传入地址
+        CusArrayStruct.addField("ADDRESS", ADDRESS);
+
+        //出生日期
+        Field BIRTH_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        BIRTH_DATE.setValue("");//todo:传入出生日期，格式YYYYMMdd
+        CusArrayStruct.addField("BIRTH_DATE", BIRTH_DATE);
+
+        //最高学历 todo:字典项缺失
+        Field EDUCATION = new Field(new FieldAttr(FieldType.FIELD_STRING, 1));
+        EDUCATION.setValue("");//todo:传入最高学历
+        CusArrayStruct.addField("EDUCATION", EDUCATION);
+
+        //最高学位 todo:字典项缺失
+        Field DEGREE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        DEGREE.setValue("");//todo:传入最高学位
+        CusArrayStruct.addField("DEGREE", DEGREE);
+
+        //签约日期
+        Field SIGN_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        SIGN_DATE.setValue("");//todo:传入签约日期，格式YYYYMMdd
+        CusArrayStruct.addField("SIGN_DATE", SIGN_DATE);
+
+        //持卡情况 todo:数据字典项缺失
+        Field HOLD_CARD_MSG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        HOLD_CARD_MSG.setValue("");//todo:传入持卡情况
+        CusArrayStruct.addField("HOLD_CARD_MSG", HOLD_CARD_MSG);
+
+        //是否拥有外国护照或居住权 todo:数据字典项缺失
+        Field PASSPORT_FLAG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        PASSPORT_FLAG.setValue("");//todo:传入数值
+        CusArrayStruct.addField("PASSPORT_FLAG", PASSPORT_FLAG);
+
+        //信用等级 todo:数据字典项缺失
+        Field CREDIT_LEVEL = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        CREDIT_LEVEL.setValue("");//todo:传入信用等级
+        CusArrayStruct.addField("CREDIT_LEVEL", CREDIT_LEVEL);
+
+        //信用到期日期
+        Field EXPIRY_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        EXPIRY_DATE.setValue("");//todo:传入到期日期
+        CusArrayStruct.addField("EXPIRY_DATE", EXPIRY_DATE);
+
+        //是否关联客户 todo:数据字典项缺失
+        Field REL_CLIENT_FLAG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        REL_CLIENT_FLAG.setValue("");//todo:传入持卡情况
+        CusArrayStruct.addField("REL_CLIENT_FLAG", REL_CLIENT_FLAG);
+
+        //与我行关系 todo:数据字典项缺失
+        Field OWN_BRANCH_RELATION = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        OWN_BRANCH_RELATION.setValue("");//todo:传入我行关系
+        CusArrayStruct.addField("OWN_BRANCH_RELATION", OWN_BRANCH_RELATION);
+
+        //我行职务
+        Field POST = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        POST.setValue("");//todo:传入我行职务情况
+        CusArrayStruct.addField("POST", POST);
+
+        //贷款卡标识 todo:数据字典项缺失
+        Field LOAN_CARD_FLAG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        LOAN_CARD_FLAG.setValue("");//todo:传入贷款卡标识
+        CusArrayStruct.addField("LOAN_CARD_FLAG", LOAN_CARD_FLAG);
+
+        //贷款卡号
+        Field LOAN_CARD_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        LOAN_CARD_NO.setValue("");//todo:传入贷款卡号
+        CusArrayStruct.addField("LOAN_CARD_NO", LOAN_CARD_NO);
+
+        //手机号码
+        Field MOBILE = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        MOBILE.setValue("");//todo:传入手机号码
+        CusArrayStruct.addField("MOBILE", MOBILE);
+
+
+        //上级机构 todo:数据字典项缺失
+        Field HIGHER_ORG_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 32));
+        HIGHER_ORG_NO.setValue("");//todo:传入上级机构
+        CusArrayStruct.addField("HIGHER_ORG_NO", HIGHER_ORG_NO);
+
+        //客户经理
+        Field ACCT_EXEC = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        ACCT_EXEC.setValue("");//todo:传入客户经理柜员号
+        CusArrayStruct.addField("ACCT_EXEC", ACCT_EXEC);
+
+        //开户日期
+        Field OPEN_ACCT_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        OPEN_ACCT_DATE.setValue("");//todo:传入开户日期，YYYYMMdd
+        CusArrayStruct.addField("OPEN_ACCT_DATE", OPEN_ACCT_DATE);
+
+        //信息加入数组
+        CLIENT_ARRAY.addStruct(CusArrayStruct);
+        body_struct.addArray("CLIENT_ARRAY",CLIENT_ARRAY);
+        /*
+        客户信息数组结束
+         */
+
+        /*
+        费用信息数组开始
+         */
+        Array FEE_ARRAY = new Array(); //FEE_ARRAY数组
+        CompositeData FeeArrayStruct = new CompositeData();
+
+        //币种
+        Field FEE_CCY=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        FEE_CCY.setValue("CNY");//人民币
+        FeeArrayStruct.addField("CCY", FEE_CCY);
+
+        //费用金额
+        Field FEE_AMOUNT=new Field(new FieldAttr(FieldType.FIELD_DOUBLE,20,2));
+        FEE_AMOUNT.setValue("");//todo:传入费用金额
+        FeeArrayStruct.addField("FEE_AMOUNT", FEE_AMOUNT);
+
+        //账号
+        Field ACCT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 50));
+        ACCT_NO.setValue("");//todo:传入账号
+        FeeArrayStruct.addField("ACCT_NO", ACCT_NO);
+
+        //信息加入数组
+        FEE_ARRAY.addStruct(FeeArrayStruct);
+        body_struct.addArray("FEE_ARRAY",FEE_ARRAY);
+        /*
+        费用信息数组结束
+         */
+
+        /*
+        账户信息数组开始
+        ***！！！该部分内容由核心查询获取后填入！！！***
+         */
+        Array ACCT_INFO_ARRAY = new Array(); //ACCT_INFO_ARRAY数组
+        CompositeData AcctInfoArrayStruct = new CompositeData();
+
+        //账户性质
+        Field ACCT_CHRT=new Field(new FieldAttr(FieldType.FIELD_STRING, 5));
+        ACCT_CHRT.setValue("");//todo:传入账户性质
+        AcctInfoArrayStruct.addField("ACCT_CHRT", ACCT_CHRT);
+
+        //是否本行
+        Field OWN_BRANCH_FLAG=new Field(new FieldAttr(FieldType.FIELD_STRING,1));
+        OWN_BRANCH_FLAG.setValue("");//todo:传入是否本行信息
+        AcctInfoArrayStruct.addField("OWN_BRANCH_FLAG", OWN_BRANCH_FLAG);
+
+        //账号
+        Field AI_ACCT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 50));
+        AI_ACCT_NO.setValue("");//todo:传入账号
+        AcctInfoArrayStruct.addField("ACCT_NO", AI_ACCT_NO);
+
+        //户名
+        Field ACCT_NAME=new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
+        ACCT_NAME.setValue("");//todo:传入户名
+        AcctInfoArrayStruct.addField("ACCT_NAME", ACCT_NAME);
+
+        //开户机构
+        Field OPEN_ACCT_BRANCH_ID=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        OPEN_ACCT_BRANCH_ID.setValue("");//todo:传入户名
+        AcctInfoArrayStruct.addField("OPEN_ACCT_BRANCH_ID", OPEN_ACCT_BRANCH_ID);
+
+        //开户行名
+        Field OPEN_ACCT_BRANCH_NAME=new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
+        OPEN_ACCT_BRANCH_NAME.setValue("");//todo:传入开户行名
+        AcctInfoArrayStruct.addField("OPEN_ACCT_BRANCH_NAME", OPEN_ACCT_BRANCH_NAME);
+
+        //支付金额
+        Field PAY_AMT=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,2));
+        PAY_AMT.setValue("");//todo:传入支付金额
+        AcctInfoArrayStruct.addField("PAY_AMT", PAY_AMT);
+
+        //科目号
+        Field GL_CODE=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        GL_CODE.setValue("");//todo:传入科目号
+        AcctInfoArrayStruct.addField("GL_CODE", GL_CODE);
+
+        //币别
+        Field AI_CCY=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        AI_CCY.setValue("");//todo:传入币别
+        AcctInfoArrayStruct.addField("CCY", AI_CCY);
+
+        //全国联行号
+        Field C_INTERBANK_ID=new Field(new FieldAttr(FieldType.FIELD_STRING, 15));
+        C_INTERBANK_ID.setValue("");//todo:传入全国联行号
+        AcctInfoArrayStruct.addField("C_INTERBANK_ID", C_INTERBANK_ID);
+
+        //信息加入数组
+        ACCT_INFO_ARRAY.addStruct(AcctInfoArrayStruct);
+        body_struct.addArray("ACCT_INFO_ARRAY",ACCT_INFO_ARRAY);
+        /*
+        账户信息数组结束
+         */
+        cd.addStruct("BODY",body_struct);
+
+        return cd;
+    }
+}
