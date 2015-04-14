@@ -1,0 +1,410 @@
+package com.cardpay.pccredit.customer.constant;
+
+/**
+ * ECIF接口，经ESB转发
+ * Created by johhny on 15/4/11.
+ */
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+@Service
+public class IESBForECIF {
+	
+	@Autowired
+	CommonDao commonDao;
+    /**
+     * 组装CompositeData报文
+     * @return
+     */
+    public  String createEcifRequest() {
+        CompositeData cd = new CompositeData();
+
+        //SYS_HEAD
+        CompositeData syaHead_struct = new CompositeData();
+        //在syaHead_struct中加SERVICECODE
+        Field serviceCodeField = new Field(new FieldAttr(FieldType.FIELD_STRING, 11));
+        serviceCodeField.setValue("11002000019");//ECIF服务服务码
+        syaHead_struct.addField("SERVICE_CODE", serviceCodeField);
+
+        //在syaHead_struct中加SERVICESCENE
+        Field serviceSceneField = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
+        serviceSceneField.setValue("02"); //个人客户新增，对应服务场景02
+        syaHead_struct.addField("SERVICE_SCENE", serviceSceneField);
+        cd.addStruct("SYS_HEAD", syaHead_struct);
+
+
+        //BODY
+        CompositeData body_struct = new CompositeData();
+        
+        /*
+         * 根据customerId获取实体
+         */
+        String customerId = "";
+        CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, customerId);
+        
+        
+        /*
+        客户证件信息开始
+        */
+        Array C_GLOBAL_INFO_ARRAY = new Array(); //C_GLOBAL_INFO_ARRAY数组
+        CompositeData CusArrayStruct = new CompositeData();
+        //证件类型
+        Field GLOBAL_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 5));
+        GLOBAL_TYPE.setValue(infor.getCardType());//身份证
+        CusArrayStruct.addField("GLOBAL_TYPE", GLOBAL_TYPE);
+
+        //证件号码
+        Field GLOBAL_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        GLOBAL_ID.setValue(infor.getCardId());//todo:传入证件号码
+        CusArrayStruct.addField("GLOBAL_ID", GLOBAL_ID);
+
+        //证件描述
+        Field GLOBAL_DESC = new Field(new FieldAttr(FieldType.FIELD_STRING, 300));
+        GLOBAL_DESC.setValue("大陆居民身份证");
+        CusArrayStruct.addField("GLOBAL_DESC", GLOBAL_DESC);
+
+        //证件签发地地区编码
+        Field CERT_AREA_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        CERT_AREA_CODE.setValue("");//暂置空
+        CusArrayStruct.addField("CERT_AREA_CODE", CERT_AREA_CODE);
+
+        //发证机关
+        Field CERT_ORG = new Field(new FieldAttr(FieldType.FIELD_STRING, 100));
+        CERT_ORG.setValue("");//暂置空
+        CusArrayStruct.addField("CERT_ORG", CERT_ORG);
+
+        //签发日期
+        Field ISS_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        ISS_DATE.setValue("");//暂置空
+        CusArrayStruct.addField("ISS_DATE", ISS_DATE);
+
+        //生效日期
+        Field EFFECT_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        EFFECT_DATE.setValue("");//暂置空
+        CusArrayStruct.addField("EFFECT_DATE", EFFECT_DATE);
+
+        //到期日期
+        Field EXPIRY_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        EXPIRY_DATE.setValue("");//暂置空
+        CusArrayStruct.addField("EXPIRY_DATE", EXPIRY_DATE);
+
+        //信息加入数组
+        C_GLOBAL_INFO_ARRAY.addStruct(CusArrayStruct);
+        body_struct.addArray("C_GLOBAL_INFO_ARRAY",C_GLOBAL_INFO_ARRAY);
+        /*
+        客户证件信息结束
+        */
+
+        /*
+        个人客户名称信息开始
+         */
+        Array P_C_NAME_INFO_ARRAY = new Array(); //P_C_NAME_INFO_ARRAY数组
+        CompositeData CusNameArrayStruct = new CompositeData();
+        //客户名称
+        Field CLIENT_NAME = new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
+        CLIENT_NAME.setValue(infor.getChineseName());//todo:传入客户名称
+        CusNameArrayStruct.addField("CLIENT_NAME", CLIENT_NAME);
+
+        //客户名称类型
+        Field CLIENT_NAME_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        CLIENT_NAME_TYPE.setValue("20");//个人名称
+        CusNameArrayStruct.addField("CLIENT_NAME_TYPE", CLIENT_NAME_TYPE);
+
+        //信息加入数组
+        P_C_NAME_INFO_ARRAY.addStruct(CusNameArrayStruct);
+        body_struct.addArray("P_C_NAME_INFO_ARRAY",P_C_NAME_INFO_ARRAY);
+        /*
+        个人客户名称信息结束
+         */
+
+        /*
+        个人客户基本信息开始
+         */
+        CompositeData PERSON_BASE_INFO_STRUCT = new CompositeData();
+        //客户类型
+        Field CLIENT_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 6));
+        CLIENT_TYPE.setValue("Z");//个人客户 todo:文档中多个个人客户码，测试需明确
+        PERSON_BASE_INFO_STRUCT.addField("CLIENT_TYPE", CLIENT_TYPE);
+
+        //客户状态
+        Field CLIENT_STATUS = new Field(new FieldAttr(FieldType.FIELD_STRING, 1));
+        CLIENT_STATUS.setValue("0");//有效 todo:若涉及预登记，需要置为3
+        PERSON_BASE_INFO_STRUCT.addField("CLIENT_STATUS", CLIENT_STATUS);
+
+        //信息加入body_struct
+        body_struct.addStruct("PERSON_BASE_INFO_STRUCT",PERSON_BASE_INFO_STRUCT);
+        /*
+        个人客户基本信息结束
+         */
+
+        /*
+        个人客户信息开始
+         */
+        CompositeData PERSON_CLIENT_INFO_STRUCT = new CompositeData();
+        //出生日期
+        Field BIRTH_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        BIRTH_DATE.setValue(infor.getBirthday());//todo:传入出生日期，格式YYYYMMdd
+        PERSON_CLIENT_INFO_STRUCT.addField("BIRTH_DATE", BIRTH_DATE);
+
+        //性别
+        Field SEX = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
+        SEX.setValue(infor.getSex());//todo:传入性别，男：01 ；女：02； 未知：03
+        PERSON_CLIENT_INFO_STRUCT.addField("SEX", SEX);
+
+        //客户类型
+        Field P_CLIENT_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 6));
+        P_CLIENT_TYPE.setValue("Z");//个人客户 todo:文档中多个个人客户码，测试需明确
+        PERSON_CLIENT_INFO_STRUCT.addField("CLIENT_TYPE", P_CLIENT_TYPE);
+
+        //信息加入body_struct
+        body_struct.addStruct("PERSON_CLIENT_INFO_STRUCT",PERSON_CLIENT_INFO_STRUCT);
+
+        /*
+        个人客户信息结束
+         */
+
+        /*
+        客户所属信息开始
+         */
+        CompositeData CLIENT_BELONG_INFO_STRUCT = new CompositeData();
+        //客户经理代码
+        Field CUST_MANAGER_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 16));
+        CUST_MANAGER_ID.setValue(infor.getUserId());//todo:传入客户经理代码，柜员号
+        CLIENT_BELONG_INFO_STRUCT.addField("CUST_MANAGER_ID", CUST_MANAGER_ID);
+
+        //录入柜员
+        Field RECORD_TELLER_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        RECORD_TELLER_NO.setValue("");//todo:传入录入人员代码，柜员号
+        CLIENT_BELONG_INFO_STRUCT.addField("RECORD_TELLER_NO", RECORD_TELLER_NO);
+
+        //登记日期
+        Field REGISTERED_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        REGISTERED_DATE.setValue("");//todo:传入登记日期，格式YYYYMMdd
+        CLIENT_BELONG_INFO_STRUCT.addField("REGISTERED_DATE", REGISTERED_DATE);
+
+        //信息加入body_struct
+        body_struct.addStruct("CLIENT_BELONG_INFO_STRUCT",CLIENT_BELONG_INFO_STRUCT);
+
+        /*
+        客户所属信息结束
+         */
+
+        /*
+        客户所属机构信息开始
+         */
+        CompositeData C_BELONG_ORG_INFO_STRUCT = new CompositeData();
+        //客户所属机构
+        Field CLIENT_BELONG_ORG = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        CLIENT_BELONG_ORG.setValue("");//todo:传入客户所属机构，机构码
+        C_BELONG_ORG_INFO_STRUCT.addField("CLIENT_BELONG_ORG", CLIENT_BELONG_ORG);
+
+        //登记柜员号
+        Field REGISTERED_TELLER_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        RECORD_TELLER_NO.setValue("");//todo:传入登记人员代码，柜员号
+        C_BELONG_ORG_INFO_STRUCT.addField("REGISTERED_TELLER_NO", REGISTERED_TELLER_NO);
+
+        //登记机构
+        Field REGIST_ORG_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        REGISTERED_DATE.setValue("");//todo:传入登记机构
+        C_BELONG_ORG_INFO_STRUCT.addField("REGIST_ORG_NO", REGIST_ORG_NO);
+
+        //登记日期
+        Field ORG_REGISTERED_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        ORG_REGISTERED_DATE.setValue("");//todo:传入登记日期，格式YYYYMMdd
+        C_BELONG_ORG_INFO_STRUCT.addField("ORG_REGISTERED_DATE", ORG_REGISTERED_DATE);
+
+        //信息加入body_struct
+        body_struct.addStruct("C_BELONG_ORG_INFO_STRUCT",C_BELONG_ORG_INFO_STRUCT);
+        /*
+        客户所属机构信息结束
+         */
+
+        /*
+        个人客户扩展信息开始
+         */
+        CompositeData P_CLIENT_EXT_INFO_STRUCT = new CompositeData();
+        //国籍、注册地
+        Field COUNTRY_CITIZEN = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
+        COUNTRY_CITIZEN.setValue("CHN");//中国
+        P_CLIENT_EXT_INFO_STRUCT.addField("COUNTRY_CITIZEN", COUNTRY_CITIZEN);
+
+        //民族代码
+        Field NATIONALITY_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        NATIONALITY_CODE.setValue("");//todo:传入民族，例如 “汉”
+        P_CLIENT_EXT_INFO_STRUCT.addField("NATIONALITY_CODE", NATIONALITY_CODE);
+
+        //户籍所在地
+        Field REG_PERM_RESIDENCE = new Field(new FieldAttr(FieldType.FIELD_STRING, 60));
+        REG_PERM_RESIDENCE.setValue();//todo:传入户籍所在地
+        P_CLIENT_EXT_INFO_STRUCT.addField("REG_PERM_RESIDENCE", REG_PERM_RESIDENCE);
+
+        //开户机构
+        Field OPEN_ACCT_BRANCH_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        OPEN_ACCT_BRANCH_ID.setValue("");//todo:传入开户机构，界面如无，需要增加客户经理选择开户机构
+        P_CLIENT_EXT_INFO_STRUCT.addField("OPEN_ACCT_BRANCH_ID", OPEN_ACCT_BRANCH_ID);
+
+        //开户柜员
+        Field OPEN_TELLER_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        OPEN_TELLER_NO.setValue("");//todo:传入客户经理柜员号
+        P_CLIENT_EXT_INFO_STRUCT.addField("OPEN_TELLER_NO", OPEN_TELLER_NO);
+
+        //开户日期
+        Field OPEN_ACCT_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        OPEN_ACCT_DATE.setValue("");//todo:传入开户日期
+        P_CLIENT_EXT_INFO_STRUCT.addField("OPEN_ACCT_DATE", OPEN_ACCT_DATE);
+
+        //婚姻状况 todo:是否缺失数据字典
+        Field MARITAL_STATUS = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
+        MARITAL_STATUS.setValue("");//todo:传入婚姻状况
+        P_CLIENT_EXT_INFO_STRUCT.addField("MARITAL_STATUS", MARITAL_STATUS);
+
+        //教育水平 todo:是否缺失数据字典
+        Field EDUCATION_LEVEL = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        EDUCATION_LEVEL.setValue("");//todo:传入教育水平
+        P_CLIENT_EXT_INFO_STRUCT.addField("EDUCATION_LEVEL", EDUCATION_LEVEL);
+
+        //城市 todo:是否缺失数据字典
+        Field CITY = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        CITY.setValue("");//todo:传入城市
+        P_CLIENT_EXT_INFO_STRUCT.addField("CITY", CITY);
+
+        //地区代码 todo:是否缺失数据字典
+        Field AREA_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        AREA_CODE.setValue("");//todo:传入地区代码
+        P_CLIENT_EXT_INFO_STRUCT.addField("AREA_CODE", AREA_CODE);
+
+        //关联关系 todo:需明确内容
+        Field INCIDENCE_RELATION = new Field(new FieldAttr(FieldType.FIELD_STRING, 50));
+        INCIDENCE_RELATION.setValue("");//todo:传入关联关系
+        P_CLIENT_EXT_INFO_STRUCT.addField("INCIDENCE_RELATION", INCIDENCE_RELATION);
+
+        //身份类别 todo:是否缺失数据字典
+        Field IDENTITY_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        IDENTITY_TYPE.setValue("");//todo:传入身份类别
+        P_CLIENT_EXT_INFO_STRUCT.addField("IDENTITY_TYPE", IDENTITY_TYPE);
+
+        //信息加入body_struct
+        body_struct.addStruct("P_CLIENT_EXT_INFO_STRUCT",P_CLIENT_EXT_INFO_STRUCT);
+        /*
+        个人客户扩展信息结束
+         */
+
+        /*
+        客户地址信息开始
+         */
+        Array CLIENT_ADDRESS_INFO_ARRAY = new Array(); //CLIENT_ADDRESS_INFO_ARRAY数组
+        //todo:多个地址需要循环加入
+        CompositeData CusAddrArrayStruct = new CompositeData();
+        //地址
+        Field ADDRESS = new Field(new FieldAttr(FieldType.FIELD_STRING, 300));
+        ADDRESS.setValue("");//todo:传入地址
+        CusAddrArrayStruct.addField("ADDRESS", ADDRESS);
+
+        //地址类型
+        Field ADDRESS_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        ADDRESS_TYPE.setValue("");//todo:传入地址类型，字符
+        CusAddrArrayStruct.addField("ADDRESS_TYPE", ADDRESS_TYPE);
+
+        //邮编
+        Field POSTAL_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 7));
+        POSTAL_CODE.setValue("");//todo:传入邮编
+        CusAddrArrayStruct.addField("POSTAL_CODE", POSTAL_CODE);
+
+        //信息加入数组
+        CLIENT_ADDRESS_INFO_ARRAY.addStruct(CusAddrArrayStruct);
+        body_struct.addArray("CLIENT_ADDRESS_INFO_ARRAY",CLIENT_ADDRESS_INFO_ARRAY);
+        /*
+        客户地址信息结束
+         */
+
+        /*
+        客户联系信息开始
+         */
+        Array CLIENT_CONTACT_INFO_ARRAY  = new Array(); //CLIENT_CONTACT_INFO_ARRAY  数组
+        //todo:多个联系方式需要循环加入
+        CompositeData CusConArrayStruct = new CompositeData();
+        //联系方式类型 todo:是否缺失数据字典
+        Field CONTACT_MODE_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+        CONTACT_MODE_TYPE.setValue("");//todo:联系方式类型
+        CusConArrayStruct.addField("CONTACT_MODE_TYPE", CONTACT_MODE_TYPE);
+
+        //联系方式
+        Field CONTACT_MODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 100));
+        CONTACT_MODE.setValue("");//todo:传入联系方式
+        CusConArrayStruct.addField("CONTACT_MODE", CONTACT_MODE);
+
+        //信息加入数组
+        CLIENT_CONTACT_INFO_ARRAY.addStruct(CusConArrayStruct);
+        body_struct.addArray("CLIENT_CONTACT_INFO_ARRAY",CLIENT_CONTACT_INFO_ARRAY);
+        /*
+        客户联系信息结束
+         */
+
+        /*
+        个人客户职业信息开始
+         */
+        CompositeData PERSON_CLIENT_OCCUR_STRUCT = new CompositeData();
+        //职业名称
+        Field OCCUPATION = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
+        OCCUPATION.setValue("");//todo:传入职业名称 字符
+        PERSON_CLIENT_OCCUR_STRUCT.addField("OCCUPATION", OCCUPATION);
+
+        //公司名称
+        Field COMPANY_NAME = new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
+        COMPANY_NAME.setValue("");//todo:传入公司名称 字符
+        PERSON_CLIENT_OCCUR_STRUCT.addField("COMPANY_NAME", COMPANY_NAME);
+
+        //信息加入body_struct
+        body_struct.addStruct("PERSON_CLIENT_OCCUR_STRUCT",PERSON_CLIENT_OCCUR_STRUCT);
+
+        /*
+        个人客户职业信息结束
+         */
+
+
+        cd.addStruct("BODY",body_struct);
+
+
+
+        return cd;
+    }
+
+    /**
+     * 解析CompositeData报文
+     * @param cd
+     */
+    public static void parseEcifResponse(CompositeData cd){
+
+        CompositeData body = cd.getStruct("BODY");
+
+        //根据数组名称去获取数组
+        Array array = body.getArray("C_GLOBAL_INFO_ARRAY");
+
+        Field CLIENT_NO = null;//客户号
+        Field GLOBAL_TYPE = null;//证件类型
+        Field GLOBAL_ID = null;//证件号码
+
+        if(null != array && array.size() > 0){
+            int m = array.size();
+            CompositeData array_element = null;
+            for (int i = 0; i < m; i++) {
+                //数组中的元素也是CompositeData，这是固定的写法。根据游标就可以获取到数组中的所有元素
+                array_element = array.getStruct(i);
+
+                CLIENT_NO=array_element.getField("CLIENT_NO");
+                GLOBAL_TYPE=array_element.getField("GLOBAL_TYPE");
+                GLOBAL_ID=array_element.getField("GLOBAL_ID");
+
+                //todo:将客户证件号码对应的客户号存入数据库中
+
+            }
+        }
+
+    }
+
+}
