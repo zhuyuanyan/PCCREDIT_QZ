@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionaries>
+	<dictionary name="ProductType" title="产品类型">
+		<item name="asset" title="资产类" />
+		<item name="debt" title="负债类" />
+		<item name="finance" title="理财类" />
+		
+	</dictionary>
+
+	<dictionary name="OrderType" title="订单类型">
+		<item name="single" title="单签" />
+		<item name="group" title="团签" />
+	</dictionary>
+
+	<dictionary name="Quarter" title="季度">
+		<item name="q1" title="第一季度" />
+		<item name="q2" title="第二季度" />
+		<item name="q3" title="第三季度" />
+		<item name="q4" title="第四季度" />
+	</dictionary>
+
+	<dictionary name="Gender" title="性别">
+		<item name="Male" title="男" />
+		<item name="Female" title="女" />
+	</dictionary>
+	
+	<dictionary name="SystemRole" title="是否为系统角色">
+		<item name="true" title="是" />
+		<item name="false" title="否" />
+	</dictionary>
+	
+	<dictionary name="RiskCustomerStatus" title="风险客户状态">
+		<item name="UNREPORTED" title="未上报" />
+		<item name="UNREPORTED_CARDCENTER" title="未上报" />
+		<item name="REPORTED_SUPERVISOR" title="上报机构主管" />
+		<item name="REPORTED_CARDCENTER" title="上报卡中心" />
+		<item name="CONFIRMED_SUPERVISOR" title="机构主管确认" />
+		<item name="CONFIRMED_CARDCENTER" title="卡中心确认" />
+		<item name="REJECT_SUPERVISOR" title="机构主管拒绝" />
+		<item name="REJECT_CARDCENTER" title="卡中心拒绝" />
+	</dictionary>
+	<dictionary name="CustomerRiskRating" title="风险等级">
+		<item name="1" title="1" />
+		<item name="2" title="2" />
+		<item name="3" title="3" />
+		<item name="4" title="4" />
+	</dictionary>
+	<dictionary name="RiskReviewProcessAuditResults" title="风险等级">
+		<item name="PASS" title="通过" />
+		<item name="REJECT" title="驳回" />
+		<item name="supervisorPASS" title="主管审核通过" />
+		<item name="supervisorREJECT" title="主管驳回" />
+		<item name="cardcenterPASS" title="卡中心通过" />
+		<item name="cardcenterREJECT" title="卡中心驳回" /> 
+		<item name="REPORTED" title="已上报" /> 
+	</dictionary>
+	
+	
+	<dictionary name="DivisionalStatus" title="客户移交状态">
+		<item name="turn" title="移交中" />
+		<item name="complete" title="移交完成" />
+	</dictionary>
+	<dictionary name="DivisionalResult" title="分案结果">
+		<item name="received" title="已接受" />
+		<item name="distribution" title="已分配" />
+		<item name="reject" title="已拒绝" />
+	</dictionary>
+	<dictionary name="ProductStatus" title="产品状态">
+		<item name="Published" title="已发布" />
+		<item name="Unpublished" title="未发布" />
+		<item name="Approved" title="审核通过" />
+		<item name="Screen" title="已筛选" />
+	</dictionary>
+	<dictionary name="CreateMethod" title="创建方式">
+		<item name="auto" title="系统自动匹配" />
+		<item name="manual" title="卡中心手动" />
+	</dictionary>
+	<dictionary name="ReviewResults" title="审核状态">
+		<item name="new" title="新建" />
+		<item name="confirm" title="通过" />
+		<item name="refuse" title="拒绝" />
+		<item name="verification" title="已核销" />
+	</dictionary>
+	<dictionary name="userType" title="用户类型">
+		<item name="0" title="系统用户" />
+		<item name="1" title="客户经理" />
+		<item name="2" title="卡中心" />
+	</dictionary>
+	<dictionary name="MarketingEndResult" title="营销计划最终结果">
+		<item name="marketing" title="营销中" />
+		<item name="reject" title="拒绝" />
+		<item name="hang" title="挂起" />
+		<item name="continuemarketing" title="继续营销" />
+		<item name="complete" title="营销完成" />
+	</dictionary>
+	<dictionary name="MarketingCreateWay" title="营销计划创建方式">
+		<item name="system" title="系统创建" />
+		<item name="manager" title="主管创建" />
+		<item name="myself" title="自己创建" />
+	</dictionary>
+	<dictionary name="CollectionPlanEndResult" title="催收计划最终结果">
+		<item name="collection" title="催收中" />
+		<item name="repaymentcommitments" title="承诺还款" />
+		<item name="losecontact" title="失联" />
+		<item name="reject" title="拒绝" />
+		<item name="hang" title="挂起" />
+		<item name="continuecollection" title="继续催收" />
+		<item name="complete" title="催收完成" />
+	</dictionary>
+	<dictionary name="MaintenanceEndResult" title="维护计划最终结果">
+		<item name="maintaining" title="维护中" />
+		<item name="nextmaintain" title="继续维护" />
+		<item name="complete" title="维护完成" />
+	</dictionary>
+	<dictionary name="ReturnReceipt" title="警示书回执">
+		<item name="0" title="未反馈" />
+		<item name="1" title="已反馈" />
+	</dictionary>
+	<dictionary name="AssessmentScore" title="客户经理评估总评价">
+		<item name="0" title="未通过(80分以下)" />
+		<item name="1" title="通过(80分及以上)" />
+	</dictionary>
+	<dictionary name="systemAdvice" title="级别调整建议">
+		<item name="up" title="晋级" />
+		<item name="down" title="降级" />
+	</dictionary>
+	<dictionary name="ifHandled" title="是否处理">
+		<item name="0" title="未处理" />
+		<item name="1" title="已处理" />
+	</dictionary>
+	<dictionary name="tableName" title="产品筛选表名">
+		<item name="customer_careers_information" title="客户职业资料" />
+		<item name="basic_customer_information" title="客户基本信息资料" />
+	</dictionary>
+	<dictionary name="columnName" title="产品筛选表名">
+		<item name="RESIDENTIAL_PROPERTIE" title="住宅性质" />
+		<item name="DEGREE_EDUCATION" title="教育程度" />
+		<item name="UNIT_NATURE" title="单位性质" />
+		<item name="INDUSTRY_TYPE" title="行业类型" />
+		<item name="POSITIO" title="职务" />
+		<item name="TITLE" title="职称" />
+		<item name="YEAR_WORK_UNIT" title="现工作单位年限" />
+		<item name="WORK_TIME" title="参加工作时间" />
+	</dictionary>
+	<dictionary name="customerTableColumnName" title="客户基本信息表">
+		<item name="RESIDENTIAL_PROPERTIE" title="住宅性质" />
+		<item name="DEGREE_EDUCATION" title="教育程度" />
+	</dictionary>
+	<dictionary name="carrerTableColumnName" title="客户职业信息表">
+		<item name="UNIT_NATURE" title="单位性质" />
+		<item name="INDUSTRY_TYPE" title="行业类型" />
+		<item name="POSITIO" title="职务" />
+		<item name="TITLE" title="职称" />
+		<item name="YEAR_WORK_UNIT" title="现工作单位年限" />
+		<item name="WORK_TIME" title="参加工作时间" />
+	</dictionary>
+	<dictionary name="operateName" title="产品筛选操作名">
+		<item name="&gt;" title="大于" />
+		<item name="&lt;" title="小于" />
+		<item name="&gt;=" title="大于等于" />
+		<item name="&lt;=" title="小于等于" />
+		<item name="=" title="等于" />
+		<item name="!=" title="不等于" />
+	</dictionary>
+	<dictionary name="ifPassStandard" title="是否达标">
+		<item name="0" title="未达标" />
+		<item name="1" title="已达标" />
+	</dictionary>
+		
+	<dictionary name="YESNO" title="是否">
+		<item name="YES" title="是" />
+		<item name="NO" title="否" />
+	</dictionary>
+	
+	<dictionary name="NODETYPE" title="节点类型">
+		<item name="Product" title="产品进件" />
+		<item name="ProductAmountAdjust" title="产品调额" />
+	</dictionary>
+	<dictionary name="applicationStatus" title="申请件状态">
+		<item name="UNAPPROVE" title="未审核" />
+		<item name="APPROVE" title="审核通过" />
+		<item name="RETURNAPPROVE" title="审核退回" />
+		<item name="REJECTAPPROVE" title="审核拒绝" />
+		<item name="save" title="未申请" />
+		<item name="audit" title="已申请" />
+		<item name="nopass" title="申请未通过" />
+		<item name="refuse" title="被拒接" />
+		<item name="approved" title="审批结束" />
+		<item name="succeed" title="申请成功" />
+	</dictionary>
+	<dictionary name="QuotaAdjustType" title="调额类型">
+		<item name="up" title="升额" />
+		<item name="down" title="降额" />
+	</dictionary>
+	
+	<dictionary name="approveOperationSpecialStatus" title="申请件状态">
+		<item name="APPROVE" title="审核通过" />
+		<item name="RETURNAPPROVE" title="审核退回" />
+		<item name="REJECTAPPROVE" title="审核拒绝" />
+		<item name="OBJECTION" title="异议" />
+	</dictionary>
+	<dictionary name="approveOperationNormalStatus" title="申请件状态">
+		<item name="APPROVE" title="审核通过" />
+		<item name="RETURNAPPROVE" title="审核退回" />
+		<item name="REJECTAPPROVE" title="审核拒绝" />
+	</dictionary>
+	<dictionary name="AmountAdjustmentApprovalStatus" title="调额状态">
+		<item name="Audit" title="审批中" />
+		<item name="Refuse" title="拒绝" />
+		<item name="Success" title="审批成功" />
+		<item name="Back" title="退回" />
+	</dictionary>
+	<dictionary name="RiskCreateType" title="风险类型">
+		<item name="system" title="系统" />
+		<item name="manual" title="手动" />
+	</dictionary>
+	<dictionary name="NODEOPTYPE" title="节点操作类型">
+		<item name="entering" title="录入" />
+		<item name="approved" title="审核" />
+	</dictionary>
+	<dictionary name="NODEOPSTATUS" title="节点关系状态">
+		<item name="APPROVE" title="通过" />
+		<item name="OBJECTION" title="异议" />
+	</dictionary>
+	<dictionary name="BillingMethod" title="账单寄送方式">
+		<item name="0" title="纸质账单" />
+		<item name="1" title="电子账单" />
+	</dictionary>
+	
+	<dictionary name="CollarCardMode" title="领卡方式">
+		<item name="0" title="到网点领取" />
+		<item name="1" title="普通邮寄" />
+		<item name="2" title="快递" />
+	</dictionary>
+	
+	<dictionary name="UseSecondCard" title="附卡是否开通">
+		<item name="1" title="是" />
+		<item name="0" title="否" />
+	</dictionary>
+	
+</dictionaries>

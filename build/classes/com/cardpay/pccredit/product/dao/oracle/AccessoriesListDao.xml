@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.product.dao.AccessoriesListDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.product.model.AccessoriesList">
+		<result property="id" column="ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="appendixTypeCode" column="APPENDIX_TYPE_CODE" />
+	</resultMap>
+	
+	<resultMap id="AppendixResultMap" type="com.cardpay.pccredit.product.model.AppendixDict">
+		<result property="id" column="ID" />
+		<result property="typeName" column="TYPE_NAME" />
+		<result property="typeCode" column="TYPE_CODE" />
+	</resultMap>
+	
+
+	<select id="findAppendixTypeCodeByProductId" resultMap="ResultMap" parameterType="java.lang.String">
+		SELECT * from ACCESSORIES_LIST
+		WHERE PRODUCT_ID=#{productId}
+	</select>
+	
+	<select id="findAppendixByProductId" resultMap="AppendixResultMap" parameterType="java.lang.String">
+		select t.* from appendix_dict t,accessories_list f where f.appendix_type_code = t.type_code and f.product_id = #{productId}
+	</select>
+	<delete id="deleteAppendixByProductId" parameterType="java.lang.String">
+	DELETE
+	FROM
+	ACCESSORIES_LIST A
+	WHERE
+	A .PRODUCT_ID = #{productId}
+	</delete>
+
+</mapper>

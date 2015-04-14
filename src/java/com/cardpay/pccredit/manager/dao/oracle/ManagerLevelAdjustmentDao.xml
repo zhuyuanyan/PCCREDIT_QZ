@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.ManagerLevelAdjustmentDao" >
+
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.manager.web.ManagerLevelAdjustmentForm">
+		<result property="id" column="ID" />
+		<result property="customerManagerId" column="CUSTOMER_MANAGER_ID" />
+		<result property="systemAdvice" column="SYSTEM_ADVICE" />
+		<result property="ifHandled" column="IF_HANDLED" />
+		<result property="customerManagerName" column="DISPLAY_NAME" />
+		<result property="originalLevel" column="ORIGINAL_LEVEL" />
+		<result property="adjustAfterLevel" column="ADJUST_AFTER_LEVEL" />
+		<result property="dataYear" column="DATA_YEAR" />
+		<result property="dataMonth" column="DATA_MONTH" />
+	</resultMap>
+	
+	<select id="findManagerLevelAdjustmentByFilter" resultMap="ResultMap" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT mla.*,
+							su.DISPLAY_NAME
+					 FROM  manager_level_adjustment mla
+					 LEFT JOIN sys_user su
+					    ON su.id = mla.CUSTOMER_MANAGER_ID
+					 WHERE 1=1 
+					 <if test="customerManagerName != null and customerManagerName != '' ">
+						<![CDATA[ and su.DISPLAY_NAME like '%'||#{customerManagerName}||'%']]>
+					</if>
+					order by mla.modified_time desc
+  			<![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findManagerLevelAdjustmentCountByFilter" resultType="int" 
+		parameterType="com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter">
+		SELECT count(*)
+		 FROM  manager_level_adjustment mla
+		 LEFT JOIN sys_user su
+		    ON su.id = mla.CUSTOMER_MANAGER_ID
+		 WHERE 1=1 
+		 <if test="customerManagerName != null and customerManagerName != '' ">
+			<![CDATA[ and su.DISPLAY_NAME like '%'||#{customerManagerName}||'%']]>
+		</if>
+	</select>
+	 
+	<select id="findManagerAssessmentScoreById" resultMap="ResultMap">
+		 SELECT mla.*,
+				su.DISPLAY_NAME
+		 FROM  manager_level_adjustment mla
+		 LEFT JOIN sys_user su
+		    ON su.id = mla.CUSTOMER_MANAGER_ID
+		 WHERE mas.id = #{id}
+	</select>
+
+</mapper>
