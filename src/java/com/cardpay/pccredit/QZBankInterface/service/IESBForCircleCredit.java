@@ -18,7 +18,7 @@ public class IESBForCircleCredit {
      * 组装CompositeData报文
      * @return
      */
-    public CompositeData createCircleCreditRequest(){
+    public static CompositeData createCircleCreditRequest(){
         CompositeData cd = new CompositeData();
 
         //SYS_HEAD

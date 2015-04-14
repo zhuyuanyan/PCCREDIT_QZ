@@ -18,7 +18,7 @@ public class IESBForCore {
      * 组装CompositeData报文
      * @return
      */
-    public CompositeData createCoreRequest() {
+    public static CompositeData createCoreRequest() {
         CompositeData cd = new CompositeData();
 
         //SYS_HEAD

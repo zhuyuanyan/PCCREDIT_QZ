@@ -21,7 +21,7 @@ public class IESBForECIF {
      * 组装CompositeData报文
      * @return
      */
-    public CompositeData createEcifRequest() {
+    public static CompositeData createEcifRequest() {
         CompositeData cd = new CompositeData();
 
         //SYS_HEAD
