@@ -11,6 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.dc.eai.data.Array;
+import com.dc.eai.data.CompositeData;
+import com.dc.eai.data.Field;
+import com.dc.eai.data.FieldAttr;
+import com.dc.eai.data.FieldType;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 @Service
 public class IESBForCircleCredit {
@@ -39,17 +44,17 @@ public class IESBForCircleCredit {
 
         //合同号
         Field CONTRACT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        CONTRACT_NO.setValue("");//todo:传入合同号
+        CONTRACT_NO.setValue("0001");//todo:传入合同号
         body_struct.addField("CONTRACT_NO", CONTRACT_NO);
 
         //卡号
         Field CARD_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        CARD_NO.setValue("");//todo:传入卡号
+        CARD_NO.setValue("0000001");//todo:传入卡号
         body_struct.addField("CARD_NO", CARD_NO);
 
         //客户号
         Field CLIENT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        CLIENT_NO.setValue("");//todo:传入客户号
+        CLIENT_NO.setValue("00001");//todo:传入客户号
         body_struct.addField("CLIENT_NO", CLIENT_NO);
 
         //担保方式 todo:非ESB提供数据字典
@@ -74,47 +79,47 @@ public class IESBForCircleCredit {
 
         //贷款起始日期
         Field START_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        START_DATE.setValue("");//todo:传入起始日期 YYYYMMdd
+        START_DATE.setValue("20150414");//todo:传入起始日期 YYYYMMdd
         body_struct.addField("START_DATE", START_DATE);
 
         //贷款结束日期
         Field END_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        END_DATE.setValue("");//todo:传入结束日期
+        END_DATE.setValue("20160414");//todo:传入结束日期
         body_struct.addField("END_DATE", END_DATE);
 
         //外币时需要换算
         Field EXCHANGE_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE,20,2));
-        EXCHANGE_RATE.setValue("");//todo：传入外币需要换算汇率
+        EXCHANGE_RATE.setValue("0.2");//todo：传入外币需要换算汇率
         body_struct.addField("EXCHANGE_RATE", EXCHANGE_RATE);
 
         //管理机构
         Field MANA_ORG=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        MANA_ORG.setValue("");//todo:传入管理机构
+        MANA_ORG.setValue("1");//todo:传入管理机构
         body_struct.addField("MANA_ORG", MANA_ORG);
 
         //登记人
         Field REGISTERED_ID=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        REGISTERED_ID.setValue("");//todo:传入当前客户经理柜员号
+        REGISTERED_ID.setValue("002");//todo:传入当前客户经理柜员号
         body_struct.addField("REGISTERED_ID", REGISTERED_ID);
 
         //登记机构
         Field REGIST_ORG_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        REGIST_ORG_NO.setValue("");//todo:传入登记机构
+        REGIST_ORG_NO.setValue("1");//todo:传入登记机构
         body_struct.addField("REGIST_ORG_NO", REGIST_ORG_NO);
 
         //入账机构码
         Field INCOME_ORG_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        INCOME_ORG_NO.setValue("");//todo:传入入账机构码
+        INCOME_ORG_NO.setValue("0003");//todo:传入入账机构码
         body_struct.addField("INCOME_ORG_NO", INCOME_ORG_NO);
 
         //登记日期
         Field REGISTERED_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        REGISTERED_DATE.setValue("");//todo:传入登记日期
+        REGISTERED_DATE.setValue("20150414");//todo:传入登记日期
         body_struct.addField("REGISTERED_DATE", REGISTERED_DATE);
 
         //期限
         Field TERM=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        TERM.setValue("");//todo:传入期限
+        TERM.setValue("2");//todo:传入期限
         body_struct.addField("TERM", TERM);
 
         //期限类型 todo:非ESB提供数据字典
@@ -129,17 +134,17 @@ public class IESBForCircleCredit {
 
         //执行利率
         Field ACT_INT_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,7));
-        ACT_INT_RATE.setValue("");//todo:传入执行利率
+        ACT_INT_RATE.setValue("0.5");//todo:传入执行利率
         body_struct.addField("ACT_INT_RATE", ACT_INT_RATE);
 
         //逾期利率
         Field OVERDUE_INT_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,7));
-        OVERDUE_INT_RATE.setValue("");//todo:传入逾期利率
+        OVERDUE_INT_RATE.setValue("0.01");//todo:传入逾期利率
         body_struct.addField("OVERDUE_INT_RATE", OVERDUE_INT_RATE);
 
         //违约利率
         Field PENALTY_INT_RATE=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,7));
-        PENALTY_INT_RATE.setValue("");//todo:传入违约利率
+        PENALTY_INT_RATE.setValue("0.01");//todo:传入违约利率
         body_struct.addField("PENALTY_INT_RATE", PENALTY_INT_RATE);
 
         //还款方式 todo:非ESB提供数据字典
@@ -149,7 +154,7 @@ public class IESBForCircleCredit {
 
         //还款日期
         Field REPAY_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        REPAY_DATE.setValue("");//todo:传入还款日期
+        REPAY_DATE.setValue("01");//todo:传入还款日期
         body_struct.addField("REPAY_DATE", REPAY_DATE);
 
         //五级分类
@@ -184,7 +189,7 @@ public class IESBForCircleCredit {
         13 流动资金周转
          */
         Field DR_USAGE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        DR_USAGE.setValue("");//todo:传入借款用途
+        DR_USAGE.setValue("12");//todo:传入借款用途
         body_struct.addField("DR_USAGE", DR_USAGE);
 
         //工业转型升级标识 todo:非ESB提供数据字典
@@ -194,67 +199,67 @@ public class IESBForCircleCredit {
 
         //贷款种类 todo:缺少数据字典
         Field LOAN_KIND=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        LOAN_KIND.setValue("");//todo:传入贷款种类
+        LOAN_KIND.setValue("A.1");//todo:传入贷款种类
         body_struct.addField("LOAN_KIND", LOAN_KIND);
 
         //涉农贷款类型 todo:缺少数据字典
         Field AGRI_LOAN_KIND=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        AGRI_LOAN_KIND.setValue("");//todo:传入涉农贷款类型
+        AGRI_LOAN_KIND.setValue("1010");//todo:传入涉农贷款类型
         body_struct.addField("AGRI_LOAN_KIND", AGRI_LOAN_KIND);
 
         //个人经营性贷款类型 todo:缺少数据字典
         Field PERSON_LOAN_KIND=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        PERSON_LOAN_KIND.setValue("");//todo:传入个人经营性贷款类型
+        PERSON_LOAN_KIND.setValue("01");//todo:传入个人经营性贷款类型
         body_struct.addField("PERSON_LOAN_KIND", PERSON_LOAN_KIND);
 
         //调整类型 todo:缺少数据字典
         Field ADJUST_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 1));
-        ADJUST_TYPE.setValue("");//todo:传入调整类型
+        ADJUST_TYPE.setValue("01");//todo:传入调整类型
         body_struct.addField("ADJUST_TYPE", ADJUST_TYPE);
 
         //新兴产业类型 todo:缺少数据字典
         Field NEW_PRD_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        NEW_PRD_TYPE.setValue("");//todo:传入新兴产业类型
+        NEW_PRD_TYPE.setValue("01");//todo:传入新兴产业类型
         body_struct.addField("NEW_PRD_TYPE", NEW_PRD_TYPE);
 
         //新兴产业贷款
         Field NEW_PRD_LOAN=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        NEW_PRD_LOAN.setValue("");//todo:传入新兴产业贷款
+        NEW_PRD_LOAN.setValue("01");//todo:传入新兴产业贷款
         body_struct.addField("NEW_PRD_LOAN", NEW_PRD_LOAN);
 
         //贷款投向
         Field LOAN_DIRECTION=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        LOAN_DIRECTION.setValue("");//todo:传入贷款投向
+        LOAN_DIRECTION.setValue("1");//todo:传入贷款投向
         body_struct.addField("LOAN_DIRECTION", LOAN_DIRECTION);
 
         //贷款归属1
         Field LOAN_BELONG1=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        LOAN_BELONG1.setValue("");//todo:传入贷款归属1
+        LOAN_BELONG1.setValue("1");//todo:传入贷款归属1
         body_struct.addField("LOAN_BELONG1", LOAN_BELONG1);
 
         //贷款归属2
         Field LOAN_BELONG2=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        LOAN_BELONG2.setValue("");//todo:传入贷款归属2
+        LOAN_BELONG2.setValue("1");//todo:传入贷款归属2
         body_struct.addField("LOAN_BELONG2", LOAN_BELONG2);
 
         //贷款归属3
         Field LOAN_BELONG3=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        LOAN_BELONG3.setValue("");//todo:传入贷款归属3
+        LOAN_BELONG3.setValue("1");//todo:传入贷款归属3
         body_struct.addField("LOAN_BELONG3", LOAN_BELONG3);
 
         //贷款归属4
         Field LOAN_BELONG4=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        LOAN_BELONG4.setValue("");//todo:传入贷款归属4
+        LOAN_BELONG4.setValue("1");//todo:传入贷款归属4
         body_struct.addField("LOAN_BELONG4", LOAN_BELONG4);
 
         //业务类型
         Field BUSS_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 50));
-        BUSS_TYPE.setValue("");//todo:传入业务类型 001 消费类 002 经营类
+        BUSS_TYPE.setValue("001");//todo:传入业务类型 001 消费类 002 经营类
         body_struct.addField("BUSS_TYPE", BUSS_TYPE);
 
         //主管客户经理
         Field CHI_CUST_MANAGER=new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        CHI_CUST_MANAGER.setValue("");//todo:传入主管客户经理
+        CHI_CUST_MANAGER.setValue("00004");//todo:传入主管客户经理
         body_struct.addField("CHI_CUST_MANAGER", CHI_CUST_MANAGER);
 
 
@@ -266,17 +271,17 @@ public class IESBForCircleCredit {
 
         //客户号
         Field A_CLIENT_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        GLOBAL_TYPE.setValue("");//todo:传入客户号
+        A_CLIENT_NO.setValue("000005");//todo:传入客户号
         CusArrayStruct.addField("A_CLIENT_NO", A_CLIENT_NO);
 
         //客户名称
         Field CLIENT_NAME = new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
-        CLIENT_NAME.setValue("");//todo:传入客户名称
+        CLIENT_NAME.setValue("张三");//todo:传入客户名称
         CusArrayStruct.addField("CLIENT_NAME", CLIENT_NAME);
 
         //性别
         Field SEX = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
-        SEX.setValue("");//todo:传入性别，男：01 ；女：02； 未知：03
+        SEX.setValue("01");//todo:传入性别，男：01 ；女：02； 未知：03
         CusArrayStruct.addField("SEX", SEX);
 
         //客户类型
@@ -291,17 +296,17 @@ public class IESBForCircleCredit {
 
         //证件号码
         Field GLOBAL_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        GLOBAL_ID.setValue();//todo:传入证件号码
+        GLOBAL_ID.setValue("320482198601271100");//todo:传入证件号码
         CusArrayStruct.addField("GLOBAL_ID", GLOBAL_ID);
 
         //长期证件标志 todo:数据字典缺失
         Field LONG_GLOBAL_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        LONG_GLOBAL_TYPE.setValue("");//todo:传入标识
+        LONG_GLOBAL_TYPE.setValue("1");//todo:传入标识
         CusArrayStruct.addField("LONG_GLOBAL_TYPE", LONG_GLOBAL_TYPE);
 
         //签发日期
         Field ISS_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        ISS_DATE.setValue("");//todo:传入数值，无则置空
+        ISS_DATE.setValue("20150414");//todo:传入数值，无则置空
         CusArrayStruct.addField("ISS_DATE", ISS_DATE);
 
         //证件有效日期
@@ -321,22 +326,22 @@ public class IESBForCircleCredit {
 
         //民族代码
         Field NATIONALITY_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        NATIONALITY_CODE.setValue("");//todo:传入民族，例如 “汉”
+        NATIONALITY_CODE.setValue("01");//todo:传入民族，例如 “汉”
         CusArrayStruct.addField("NATIONALITY_CODE", NATIONALITY_CODE);
 
         //户籍所在地
         Field REG_PERM_RESIDENCE = new Field(new FieldAttr(FieldType.FIELD_STRING, 60));
-        REG_PERM_RESIDENCE.setValue("");//todo:传入户籍所在地
+        REG_PERM_RESIDENCE.setValue("320114");//todo:传入户籍所在地
         CusArrayStruct.addField("REG_PERM_RESIDENCE", REG_PERM_RESIDENCE);
 
         //地址
         Field ADDRESS = new Field(new FieldAttr(FieldType.FIELD_STRING, 300));
-        ADDRESS.setValue("");//todo:传入地址
+        ADDRESS.setValue("南京市雨花台");//todo:传入地址
         CusArrayStruct.addField("ADDRESS", ADDRESS);
 
         //出生日期
         Field BIRTH_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        BIRTH_DATE.setValue("");//todo:传入出生日期，格式YYYYMMdd
+        BIRTH_DATE.setValue("19860127");//todo:传入出生日期，格式YYYYMMdd
         CusArrayStruct.addField("BIRTH_DATE", BIRTH_DATE);
 
         //最高学历 todo:字典项缺失
@@ -346,17 +351,17 @@ public class IESBForCircleCredit {
 
         //最高学位 todo:字典项缺失
         Field DEGREE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        DEGREE.setValue("");//todo:传入最高学位
+        DEGREE.setValue("10");//todo:传入最高学位
         CusArrayStruct.addField("DEGREE", DEGREE);
 
         //签约日期
         Field SIGN_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        SIGN_DATE.setValue("");//todo:传入签约日期，格式YYYYMMdd
+        SIGN_DATE.setValue("20150414");//todo:传入签约日期，格式YYYYMMdd
         CusArrayStruct.addField("SIGN_DATE", SIGN_DATE);
 
         //持卡情况 todo:数据字典项缺失
         Field HOLD_CARD_MSG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        HOLD_CARD_MSG.setValue("");//todo:传入持卡情况
+        HOLD_CARD_MSG.setValue("1");//todo:传入持卡情况
         CusArrayStruct.addField("HOLD_CARD_MSG", HOLD_CARD_MSG);
 
         //是否拥有外国护照或居住权 todo:数据字典项缺失
@@ -366,58 +371,58 @@ public class IESBForCircleCredit {
 
         //信用等级 todo:数据字典项缺失
         Field CREDIT_LEVEL = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        CREDIT_LEVEL.setValue("");//todo:传入信用等级
+        CREDIT_LEVEL.setValue("1");//todo:传入信用等级
         CusArrayStruct.addField("CREDIT_LEVEL", CREDIT_LEVEL);
 
         //信用到期日期
         Field EXPIRY_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        EXPIRY_DATE.setValue("");//todo:传入到期日期
+        EXPIRY_DATE.setValue("20160414");//todo:传入到期日期
         CusArrayStruct.addField("EXPIRY_DATE", EXPIRY_DATE);
 
         //是否关联客户 todo:数据字典项缺失
         Field REL_CLIENT_FLAG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        REL_CLIENT_FLAG.setValue("");//todo:传入持卡情况
+        REL_CLIENT_FLAG.setValue("1");//todo:传入持卡情况
         CusArrayStruct.addField("REL_CLIENT_FLAG", REL_CLIENT_FLAG);
 
         //与我行关系 todo:数据字典项缺失
         Field OWN_BRANCH_RELATION = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        OWN_BRANCH_RELATION.setValue("");//todo:传入我行关系
+        OWN_BRANCH_RELATION.setValue("B1");//todo:传入我行关系
         CusArrayStruct.addField("OWN_BRANCH_RELATION", OWN_BRANCH_RELATION);
 
         //我行职务
         Field POST = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        POST.setValue("");//todo:传入我行职务情况
+        POST.setValue("1");//todo:传入我行职务情况
         CusArrayStruct.addField("POST", POST);
 
         //贷款卡标识 todo:数据字典项缺失
         Field LOAN_CARD_FLAG = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        LOAN_CARD_FLAG.setValue("");//todo:传入贷款卡标识
+        LOAN_CARD_FLAG.setValue("1");//todo:传入贷款卡标识
         CusArrayStruct.addField("LOAN_CARD_FLAG", LOAN_CARD_FLAG);
 
         //贷款卡号
         Field LOAN_CARD_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        LOAN_CARD_NO.setValue("");//todo:传入贷款卡号
+        LOAN_CARD_NO.setValue("111111");//todo:传入贷款卡号
         CusArrayStruct.addField("LOAN_CARD_NO", LOAN_CARD_NO);
 
         //手机号码
         Field MOBILE = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        MOBILE.setValue("");//todo:传入手机号码
+        MOBILE.setValue("15961100228");//todo:传入手机号码
         CusArrayStruct.addField("MOBILE", MOBILE);
 
 
         //上级机构 todo:数据字典项缺失
         Field HIGHER_ORG_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 32));
-        HIGHER_ORG_NO.setValue("");//todo:传入上级机构
+        HIGHER_ORG_NO.setValue("12");//todo:传入上级机构
         CusArrayStruct.addField("HIGHER_ORG_NO", HIGHER_ORG_NO);
 
         //客户经理
         Field ACCT_EXEC = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        ACCT_EXEC.setValue("");//todo:传入客户经理柜员号
+        ACCT_EXEC.setValue("1345");//todo:传入客户经理柜员号
         CusArrayStruct.addField("ACCT_EXEC", ACCT_EXEC);
 
         //开户日期
         Field OPEN_ACCT_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        OPEN_ACCT_DATE.setValue("");//todo:传入开户日期，YYYYMMdd
+        OPEN_ACCT_DATE.setValue("20150122");//todo:传入开户日期，YYYYMMdd
         CusArrayStruct.addField("OPEN_ACCT_DATE", OPEN_ACCT_DATE);
 
         //信息加入数组
@@ -440,12 +445,12 @@ public class IESBForCircleCredit {
 
         //费用金额
         Field FEE_AMOUNT=new Field(new FieldAttr(FieldType.FIELD_DOUBLE,20,2));
-        FEE_AMOUNT.setValue("");//todo:传入费用金额
+        FEE_AMOUNT.setValue("1000");//todo:传入费用金额
         FeeArrayStruct.addField("FEE_AMOUNT", FEE_AMOUNT);
 
         //账号
         Field ACCT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 50));
-        ACCT_NO.setValue("");//todo:传入账号
+        ACCT_NO.setValue("2233");//todo:传入账号
         FeeArrayStruct.addField("ACCT_NO", ACCT_NO);
 
         //信息加入数组
@@ -469,7 +474,7 @@ public class IESBForCircleCredit {
 
         //是否本行
         Field OWN_BRANCH_FLAG=new Field(new FieldAttr(FieldType.FIELD_STRING,1));
-        OWN_BRANCH_FLAG.setValue("");//todo:传入是否本行信息
+        OWN_BRANCH_FLAG.setValue("是");//todo:传入是否本行信息
         AcctInfoArrayStruct.addField("OWN_BRANCH_FLAG", OWN_BRANCH_FLAG);
 
         //账号
@@ -494,7 +499,7 @@ public class IESBForCircleCredit {
 
         //支付金额
         Field PAY_AMT=new Field(new FieldAttr(FieldType.FIELD_DOUBLE, 20,2));
-        PAY_AMT.setValue("");//todo:传入支付金额
+        PAY_AMT.setValue("2000");//todo:传入支付金额
         AcctInfoArrayStruct.addField("PAY_AMT", PAY_AMT);
 
         //科目号
@@ -504,7 +509,7 @@ public class IESBForCircleCredit {
 
         //币别
         Field AI_CCY=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        AI_CCY.setValue("");//todo:传入币别
+        AI_CCY.setValue("CNY");//todo:传入币别
         AcctInfoArrayStruct.addField("CCY", AI_CCY);
 
         //全国联行号
