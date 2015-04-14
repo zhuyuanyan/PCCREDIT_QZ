@@ -1,4 +1,4 @@
-package com.cardpay.pccredit.customer.constant;
+package com.cardpay.pccredit.QZBankInterface.service;
 
 /**
  * ECIF接口，经ESB转发
