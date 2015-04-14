@@ -385,9 +385,9 @@ public class IESBForECIF {
         //根据数组名称去获取数组
         Array array = body.getArray("C_GLOBAL_INFO_ARRAY");
 
-        Field CLIENT_NO = null;//客户号
-        Field GLOBAL_TYPE = null;//证件类型
-        Field GLOBAL_ID = null;//证件号码
+        String CLIENT_NO = "";//客户号
+        String GLOBAL_TYPE = "";//证件类型
+        String GLOBAL_ID = "";//证件号码
 
         if(null != array && array.size() > 0){
             int m = array.size();
@@ -396,9 +396,9 @@ public class IESBForECIF {
                 //数组中的元素也是CompositeData，这是固定的写法。根据游标就可以获取到数组中的所有元素
                 array_element = array.getStruct(i);
 
-                CLIENT_NO=array_element.getField("CLIENT_NO");
-                GLOBAL_TYPE=array_element.getField("GLOBAL_TYPE");
-                GLOBAL_ID=array_element.getField("GLOBAL_ID");
+                CLIENT_NO=array_element.getField("CLIENT_NO").getValue();
+                GLOBAL_TYPE=array_element.getField("GLOBAL_TYPE").getValue();
+                GLOBAL_ID=array_element.getField("GLOBAL_ID").getValue();
 
                 //todo:将客户证件号码对应的客户号存入数据库中
 
