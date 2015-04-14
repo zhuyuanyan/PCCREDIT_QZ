@@ -52,14 +52,14 @@ public class IESBForCircleCredit {
         CLIENT_NO.setValue("");//todo:传入客户号
         body_struct.addField("CLIENT_NO", CLIENT_NO);
 
-        //担保方式
+        //担保方式 todo:非ESB提供数据字典
         Field GUARANTEE_MODE=new Field(new FieldAttr(FieldType.FIELD_STRING,10));
-        GUARANTEE_MODE.setValue("B");//抵押 todo:置后担保，需确认
+        GUARANTEE_MODE.setValue("100");//抵押
         body_struct.addField("GUARANTEE_MODE", GUARANTEE_MODE);
 
-        //担保方式细分
+        //担保方式细分 todo:非ESB提供数据字典
         Field GUARANTEE_MODE_DETAIL=new Field(new FieldAttr(FieldType.FIELD_STRING,10));
-        GUARANTEE_MODE_DETAIL.setValue("");// todo:担保方式细分，需确认
+        GUARANTEE_MODE_DETAIL.setValue("1");
         body_struct.addField("GUARANTEE_MODE_DETAIL", GUARANTEE_MODE_DETAIL);
 
         //币种
@@ -117,14 +117,14 @@ public class IESBForCircleCredit {
         TERM.setValue("");//todo:传入期限
         body_struct.addField("TERM", TERM);
 
-        //期限类型 todo:缺少数据字典
+        //期限类型 todo:非ESB提供数据字典
         Field TERM_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        TERM_TYPE.setValue("");//todo:传入期限类型
+        TERM_TYPE.setValue("002");
         body_struct.addField("TERM_TYPE", TERM_TYPE);
 
-        //顺延标志 todo:缺少数据字典
+        //顺延标志
         Field DEFER_FLAG=new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
-        DEFER_FLAG.setValue("");//todo:传入顺延标志
+        DEFER_FLAG.setValue("1");
         body_struct.addField("DEFER_FLAG", DEFER_FLAG);
 
         //执行利率
@@ -142,9 +142,9 @@ public class IESBForCircleCredit {
         PENALTY_INT_RATE.setValue("");//todo:传入违约利率
         body_struct.addField("PENALTY_INT_RATE", PENALTY_INT_RATE);
 
-        //还款方式 todo:缺少数据字典
+        //还款方式 todo:非ESB提供数据字典
         Field REPAY_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        REPAY_TYPE.setValue("");//todo:传入还款方式
+        REPAY_TYPE.setValue("A004");
         body_struct.addField("REPAY_TYPE", REPAY_TYPE);
 
         //还款日期
@@ -154,27 +154,42 @@ public class IESBForCircleCredit {
 
         //五级分类
         Field FIVE_LEVEL_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        FIVE_LEVEL_TYPE.setValue("");//todo:传入五级分类
+        FIVE_LEVEL_TYPE.setValue("10");
         body_struct.addField("FIVE_LEVEL_TYPE", FIVE_LEVEL_TYPE);
 
-        //特殊贷款类型 todo：缺少数据字典
+        //特殊贷款类型 todo:非ESB提供数据字典
         Field SPE_LOAN_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        SPE_LOAN_TYPE.setValue("");//todo:传入特殊贷款类型
+        SPE_LOAN_TYPE.setValue("1");
         body_struct.addField("SPE_LOAN_TYPE", SPE_LOAN_TYPE);
 
-        //额度占用类型 todo:缺少数据字典
+        //额度占用类型 todo:非ESB提供数据字典
         Field LIMIT_USEED_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        LIMIT_USEED_TYPE.setValue("");//todo:传入额度占用类型
+        LIMIT_USEED_TYPE.setValue("01");
         body_struct.addField("LIMIT_USEED_TYPE", LIMIT_USEED_TYPE);
 
-        //借款用途
+        //借款用途 todo:非ESB提供数据字典
+        /*
+        1 土地开发
+        2 土地储备贷款
+        3 房地产类
+        4 保障性住房贷款
+        5 其他固定资产贷款
+        6 技术改造
+        7 引进设备技术
+        8 购机器、设备
+        9 新产品开发
+        10 购原材料
+        11 产品、商品贸易
+        12 施工备料
+        13 流动资金周转
+         */
         Field DR_USAGE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
         DR_USAGE.setValue("");//todo:传入借款用途
         body_struct.addField("DR_USAGE", DR_USAGE);
 
-        //工业转型升级标识
+        //工业转型升级标识 todo:非ESB提供数据字典
         Field FLAG=new Field(new FieldAttr(FieldType.FIELD_STRING, 1));
-        FLAG.setValue("");//todo:传入工业转型升级标识
+        FLAG.setValue("2");
         body_struct.addField("FLAG", FLAG);
 
         //贷款种类 todo:缺少数据字典
