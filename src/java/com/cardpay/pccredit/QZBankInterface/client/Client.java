@@ -28,8 +28,8 @@ import com.cardpay.pccredit.QZBankInterface.service.IESBForECIF;
  * Created by johhny on 15/4/14.
  */
 
-public class client {
-    private static Log log = LogFactory.getLog(client.class);
+public class Client {
+    private static Log log = LogFactory.getLog(Client.class);
 
 
     /**
@@ -96,7 +96,7 @@ public class client {
 
     //todo:发送报文功能加入框架中，以下为发送ECIF
     public static void main(String[] args) {
-        client client = new client();
+        Client client = new Client();
 
 		//这一步不能少，这是指定密钥文件所在路径(密钥文件不必一定放在工程的src下，也可以放在工程外面)
 		System.setProperty(ClientConfig.FILEPATH, new File("").getAbsolutePath()+"/src/java/");

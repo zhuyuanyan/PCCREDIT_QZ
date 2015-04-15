@@ -369,4 +369,42 @@ AND A.IS_DELETED = '0'
 
 	</dictionary>
 
+	<!-- ESB 数据字典 -->
+	<dictionary name="INDIV_BRT_PLACE" title="籍贯" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from INDIV_BRT_PLACE
+		where 1=1
+	</dictionary>
+	<dictionary name="GUARANTY_TYPE" title="押品类型" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from GUARANTY_TYPE
+		where 1=1
+	</dictionary>
+	<dictionary name="LOAN_DIRECTION" title="贷款投向" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from LOAN_DIRECTION
+		where 1=1
+	</dictionary>
+	<dictionary name="LOAN_BELONG1" title="贷款归属1" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from LOAN_BELONG1
+		where 1=1
+	</dictionary>
+	<dictionary name="LOAN_TYPE" title="贷款种类" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from LOAN_TYPE
+		where 1=1
+	</dictionary>
+	<dictionary name="AGRICULTURE_TYPE" title="涉农贷款类型" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from AGRICULTURE_TYPE
+		where 1=1
+	</dictionary>
+	<!-- ESB 数据字典 -->
 </dictionaries>
