@@ -241,7 +241,7 @@ public class IESBForECIF {
 
         //户籍所在地
         Field REG_PERM_RESIDENCE = new Field(new FieldAttr(FieldType.FIELD_STRING, 60));
-        REG_PERM_RESIDENCE.setValue("江苏");//todo:传入户籍所在地
+        REG_PERM_RESIDENCE.setValue("110228");//todo:传入户籍所在地
         P_CLIENT_EXT_INFO_STRUCT.addField("REG_PERM_RESIDENCE", REG_PERM_RESIDENCE);
 
         //开户机构
@@ -397,9 +397,9 @@ public class IESBForECIF {
                 //数组中的元素也是CompositeData，这是固定的写法。根据游标就可以获取到数组中的所有元素
                 array_element = array.getStruct(i);
 
-                CLIENT_NO=array_element.getField("CLIENT_NO").getValue().toString();
-                GLOBAL_TYPE=array_element.getField("GLOBAL_TYPE").getValue().toString();
-                GLOBAL_ID=array_element.getField("GLOBAL_ID").getValue().toString();
+                CLIENT_NO=array_element.getField("CLIENT_NO").strValue();
+                GLOBAL_TYPE=array_element.getField("GLOBAL_TYPE").strValue();
+                GLOBAL_ID=array_element.getField("GLOBAL_ID").strValue();
 
                 //todo:将客户证件号码对应的客户号存入数据库中
 
