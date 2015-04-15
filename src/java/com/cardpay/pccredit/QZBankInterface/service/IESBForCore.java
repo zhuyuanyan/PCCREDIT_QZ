@@ -9,7 +9,11 @@ import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.dc.eai.data.Array;
+import com.dc.eai.data.CompositeData;
+import com.dc.eai.data.Field;
+import com.dc.eai.data.FieldAttr;
+import com.dc.eai.data.FieldType;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 @Service
@@ -52,19 +56,19 @@ public class IESBForCore {
      */
     public static void parseCoreResponse(CompositeData cd) {
 
-        CompositeData body = cd.getStruct("BODY");
-
-        String ACCT_NO = body.getField("ACCT_NO").getValue();//账号
-        String ACCT_NAME = body.getField("ACCT_NAME").getValue();//户名
-        String CCY = body.getField("CCY").getValue();//币种
-        String ACCT_TYPE = body.getField("ACCT_TYPE").getValue();//账户类型
-        String OPEN_ACCT_BRANCH_ID = body.getField("OPEN_ACCT_BRANCH_ID").getValue();//开户机构
-        String OPEN_ACCT_BRANCH_NAME = body.getField("OPEN_ACCT_BRANCH_NAME").getValue();//开户行名
-        String ORG_NO = body.getField("ORG_NO").getValue();//机构码
-        String C_INTERBANK_ID = body.getField("C_INTERBANK_ID").getValue();//全国联行号
-        String OPEN_ACCT_DATE = body.getField("OPEN_ACCT_DATE").getValue();//开户日期
-        String GL_CODE = body.getField("GL_CODE").getValue();//科目号
-        String BALANCE = body.getField("BALANCE").getValue();//余额
+//        CompositeData body = cd.getStruct("BODY");
+//
+//        String ACCT_NO = body.getField("ACCT_NO").getValue();//账号
+//        String ACCT_NAME = body.getField("ACCT_NAME").getValue();//户名
+//        String CCY = body.getField("CCY").getValue();//币种
+//        String ACCT_TYPE = body.getField("ACCT_TYPE").getValue();//账户类型
+//        String OPEN_ACCT_BRANCH_ID = body.getField("OPEN_ACCT_BRANCH_ID").getValue();//开户机构
+//        String OPEN_ACCT_BRANCH_NAME = body.getField("OPEN_ACCT_BRANCH_NAME").getValue();//开户行名
+//        String ORG_NO = body.getField("ORG_NO").getValue();//机构码
+//        String C_INTERBANK_ID = body.getField("C_INTERBANK_ID").getValue();//全国联行号
+//        String OPEN_ACCT_DATE = body.getField("OPEN_ACCT_DATE").getValue();//开户日期
+//        String GL_CODE = body.getField("GL_CODE").getValue();//科目号
+//        String BALANCE = body.getField("BALANCE").getValue();//余额
 
     }
 }
