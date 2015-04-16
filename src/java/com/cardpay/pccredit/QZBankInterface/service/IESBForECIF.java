@@ -4,13 +4,14 @@ package com.cardpay.pccredit.QZBankInterface.service;
  * ECIF接口，经ESB转发
  * Created by johhny on 15/4/11.
  */
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.dc.eai.data.Array;
+import com.dc.eai.data.CompositeData;
+import com.dc.eai.data.Field;
+import com.dc.eai.data.FieldAttr;
+import com.dc.eai.data.FieldType;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 @Service
 public class IESBForECIF {
@@ -41,11 +42,11 @@ public class IESBForECIF {
         //BODY
         CompositeData body_struct = new CompositeData();
         
-        /*
-         * 根据customerId获取实体
-         */
-        String customerId = "";
-        CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, customerId);
+//        /*
+//         * 根据customerId获取实体
+//         */
+//        String customerId = "";
+//        CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, customerId);
         
         
         /*
@@ -55,12 +56,12 @@ public class IESBForECIF {
         CompositeData CusArrayStruct = new CompositeData();
         //证件类型
         Field GLOBAL_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 5));
-        GLOBAL_TYPE.setValue(infor.getCardType());//身份证
+        GLOBAL_TYPE.setValue("1");//身份证
         CusArrayStruct.addField("GLOBAL_TYPE", GLOBAL_TYPE);
 
         //证件号码
         Field GLOBAL_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        GLOBAL_ID.setValue(infor.getCardId());//todo:传入证件号码
+        GLOBAL_ID.setValue("320482198601271133");//todo:传入证件号码
         CusArrayStruct.addField("GLOBAL_ID", GLOBAL_ID);
 
         //证件描述
@@ -107,7 +108,7 @@ public class IESBForECIF {
         CompositeData CusNameArrayStruct = new CompositeData();
         //客户名称
         Field CLIENT_NAME = new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
-        CLIENT_NAME.setValue(infor.getChineseName());//todo:传入客户名称
+        CLIENT_NAME.setValue("贺珈");//todo:传入客户名称
         CusNameArrayStruct.addField("CLIENT_NAME", CLIENT_NAME);
 
         //客户名称类型
@@ -148,12 +149,12 @@ public class IESBForECIF {
         CompositeData PERSON_CLIENT_INFO_STRUCT = new CompositeData();
         //出生日期
         Field BIRTH_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        BIRTH_DATE.setValue(infor.getBirthday());//todo:传入出生日期，格式YYYYMMdd
+        BIRTH_DATE.setValue("19860127");//todo:传入出生日期，格式YYYYMMdd
         PERSON_CLIENT_INFO_STRUCT.addField("BIRTH_DATE", BIRTH_DATE);
 
         //性别
         Field SEX = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
-        SEX.setValue(infor.getSex());//todo:传入性别，男：01 ；女：02； 未知：03
+        SEX.setValue("01");//todo:传入性别，男：01 ；女：02； 未知：03
         PERSON_CLIENT_INFO_STRUCT.addField("SEX", SEX);
 
         //客户类型
@@ -174,17 +175,17 @@ public class IESBForECIF {
         CompositeData CLIENT_BELONG_INFO_STRUCT = new CompositeData();
         //客户经理代码
         Field CUST_MANAGER_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 16));
-        CUST_MANAGER_ID.setValue(infor.getUserId());//todo:传入客户经理代码，柜员号
+        CUST_MANAGER_ID.setValue("00001");//todo:传入客户经理代码，柜员号
         CLIENT_BELONG_INFO_STRUCT.addField("CUST_MANAGER_ID", CUST_MANAGER_ID);
 
         //录入柜员
         Field RECORD_TELLER_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        RECORD_TELLER_NO.setValue("");//todo:传入录入人员代码，柜员号
+        RECORD_TELLER_NO.setValue("00002");//todo:传入录入人员代码，柜员号
         CLIENT_BELONG_INFO_STRUCT.addField("RECORD_TELLER_NO", RECORD_TELLER_NO);
 
         //登记日期
         Field REGISTERED_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        REGISTERED_DATE.setValue("");//todo:传入登记日期，格式YYYYMMdd
+        REGISTERED_DATE.setValue("20150414");//todo:传入登记日期，格式YYYYMMdd
         CLIENT_BELONG_INFO_STRUCT.addField("REGISTERED_DATE", REGISTERED_DATE);
 
         //信息加入body_struct
@@ -200,22 +201,22 @@ public class IESBForECIF {
         CompositeData C_BELONG_ORG_INFO_STRUCT = new CompositeData();
         //客户所属机构
         Field CLIENT_BELONG_ORG = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        CLIENT_BELONG_ORG.setValue("");//todo:传入客户所属机构，机构码
+        CLIENT_BELONG_ORG.setValue("000021");//todo:传入客户所属机构，机构码
         C_BELONG_ORG_INFO_STRUCT.addField("CLIENT_BELONG_ORG", CLIENT_BELONG_ORG);
 
         //登记柜员号
         Field REGISTERED_TELLER_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        RECORD_TELLER_NO.setValue("");//todo:传入登记人员代码，柜员号
+        RECORD_TELLER_NO.setValue("00001");//todo:传入登记人员代码，柜员号
         C_BELONG_ORG_INFO_STRUCT.addField("REGISTERED_TELLER_NO", REGISTERED_TELLER_NO);
 
         //登记机构
         Field REGIST_ORG_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        REGISTERED_DATE.setValue("");//todo:传入登记机构
+        REGISTERED_DATE.setValue("010101");//todo:传入登记机构
         C_BELONG_ORG_INFO_STRUCT.addField("REGIST_ORG_NO", REGIST_ORG_NO);
 
         //登记日期
         Field ORG_REGISTERED_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        ORG_REGISTERED_DATE.setValue("");//todo:传入登记日期，格式YYYYMMdd
+        ORG_REGISTERED_DATE.setValue("20150414");//todo:传入登记日期，格式YYYYMMdd
         C_BELONG_ORG_INFO_STRUCT.addField("ORG_REGISTERED_DATE", ORG_REGISTERED_DATE);
 
         //信息加入body_struct
@@ -235,47 +236,47 @@ public class IESBForECIF {
 
         //民族代码
         Field NATIONALITY_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        NATIONALITY_CODE.setValue("");//todo:传入民族，例如 “汉”
+        NATIONALITY_CODE.setValue("01");//todo:传入民族，例如 “汉”
         P_CLIENT_EXT_INFO_STRUCT.addField("NATIONALITY_CODE", NATIONALITY_CODE);
 
         //户籍所在地
         Field REG_PERM_RESIDENCE = new Field(new FieldAttr(FieldType.FIELD_STRING, 60));
-        REG_PERM_RESIDENCE.setValue();//todo:传入户籍所在地
+        REG_PERM_RESIDENCE.setValue("110228");//todo:传入户籍所在地
         P_CLIENT_EXT_INFO_STRUCT.addField("REG_PERM_RESIDENCE", REG_PERM_RESIDENCE);
 
         //开户机构
         Field OPEN_ACCT_BRANCH_ID = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        OPEN_ACCT_BRANCH_ID.setValue("");//todo:传入开户机构，界面如无，需要增加客户经理选择开户机构
+        OPEN_ACCT_BRANCH_ID.setValue("常州");//todo:传入开户机构，界面如无，需要增加客户经理选择开户机构
         P_CLIENT_EXT_INFO_STRUCT.addField("OPEN_ACCT_BRANCH_ID", OPEN_ACCT_BRANCH_ID);
 
         //开户柜员
         Field OPEN_TELLER_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        OPEN_TELLER_NO.setValue("");//todo:传入客户经理柜员号
+        OPEN_TELLER_NO.setValue("0001");//todo:传入客户经理柜员号
         P_CLIENT_EXT_INFO_STRUCT.addField("OPEN_TELLER_NO", OPEN_TELLER_NO);
 
         //开户日期
         Field OPEN_ACCT_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        OPEN_ACCT_DATE.setValue("");//todo:传入开户日期
+        OPEN_ACCT_DATE.setValue("20150414");//todo:传入开户日期
         P_CLIENT_EXT_INFO_STRUCT.addField("OPEN_ACCT_DATE", OPEN_ACCT_DATE);
 
         //婚姻状况 todo:是否缺失数据字典
         Field MARITAL_STATUS = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
-        MARITAL_STATUS.setValue("");//todo:传入婚姻状况
+        MARITAL_STATUS.setValue("已婚");//todo:传入婚姻状况
         P_CLIENT_EXT_INFO_STRUCT.addField("MARITAL_STATUS", MARITAL_STATUS);
 
         //教育水平 todo:是否缺失数据字典
         Field EDUCATION_LEVEL = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        EDUCATION_LEVEL.setValue("");//todo:传入教育水平
+        EDUCATION_LEVEL.setValue("10");//todo:传入教育水平
         P_CLIENT_EXT_INFO_STRUCT.addField("EDUCATION_LEVEL", EDUCATION_LEVEL);
 
         //城市 todo:是否缺失数据字典
         Field CITY = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        CITY.setValue("");//todo:传入城市
+        CITY.setValue("110101");//todo:传入城市
         P_CLIENT_EXT_INFO_STRUCT.addField("CITY", CITY);
 
         //地区代码 todo:是否缺失数据字典
         Field AREA_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        AREA_CODE.setValue("");//todo:传入地区代码
+        AREA_CODE.setValue("110101");//todo:传入地区代码
         P_CLIENT_EXT_INFO_STRUCT.addField("AREA_CODE", AREA_CODE);
 
         //关联关系 todo:需明确内容
@@ -285,7 +286,7 @@ public class IESBForECIF {
 
         //身份类别 todo:是否缺失数据字典
         Field IDENTITY_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        IDENTITY_TYPE.setValue("");//todo:传入身份类别
+        IDENTITY_TYPE.setValue("B1");//todo:传入身份类别
         P_CLIENT_EXT_INFO_STRUCT.addField("IDENTITY_TYPE", IDENTITY_TYPE);
 
         //信息加入body_struct
@@ -302,17 +303,17 @@ public class IESBForECIF {
         CompositeData CusAddrArrayStruct = new CompositeData();
         //地址
         Field ADDRESS = new Field(new FieldAttr(FieldType.FIELD_STRING, 300));
-        ADDRESS.setValue("");//todo:传入地址
+        ADDRESS.setValue("江苏省常州市");//todo:传入地址
         CusAddrArrayStruct.addField("ADDRESS", ADDRESS);
 
         //地址类型
         Field ADDRESS_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        ADDRESS_TYPE.setValue("");//todo:传入地址类型，字符
+        ADDRESS_TYPE.setValue("320400");//todo:传入地址类型，字符
         CusAddrArrayStruct.addField("ADDRESS_TYPE", ADDRESS_TYPE);
 
         //邮编
         Field POSTAL_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 7));
-        POSTAL_CODE.setValue("");//todo:传入邮编
+        POSTAL_CODE.setValue("210046");//todo:传入邮编
         CusAddrArrayStruct.addField("POSTAL_CODE", POSTAL_CODE);
 
         //信息加入数组
@@ -330,12 +331,12 @@ public class IESBForECIF {
         CompositeData CusConArrayStruct = new CompositeData();
         //联系方式类型 todo:是否缺失数据字典
         Field CONTACT_MODE_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
-        CONTACT_MODE_TYPE.setValue("");//todo:联系方式类型
+        CONTACT_MODE_TYPE.setValue("01");//todo:联系方式类型
         CusConArrayStruct.addField("CONTACT_MODE_TYPE", CONTACT_MODE_TYPE);
 
         //联系方式
         Field CONTACT_MODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 100));
-        CONTACT_MODE.setValue("");//todo:传入联系方式
+        CONTACT_MODE.setValue("15961100228");//todo:传入联系方式
         CusConArrayStruct.addField("CONTACT_MODE", CONTACT_MODE);
 
         //信息加入数组
@@ -351,12 +352,12 @@ public class IESBForECIF {
         CompositeData PERSON_CLIENT_OCCUR_STRUCT = new CompositeData();
         //职业名称
         Field OCCUPATION = new Field(new FieldAttr(FieldType.FIELD_STRING, 30));
-        OCCUPATION.setValue("");//todo:传入职业名称 字符
+        OCCUPATION.setValue("技术");//todo:传入职业名称 字符
         PERSON_CLIENT_OCCUR_STRUCT.addField("OCCUPATION", OCCUPATION);
 
         //公司名称
         Field COMPANY_NAME = new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
-        COMPANY_NAME.setValue("");//todo:传入公司名称 字符
+        COMPANY_NAME.setValue("乾康金融");//todo:传入公司名称 字符
         PERSON_CLIENT_OCCUR_STRUCT.addField("COMPANY_NAME", COMPANY_NAME);
 
         //信息加入body_struct
@@ -396,9 +397,9 @@ public class IESBForECIF {
                 //数组中的元素也是CompositeData，这是固定的写法。根据游标就可以获取到数组中的所有元素
                 array_element = array.getStruct(i);
 
-                CLIENT_NO=array_element.getField("CLIENT_NO").getValue();
-                GLOBAL_TYPE=array_element.getField("GLOBAL_TYPE").getValue();
-                GLOBAL_ID=array_element.getField("GLOBAL_ID").getValue();
+                CLIENT_NO=array_element.getField("CLIENT_NO").strValue();
+                GLOBAL_TYPE=array_element.getField("GLOBAL_TYPE").strValue();
+                GLOBAL_ID=array_element.getField("GLOBAL_ID").strValue();
 
                 //todo:将客户证件号码对应的客户号存入数据库中
 
@@ -406,5 +407,5 @@ public class IESBForECIF {
         }
 
     }
-
+    
 }
