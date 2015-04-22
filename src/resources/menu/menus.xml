@@ -12,7 +12,8 @@
 		</menu>
 		<menu id="040000" name="customer" title="客户管理" operations="">
 			<menu id="040010" name="basiccustomerinfor" title="客户原始信息管理" url="/customer/basiccustomerinfor/intopiecesbrowse.page" img="" operations="approveloguser|approvelog|displayaccount|display|browse"/>
-			<menu id="040011" name="basiccustomerinforCreate" title="客户信息新增" url="/customer/basiccustomerinforCreate/insert.page" img="" operations="create|browse"/>
+			<!-- <menu id="040011" name="basiccustomerinforCreate" title="客户信息新增" url="/customer/basiccustomerinforCreate/insert.page" img="" operations="create|browse"/> -->
+			<menu id="040011" name="basiccustomerinforCreate" title="客户信息新增（ECIF）" url="/QZBankInterface/create.page" img="" operations="create|browse"/>
 			<menu id="040012" name="basiccustomerinforUpdate" title="客户维护信息" url="/customer/basiccustomerinforUpdate/browse.page" img="" operations="create|change|transfer|maintenance|addblacklist|browse|delete"/>
 			<menu id="040013" name="basiccustomerinforAssess" title="客户评估信息" url="/customer/basiccustomerinforAssess/browse.page" img="" operations="create|change|delete|display|browse"/>
 			<menu id="040014" name="customerfilter" title="产品筛选客户" url="/customer/customerfilter/browse.page" img="" operations="browse"/>
