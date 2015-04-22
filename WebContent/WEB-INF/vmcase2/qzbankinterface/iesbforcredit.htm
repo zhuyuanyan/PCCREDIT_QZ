@@ -1,0 +1,164 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户基本信息资料</div>
+      </div>
+      <form id="id_module_form" action="${modulePath}/insert.json">
+        <div class="forms" id="formsId">
+          <table class="rule" bordercolor="#CCCCCC" border="1">
+          <caption>客户贷款信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              <td><label>客户号:</label></td>
+              <td><input type="text" name="clientNo" value="" /></td>
+              <td><label>币种:</label></td>
+              <td><select name="ccy"><option></option></select></td>
+            </tr>
+            <tr>
+              <td><label>授信额度:</label></td>
+              <td><input type="text" name="creditLimit" value="" /></td>
+              <td><label>担保方式:</label></td>
+              <td><select name="guaranteeMode"><option></option></select></td>
+            </tr>
+            <tr>
+              <td><label>期限类型:</label></td>
+              <td><select name="termType"><option></option></select></td>
+			  <td><label>期限:</label></td>
+              <td><input type="text" name="term" value=""/></td>
+            </tr>
+			<tr>
+              <td><label>贷款起始日期:</label></td>
+              <td><input type="text" name="startDate" onmouseover="_calendar()"/></td>
+			  <td><label>贷款结束日期:</label></td>
+              <td><input type="text" name="endDate" onmouseover="_calendar()"/></td>
+            </tr>
+		</table>
+		<table class="rule" bordercolor="#CCCCCC" border="1">
+          <caption>客户信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+			<tr>
+              <td><label>客户号:</label></td>
+              <td><input type="text" name="aClientNo"/></td>
+			  <td><label>客户名称:</label></td>
+              <td><input type="text" name="clientName"/></td>
+            </tr>
+			<tr>
+              <td><label>性别:</label></td>
+              <td><select name="sex"><option></option></select></td>
+			  <td><label>客户类型:</label></td>
+              <td><select name="clientType"><option></option></select></td>
+            </tr>
+			<tr>
+              <td><label>证件类型:</label></td>
+              <td><select name="globalType"><option></option></select></td>
+			  <td><label>证件号码:</label></td>
+              <td><input type="text" name="globalId"/></td>
+            </tr>
+			<tr>
+              <td><label>长期证件标志:</label></td>
+              <td><select name="longGlobalType"><option></option></select></td>
+			  <td><label>签发日期:</label></td>
+              <td><input type="text" name="issDate" onmouseover="_calendar()"/></td>
+            </tr>
+			<tr>
+              <td><label>证件有效日期:</label></td>
+              <td><input type="text" name="globalEffDate" onmouseover="_calendar()"/></td>
+			  <td><label>农户标识:</label></td>
+              <td><select name="agriFlag"><option></option></select></td>
+            </tr>
+			<tr>
+              <td><label>国家代码:</label></td>
+              <td><select name="countryCode"><option></option></select></td>
+			  <td><label>民族代码:</label></td>
+              <td><select name="nationalityCode"><option></option></select></td>
+            </tr>
+			<tr>
+              <td><label>户籍所在地:</label></td>
+              <td><select name="regPermResidence"><option></option></select></td>
+			  <td><label>地址:</label></td>
+              <td><input type="text" name="address"/></td>
+            </tr>
+			<tr>
+              <td><label>出生日期:</label></td>
+              <td><input type="text" name="birthDate" onmouseover="_calendar()"/></td>
+			  <td><label>最高学历:</label></td>
+              <td><select name="education"><option></option></select></td>
+            </tr>
+			<tr>
+              <td><label>最高学位:</label></td>
+              <td><select name="degree"><option></option></select></td>
+			  <td><label>签约日期:</label></td>
+              <td><input type="text" name="signDate" onmouseover="_calendar()"/></td>
+            </tr>
+			<tr>
+              <td><label>持卡情况:</label></td>
+              <td><select name="holdCardMsg"><option></option></select></td>
+			  <td><label>是否拥有外国护照或居住权:</label></td>
+              <td><select name="passportFlag"><option></option></select></td>
+            </tr>
+			<tr>
+              <td><label>信用等级:</label></td>
+              <td><select name="creditLevel"><option></option></select></td>
+			  <td><label>信用到期日期:</label></td>
+              <td><input type="text" name="expiryDate" onmouseover="_calendar()"/></td>
+            </tr>
+			<tr>
+              <td><label>是否关联客户:</label></td>
+              <td><select name="relClientFlag"><option></option></select></td>
+			  <td><label>与我行关系:</label></td>
+              <td><select name="ownBranchRelation"><option></option></select></td>
+            </tr>
+			<tr>
+              <td><label>我行职务:</label></td>
+              <td><select name="post"><option></option></select></td>
+			  <td><label>贷款卡标识:</label></td>
+              <td><select name="loanCardFlag"><option></option></select></td>
+            </tr>
+			<tr>
+              <td><label>贷款卡号:</label></td>
+              <td><input type="text" name="loanCardNo"/></td>
+			  <td><label>手机号码:</label></td>
+              <td><input type="text" name="mobile"/></td>
+            </tr>
+			<tr>
+              <td><label>上级机构:</label></td>
+              <td><select name="higherOrgNo"><option></option></select></td>
+			  <td><label>客户经理:</label></td>
+              <td><input type="text" name="acctExec"/></td>
+            </tr>
+			<tr>
+              <td><label>开户日期:</label></td>
+              <td colspan="3"><input type="text" name="openAcctDate" onmouseover="_calendar()"/></td>
+            </tr>
+		  </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#validator($formName)
+	$(document).ready(function() {	
+		#parse("common/part_create.js")
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

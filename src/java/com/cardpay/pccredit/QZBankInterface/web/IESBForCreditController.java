@@ -34,9 +34,9 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
  * 程序的简单说明 
  */
 @Controller
-@RequestMapping("/qzbankinterface/circle/*")
-@JRadModule("qzbankinterface.circle")
-public class IESBForCircleController extends BaseController{
+@RequestMapping("/qzbankinterface/credit/*")
+@JRadModule("qzbankinterface.credit")
+public class IESBForCreditController extends BaseController{
 	@Autowired
 	private ECIFService ecifService;
 	
@@ -49,7 +49,7 @@ public class IESBForCircleController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "create.page")
 	public AbstractModelAndView create(HttpServletRequest request) {        
-		JRadModelAndView mv = new JRadModelAndView("/QZBankInterface/iesbforcircle", request);
+		JRadModelAndView mv = new JRadModelAndView("/QZBankInterface/iesbforcredit", request);
 		return mv;
 	}
 	
