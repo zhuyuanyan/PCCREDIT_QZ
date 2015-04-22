@@ -9,7 +9,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
  * @author shaoming
  *
  */
-@ModelParam(table = "basic_customer_information",generator=IDType.assigned)
+@ModelParam(table = "qz_iesb_for_ecif",generator=IDType.assigned)
 public class CustomerInfor extends BusinessModel{
 	private static final long serialVersionUID = 1L;
 	private String code;
