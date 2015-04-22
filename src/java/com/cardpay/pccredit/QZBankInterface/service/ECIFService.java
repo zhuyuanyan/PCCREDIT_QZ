@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -23,11 +24,17 @@ public class ECIFService {
 	 * @param customerinfo
 	 * @return
 	 */
-	public String insertCustomerInfor(ECIF ecif) {
+	public void insertCustomerInfor(ECIF ecif) {
 		String id = IDGenerator.generateID();
 		ecif.setId(id);
 		ecif.setCreatedTime(new Date());
 		commonDao.insertObject(ecif);
-		return ecif.getId();
+	}
+	
+	public void insertCustomerInforCircle(Circle circle) {
+		String id = IDGenerator.generateID();
+		circle.setId(id);
+		circle.setCreatedTime(new Date());
+		commonDao.insertObject(circle);
 	}
 }

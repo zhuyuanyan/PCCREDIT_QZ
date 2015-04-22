@@ -13,11 +13,7 @@ import com.dc.eai.data.Field;
 import com.dc.eai.data.FieldAttr;
 import com.dc.eai.data.FieldType;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
-@Service
 public class IESBForECIF {
-	
-	@Autowired
-	CommonDao commonDao;
     /**
      * 组装CompositeData报文
      * @return

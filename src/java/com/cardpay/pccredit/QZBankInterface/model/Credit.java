@@ -9,12 +9,11 @@ import java.util.Date;
 /**
  * Created by johhny on 15/4/22.
  */
-public class Credit {
+@ModelParam(table = "qz_credit", generator = IDType.assigned)
+public class Credit extends BusinessModel{
     /**
      * @author johnny
      */
-    @ModelParam(table = "qz_credit", generator = IDType.assigned)
-    public class Credit extends BusinessModel {
         private static final long serialVersionUID = 1L;
         private String ID;
         //客户号
@@ -123,4 +122,3 @@ public class Credit {
             this.END_DATE = END_DATE;
         }
     }
-}
