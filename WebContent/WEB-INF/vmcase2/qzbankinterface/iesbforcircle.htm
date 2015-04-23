@@ -279,7 +279,7 @@
             </tr>
 			<tr>
               <td><label>账号:</label></td>
-              <td><input type="text" name="acctNo"/></td>
+              <td><input type="text" name="acctNo1"/></td>
               <td><label>户名:</label></td>
               <td><input type="text" name="acctName"/></td>
             </tr>
@@ -320,7 +320,7 @@
 	   	          $.post("${modulePath}/insert.json", formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
-	   	            	window.location.href= contextPath+"/qzbankinterface/create.page" ;
+	   	            	window.location.href= contextPath+"/qzbankinterface/circle/create.page" ;
 	   	            }
 	   	          });
 		})
