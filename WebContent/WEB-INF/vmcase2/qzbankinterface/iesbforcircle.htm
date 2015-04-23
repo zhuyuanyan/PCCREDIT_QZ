@@ -6,7 +6,7 @@
       <div class="place">
         <div class="title">客户基本信息资料</div>
       </div>
-      <form id="id_module_form" action="${modulePath}/insert.json">
+      <form id="id_module_form">
         <div class="forms" id="formsId">
           <table class="rule" bordercolor="#CCCCCC" border="1">
           <caption>客户贷款信息</caption>
@@ -28,13 +28,13 @@
             </tr>
             <tr>
               <td><label>担保方式:</label></td>
-              <td><select name="guaranteeMode"><option></option></select></td>
+              <td><select name="guaranteeMode">#dict("ASSURE_MAIN", "")</select></td>
               <td><label>担保方式细分:</label></td>
-              <td><select name="guaranteeModeDetail"><option></option></select></td>
+              <td><select name="guaranteeModeDetail">#dict("ASSURE_MAIN_DETAILS", "")</select></td>
             </tr>
             <tr>
 			  <td><label>币种:</label></td>
-              <td><select name="ccy"><option></option></select></td>
+              <td><select name="ccy1">#dict("CONT_CUR_TYPE", "")</select></td>
               <td><label>合同金额:</label></td>
               <td><input type="text" name="contractAmt"/></td>
             </tr>
@@ -64,81 +64,81 @@
             </tr>
 			<tr>
               <td><label>期限:</label></td>
-              <td><select name="term"><option></option></select></td>
+              <td><input type="text" name="term"/></td>
 			  <td><label>期限类型:</label></td>
-              <td><select name="termType"><option></option></select></td>
+              <td><select name="termType">#dict("TERM_TYPE", "")</select></td>
             </tr>
 			<tr>
               <td><label>顺延标志:</label></td>
-              <td><select name="deferFlag"><option></option></select></td>
+              <td><select name="deferFlag">#dict("IS_DELAY", "")</select></td>
 			  <td><label>执行利率:</label></td>
-              <td><input type="text" name="incomeOrgNo"/></td>
+              <td><input type="text" name="actIntRate"/></td>
             </tr>
 			<tr>
               <td><label>逾期利率:</label></td>
-              <td><input type="text" name="incomeOrgNo"/></td>
+              <td><input type="text" name="overdueIntRate"/></td>
 			  <td><label>违约利率:</label></td>
-              <td><input type="text" name="incomeOrgNo"/></td>
+              <td><input type="text" name="penaltyIntRate"/></td>
             </tr>
 			<tr>
               <td><label>还款方式:</label></td>
-              <td><select name="repayType"><option></option></select></td>
+              <td><select name="repayType">#dict("REPAY_TYPE", "")</select></td>
 			  <td><label>还款日期:</label></td>
               <td><input type="text" name="repayDate" onmouseover="_calendar()"/></td>
             </tr>
 			<tr>
               <td><label>五级分类:</label></td>
-              <td><select name="fiveLevelType"><option></option></select></td>
+              <td><select name="fiveLevelType">#dict("FIVE_CLASSFIY", "")</select></td>
 			  <td><label>特殊贷款类型:</label></td>
-              <td><select name="speLoanType"><option></option></select></td>
+              <td><select name="speLoanType">#dict("SPE_LOAN_TYPE", "")</select></td>
             </tr>
 			<tr>
               <td><label>额度占用类型:</label></td>
-              <td><select name="limitUseedType"><option></option></select></td>
+              <td><select name="limitUseedType">#dict("LIMIT_USEED_TYPE", "")</select></td>
 			  <td><label>借款用途:</label></td>
-              <td><select name="drUsage"><option></option></select></td>
+              <td><select name="drUsage">#dict("LOAN_USE_TYPE", "")</select></td>
             </tr>
 			<tr>
               <td><label>工业转型升级标识:</label></td>
-              <td><select name="flag"><option></option></select></td>
+              <td><select name="flag">#dict("COM_UP_INDTIFY", "")</select></td>
 			  <td><label>贷款种类:</label></td>
-              <td><select name="loanKind"><option></option></select></td>
+              <td><select name="loanKind">#dict("LOAN_TYPE", "")</select></td>
             </tr>
 			<tr>
               <td><label>涉农贷款类型:</label></td>
-              <td><select name="agriLoanKind"><option></option></select></td>
+              <td><select name="agriLoanKind">#dict("AGRICULTURE_TYPE", "")</select></td>
 			  <td><label>个人经营性贷款类型:</label></td>
-              <td><select name="personLoanKind"><option></option></select></td>
+              <td><select name="personLoanKind">#dict("ENSURE_PROJECT_LOAN", "")</select></td>
             </tr>
 			<tr>
               <td><label>调整类型:</label></td>
-              <td><select name="adjustType"><option></option></select></td>
+              <td><select name="adjustType">#dict("ESTATE_ADJUST_TYPE", "")</select></td>
 			  <td><label>新兴产业类型:</label></td>
-              <td><select name="newPrdType"><option></option></select></td>
+              <td><select name="newPrdType">#dict("STRATEGY_NEW_TYPE", "")</select></td>
             </tr>
 			<tr>
               <td><label>新兴产业贷款:</label></td>
-              <td><select name="newPrdLoan"><option></option></select></td>
+              <td><select name="newPrdLoan">#dict("NEW_PRD_LOAN", "")</select></td>
 			  <td><label>贷款投向:</label></td>
-              <td><select name="loanDirection"><option></option></select></td>
+              <td><select name="loanDirection">#dict("STRATEGY_NEW_TYPE", "")</select></td>
             </tr>
 			<tr>
               <td><label>贷款归属1:</label></td>
-              <td><select name="loanBelong1"><option></option></select></td>
+              <td><select name="loanBelong1">#dict("LOAN_BELONG1", "")</select></td>
 			  <td><label>贷款归属2:</label></td>
-              <td><select name="loanBelong2"><option></option></select></td>
+              <td><select name="loanBelong2">#dict("LOAN_BELONG2", "")</select></td>
             </tr>
 			<tr>
               <td><label>贷款归属3:</label></td>
-              <td><select name="loanBelong3"><option></option></select></td>
+              <td><select name="loanBelong3">#dict("LOAN_BELONG3", "")</select></td>
 			  <td><label>贷款归属4:</label></td>
-              <td><select name="loanBelong4"><option></option></select></td>
+              <td><select name="loanBelong4">#dict("LOAN_BELONG4", "")</select></td>
             </tr>
 			<tr>
               <td><label>业务类型:</label></td>
-              <td><select name="bussType"><option></option></select></td>
+              <td><select name="bussType">#dict("BUSS_TYPE", "")</select></td>
 			  <td><label>主管客户经理:</label></td>
-              <td><select name="chiCustManager"><option></option></select></td>
+              <td><select name="chiCustManager">#dict("IS_MAIN_MANAGER", "")</select></td>
             </tr>
 		  </table>
 		  <table class="rule" bordercolor="#cccccc" border="1">
@@ -157,19 +157,19 @@
             </tr>
 			<tr>
               <td><label>性别:</label></td>
-              <td><select name="sex"><option></option></select></td>
+              <td><select name="sex">#dict("INDIV_SEX", "")</select></td>
 			  <td><label>客户类型:</label></td>
-              <td><select name="clientType"><option></option></select></td>
+              <td><select name="clientType">#dict("CLIENT_TYPE", "")</select></td>
             </tr>
 			<tr>
               <td><label>证件类型:</label></td>
-              <td><select name="globalType"><option></option></select></td>
+              <td><select name="globalType">#dict("CERT_TYPE", "")</select></td>
 			  <td><label>证件号码:</label></td>
               <td><input type="text" name="globalId"/></td>
             </tr>
 			<tr>
               <td><label>长期证件标志:</label></td>
-              <td><select name="longGlobal_type"><option></option></select></td>
+              <td><select name="longGlobalType">#dict("IS_LONG_INDIV", "")</select></td>
 			  <td><label>签发日期:</label></td>
               <td><input type="text" name="issDate" onmouseover="_calendar()"/></td>
             </tr>
@@ -177,17 +177,17 @@
               <td><label>证件有效日期:</label></td>
               <td><input type="text" name="globalEffDate" onmouseover="_calendar()"/></td>
 			  <td><label>农户标识:</label></td>
-              <td><select name="agriFlag"><option></option></select></td>
+              <td><select name="agriFlag">#dict("AGRI_FLG", "")</select></td>
             </tr>
 			<tr>
               <td><label>国家代码:</label></td>
-              <td><select name="countryCode"><option></option></select></td>
+              <td><select name="countryCode"></select></td>
 			  <td><label>民族代码:</label></td>
-              <td><select name="nationalityCode"><option></option></select></td>
+              <td><select name="nationalityCode">#dict("NATIONALITY_CODE", "")</select></td>
             </tr>
 			<tr>
               <td><label>户籍所在地:</label></td>
-              <td><select name="regPermResidence"><option></option></select></td>
+              <td><select name="regPermResidence"></select></td>
 			  <td><label>地址:</label></td>
               <td><input type="text" name="address"/></td>
             </tr>
@@ -195,37 +195,37 @@
               <td><label>出生日期:</label></td>
               <td><input type="text" name="birthDate" onmouseover="_calendar()"/></td>
 			  <td><label>最高学历:</label></td>
-              <td><select name="education"><option></option></select></td>
+              <td><select name="education">#dict("INDIV_EDT", "")</select></td>
             </tr>
 			<tr>
               <td><label>最高学位:</label></td>
-              <td><select name="degree"><option></option></select></td>
+              <td><select name="degree">#dict("INDIV_DGR", "")</select></td>
 			  <td><label>签约日期:</label></td>
               <td><input type="text" name="signDate" onmouseover="_calendar()"/></td>
             </tr>
 			<tr>
               <td><label>持卡情况:</label></td>
-              <td><select name="holdCardMsg"><option></option></select></td>
+              <td><select name="holdCardMsg">#dict("HOLD_CARD", "")</select></td>
 			  <td><label>是否拥有外国护照或居住权:</label></td>
-              <td><select name="passportFlag"><option></option></select></td>
+              <td><select name="passportFlag">#dict("PASSPORT_FLG", "")</select></td>
             </tr>
 			<tr>
               <td><label>信用等级:</label></td>
-              <td><select name="creditLevel"><option></option></select></td>
+              <td><select name="creditLevel">#dict("CUS_CRD_GRADE", "")</select></td>
 			  <td><label>信用到期日期:</label></td>
               <td><input type="text" name="expiryDate" onmouseover="_calendar()"/></td>
             </tr>
 			<tr>
               <td><label>是否关联客户:</label></td>
-              <td><select name="relClientFlag"><option></option></select></td>
+              <td><select name="relClientFlag">#dict("IS_RELA_CUST", "")</select></td>
 			  <td><label>与我行关系:</label></td>
-              <td><select name="ownBranchRelation"><option></option></select></td>
+              <td><select name="ownBranchRelation">#dict("CUS_BANK_REL", "")</select></td>
             </tr>
 			<tr>
               <td><label>我行职务:</label></td>
-              <td><select name="post"><option></option></select></td>
+              <td><select name="post">#dict("BANK_DUTY", "")</select></td>
 			  <td><label>贷款卡标识:</label></td>
-              <td><select name="loanCardFlag"><option></option></select></td>
+              <td><select name="loanCardFlag">#dict("LOAN_CARD_FLG", "")</select></td>
             </tr>
 			<tr>
               <td><label>贷款卡号:</label></td>
@@ -235,7 +235,7 @@
             </tr>
 			<tr>
               <td><label>上级机构:</label></td>
-              <td><select name="higherOrgNo"><option></option></select></td>
+              <td><select name="higherOrgNo"></select></td>
 			  <td><label>客户经理:</label></td>
               <td><input type="text" name="acctExec"/></td>
             </tr>
@@ -254,7 +254,7 @@
             </colgroup>
 			<tr>
               <td><label>币种:</label></td>
-              <td><select name="ccy"><option></option></select></td>
+              <td><select name="ccy2">#dict("CONT_CUR_TYPE", "")</select></td>
 			  <td><label>费用金额:</label></td>
               <td><input type="text" name="feeAmount"/></td>
             </tr>
@@ -273,9 +273,9 @@
             </colgroup>
 			<tr>
               <td><label>账户性质:</label></td>
-              <td><select name="acctChrt"><option></option></select></td>
+              <td><select name="acctChrt">#dict("ACCT_ATTR", "")</select></td>
 			  <td><label>是否本行:</label></td>
-              <td><select name="ownBranchFlag"><option></option></select></td>
+              <td><select name="ownBranchFlag">#dict("IS_THIS_ORG_ACCT", "")</select></td>
             </tr>
 			<tr>
               <td><label>账号:</label></td>
@@ -293,30 +293,37 @@
               <td><label>支付金额:</label></td>
               <td><input type="text" name="payAmt"/></td>
               <td><label>科目号:</label></td>
-              <td><select name="glCode"><option></option></select></td>
+              <td><select name="glCode"></select></td>
             </tr>
 			<tr>
               <td><label>币别:</label></td>
-              <td><select name="ccy"><option></option></select></td>
+              <td><select name="ccy3">#dict("CONT_CUR_TYPE", "")</select></td>
               <td><label>全国联行号:</label></td>
-              <td><select name="cInterbankId"><option></option></select></td>
+              <td><select name="cInterbankId"></select></td>
             </tr>
 		  </table>
         </div>
-      </form>
       <div class="submit">
         <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
-        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
       </div>
+      </form>
     </div>
   </div>
   <script type="text/javascript">
-	var layout=new formslayout("formsid");	
-	window.top.currentwindow.setlayout(layout);
-	#set ($formname = "'#id_module_form'")
-	#validator($formname)
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
 	$(document).ready(function() {	
 		#parse("common/part_create.js")
+		var formjson = $($formName).serialize();
+		$("#id_save_button").click(function() {
+	   	          $.post("${modulePath}/insert.json", formjson, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	Dialog.message("保存成功!");
+	   	            	window.location.href= contextPath+"/qzbankinterface/create.page" ;
+	   	            }
+	   	          });
+		})
 	});
 	</script>
 </body>
