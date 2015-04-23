@@ -49,7 +49,7 @@ public class IESBForCircleController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "create.page")
 	public AbstractModelAndView create(HttpServletRequest request) {        
-		JRadModelAndView mv = new JRadModelAndView("/zqbankinterface/iesbforcircle", request);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);
 		return mv;
 	}
 	
