@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.QZBankInterface.web;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.web.form.BaseForm;
 
 /** 
@@ -17,28 +19,28 @@ public class IESBForECIFForm extends BaseForm{
 	private String globalDesc;
 	private String certAreaCode;
 	private String certOrg;
-	private String issDate;
-	private String effectDate;
-	private String expiryDate;
+	private Date issDate;
+	private Date effectDate;
+	private Date expiryDate;
 	private String clientName;
 	private String clientNameType;
 	private String clientType;
 	private String clientStatus;
-	private String birthDate;
+	private Date birthDate;
 	private String sex;
 	private String custManagerId;
 	private String recordTellerNo;
-	private String registeredDate;
+	private Date registeredDate;
 	private String clientBelongOrg;
 	private String registeredTellerNo;
 	private String registOrgNo;
-	private String orgRegisteredDate;
+	private Date orgRegisteredDate;
 	private String countryCitizen;
 	private String nationalityCode;
 	private String regPermResidence;
 	private String openAcctBranchId;
 	private String openTellerNo;
-	private String openAcctDate;
+	private Date openAcctDate;
 	private String maritalStatus;
 	private String educationLevel;
 	private String city;
@@ -52,139 +54,7 @@ public class IESBForECIFForm extends BaseForm{
 	private String contactMode;
 	private String occupation;
 	private String companyName;
-
-    //农户标志，是否农户,todo:界面需增加
-    private String AGRI_FLAG;
-    //最高学历，todo:界面需增加
-    private String EDUCATION;
-    //最高学位,todo:界面需增加
-    private String DEGREE;
-    //签约日期,todo:界面需增加
-    private String SIGN_DATE;
-    //持卡情况，todo:界面需增加
-    private String HOLD_CARD_MSG;
-    //是否持有外国护照，todo：界面需增加
-    private String PASSPORT_FLAG;
-    //信用等级 todo:默认，界面不用增加
-    private String CREDIT_LEVEL;
-    //信用到期日期 todo:默认置空
-    private String EXPIRY_DATE;
-    //是否关联客户 todo:页面需增加
-    private String REL_CLIENT_FLAG;
-    //与我行关系，为关联客户后需填 todo:页面需增加
-    private String OWN_BRANCH_RELATION;
-    //我行职务，为关联客户后需填 todo:页面需增加
-    private String POST;
-    //贷款卡标志
-    private String LOAN_CARD_FLAG;
-    //贷款卡卡号，todo:页面需增加
-    private String LOAN_CARD_NO;
-
-    public String getAGRI_FLAG() {
-        return AGRI_FLAG;
-    }
-
-    public void setAGRI_FLAG(String AGRI_FLAG) {
-        this.AGRI_FLAG = AGRI_FLAG;
-    }
-
-    public String getEDUCATION() {
-        return EDUCATION;
-    }
-
-    public void setEDUCATION(String EDUCATION) {
-        this.EDUCATION = EDUCATION;
-    }
-
-    public String getDEGREE() {
-        return DEGREE;
-    }
-
-    public void setDEGREE(String DEGREE) {
-        this.DEGREE = DEGREE;
-    }
-
-    public String getSIGN_DATE() {
-        return SIGN_DATE;
-    }
-
-    public void setSIGN_DATE(String SIGN_DATE) {
-        this.SIGN_DATE = SIGN_DATE;
-    }
-
-    public String getHOLD_CARD_MSG() {
-        return HOLD_CARD_MSG;
-    }
-
-    public void setHOLD_CARD_MSG(String HOLD_CARD_MSG) {
-        this.HOLD_CARD_MSG = HOLD_CARD_MSG;
-    }
-
-    public String getPASSPORT_FLAG() {
-        return PASSPORT_FLAG;
-    }
-
-    public void setPASSPORT_FLAG(String PASSPORT_FLAG) {
-        this.PASSPORT_FLAG = PASSPORT_FLAG;
-    }
-
-    public String getCREDIT_LEVEL() {
-        return CREDIT_LEVEL;
-    }
-
-    public void setCREDIT_LEVEL(String CREDIT_LEVEL) {
-        this.CREDIT_LEVEL = CREDIT_LEVEL;
-    }
-
-    public String getEXPIRY_DATE() {
-        return EXPIRY_DATE;
-    }
-
-    public void setEXPIRY_DATE(String EXPIRY_DATE) {
-        this.EXPIRY_DATE = EXPIRY_DATE;
-    }
-
-    public String getREL_CLIENT_FLAG() {
-        return REL_CLIENT_FLAG;
-    }
-
-    public void setREL_CLIENT_FLAG(String REL_CLIENT_FLAG) {
-        this.REL_CLIENT_FLAG = REL_CLIENT_FLAG;
-    }
-
-    public String getOWN_BRANCH_RELATION() {
-        return OWN_BRANCH_RELATION;
-    }
-
-    public void setOWN_BRANCH_RELATION(String OWN_BRANCH_RELATION) {
-        this.OWN_BRANCH_RELATION = OWN_BRANCH_RELATION;
-    }
-
-    public String getPOST() {
-        return POST;
-    }
-
-    public void setPOST(String POST) {
-        this.POST = POST;
-    }
-
-    public String getLOAN_CARD_FLAG() {
-        return LOAN_CARD_FLAG;
-    }
-
-    public void setLOAN_CARD_FLAG(String LOAN_CARD_FLAG) {
-        this.LOAN_CARD_FLAG = LOAN_CARD_FLAG;
-    }
-
-    public String getLOAN_CARD_NO() {
-        return LOAN_CARD_NO;
-    }
-
-    public void setLOAN_CARD_NO(String LOAN_CARD_NO) {
-        this.LOAN_CARD_NO = LOAN_CARD_NO;
-    }
-
-    public String getGlobalType() {
+	public String getGlobalType() {
 		return globalType;
 	}
 	public void setGlobalType(String globalType) {
@@ -214,22 +84,22 @@ public class IESBForECIFForm extends BaseForm{
 	public void setCertOrg(String certOrg) {
 		this.certOrg = certOrg;
 	}
-	public String getIssDate() {
+	public Date getIssDate() {
 		return issDate;
 	}
-	public void setIssDate(String issDate) {
+	public void setIssDate(Date issDate) {
 		this.issDate = issDate;
 	}
-	public String getEffectDate() {
+	public Date getEffectDate() {
 		return effectDate;
 	}
-	public void setEffectDate(String effectDate) {
+	public void setEffectDate(Date effectDate) {
 		this.effectDate = effectDate;
 	}
-	public String getExpiryDate() {
+	public Date getExpiryDate() {
 		return expiryDate;
 	}
-	public void setExpiryDate(String expiryDate) {
+	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 	public String getClientName() {
@@ -256,10 +126,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setClientStatus(String clientStatus) {
 		this.clientStatus = clientStatus;
 	}
-	public String getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(String birthDate) {
+	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
 	public String getSex() {
@@ -280,10 +150,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setRecordTellerNo(String recordTellerNo) {
 		this.recordTellerNo = recordTellerNo;
 	}
-	public String getRegisteredDate() {
+	public Date getRegisteredDate() {
 		return registeredDate;
 	}
-	public void setRegisteredDate(String registeredDate) {
+	public void setRegisteredDate(Date registeredDate) {
 		this.registeredDate = registeredDate;
 	}
 	public String getClientBelongOrg() {
@@ -304,10 +174,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setRegistOrgNo(String registOrgNo) {
 		this.registOrgNo = registOrgNo;
 	}
-	public String getOrgRegisteredDate() {
+	public Date getOrgRegisteredDate() {
 		return orgRegisteredDate;
 	}
-	public void setOrgRegisteredDate(String orgRegisteredDate) {
+	public void setOrgRegisteredDate(Date orgRegisteredDate) {
 		this.orgRegisteredDate = orgRegisteredDate;
 	}
 	public String getCountryCitizen() {
@@ -340,10 +210,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setOpenTellerNo(String openTellerNo) {
 		this.openTellerNo = openTellerNo;
 	}
-	public String getOpenAcctDate() {
+	public Date getOpenAcctDate() {
 		return openAcctDate;
 	}
-	public void setOpenAcctDate(String openAcctDate) {
+	public void setOpenAcctDate(Date openAcctDate) {
 		this.openAcctDate = openAcctDate;
 	}
 	public String getMaritalStatus() {
@@ -424,5 +294,5 @@ public class IESBForECIFForm extends BaseForm{
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	
+
 }

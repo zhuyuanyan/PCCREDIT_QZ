@@ -34,9 +34,9 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
  * 程序的简单说明 
  */
 @Controller
-@RequestMapping("/qzbankinterface/ecif/*")
-@JRadModule("qzbankinterface.ecif")
-public class IESBForECIFController extends BaseController{
+@RequestMapping("/qzbankinterface/circle/*")
+@JRadModule("qzbankinterface.circle")
+public class IESBForCircleController extends BaseController{
 	@Autowired
 	private ECIFService ecifService;
 	
@@ -49,7 +49,7 @@ public class IESBForECIFController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "create.page")
 	public AbstractModelAndView create(HttpServletRequest request) {        
-		JRadModelAndView mv = new JRadModelAndView("/QZBankInterface/iesbforecif", request);
+		JRadModelAndView mv = new JRadModelAndView("/QZBankInterface/iesbforcircle", request);
 		return mv;
 	}
 	
@@ -62,15 +62,15 @@ public class IESBForECIFController extends BaseController{
 
 	@ResponseBody
 	@RequestMapping(value = "insert.json")
-	public JRadReturnMap insert(@ModelAttribute IESBForECIFForm iesbForECIFForm, HttpServletRequest request) {
+	public JRadReturnMap insert(@ModelAttribute IESBForCircleForm iesbForCircleForm, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				ECIF ecif = iesbForECIFForm.createModel(ECIF.class);
+				Circle circle = iesbForCircleForm.createModel(Circle.class);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-				ecif.setCreatedBy(user.getId());
-				ecif.setUserId(user.getId());
-				ecifService.insertCustomerInfor(ecif);
+				circle.setCreatedBy(user.getId());
+				circle.setUserId(user.getId());
+				ecifService.insertCustomerInforCircle(circle);
 //				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
@@ -84,6 +84,5 @@ public class IESBForECIFController extends BaseController{
 		}
 		return returnMap;
 	}
-
 }
 

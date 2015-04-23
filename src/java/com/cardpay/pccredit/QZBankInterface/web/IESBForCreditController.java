@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cardpay.pccredit.QZBankInterface.model.Circle;
-import com.cardpay.pccredit.QZBankInterface.model.ECIF;
+import com.cardpay.pccredit.QZBankInterface.model.Credit;
+import com.cardpay.pccredit.QZBankInterface.service.CreditService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
-import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -34,11 +33,11 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
  * 程序的简单说明 
  */
 @Controller
-@RequestMapping("/qzbankinterface/ecif/*")
-@JRadModule("qzbankinterface.ecif")
-public class IESBForECIFController extends BaseController{
+@RequestMapping("/qzbankinterface/credit/*")
+@JRadModule("qzbankinterface.credit")
+public class IESBForCreditController extends BaseController{
 	@Autowired
-	private ECIFService ecifService;
+	private CreditService creditService;
 	
 	/*
 	 * 跳转到增加客户信息页面
@@ -49,7 +48,7 @@ public class IESBForECIFController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "create.page")
 	public AbstractModelAndView create(HttpServletRequest request) {        
-		JRadModelAndView mv = new JRadModelAndView("/QZBankInterface/iesbforecif", request);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcredit", request);
 		return mv;
 	}
 	
@@ -62,15 +61,15 @@ public class IESBForECIFController extends BaseController{
 
 	@ResponseBody
 	@RequestMapping(value = "insert.json")
-	public JRadReturnMap insert(@ModelAttribute IESBForECIFForm iesbForECIFForm, HttpServletRequest request) {
+	public JRadReturnMap insert(@ModelAttribute IESBForCreditForm iesbForCreditForm, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				ECIF ecif = iesbForECIFForm.createModel(ECIF.class);
+				Credit credit = iesbForCreditForm.createModel(Credit.class);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-				ecif.setCreatedBy(user.getId());
-				ecif.setUserId(user.getId());
-				ecifService.insertCustomerInfor(ecif);
+				credit.setCreatedBy(user.getId());
+				credit.setUserId(user.getId());
+				creditService.insertCustomerInforCredit(credit);
 //				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
@@ -84,6 +83,5 @@ public class IESBForECIFController extends BaseController{
 		}
 		return returnMap;
 	}
-
 }
 
