@@ -1645,6 +1645,27 @@
 		<item name="1" title="要" />
 	</dictionary>
 	
+	<dictionary name="LOAN_TYPE" title="贷款种类">
+		<item name="A.1" title="经营性贷款/流动性贷款" />
+		<item name="A.1.1" title="工业流动资金贷款" />
+		<item name="A.1.2" title="建筑业流动资金贷款" />
+		<item name="A.1.3" title="房地产业流动资金贷款" />
+	
+	</dictionary>
+		<dictionary name="AGRICULTURE_TYPE" title="涉农贷款类型">
+		<item name="10" title="农户贷款" />
+		<item name="1010" title="农户农林牧渔业生产贷款" />
+		<item name="101010" title="农户农业贷款" />
+		<item name="101020" title="农户林业贷款" />
+	</dictionary>
+	
+		<dictionary name="LOAN_BELONG1" title="贷款归属1">
+		<item name="10" title="短期贷款" />
+		<item name="1000" title="工业贷款" />
+		<item name="100000" title="工业企业贷款" />
+		<item name="100010" title="工业收购农副产品贷款" />
+	</dictionary>
+	
 	<!-- ESB 数据字典 -->
 
 </dictionaries>
