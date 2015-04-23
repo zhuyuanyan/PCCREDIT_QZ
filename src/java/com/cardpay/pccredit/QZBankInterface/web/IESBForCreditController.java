@@ -65,6 +65,9 @@ public class IESBForCreditController extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
+				//设置级联选项
+				iesbForCreditForm.setRegPermResidence(iesbForCreditForm.getRegPermResidence_3().split("_")[1]);
+				
 				Credit credit = iesbForCreditForm.createModel(Credit.class);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				credit.setCreatedBy(user.getId());
