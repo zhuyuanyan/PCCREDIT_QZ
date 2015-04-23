@@ -315,12 +315,12 @@
 	#set ($formName = "'#id_module_form'")
 	$(document).ready(function() {	
 		#parse("common/part_create.js")
-		
-			$("#id_save_button").click(function() {
-	   	          $.post("${modulePath}/insert.json", '', function(data, textStatus, jqXhr) {
+		var formjson = $($formName).serialize();
+		$("#id_save_button").click(function() {
+	   	          $.post("${modulePath}/insert.json", formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
-	   	            	window.location.href= contextPath+"/QZBankInterface/circle/create.page" ;
+	   	            	window.location.href= contextPath+"/qzbankinterface/create.page" ;
 	   	            }
 	   	          });
 		})

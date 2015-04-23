@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.QZBankInterface.web;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.web.form.BaseForm;
 
 /** 
@@ -11,7 +13,7 @@ public class IESBForCircleForm extends BaseForm{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7574427006545474138L;
 	private String contractNo;
 	private String cardNo;
 	private String clientNo;
@@ -19,14 +21,14 @@ public class IESBForCircleForm extends BaseForm{
 	private String guaranteeModeDetail;
 	private String ccy1;
 	private String contractAmt;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private String exchangeRate;
 	private String manaOrg;
 	private String registeredId;
 	private String registOrgNo;
 	private String incomeOrgNo;
-	private String registeredDate;
+	private Date registeredDate;
 	private String term;
 	private String termType;
 	private String deferFlag;
@@ -34,7 +36,7 @@ public class IESBForCircleForm extends BaseForm{
 	private String overdueIntRate;
 	private String penaltyIntRate;
 	private String repayType;
-	private String repayDate;
+	private Date repayDate;
 	private String fiveLevelType;
 	private String speLoanType;
 	private String limitUseedType;
@@ -60,21 +62,21 @@ public class IESBForCircleForm extends BaseForm{
 	private String globalType;
 	private String globalId;
 	private String longGlobalType;
-	private String issDate;
-	private String globalEffDate;
+	private Date issDate;
+	private Date globalEffDate;
 	private String agriFlag;
 	private String countryCode;
 	private String nationalityCode;
 	private String regPermResidence;
 	private String address;
-	private String birthDate;
+	private Date birthDate;
 	private String education;
 	private String degree;
-	private String signDate;
+	private Date signDate;
 	private String holdCardMsg;
 	private String passportFlag;
 	private String creditLevel;
-	private String expiryDate;
+	private Date expiryDate;
 	private String relClientFlag;
 	private String ownBranchRelation;
 	private String post;
@@ -83,7 +85,7 @@ public class IESBForCircleForm extends BaseForm{
 	private String mobile;
 	private String higherOrgNo;
 	private String acctExec;
-	private String openAcctDate;
+	private Date openAcctDate;
 	private String ccy2;
 	private String feeAmount;
 	private String acctNo;
@@ -139,16 +141,16 @@ public class IESBForCircleForm extends BaseForm{
 	public void setContractAmt(String contractAmt) {
 		this.contractAmt = contractAmt;
 	}
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	public String getExchangeRate() {
@@ -181,10 +183,10 @@ public class IESBForCircleForm extends BaseForm{
 	public void setIncomeOrgNo(String incomeOrgNo) {
 		this.incomeOrgNo = incomeOrgNo;
 	}
-	public String getRegisteredDate() {
+	public Date getRegisteredDate() {
 		return registeredDate;
 	}
-	public void setRegisteredDate(String registeredDate) {
+	public void setRegisteredDate(Date registeredDate) {
 		this.registeredDate = registeredDate;
 	}
 	public String getTerm() {
@@ -229,10 +231,10 @@ public class IESBForCircleForm extends BaseForm{
 	public void setRepayType(String repayType) {
 		this.repayType = repayType;
 	}
-	public String getRepayDate() {
+	public Date getRepayDate() {
 		return repayDate;
 	}
-	public void setRepayDate(String repayDate) {
+	public void setRepayDate(Date repayDate) {
 		this.repayDate = repayDate;
 	}
 	public String getFiveLevelType() {
@@ -385,16 +387,16 @@ public class IESBForCircleForm extends BaseForm{
 	public void setLongGlobalType(String longGlobalType) {
 		this.longGlobalType = longGlobalType;
 	}
-	public String getIssDate() {
+	public Date getIssDate() {
 		return issDate;
 	}
-	public void setIssDate(String issDate) {
+	public void setIssDate(Date issDate) {
 		this.issDate = issDate;
 	}
-	public String getGlobalEffDate() {
+	public Date getGlobalEffDate() {
 		return globalEffDate;
 	}
-	public void setGlobalEffDate(String globalEffDate) {
+	public void setGlobalEffDate(Date globalEffDate) {
 		this.globalEffDate = globalEffDate;
 	}
 	public String getAgriFlag() {
@@ -427,10 +429,10 @@ public class IESBForCircleForm extends BaseForm{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(String birthDate) {
+	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
 	public String getEducation() {
@@ -445,10 +447,10 @@ public class IESBForCircleForm extends BaseForm{
 	public void setDegree(String degree) {
 		this.degree = degree;
 	}
-	public String getSignDate() {
+	public Date getSignDate() {
 		return signDate;
 	}
-	public void setSignDate(String signDate) {
+	public void setSignDate(Date signDate) {
 		this.signDate = signDate;
 	}
 	public String getHoldCardMsg() {
@@ -469,10 +471,10 @@ public class IESBForCircleForm extends BaseForm{
 	public void setCreditLevel(String creditLevel) {
 		this.creditLevel = creditLevel;
 	}
-	public String getExpiryDate() {
+	public Date getExpiryDate() {
 		return expiryDate;
 	}
-	public void setExpiryDate(String expiryDate) {
+	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 	public String getRelClientFlag() {
@@ -523,10 +525,10 @@ public class IESBForCircleForm extends BaseForm{
 	public void setAcctExec(String acctExec) {
 		this.acctExec = acctExec;
 	}
-	public String getOpenAcctDate() {
+	public Date getOpenAcctDate() {
 		return openAcctDate;
 	}
-	public void setOpenAcctDate(String openAcctDate) {
+	public void setOpenAcctDate(Date openAcctDate) {
 		this.openAcctDate = openAcctDate;
 	}
 	public String getCcy2() {

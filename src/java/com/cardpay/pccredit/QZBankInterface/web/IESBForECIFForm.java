@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.QZBankInterface.web;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.web.form.BaseForm;
 
 /** 
@@ -11,33 +13,34 @@ public class IESBForECIFForm extends BaseForm{
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 4013801834659370498L;
 	private String globalType;
 	private String globalId;
 	private String globalDesc;
 	private String certAreaCode;
 	private String certOrg;
-	private String issDate;
-	private String effectDate;
-	private String expiryDate;
+	private Date issDate;
+	private Date effectDate;
+	private Date expiryDate;
 	private String clientName;
 	private String clientNameType;
 	private String clientType;
 	private String clientStatus;
-	private String birthDate;
+	private Date birthDate;
 	private String sex;
 	private String custManagerId;
 	private String recordTellerNo;
-	private String registeredDate;
+	private Date registeredDate;
 	private String clientBelongOrg;
 	private String registeredTellerNo;
 	private String registOrgNo;
-	private String orgRegisteredDate;
+	private Date orgRegisteredDate;
 	private String countryCitizen;
 	private String nationalityCode;
 	private String regPermResidence;
 	private String openAcctBranchId;
 	private String openTellerNo;
-	private String openAcctDate;
+	private Date openAcctDate;
 	private String maritalStatus;
 	private String educationLevel;
 	private String city;
@@ -51,9 +54,7 @@ public class IESBForECIFForm extends BaseForm{
 	private String contactMode;
 	private String occupation;
 	private String companyName;
-
-
-    public String getGlobalType() {
+	public String getGlobalType() {
 		return globalType;
 	}
 	public void setGlobalType(String globalType) {
@@ -83,22 +84,22 @@ public class IESBForECIFForm extends BaseForm{
 	public void setCertOrg(String certOrg) {
 		this.certOrg = certOrg;
 	}
-	public String getIssDate() {
+	public Date getIssDate() {
 		return issDate;
 	}
-	public void setIssDate(String issDate) {
+	public void setIssDate(Date issDate) {
 		this.issDate = issDate;
 	}
-	public String getEffectDate() {
+	public Date getEffectDate() {
 		return effectDate;
 	}
-	public void setEffectDate(String effectDate) {
+	public void setEffectDate(Date effectDate) {
 		this.effectDate = effectDate;
 	}
-	public String getExpiryDate() {
+	public Date getExpiryDate() {
 		return expiryDate;
 	}
-	public void setExpiryDate(String expiryDate) {
+	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 	public String getClientName() {
@@ -125,10 +126,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setClientStatus(String clientStatus) {
 		this.clientStatus = clientStatus;
 	}
-	public String getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(String birthDate) {
+	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
 	public String getSex() {
@@ -149,10 +150,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setRecordTellerNo(String recordTellerNo) {
 		this.recordTellerNo = recordTellerNo;
 	}
-	public String getRegisteredDate() {
+	public Date getRegisteredDate() {
 		return registeredDate;
 	}
-	public void setRegisteredDate(String registeredDate) {
+	public void setRegisteredDate(Date registeredDate) {
 		this.registeredDate = registeredDate;
 	}
 	public String getClientBelongOrg() {
@@ -173,10 +174,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setRegistOrgNo(String registOrgNo) {
 		this.registOrgNo = registOrgNo;
 	}
-	public String getOrgRegisteredDate() {
+	public Date getOrgRegisteredDate() {
 		return orgRegisteredDate;
 	}
-	public void setOrgRegisteredDate(String orgRegisteredDate) {
+	public void setOrgRegisteredDate(Date orgRegisteredDate) {
 		this.orgRegisteredDate = orgRegisteredDate;
 	}
 	public String getCountryCitizen() {
@@ -209,10 +210,10 @@ public class IESBForECIFForm extends BaseForm{
 	public void setOpenTellerNo(String openTellerNo) {
 		this.openTellerNo = openTellerNo;
 	}
-	public String getOpenAcctDate() {
+	public Date getOpenAcctDate() {
 		return openAcctDate;
 	}
-	public void setOpenAcctDate(String openAcctDate) {
+	public void setOpenAcctDate(Date openAcctDate) {
 		this.openAcctDate = openAcctDate;
 	}
 	public String getMaritalStatus() {
@@ -293,5 +294,5 @@ public class IESBForECIFForm extends BaseForm{
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	
+
 }

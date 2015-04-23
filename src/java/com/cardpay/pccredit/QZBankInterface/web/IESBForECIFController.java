@@ -34,8 +34,8 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
  * 程序的简单说明 
  */
 @Controller
-@RequestMapping("/qzbankinterface/*")
-@JRadModule("qzbankinterface")
+@RequestMapping("/qzbankinterface/ecif/*")
+@JRadModule("qzbankinterface.ecif")
 public class IESBForECIFController extends BaseController{
 	@Autowired
 	private ECIFService ecifService;
