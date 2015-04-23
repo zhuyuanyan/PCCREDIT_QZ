@@ -27,8 +27,8 @@
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
 		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@11.23.11.35:1521:orcl" />  斜杠方式连接service_name 冒号方式连接sid -->
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@11.23.11.35:1521/xfxd" /> 
-		<property name="user" value="pccredit" />
-		<property name="password" value="pccredit" />
+		<property name="user" value="pccredit_main" />
+		<property name="password" value="pccredit_main" />
 		
 		<property name="minPoolSize" value="2" />
 		<property name="maxPoolSize" value="10" />

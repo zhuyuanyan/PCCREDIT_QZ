@@ -7,16 +7,22 @@ package com.cardpay.pccredit.QZBankInterface.service;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.dc.eai.data.Array;
 import com.dc.eai.data.CompositeData;
 import com.dc.eai.data.Field;
 import com.dc.eai.data.FieldAttr;
 import com.dc.eai.data.FieldType;
 import com.dcfs.esb.pack.standardxml.PackUtil;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
-
+@Service
 public class IESBForCredit {
 
+	@Autowired
+	private CommonDao commonDao;
     /**
      * 组装CompositeData报文，传统微贷
      * @return

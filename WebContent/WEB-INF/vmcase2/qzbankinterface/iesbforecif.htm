@@ -4,7 +4,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">客户基本信息资料</div>
+        <div class="title">客户基本信息资料(ECIF)</div>
       </div>
       <form id="id_module_form">
         <div class="forms" id="formsId">
@@ -85,10 +85,11 @@
 			  <td><label>性别:</label></td>
               <td><select name="sex">#dict("INDIV_SEX", "")</select></td>
             </tr>
-			<tr>
+            <!-- <tr>
               <td><label>客户类型:</label></td>
               <td colspan="3"><select name="clientType">#dict("CLIENT_TYPE", "")</select></td>
-			</tr>
+			</tr> -->
+			
 		</table>
 		<table class="rule" bordercolor="#CCCCCC" border="1">
           <caption>客户所属信息</caption>
@@ -146,7 +147,11 @@
             </tr>
 			<tr>
               <td><label>户籍所在地:</label></td>
-              <td><input type="text" name="regPermResidence" value="" /></td>
+              <td>
+				1:<select id="regPermResidence_1" name="regPermResidence_1" style="width:29%;margin:2px;" onchange="change_regPermResidence_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", "")</select>
+            	2:<select id="regPermResidence_2" name="regPermResidence_2" style="width:29%;margin:2px;" onchange="change_regPermResidence_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", "")</select>
+            	3:<select id="regPermResidence_3" name="regPermResidence_3" style="width:29%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", "")</select>
+			  </td>
               <td><label>开户机构:</label></td>
               <td><input type="text" name="openAcctBranchId" value="" /></td>
             </tr>
@@ -164,7 +169,11 @@
             </tr>
 			<tr>
               <td><label>城市:</label></td>
-              <td><select name="city"></select></td>
+              <td>
+              	1:<select id="city_1" name="city_1" style="width:29%;margin:2px;" onchange="change_city_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", "")</select>
+            	2:<select id="city_2" name="city_2" style="width:29%;margin:2px;" onchange="change_city_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", "")</select>
+            	3:<select id="city_3" name="city_3" style="width:29%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", "")</select>
+              </td>
               <td><label>地区代码:</label></td>
               <td><input type="text" name="areaCode" value=""/></td>
             </tr>
@@ -219,7 +228,7 @@
             </colgroup>
 			<tr>
               <td><label>职业名称:</label></td>
-              <td><select name="occupation"></select></td>
+              <td><select name="occupation">#dict("OCCUPATION", "")</select></select></td>
               <td><label>单位名称:</label></td>
               <td><input type="text" name="companyName" value=""/></td>
             </tr>
@@ -233,6 +242,14 @@
     </div>
   </div>
   <script type="text/javascript">
+  	//级联
+  	//户籍所在地
+	var indiv_brt_place_array2 = new Array();//用来保存为显示的select元素
+	var indiv_brt_place_array3 = new Array();//用来保存为显示的select元素
+	//城市
+	var city_array2 = new Array();//用来保存为显示的select元素
+	var city_array3 = new Array();//用来保存为显示的select元素
+	
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
@@ -247,7 +264,67 @@
 	   	            }
 	   	          });
 		})
+		
+		//级联菜单
+		//户籍所在地
+		$("#regPermResidence_2 option").each(function(){ //遍历全部option
+			indiv_brt_place_array2.push($(this));
+	    });
+		$("#regPermResidence_3 option").each(function(){ //遍历全部option
+			indiv_brt_place_array3.push($(this));
+	    });
+		//城市
+		$("#city_2 option").each(function(){ //遍历全部option
+			city_array2.push($(this));
+	    });
+		$("#city_3 option").each(function(){ //遍历全部option
+			city_array3.push($(this));
+	    });
 	});
+	
+	//级联
+	//户籍所在地
+	function change_regPermResidence_1(objval){
+		$("#regPermResidence_2").empty();
+		$.each(indiv_brt_place_array2,function(n,opt) { 
+			if(opt.val().split("_")[0] == objval.split("_")[1]){
+				$("#regPermResidence_2").append(opt);
+			}
+		});
+		
+		var tmp = $("#regPermResidence_2").find("option:selected");
+		change_regPermResidence_2(tmp.val());
+	}
+	function change_regPermResidence_2(objval){
+		$("#regPermResidence_3").empty();
+		$.each(indiv_brt_place_array3,function(n,opt) {  
+			if(opt.val().split("_")[0] == objval.split("_")[1]){
+				$("#regPermResidence_3").append(opt);
+			}
+		});
+		
+	}
+	//城市
+	function change_city_1(objval){
+		$("#city_2").empty();
+		$.each(city_array2,function(n,opt) { 
+			if(opt.val().split("_")[0] == objval.split("_")[1]){
+				$("#city_2").append(opt);
+			}
+		});
+		
+		var tmp = $("#city_2").find("option:selected");
+		change_city_2(tmp.val());
+	}
+	function change_city_2(objval){
+		$("#city_3").empty();
+		$.each(city_array3,function(n,opt) {  
+			if(opt.val().split("_")[0] == objval.split("_")[1]){
+				$("#city_3").append(opt);
+			}
+		});
+		
+	}
 	</script>
 </body>
 #parse ("common/iframe_page_footer.htm")

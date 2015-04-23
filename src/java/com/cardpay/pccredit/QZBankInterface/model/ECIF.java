@@ -190,7 +190,10 @@ public class ECIF extends BusinessModel{
         this.LOAN_CARD_NO = LOAN_CARD_NO;
     }
 
-    public String getGlobalType() {
+	//ecif返回的信息
+	private String clientNo;//客户号
+	
+	public String getGlobalType() {
 		return globalType;
 	}
 	public void setGlobalType(String globalType) {

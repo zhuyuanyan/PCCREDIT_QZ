@@ -4,7 +4,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">客户基本信息资料</div>
+        <div class="title">客户基本信息资料(传统)</div>
       </div>
       <form id="id_module_form">
         <div class="forms" id="formsId">
@@ -87,7 +87,11 @@
             </tr>
 			<tr>
               <td><label>户籍所在地:</label></td>
-              <td><select name="regPermResidence">#dict("NATIONALITY_CODE", "")</select></td>
+              <td>
+              	1:<select id="regPermResidence_1" name="regPermResidence_1" style="width:29%;margin:2px;" onchange="change_regPermResidence_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", "")</select>
+            	2:<select id="regPermResidence_2" name="regPermResidence_2" style="width:29%;margin:2px;" onchange="change_regPermResidence_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", "")</select>
+            	3:<select id="regPermResidence_3" name="regPermResidence_3" style="width:29%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", "")</select>
+              </td>
 			  <td><label>地址:</label></td>
               <td><input type="text" name="address"/></td>
             </tr>
@@ -152,6 +156,11 @@
     </div>
   </div>
   <script type="text/javascript">
+	//级联
+	//户籍所在地
+	var indiv_brt_place_array2 = new Array();//用来保存为显示的select元素
+	var indiv_brt_place_array3 = new Array();//用来保存为显示的select元素
+	
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
@@ -166,7 +175,39 @@
 	   	            }
 	   	          });
 		})
+		
+		//级联菜单
+		//户籍所在地
+		$("#regPermResidence_2 option").each(function(){ //遍历全部option
+			indiv_brt_place_array2.push($(this));
+	    });
+		$("#regPermResidence_3 option").each(function(){ //遍历全部option
+			indiv_brt_place_array3.push($(this));
+	    });
 	});
+	
+	//级联
+	//户籍所在地
+	function change_regPermResidence_1(objval){
+		$("#regPermResidence_2").empty();
+		$.each(indiv_brt_place_array2,function(n,opt) { 
+			if(opt.val().split("_")[0] == objval.split("_")[1]){
+				$("#regPermResidence_2").append(opt);
+			}
+		});
+		
+		var tmp = $("#regPermResidence_2").find("option:selected");
+		change_regPermResidence_2(tmp.val());
+	}
+	function change_regPermResidence_2(objval){
+		$("#regPermResidence_3").empty();
+		$.each(indiv_brt_place_array3,function(n,opt) {  
+			if(opt.val().split("_")[0] == objval.split("_")[1]){
+				$("#regPermResidence_3").append(opt);
+			}
+		});
+		
+	}
 	</script>
 </body>
 #parse ("common/iframe_page_footer.htm")
