@@ -5,8 +5,10 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.QZBankInterface.client.Client;
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
+import com.dc.eai.data.CompositeData;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 
@@ -19,6 +21,13 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
 public class ECIFService {
 	@Autowired
 	private CommonDao commonDao;
+	
+	@Autowired
+	private IESBForECIF iesbForECIF;
+	
+	@Autowired
+	private Client client;
+	
 	/**
 	 * 插入数据
 	 * @param customerinfo
@@ -28,13 +37,17 @@ public class ECIFService {
 		String id = IDGenerator.generateID();
 		ecif.setId(id);
 		ecif.setCreatedTime(new Date());
-		commonDao.insertObject(ecif);
+		int res = commonDao.insertObject(ecif);
+		
+		//insert 成功后发送报文
+		if(res > 0){
+			//组包
+			CompositeData req = iesbForECIF.createEcifRequest(ecif);
+			//发送
+			CompositeData resp = client.sendMess(req);
+			//解析，存db
+			iesbForECIF.parseEcifResponse(resp,ecif);
+		}
 	}
 	
-	public void insertCustomerInforCircle(Circle circle) {
-		String id = IDGenerator.generateID();
-		circle.setId(id);
-		circle.setCreatedTime(new Date());
-		commonDao.insertObject(circle);
-	}
 }

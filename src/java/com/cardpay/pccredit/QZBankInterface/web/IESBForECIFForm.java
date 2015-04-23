@@ -38,12 +38,22 @@ public class IESBForECIFForm extends BaseForm{
 	private String countryCitizen;
 	private String nationalityCode;
 	private String regPermResidence;
+	
+	private String regPermResidence_1;
+	private String regPermResidence_2;
+	private String regPermResidence_3;
+	
 	private String openAcctBranchId;
 	private String openTellerNo;
 	private Date openAcctDate;
 	private String maritalStatus;
 	private String educationLevel;
 	private String city;
+	
+	private String city_1;
+	private String city_2;
+	private String city_3;
+	
 	private String areaCode;
 	private String incidenceRelation;
 	private String identityType;
@@ -293,6 +303,42 @@ public class IESBForECIFForm extends BaseForm{
 	}
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+	public String getRegPermResidence_1() {
+		return regPermResidence_1;
+	}
+	public void setRegPermResidence_1(String regPermResidence_1) {
+		this.regPermResidence_1 = regPermResidence_1;
+	}
+	public String getRegPermResidence_2() {
+		return regPermResidence_2;
+	}
+	public void setRegPermResidence_2(String regPermResidence_2) {
+		this.regPermResidence_2 = regPermResidence_2;
+	}
+	public String getRegPermResidence_3() {
+		return regPermResidence_3;
+	}
+	public void setRegPermResidence_3(String regPermResidence_3) {
+		this.regPermResidence_3 = regPermResidence_3;
+	}
+	public String getCity_1() {
+		return city_1;
+	}
+	public void setCity_1(String city_1) {
+		this.city_1 = city_1;
+	}
+	public String getCity_2() {
+		return city_2;
+	}
+	public void setCity_2(String city_2) {
+		this.city_2 = city_2;
+	}
+	public String getCity_3() {
+		return city_3;
+	}
+	public void setCity_3(String city_3) {
+		this.city_3 = city_3;
 	}
 
 }

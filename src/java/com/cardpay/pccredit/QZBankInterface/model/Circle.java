@@ -43,13 +43,40 @@ public class Circle extends BusinessModel{
 	private String drUsage;
 	private String flag;
 	private String loanKind;
+	
+	private String loanKind_1;
+	private String loanKind_2;
+	private String loanKind_3;
+	private String loanKind_4;
+	private String loanKind_5;
+	private String loanKind_6;
+	
 	private String agriLoanKind;
+	
+	private String agriLoanKind_1;
+	private String agriLoanKind_2;
+	private String agriLoanKind_3;
+	private String agriLoanKind_4;
+	
 	private String personLoanKind;
 	private String adjustType;
 	private String newPrdType;
 	private String newPrdLoan;
 	private String loanDirection;
+	
+	private String loanDirection_1;
+	private String loanDirection_2;
+	private String loanDirection_3;
+	private String loanDirection_4;
+	
 	private String loanBelong1;
+	
+	private String loanBelong1_1;
+	private String loanBelong1_2;
+	private String loanBelong1_3;
+	private String loanBelong1_4;
+	private String loanBelong1_5;
+	
 	private String loanBelong2;
 	private String loanBelong3;
 	private String loanBelong4;
@@ -68,6 +95,11 @@ public class Circle extends BusinessModel{
 	private String countryCode;
 	private String nationalityCode;
 	private String regPermResidence;
+	
+	private String regPermResidence_1;
+	private String regPermResidence_2;
+	private String regPermResidence_3;
+	
 	private String address;
 	private Date birthDate;
 	private String education;
@@ -622,6 +654,138 @@ public class Circle extends BusinessModel{
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getLoanKind_1() {
+		return loanKind_1;
+	}
+	public void setLoanKind_1(String loanKind_1) {
+		this.loanKind_1 = loanKind_1;
+	}
+	public String getLoanKind_2() {
+		return loanKind_2;
+	}
+	public void setLoanKind_2(String loanKind_2) {
+		this.loanKind_2 = loanKind_2;
+	}
+	public String getLoanKind_3() {
+		return loanKind_3;
+	}
+	public void setLoanKind_3(String loanKind_3) {
+		this.loanKind_3 = loanKind_3;
+	}
+	public String getLoanKind_4() {
+		return loanKind_4;
+	}
+	public void setLoanKind_4(String loanKind_4) {
+		this.loanKind_4 = loanKind_4;
+	}
+	public String getLoanKind_5() {
+		return loanKind_5;
+	}
+	public void setLoanKind_5(String loanKind_5) {
+		this.loanKind_5 = loanKind_5;
+	}
+	public String getLoanKind_6() {
+		return loanKind_6;
+	}
+	public void setLoanKind_6(String loanKind_6) {
+		this.loanKind_6 = loanKind_6;
+	}
+	public String getAgriLoanKind_1() {
+		return agriLoanKind_1;
+	}
+	public void setAgriLoanKind_1(String agriLoanKind_1) {
+		this.agriLoanKind_1 = agriLoanKind_1;
+	}
+	public String getAgriLoanKind_2() {
+		return agriLoanKind_2;
+	}
+	public void setAgriLoanKind_2(String agriLoanKind_2) {
+		this.agriLoanKind_2 = agriLoanKind_2;
+	}
+	public String getAgriLoanKind_3() {
+		return agriLoanKind_3;
+	}
+	public void setAgriLoanKind_3(String agriLoanKind_3) {
+		this.agriLoanKind_3 = agriLoanKind_3;
+	}
+	public String getAgriLoanKind_4() {
+		return agriLoanKind_4;
+	}
+	public void setAgriLoanKind_4(String agriLoanKind_4) {
+		this.agriLoanKind_4 = agriLoanKind_4;
+	}
+	public String getLoanDirection_1() {
+		return loanDirection_1;
+	}
+	public void setLoanDirection_1(String loanDirection_1) {
+		this.loanDirection_1 = loanDirection_1;
+	}
+	public String getLoanDirection_2() {
+		return loanDirection_2;
+	}
+	public void setLoanDirection_2(String loanDirection_2) {
+		this.loanDirection_2 = loanDirection_2;
+	}
+	public String getLoanDirection_3() {
+		return loanDirection_3;
+	}
+	public void setLoanDirection_3(String loanDirection_3) {
+		this.loanDirection_3 = loanDirection_3;
+	}
+	public String getLoanDirection_4() {
+		return loanDirection_4;
+	}
+	public void setLoanDirection_4(String loanDirection_4) {
+		this.loanDirection_4 = loanDirection_4;
+	}
+	public String getLoanBelong1_1() {
+		return loanBelong1_1;
+	}
+	public void setLoanBelong1_1(String loanBelong1_1) {
+		this.loanBelong1_1 = loanBelong1_1;
+	}
+	public String getLoanBelong1_2() {
+		return loanBelong1_2;
+	}
+	public void setLoanBelong1_2(String loanBelong1_2) {
+		this.loanBelong1_2 = loanBelong1_2;
+	}
+	public String getLoanBelong1_3() {
+		return loanBelong1_3;
+	}
+	public void setLoanBelong1_3(String loanBelong1_3) {
+		this.loanBelong1_3 = loanBelong1_3;
+	}
+	public String getLoanBelong1_4() {
+		return loanBelong1_4;
+	}
+	public void setLoanBelong1_4(String loanBelong1_4) {
+		this.loanBelong1_4 = loanBelong1_4;
+	}
+	public String getLoanBelong1_5() {
+		return loanBelong1_5;
+	}
+	public void setLoanBelong1_5(String loanBelong1_5) {
+		this.loanBelong1_5 = loanBelong1_5;
+	}
+	public String getRegPermResidence_1() {
+		return regPermResidence_1;
+	}
+	public void setRegPermResidence_1(String regPermResidence_1) {
+		this.regPermResidence_1 = regPermResidence_1;
+	}
+	public String getRegPermResidence_2() {
+		return regPermResidence_2;
+	}
+	public void setRegPermResidence_2(String regPermResidence_2) {
+		this.regPermResidence_2 = regPermResidence_2;
+	}
+	public String getRegPermResidence_3() {
+		return regPermResidence_3;
+	}
+	public void setRegPermResidence_3(String regPermResidence_3) {
+		this.regPermResidence_3 = regPermResidence_3;
 	}
 
 }

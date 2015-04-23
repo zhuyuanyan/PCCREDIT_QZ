@@ -66,6 +66,10 @@ public class IESBForECIFController extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
+				//设置级联选项
+				iesbForECIFForm.setRegPermResidence(iesbForECIFForm.getRegPermResidence_3().split("_")[1]);
+				iesbForECIFForm.setCity(iesbForECIFForm.getCity_3().split("_")[1]);
+				
 				ECIF ecif = iesbForECIFForm.createModel(ECIF.class);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				ecif.setCreatedBy(user.getId());

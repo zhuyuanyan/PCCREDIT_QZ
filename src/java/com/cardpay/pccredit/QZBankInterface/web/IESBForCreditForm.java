@@ -35,6 +35,11 @@ public class IESBForCreditForm extends BaseForm{
 	private String agriFlag;
 	private String countryCode;
 	private String regPermResidence;
+	
+	private String regPermResidence_1;
+	private String regPermResidence_2;
+	private String regPermResidence_3;
+	
 	private String address;
 	private Date birthDate;
 	private String education;
@@ -281,5 +286,22 @@ public class IESBForCreditForm extends BaseForm{
 	public void setOpenAcctDate(Date openAcctDate) {
 		this.openAcctDate = openAcctDate;
 	}
-	
+	public String getRegPermResidence_1() {
+		return regPermResidence_1;
+	}
+	public void setRegPermResidence_1(String regPermResidence_1) {
+		this.regPermResidence_1 = regPermResidence_1;
+	}
+	public String getRegPermResidence_2() {
+		return regPermResidence_2;
+	}
+	public void setRegPermResidence_2(String regPermResidence_2) {
+		this.regPermResidence_2 = regPermResidence_2;
+	}
+	public String getRegPermResidence_3() {
+		return regPermResidence_3;
+	}
+	public void setRegPermResidence_3(String regPermResidence_3) {
+		this.regPermResidence_3 = regPermResidence_3;
+	}
 }
