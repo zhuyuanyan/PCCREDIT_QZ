@@ -38,22 +38,12 @@ public class ECIF extends BusinessModel{
 	private String countryCitizen;
 	private String nationalityCode;
 	private String regPermResidence;
-	
-	private String regPermResidence_1;
-	private String regPermResidence_2;
-	private String regPermResidence_3;
-	
 	private String openAcctBranchId;
 	private String openTellerNo;
 	private Date openAcctDate;
 	private String maritalStatus;
 	private String educationLevel;
 	private String city;
-	
-	private String city_1;
-	private String city_2;
-	private String city_3;
-	
 	private String areaCode;
 	private String incidenceRelation;
 	private String identityType;
@@ -66,7 +56,140 @@ public class ECIF extends BusinessModel{
 	private String companyName;
 	private String createBy;
 	private String userId;
-	
+
+    //增加贷款所需客户资料字段
+
+    //农户标志，是否农户,todo:界面需增加
+    private String AGRI_FLAG;
+    //最高学历，todo:界面需增加
+    private String EDUCATION;
+    //最高学位,todo:界面需增加
+    private String DEGREE;
+    //签约日期,todo:界面需增加
+    private String SIGN_DATE;
+    //持卡情况，todo:界面需增加
+    private String HOLD_CARD_MSG;
+    //是否持有外国护照，todo：界面需增加
+    private String PASSPORT_FLAG;
+    //信用等级 todo:默认，界面不用增加
+    private String CREDIT_LEVEL;
+    //信用到期日期 todo:默认置空
+    private String EXPIRY_DATE;
+    //是否关联客户 todo:页面需增加
+    private String REL_CLIENT_FLAG;
+    //与我行关系，为关联客户后需填 todo:页面需增加
+    private String OWN_BRANCH_RELATION;
+    //我行职务，为关联客户后需填 todo:页面需增加
+    private String POST;
+    //贷款卡标志
+    private String LOAN_CARD_FLAG;
+    //贷款卡卡号，todo:页面需增加
+    private String LOAN_CARD_NO;
+
+    public String getAGRI_FLAG() {
+        return AGRI_FLAG;
+    }
+
+    public void setAGRI_FLAG(String AGRI_FLAG) {
+        this.AGRI_FLAG = AGRI_FLAG;
+    }
+
+    public String getEDUCATION() {
+        return EDUCATION;
+    }
+
+    public void setEDUCATION(String EDUCATION) {
+        this.EDUCATION = EDUCATION;
+    }
+
+    public String getDEGREE() {
+        return DEGREE;
+    }
+
+    public void setDEGREE(String DEGREE) {
+        this.DEGREE = DEGREE;
+    }
+
+    public String getSIGN_DATE() {
+        return SIGN_DATE;
+    }
+
+    public void setSIGN_DATE(String SIGN_DATE) {
+        this.SIGN_DATE = SIGN_DATE;
+    }
+
+    public String getHOLD_CARD_MSG() {
+        return HOLD_CARD_MSG;
+    }
+
+    public void setHOLD_CARD_MSG(String HOLD_CARD_MSG) {
+        this.HOLD_CARD_MSG = HOLD_CARD_MSG;
+    }
+
+    public String getPASSPORT_FLAG() {
+        return PASSPORT_FLAG;
+    }
+
+    public void setPASSPORT_FLAG(String PASSPORT_FLAG) {
+        this.PASSPORT_FLAG = PASSPORT_FLAG;
+    }
+
+    public String getCREDIT_LEVEL() {
+        return CREDIT_LEVEL;
+    }
+
+    public void setCREDIT_LEVEL(String CREDIT_LEVEL) {
+        this.CREDIT_LEVEL = CREDIT_LEVEL;
+    }
+
+    public String getEXPIRY_DATE() {
+        return EXPIRY_DATE;
+    }
+
+    public void setEXPIRY_DATE(String EXPIRY_DATE) {
+        this.EXPIRY_DATE = EXPIRY_DATE;
+    }
+
+    public String getREL_CLIENT_FLAG() {
+        return REL_CLIENT_FLAG;
+    }
+
+    public void setREL_CLIENT_FLAG(String REL_CLIENT_FLAG) {
+        this.REL_CLIENT_FLAG = REL_CLIENT_FLAG;
+    }
+
+    public String getOWN_BRANCH_RELATION() {
+        return OWN_BRANCH_RELATION;
+    }
+
+    public void setOWN_BRANCH_RELATION(String OWN_BRANCH_RELATION) {
+        this.OWN_BRANCH_RELATION = OWN_BRANCH_RELATION;
+    }
+
+    public String getPOST() {
+        return POST;
+    }
+
+    public void setPOST(String POST) {
+        this.POST = POST;
+    }
+
+    public String getLOAN_CARD_FLAG() {
+        return LOAN_CARD_FLAG;
+    }
+
+    public void setLOAN_CARD_FLAG(String LOAN_CARD_FLAG) {
+        this.LOAN_CARD_FLAG = LOAN_CARD_FLAG;
+    }
+
+    public String getLOAN_CARD_NO() {
+        return LOAN_CARD_NO;
+    }
+
+    public void setLOAN_CARD_NO(String LOAN_CARD_NO) {
+        this.LOAN_CARD_NO = LOAN_CARD_NO;
+    }
+
 	//ecif返回的信息
 	private String clientNo;//客户号
 	
@@ -322,47 +445,5 @@ public class ECIF extends BusinessModel{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getRegPermResidence_1() {
-		return regPermResidence_1;
-	}
-	public void setRegPermResidence_1(String regPermResidence_1) {
-		this.regPermResidence_1 = regPermResidence_1;
-	}
-	public String getRegPermResidence_2() {
-		return regPermResidence_2;
-	}
-	public void setRegPermResidence_2(String regPermResidence_2) {
-		this.regPermResidence_2 = regPermResidence_2;
-	}
-	public String getRegPermResidence_3() {
-		return regPermResidence_3;
-	}
-	public void setRegPermResidence_3(String regPermResidence_3) {
-		this.regPermResidence_3 = regPermResidence_3;
-	}
-	public String getCity_1() {
-		return city_1;
-	}
-	public void setCity_1(String city_1) {
-		this.city_1 = city_1;
-	}
-	public String getCity_2() {
-		return city_2;
-	}
-	public void setCity_2(String city_2) {
-		this.city_2 = city_2;
-	}
-	public String getCity_3() {
-		return city_3;
-	}
-	public void setCity_3(String city_3) {
-		this.city_3 = city_3;
-	}
-	public String getClientNo() {
-		return clientNo;
-	}
-	public void setClientNo(String clientNo) {
-		this.clientNo = clientNo;
-	}
-	
+
 }
