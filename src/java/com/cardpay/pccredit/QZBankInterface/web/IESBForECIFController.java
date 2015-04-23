@@ -49,7 +49,7 @@ public class IESBForECIFController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "create.page")
 	public AbstractModelAndView create(HttpServletRequest request) {        
-		JRadModelAndView mv = new JRadModelAndView("/QZBankInterface/iesbforecif", request);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforecif", request);
 		return mv;
 	}
 	
