@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
+import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -38,7 +39,7 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 @JRadModule("qzbankinterface.circle")
 public class IESBForCircleController extends BaseController{
 	@Autowired
-	private ECIFService ecifService;
+	private CircleService circleService;
 	
 	/*
 	 * 跳转到增加客户信息页面
@@ -49,7 +50,7 @@ public class IESBForCircleController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "create.page")
 	public AbstractModelAndView create(HttpServletRequest request) {        
-		JRadModelAndView mv = new JRadModelAndView("/zqbankinterface/iesbforcircle", request);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);
 		return mv;
 	}
 	
@@ -66,11 +67,18 @@ public class IESBForCircleController extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
+				//设置级联选项
+				iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_6().split("_")[1]);
+				iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_4().split("_")[1]);
+				iesbForCircleForm.setLoanDirection(iesbForCircleForm.getLoanDirection_4().split("_")[1]);
+				iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_5().split("_")[1]);
+				iesbForCircleForm.setRegPermResidence(iesbForCircleForm.getRegPermResidence_3().split("_")[1]);
+				
 				Circle circle = iesbForCircleForm.createModel(Circle.class);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				circle.setCreatedBy(user.getId());
 				circle.setUserId(user.getId());
-				ecifService.insertCustomerInforCircle(circle);
+				circleService.insertCustomerInforCircle(circle);
 //				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
