@@ -3,6 +3,7 @@ package com.cardpay.pccredit.intopieces.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
@@ -20,6 +23,7 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.divisional.constant.DivisionalProgressEnum;
 import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
+import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
@@ -34,14 +38,22 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
+import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
+import com.cardpay.pccredit.intopieces.model.QzApplnSxjc;
+import com.cardpay.pccredit.intopieces.model.QzShouxin;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
+import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
+import com.cardpay.pccredit.intopieces.web.QzDcnrUploadForm;
+import com.cardpay.pccredit.intopieces.web.QzShouxinForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -64,7 +76,14 @@ public class IntoPiecesService {
 	
 	@Autowired
 	private DivisionalService divisionalService;
+	@Autowired
+	private CustomerApplicationProcessService customerApplicationProcessService;
 
+	@Autowired
+	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	
+	@Autowired
+	private CustomerInforService customerInforservice;
 	
 	/* 查询进价信息 */
 	/*
@@ -839,5 +858,167 @@ public class IntoPiecesService {
 			}
 		}
 		return flag;
+	}
+	
+	/*
+	 * 添加三性检测，并进入下一节点行政岗-初
+	 */
+	public void addSxjc(QzApplnSxjcForm filter,HttpServletRequest request) throws Exception{
+		QzApplnSxjc sxjc = commonDao.findObjectById(QzApplnSxjc.class, filter.getApplicationId());
+		if(sxjc.equals(null)){
+			sxjc = new QzApplnSxjc();
+			sxjc.setApplication_id(filter.getApplicationId());
+		}
+		sxjc.setReality(filter.getReality());
+		sxjc.setComplete(filter.getComplete());
+		sxjc.setStandard(filter.getStandard());
+		commonDao.insertObject(sxjc);
+		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(filter.getApplicationId());
+		request.setAttribute("serialNumber", process.getSerialNumber());
+		request.setAttribute("applicationId", process.getApplicationId());
+		request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
+		request.setAttribute("objection", "false");
+		request.setAttribute("examineAmount", "");
+		customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+	}
+	
+	/* 初审节点退回进件 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public void checkDoNot(QzApplnSxjcForm filter) throws Exception{
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, filter.getApplicationId());
+		//获取客户信息
+		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+		//删除进件信息
+		commonDao.deleteObject(CustomerApplicationInfo.class, filter.getApplicationId());
+		//更新客户信息--退回
+		infor.setProcessId("1");
+		commonDao.updateObject(infor);
+	}
+	
+	/**
+	 * 根据进件id获取调查内容附件记录
+	 */
+	public List<QzDcnrUploadForm> getUploadList(String appId){
+		CustomerApplicationInfo infor = commonDao.findObjectById(CustomerApplicationInfo.class, appId);
+		String sql="SELECT A .id ,a.CUSTOMER_ID ,a.REPORT_ID ,a.REPORT_NAME ,";
+				sql+=" a.LOAD_STATUS ,a.APPLICATION_ID ,b.id as upload_id,b.FILE_NAME ,";
+				sql+="b.REMARK   FROM QZ_APPLN_DCNR A LEFT JOIN VIDEO_ACCESSORIES b on b.dcnr_id=a.id WHERE";
+				sql+=" A .CUSTOMER_ID = '"+infor.getCustomerId()+"'";
+		return commonDao.queryBySql(QzDcnrUploadForm.class,sql, null);
+	}
+	
+	/**
+	 * 保存调查内容附件
+	 * @param customerId
+	 */
+	public void saveDcnrByCustomerId(String appId,String dcnrId,String remark, MultipartFile file) {
+		CustomerApplicationInfo infor = commonDao.findObjectById(CustomerApplicationInfo.class, appId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file);
+		String fileName = map.get("fileName");
+		String url = map.get("url");
+		//先删除之前记录
+		List<VideoAccessories> video = commonDao.queryBySql(VideoAccessories.class,"select * from video_accessories where customer_id='"+infor.getCustomerId()+"' and dcnr_id='"+dcnrId+"'", null);
+		if(video.size()>0){
+			customerInforservice.deleteYxzlById(video.get(0).getId());
+		}
+		VideoAccessories videoAccessories = new VideoAccessories();
+		videoAccessories.setId(IDGenerator.generateID());
+		videoAccessories.setCustomerId(infor.getCustomerId());
+		videoAccessories.setRemark(remark);
+		videoAccessories.setCreatedTime(new Date());
+		videoAccessories.setDcnrId(dcnrId);
+		if (StringUtils.trimToNull(url) != null) {
+			videoAccessories.setServerUrlPath(url);
+		}
+		if (StringUtils.trimToNull(fileName) != null) {
+			videoAccessories.setFileName(fileName);
+		}
+		commonDao.insertObject(videoAccessories);
+		QzApplnDcnr dcnr = commonDao.findObjectById(QzApplnDcnr.class, dcnrId);
+		//设置已上传
+		dcnr.setLoadStatus("1");
+		commonDao.updateObject(dcnr);
+	}
+	
+	/**
+	 * 根据进件id获取授信决议单form
+	 */
+	public List<QzShouxin> getShouxinform(String appId){
+		String sql="select * from qz_appln_sxjyd where application_id='"+appId+"'";
+		return commonDao.queryBySql(QzShouxin.class,sql, null);
+	}
+	
+	/**
+	 * 保存授信决议单form
+	 */
+	public void insertShouxinForm(QzShouxin qzShouxin,String appId){
+		String sql="select * from qz_appln_sxjyd where application_id='"+appId+"'";
+		List<QzShouxin> qz = commonDao.queryBySql(QzShouxin.class,sql, null);
+		if(qz.size()>0){
+			commonDao.deleteObject(QzShouxin.class, qz.get(0).getId());
+		}
+			commonDao.insertObject(qzShouxin);
+	}
+	
+	/**
+	 * 保存决议单
+	 * @param customerId
+	 */
+	public void saveJydByCustomerId(String appId,String remark, MultipartFile file) {
+		CustomerApplicationInfo infor = commonDao.findObjectById(CustomerApplicationInfo.class, appId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file);
+		String fileName = map.get("fileName");
+		String url = map.get("url");
+		//先查询是否存在决议单记录
+		List<QzApplnDcnr> dcnrList = commonDao.queryBySql(QzApplnDcnr.class,"select * from qz_appln_dcnr where application_id='"+appId+"' and report_id='"+Constant.jyd_id+"'", null);
+		if(dcnrList.size()>0){
+			//先删除影像资料表之前记录
+			String dcnrId = dcnrList.get(0).getId();
+			List<VideoAccessories> video = commonDao.queryBySql(VideoAccessories.class,"select * from video_accessories where customer_id='"+infor.getCustomerId()+"' and dcnr_id='"+dcnrId+"'", null);
+			if(video.size()>0){
+				customerInforservice.deleteYxzlById(video.get(0).getId());
+			}
+			//添加影像资料表
+			VideoAccessories videoAccessories = new VideoAccessories();
+			videoAccessories.setId(IDGenerator.generateID());
+			videoAccessories.setCustomerId(infor.getCustomerId());
+			videoAccessories.setRemark(remark);
+			videoAccessories.setCreatedTime(new Date());
+			videoAccessories.setDcnrId(dcnrId);
+			if (StringUtils.trimToNull(url) != null) {
+				videoAccessories.setServerUrlPath(url);
+			}
+			if (StringUtils.trimToNull(fileName) != null) {
+				videoAccessories.setFileName(fileName);
+			}
+			commonDao.insertObject(videoAccessories);
+		}else{
+			//添加记录表
+			QzApplnDcnr dcnr = new QzApplnDcnr();
+			dcnr.setApplicationId(appId);
+			dcnr.setCustomerId(infor.getCustomerId());
+			dcnr.setReportId(Constant.jyd_id);
+			dcnr.setReportName("授信决议单");
+			dcnr.setLoadStatus("1");
+			commonDao.insertObject(dcnr);
+			//添加影像资料表
+			VideoAccessories videoAccessories = new VideoAccessories();
+			videoAccessories.setId(IDGenerator.generateID());
+			videoAccessories.setCustomerId(infor.getCustomerId());
+			videoAccessories.setRemark(remark);
+			videoAccessories.setCreatedTime(new Date());
+			videoAccessories.setDcnrId(dcnr.getId());
+			if (StringUtils.trimToNull(url) != null) {
+				videoAccessories.setServerUrlPath(url);
+			}
+			if (StringUtils.trimToNull(fileName) != null) {
+				videoAccessories.setFileName(fileName);
+			}
+			commonDao.insertObject(videoAccessories);
+		}
+
 	}
 }
