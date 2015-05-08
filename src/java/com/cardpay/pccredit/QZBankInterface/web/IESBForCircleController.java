@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
-import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -38,8 +37,8 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 @RequestMapping("/qzbankinterface/circle/*")
 @JRadModule("qzbankinterface.circle")
 public class IESBForCircleController extends BaseController{
-	@Autowired
-	private CircleService circleService;
+//	@Autowired
+//	private CircleService circleService;
 	
 	/*
 	 * 跳转到增加客户信息页面
@@ -78,7 +77,7 @@ public class IESBForCircleController extends BaseController{
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				circle.setCreatedBy(user.getId());
 				circle.setUserId(user.getId());
-				circleService.insertCustomerInforCircle(circle);
+//				circleService.insertCustomerInforCircle(circle);
 //				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {

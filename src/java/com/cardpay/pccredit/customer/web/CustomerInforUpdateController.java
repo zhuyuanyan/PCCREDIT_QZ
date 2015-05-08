@@ -1677,6 +1677,47 @@ public class CustomerInforUpdateController extends BaseController {
 		}
 		return null;
 	}
+	
+	/**
+	 * 显示调查内容附件
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "create_dcnr.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView create_dcnr(@ModelAttribute CustomerInforFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		String customerId = request.getParameter(ID);
+
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/customerinfoupdate_dcnr",request);
+		mv.addObject("customerId",customerId);
+		return mv;
+	}
+	
+	/**
+	 * 执行添加调查内容附件
+	 * @param customerinfoForm
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "saveDcnr.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView saveDcnr(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/customerinfoupdate_dcnr",request);
+		try{
+			String customerId=request.getParameter("customerId");
+			customerInforservice.saveDcnr(request);
+			mv.addObject("customerId",customerId);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("执行添加调查内容错误"+e.getMessage());
+		}
+		return mv;
+	}
 }
 
 	

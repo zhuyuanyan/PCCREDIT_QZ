@@ -25,7 +25,9 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 	private String nextNodeId;
 	private String delayAuditUser;
 	private Date auditTime;
-
+	private String cardId;
+	private String nodeName;//进件状态
+	private String chineseName;
 	public String getLoginId() {
 		return loginId;
 	}
@@ -112,6 +114,30 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 
 	public void setAuditTime(Date auditTime) {
 		this.auditTime = auditTime;
+	}
+
+	public String getNodeName() {
+		return nodeName;
+	}
+
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+
+	public String getCardId() {
+		return cardId;
+	}
+
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
+
+	public String getChineseName() {
+		return chineseName;
+	}
+
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
 	}
 
 }

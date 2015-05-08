@@ -75,5 +75,21 @@ public class Constant {
 	public static String FTPPASSWORD = "abc,123";
 	
 	public static String FTPPATH = "qiankang";
+	/*进件信息*/
+	public static String APP_STATE_1="已申请";
+	public static String APP_STATE_2="未申请";
+	public static String APP_STATE_3="退回";
 	
+	/*默认产品*/
+	public static String DEFAULT_TYPE="1";
+	
+	/*进件状态*/
+	public static String status_shenqing="申请";
+	public static String status_chushen="初审";
+	public static String status_xingzheng1="行政岗-初";
+	public static String status_shouxin="授信审批岗";
+	public static String status_zhongxin="中心负责人岗";
+	public static String status_xinshen="信审岗";
+	public static String status_xingzheng2="行政岗-终";
+	public static String jyd_id="00001";//决议单默认ID
 }

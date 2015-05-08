@@ -208,4 +208,70 @@
 			and app.ACTUAL_QUOTE is not null 
 			<![CDATA[ and app.ACTUAL_QUOTE <> FINAL_APPROVAL ]]>
 	</select>
+	
+		<select id="IntopieceWaitForm" resultMap="BaseResultMap">
+		SELECT
+		b.*, U.CHINESE_NAME as chineseName,
+		U.RESIDENTIAL_ADDRESS AS residentialAddress,
+		U.CARD_TYPE AS cardType,
+		U.CARD_ID AS cardId,
+		b.APPLY_QUOTA AS applyQuota,
+		A.SERIAL_NUMBER as SERIALNUMBER,
+   		N.NODE_NAME as nodeName,
+		A.AUDIT_TIME as auditTime,
+		A.id as processId,b.id as applicationId
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION U,
+		CUSTOMER_APPLICATION_PROCESS A,
+   		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID
+		and a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' 
+		<if test="cardId!=null and cardId!=''">
+			and U.card_id=#{cardId}
+		</if>
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
+			and U.card_id is null
+		</if>
+		<if test="nodeName!=null and nodeName!=''">
+			and N.node_name=#{nodeName}
+		</if>
+		</select>
+		
+		<select id="CountIntopieceWaitForm" resultType="int">
+		SELECT
+		count(*) 
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION U,
+		CUSTOMER_APPLICATION_PROCESS A,
+   		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID
+		and a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' 
+		<if test="cardId!=null and cardId!=''">
+			and U.card_id=#{cardId}
+		</if>
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
+			and U.card_id is null
+		</if>
+		<if test="nodeName!=null and nodeName!=''">
+			and N.node_name=#{nodeName}
+		</if>
+		</select>
 </mapper>

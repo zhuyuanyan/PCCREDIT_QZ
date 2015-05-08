@@ -54,10 +54,24 @@ public class NodeAuditController implements JRadConstants {
 	@RequestMapping(value = "browse.page")
 	public AbstractModelAndView productApproveConfigBrowse(@ModelAttribute NodeAuditFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
-
+		QueryResult<NodeAuditForm> firstresult = nodeAuditService.findProductsNodeAuditByFilter(filter);
+		//不存在结束节点则创建个结束节点
+		if(firstresult.getTotalCount()<1){
+			NodeAuditForm nodeAudit = new NodeAuditForm();
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			nodeAudit.setCreatedBy(user.getId());
+			nodeAudit.setCreatedTime(new Date());
+			nodeAudit.setModifiedBy(user.getId());
+			nodeAudit.setModifiedTime(new Date());
+			nodeAudit.setProductId(request.getParameter("productId"));
+			nodeAudit.setIsstart("NO");
+			nodeAudit.setIsend("YES");
+			nodeAudit.setNodeName("结束");
+			nodeAudit.setNodeType(request.getParameter("nodeType"));
+			nodeAuditService.insertNodeAudit(nodeAudit);
+		}
 		QueryResult<NodeAuditForm> result = nodeAuditService.findProductsNodeAuditByFilter(filter);
 		JRadPagedQueryResult<NodeAuditForm> pagedResult = new JRadPagedQueryResult<NodeAuditForm>(filter, result);
-
 		JRadModelAndView mv = new JRadModelAndView("/system/nodeaudit/nodeaudit_config_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("productId", request.getParameter("productId"));
@@ -222,8 +236,13 @@ public class NodeAuditController implements JRadConstants {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			String id = RequestHelper.getStringValue(request, ID);
-			nodeAuditService.deleteNodeAuditById(id);
-			returnMap.addGlobalMessage(DELETE_SUCCESS);
+			NodeAuditForm nodeAudit = nodeAuditService.findNodeAuditById(id);
+			if(nodeAudit.getIsend().equals("YES")){
+				returnMap.addGlobalMessage("此节点为默认节点，不能删除！");
+			}else{
+				nodeAuditService.deleteNodeAuditById(id);
+				returnMap.addGlobalMessage(DELETE_SUCCESS);
+			}
 		} catch (Exception e) {
 			return WebRequestHelper.processException(e);
 		}
