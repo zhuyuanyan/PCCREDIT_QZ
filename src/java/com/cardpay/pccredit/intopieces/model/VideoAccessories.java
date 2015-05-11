@@ -29,7 +29,8 @@ public class VideoAccessories extends BusinessModel{
     
     private String customerId;
     
-
+    private String dcnrId;
+    
     public String getApplicationId() {
 		return applicationId;
 	}
@@ -100,6 +101,14 @@ public class VideoAccessories extends BusinessModel{
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
+	}
+
+	public String getDcnrId() {
+		return dcnrId;
+	}
+
+	public void setDcnrId(String dcnrId) {
+		this.dcnrId = dcnrId;
 	}
     
 }

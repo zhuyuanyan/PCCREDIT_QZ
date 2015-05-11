@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -40,12 +41,14 @@ import com.cardpay.pccredit.customer.model.CustomerInforWeb;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
+import com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
+import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
@@ -1362,4 +1365,44 @@ public class CustomerInforService {
 		return customerinforcommDao.findCustomerVideoAccessoriesByCustomerId(customerId);
 	}
 
+	
+	
+	/**
+	 * 查询客户是否已有进件流程
+	 */
+	public Boolean ifProcess(String customerId){
+		CustomerApplicationInfoFilter info = new CustomerApplicationInfoFilter();
+		info.setCustomerId(customerId);
+		List<CustomerApplicationInfo> listApplicationInfo = customerinforcommDao.ifProcess(customerId);
+		if(listApplicationInfo.size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	/**
+	 * 保存调查内容附件
+	 */
+	public void saveDcnr(HttpServletRequest request){
+		String[] box = request.getParameterValues("checkbox");
+		String customerId = request.getParameter("customerId");
+		if(box!=null){
+			for(int i=0;i<box.length;i++){
+				if(box[i]!=null){
+					System.out.println(box[i]);
+					QzApplnDcnr qzApplnDcnr = new QzApplnDcnr();
+					qzApplnDcnr.setCustomerId(customerId);
+					qzApplnDcnr.setReportId(box[i].split("@")[0]);
+					qzApplnDcnr.setReportName(box[i].split("@")[1]);
+					String sql = "select * from qz_appln_dcnr where report_id='"+box[i].split("@")[0]+"' and customer_id='"+customerId+"'";
+					List<QzApplnDcnr> dcnr = commonDao.queryBySql(QzApplnDcnr.class, sql, null);
+					if(dcnr.size()>0){
+					}else{
+						commonDao.insertObject(qzApplnDcnr);
+					}
+				}
+			}
+		}
+	}
+	
 }

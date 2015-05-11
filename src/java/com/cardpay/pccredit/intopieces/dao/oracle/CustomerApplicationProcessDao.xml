@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.cardpay.pccredit.intopieces.dao.CustomerApplicationProcessDao">
+	<resultMap id="BaseResultMap"
+		type="com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess">
+		<result property="id" column="ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+		<result property="auditUser" column="AUDIT_USER" />
+		<result property="serialNumber" column="SERIAL_NUMBER" />
+		<result property="auditOpinion" column="AUDIT_OPINION" />
+		<result property="refusalReason" column="REFUSAL_REASON" />
+		<result property="fallbackReason" column="FALLBACK_REASON" />
+		<result property="examineAmount" column="EXAMINE_AMOUNT" />	
+		<result property="nextNodeId" column="NEXT_NODE_ID" />
+		<result property="delayAuditUser" column="DELAY_AUDIT_USER" />
+		<result property="auditTime" column="AUDIT_TIME" />
+		<result property="processOpStatus" column="PROCESS_OP_STATUS" />
+		<result property="fuheUser" column="fuhe_user" />
+
+	</resultMap>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT * from customer_application_process T
+		WHERE T.id = #{id}
+	</select>
+	
+	<select id="findByAppId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT * from customer_application_process T
+		WHERE T.APPLICATION_ID = #{appId}
+	</select>
+</mapper>

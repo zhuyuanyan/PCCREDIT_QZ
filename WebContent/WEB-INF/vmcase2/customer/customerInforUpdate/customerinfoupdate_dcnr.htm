@@ -1,0 +1,62 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css"
+	href="${contextPath}/css/style.css" />
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style>
+.form-l .form-r{height:32px;}
+</style>
+<body class="whitebg" style="">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+        <div class="title">客户维护信息>调查内容附件</div>
+      		</div>
+				   <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab"><a href="${contextPath}/intopieces/intopiecesapprove/changewh.page?id=${customerId}">基本信息</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
+            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
+            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
+            <li class="tab  activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_dcnr.page?id=${customerId}">调查内容附件</a></li>
+         </ul>
+         </div>
+			
+
+			<form id="id_module_form" action="${modulePath}/saveDcnr.page" method="post">
+				<input type="hidden" id="customerId" name="customerId" value="$!customerId"/>
+				<div  id="formsId">
+				 <div class="form-bd" style="min-width:1000px;">
+				 <tr>
+				 	<td class="checkbox"><span><input type="checkbox" name="checkbox" value="1@工薪类客户调查报告">工薪类客户调查报告</span></td>
+				 	<td class="checkbox"><span><input type="checkbox" name="checkbox" value="2@资产负债表调查报告">资产负债表调查报告</span></td>
+				 </tr>
+                 </div>
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button" value='#i18n("button.save")' class="current" /> 
+				<input id="id_back_button" type="button" value='#i18n("button.cancel")'  onclick="javascript:history.back(-1);"/> 
+			</div>
+		</div>
+	</div>
+
+	<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_jcjy.js'></script>
+	<script type="text/javascript">
+		var layout = new FormsLayout("formsId");
+		window.top.currentWindow.setLayout(layout);
+
+		var msg = '#i18n("validator.required")';
+		$(document).ready(function() {
+			
+			$("#id_save_button").click(function() {
+				$("#id_module_form").submit(); 
+				});
+			$("#id_back_button").click(function() {
+				window.location.href= "${contextPath}/intopieces/intopiecesapprove/approve.page" ;
+				});
+	});
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")
