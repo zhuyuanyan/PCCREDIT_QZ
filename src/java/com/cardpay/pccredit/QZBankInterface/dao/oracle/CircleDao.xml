@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.QZBankInterface.dao.CircleDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.QZBankInterface.model.Circle">
+		<result property="id" column="ID" />
+		<result property="contractNo" column="CONTRACT_NO" />
+		<result property="cardNo" column="CARD_NO" />
+		<result property="clientNo" column="CLIENT_NO" />
+		<result property="guaranteeMode" column="GUARANTEE_MODE" />
+		<result property="guaranteeModeDetail" column="GUARANTEE_MODE_DETAIL" />
+		<result property="ccy1" column="CCY1" />
+		<result property="contractAmt" column="CONTRACT_AMT" />
+		<result property="startDate" column="START_DATE" />
+		<result property="endDate" column="END_DATE" />
+		<result property="exchangeRate" column="EXCHANGE_RATE" />
+		<result property="manaOrg" column="MANA_ORG" />
+		<result property="registeredId" column="REGISTERED_ID" />
+		<result property="registOrgNo" column="REGIST_ORG_NO" />
+		<result property="incomeOrgNo" column="INCOME_ORG_NO" />
+		<result property="registeredDate" column="REGISTERED_DATE" />
+		<result property="term" column="TERM" />
+		<result property="termType" column="TERM_TYPE" />
+		<result property="deferFlag" column="DEFER_FLAG" />
+		<result property="actIntRate" column="ACT_INT_RATE" />
+		<result property="overdueIntRate" column="OVERDUE_INT_RATE" />
+		<result property="penaltyIntRate" column="PENALTY_INT_RATE" />
+		<result property="repayType" column="REPAY_TYPE" />
+		<result property="repayDate" column="REPAY_DATE" />
+		<result property="fiveLevelType" column="FIVE_LEVEL_TYPE" />
+		<result property="speLoanType" column="SPE_LOAN_TYPE" />
+		<result property="limitUseedType" column="LIMIT_USEED_TYPE" />
+		<result property="drUsage" column="DR_USAGE" />
+		<result property="flag" column="FLAG" />
+		<result property="loanKind" column="LOAN_KIND" />
+		
+		<result property="loanKind_1" column="LOAN_KIND_1" />
+		<result property="loanKind_2" column="LOAN_KIND_2" />
+		<result property="loanKind_3" column="LOAN_KIND_3" />
+		<result property="loanKind_4" column="LOAN_KIND_4" />
+		
+		<result property="agriLoanKind" column="AGRI_LOAN_KIND" />
+		
+		<result property="agriLoanKind_1" column="AGRI_LOAN_KIND_1" />
+		<result property="agriLoanKind_2" column="AGRI_LOAN_KIND_2" />
+		<result property="agriLoanKind_3" column="AGRI_LOAN_KIND_3" />
+		<result property="agriLoanKind_4" column="AGRI_LOAN_KIND_4" />
+		<result property="agriLoanKind_5" column="AGRI_LOAN_KIND_5" />
+		
+		<result property="personLoanKind" column="PERSON_LOAN_KIND" />
+		<result property="adjustType" column="ADJUST_TYPE" />
+		<result property="newPrdType" column="NEW_PRD_TYPE" />
+		<result property="newPrdLoan" column="NEW_PRD_LOAN" />
+		<result property="loanDirection" column="LOAN_DIRECTION" />
+		
+		<result property="loanDirection_1" column="LOAN_DIRECTION_1" />
+		<result property="loanDirection_2" column="LOAN_DIRECTION_2" />
+		<result property="loanDirection_3" column="LOAN_DIRECTION_3" />
+		<result property="loanDirection_4" column="LOAN_DIRECTION_4" />
+		
+		<result property="loanBelong1" column="LOAN_BELONG1" />
+		
+		<result property="loanBelong1_1" column="LOAN_BELONG1_1" />
+		<result property="loanBelong1_2" column="LOAN_BELONG1_2" />
+		<result property="loanBelong1_3" column="LOAN_BELONG1_3" />
+		<result property="loanBelong1_4" column="LOAN_BELONG1_4" />
+		<result property="loanBelong1_5" column="LOAN_BELONG1_5" />
+		
+		<result property="loanBelong2" column="LOAN_BELONG2" />
+		<result property="loanBelong3" column="LOAN_BELONG3" />
+		<result property="loanBelong4" column="LOAN_BELONG4" />
+		<result property="bussType" column="BUSS_TYPE" />
+		<result property="chiCustManager" column="CHI_CUST_MANAGER" />
+		<result property="aClientNo" column="A_CLIENT_NO" />
+		<result property="clientName" column="CLIENT_NAME" />
+		<result property="sex" column="SEX" />
+		<result property="clientType" column="CLIENT_TYPE" />
+		<result property="globalType" column="GLOBAL_TYPE" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="longGlobalType" column="LONG_GLOBAL_TYPE" />
+		<result property="issDate" column="ISS_DATE" />
+		<result property="globalEffDate" column="GLOBAL_EFF_DATE" />
+		<result property="agriFlag" column="AGRI_FLAG" />
+		<result property="countryCode" column="COUNTRY_CODE" />
+		<result property="nationalityCode" column="NATIONALITY_CODE" />
+		<result property="regPermResidence" column="REG_PERM_RESIDENCE" />
+		
+		<result property="regPermResidence_1" column="REG_PERM_RESIDENCE_1" />
+		<result property="regPermResidence_2" column="REG_PERM_RESIDENCE_2" />
+		<result property="regPermResidence_3" column="REG_PERM_RESIDENCE_3" />
+		
+		<result property="address" column="ADDRESS" />
+		<result property="birthDate" column="BIRTH_DATE" />
+		<result property="education" column="EDUCATION" />
+		<result property="degree" column="DEGREE" />
+		<result property="signDate" column="SIGN_DATE" />
+		<result property="holdCardMsg" column="HOLD_CARD_MSG" />
+		<result property="passportFlag" column="PASSPORT_FLAG" />
+		<result property="creditLevel" column="CREDIT_LEVEL" />
+		<result property="expiryDate" column="EXPIRY_DATE" />
+		<result property="relClientFlag" column="REL_CLIENT_FLAG" />
+		<result property="ownBranchRelation" column="OWN_BRANCH_RELATION" />
+		<result property="post" column="POST" />
+		<result property="loanCardFlag" column="LOAN_CARD_FLAG" />
+		<result property="loanCardNo" column="LOAN_CARD_NO" />
+		<result property="mobile" column="MOBILE" />
+		<result property="higherOrgNo" column="HIGHER_ORG_NO" />
+		<result property="acctExec" column="ACCT_EXEC" />
+		<result property="openAcctDate" column="OPEN_ACCT_DATE" />
+		<result property="feeCcy" column="FEE_CCY" />
+		<result property="feeAmount" column="FEE_AMOUNT" />
+		<result property="feeAcctNo" column="FEE_ACCT_NO" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="userId" column="USER_ID" />
+		
+		<result property="acctNo1" column="ACCT_NO1" />
+		<result property="acctNo2" column="ACCT_NO2" />
+	</resultMap>
+	
+	<resultMap id="ResultMap2"
+		type="com.cardpay.pccredit.QZBankInterface.web.IESBForCircleReturnMap">
+	    <result property="clientNo" column="CLIENT_NO" />
+	    <result property="clientName" column="CLIENT_NAME" />
+	    <result property="contractAmt" column="CONTRACT_AMT" />
+	    <result property="globalId" column="GLOBAL_ID" />
+	</resultMap>
+	
+	<select id="findCircleByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
+	    resultMap="ResultMap2">
+		select 
+			circle.id as id,
+			circle.CLIENT_NO as CLIENT_NO,
+			ecif.GLOBAL_ID as GLOBAL_ID,
+			ecif.CLIENT_NAME as CLIENT_NAME,
+			circle.CONTRACT_AMT as CONTRACT_AMT
+		from 
+			QZ_IESB_FOR_CIRCLE circle
+			left join QZ_IESB_FOR_ECIF ecif
+			on circle.CLIENT_NO = ecif.CLIENT_NO
+		where 1=1
+		    <if test="clientName != null and clientName != '' ">
+				AND ecif.CLIENT_NAME=#{clientName}
+			</if>
+			<if test="globalId != null and globalId != '' ">
+				AND ecif.GLOBAL_ID=#{globalId}
+			</if>
+	</select>
+	
+	<select id="findCircleCountByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
+	    resultType="int">
+	    select 
+	    	count(*) 
+	    from 
+	    	QZ_IESB_FOR_CIRCLE circle
+			left join QZ_IESB_FOR_ECIF ecif
+			on circle.CLIENT_NO = ecif.CLIENT_NO
+		where 1=1
+		    <if test="clientName != null and clientName != '' ">
+				AND ecif.CLIENT_NAME=#{clientName}
+			</if>
+			<if test="globalId != null and globalId != '' ">
+				AND ecif.GLOBAL_ID=#{globalId}
+			</if>
+	</select>
+	
+	<select id="findCircleByClientNo" resultMap="ResultMap">
+		select 
+		*
+		from QZ_IESB_FOR_CIRCLE
+		where client_no  = #{clientNo}
+	</select>
+</mapper> 

@@ -248,24 +248,71 @@
 	</dictionary>
 	
 	<dictionary name="CERT_TYPE" title="证件类型">
-		<item name="0" title="身份证" />
-		<item name="1" title="户口簿" />
-		<item name="2" title="护照" />
-		<item name="3" title="军官证" />
-		<item name="4" title="士兵证" />
-		<item name="5" title="港澳居民来往内地通行证" />
-		<item name="6" title="台湾同胞来往内地通行证" />
-		<item name="7" title="临时身份证" />
-		<item name="8" title="外国人居留证" />
-		<item name="9" title="警官证" />
-		<item name="99" title="其他证件-个人" />
-		<item name="a" title="组织机构代码证" />
-		<item name="b" title="营业执照" />
-		<item name="c" title="贷款卡" />
-		<item name="d" title="香港身份证" />
-		<item name="e" title="澳门身份证" />
-		<item name="f" title="台湾身份证" />
-		<item name="x" title="其他证件-对公" />
+	    <item name="100" title="身份证"/>
+	    <item name="00B" title="登记注册号"/>
+		<item name="010" title="无身份证N"/>
+		<item name="011" title="其他证件"/>
+		<item name="014" title="批文"/>
+		<item name="015" title="主管证明"/>
+		<item name="026" title="其他"/>
+		<item name="090" title="学生证"/>
+		<item name="101" title="临时身份证"/>
+		<item name="102" title="第一代身份证"/>
+		<item name="111" title="士兵证"/>
+		<item name="112" title="军官证"/>
+		<item name="113" title="军事学员证"/>
+		<item name="114" title="军官退休证"/>
+		<item name="115" title="文职干部退休证"/>
+		<item name="121" title="武警证"/>
+		<item name="122" title="警官证"/>
+		<item name="130" title="户口簿"/>
+		<item name="131" title="村民委员会证明"/>
+		<item name="139" title="离休干部荣誉证"/>
+		<item name="140" title="护照"/>
+		<item name="142" title="外国护照"/>
+		<item name="161" title="港澳居民来往内地通行证"/>
+		<item name="162" title="台湾同胞来往内地通行证"/>
+		<item name="163" title="边民出入境通行证"/>
+		<item name="164" title="台湾身份证"/>
+		<item name="165" title="香港身份证"/>
+		<item name="166" title="澳门身份证"/>
+		<item name="181" title="外国人居留证"/>
+		<item name="190" title="社会保障证"/>
+		<item name="191" title="个人纳税证"/>
+		<item name="199" title="个人其它证件"/>
+		<item name="200" title="营业执照"/>
+		<item name="201" title="注册登记证"/>
+		<item name="203" title="企业法人代码"/>
+		<item name="210" title="组织机构代码证"/>
+		<item name="299" title="企业其他证件"/>
+		<item name="301" title="外貿许可证"/>
+		<item name="302" title="开户许可证"/>
+		<item name="303" title="特种行业许可证"/>
+		<item name="304" title="外汇经营许可证"/>
+		<item name="305" title="金融经营许可证"/>
+		<item name="311" title="贷款证"/>
+		<item name="401" title="国税登记证"/>
+		<item name="402" title="地税登记证"/>
+	</dictionary>
+	<dictionary name="CERT_TYPE_FOR_XD" title="信贷证件类型">
+		<item name="0" title="身份证"/>
+		<item name="1" title="户口簿"/>
+		<item name="2" title="护照"/>
+		<item name="3" title="军官证"/>
+		<item name="4" title="士兵证"/>
+		<item name="5" title="港澳居民来往内地通行证"/>
+		<item name="6" title="台湾同胞来往内地通行证"/>
+		<item name="7" title="临时身份证"/>
+		<item name="8" title="外国人居留证"/>
+		<item name="9" title="警官证"/>
+		<item name="99" title="其他证件-个人"/>
+		<item name="d" title="香港身份证"/>
+		<item name="e" title="澳门身份证"/>
+		<item name="f" title="台湾身份证"/>
+		<item name="X" title="其他证件-对公"/>
+		<item name="a" title="组织机构代码证"/>
+		<item name="b" title="营业执照"/>
+		<item name="c" title="贷款卡"/>
 	</dictionary>
 	
 	<dictionary name="IS_LONG_INDIV" title="是否为长期证件">
@@ -279,6 +326,7 @@
 	</dictionary>
 	
 	<dictionary name="CUS_COUNTRY" title="国别">
+	    <item name="CHN" title="中华人民共和国" />
 		<item name="ABW" title="阿鲁巴" />
         <item name="AFG" title="阿富汗伊斯兰国" />
         <item name="AGO" title="安哥拉共和国" />
@@ -319,7 +367,7 @@
         <item name="CCK" title="科科斯（基林）群岛" />
         <item name="CHE" title="瑞士联邦" />
         <item name="CHL" title="智利共和国" />
-        <item name="CHN" title="中华人民共和国" />
+        
         <item name="CIV" title="科特迪瓦共和国" />
         <item name="CMR" title="喀麦隆共和国" />
         <item name="COG" title="刚果共和国" />
@@ -583,6 +631,7 @@
 	</dictionary>
 	
 	<dictionary name="INDIV_EDT" title="文化程度（最高学历）">
+	    <item name="99" title="未知" />
 		<item name="10" title="研究生" />
 		<item name="20" title="大学本科（简称'大学'）" />
 		<item name="30" title="大学专科和专科学校（简称'大专'）" />
@@ -592,7 +641,6 @@
 		<item name="70" title="初中" />
 		<item name="80" title="小学" />
 		<item name="90" title="文盲或半文盲" />
-		<item name="99" title="未知" />
 	</dictionary>
 	
 	<dictionary name="INDIV_DGR" title="最高学位">
@@ -611,8 +659,8 @@
 	</dictionary>
 	
 	<dictionary name="PASSPORT_FLG" title="是否拥有外国护照或居住权">
+	    <item name="2" title="否" />
 		<item name="1" title="是" />
-		<item name="2" title="否" />
 	</dictionary>
 	
 	<dictionary name="CUS_CRD_GRADE" title="信用等级">
@@ -649,28 +697,28 @@
 	</dictionary>
 	
 	<dictionary name="BANK_DUTY" title="在我行职务">
+	    <item name="7" title="非本行员工" />
 		<item name="1" title="理事/董事" />
 		<item name="2" title="监事" />
 		<item name="3" title="影响信贷决策的管理人员" />
 		<item name="5" title="高管" />
 		<item name="4" title="其他人员" />
 		<item name="6" title="客户经理" />
-		<item name="7" title="非本行员工" />
 	</dictionary>
 	
 	<dictionary name="LOAN_CARD_FLG" title="是否有贷款卡">
+	    <item name="2" title="否" />
 		<item name="1" title="是" />
-		<item name="2" title="否" />
 	</dictionary>
 	
 	<!-- 业务信息 -->
 	<dictionary name="ASSURE_MAIN" title="担保方式">
+	    <item name="400" title="信用" />
 		<item name="100" title="抵押" />
 		<item name="200" title="质押" />
 		<item name="210" title="准全额质押" />
 		<item name="220" title="低风险质押" />
 		<item name="300" title="保证" />
-		<item name="400" title="信用" />
 		<item name="500" title="100%保证金" />
 		<item name="510" title="准全额保证金" />
 	</dictionary>
@@ -735,12 +783,12 @@
 	</dictionary>
 	
 	<dictionary name="FIVE_CLASSFIY" title="五级分类">
-		<item name="00" title="未分类" />
 		<item name="10" title="正常" />
 		<item name="20" title="关注" />
 		<item name="30" title="次级" />
 		<item name="40" title="可疑" />
 		<item name="50" title="损失" />
+		<item name="00" title="未分类" />
 	</dictionary>
 	
 	<dictionary name="SPE_LOAN_TYPE" title="特殊贷款类型">
@@ -757,6 +805,7 @@
 	</dictionary>
 	
 	<dictionary name="LOAN_USE_TYPE" title="借款用途">
+	    <item name="13" title="流动资金周转" />
 		<item name="1" title="土地开发" />
 		<item name="2" title="土地储备贷款" />
 		<item name="3" title="房地产类" />
@@ -769,7 +818,6 @@
 		<item name="10" title="购原材料" />
 		<item name="11" title="产品、商品贸易" />
 		<item name="12" title="施工备料" />
-		<item name="13" title="流动资金周转" />
 		<item name="14" title="房地产开发周转" />
 		<item name="15" title="一般透支" />
 		<item name="16" title="铺底资金" />
@@ -784,8 +832,8 @@
 	</dictionary>
 	
 	<dictionary name="COM_UP_INDTIFY" title="工业转型升级标识">
+	    <item name="2" title="否" />
 		<item name="1" title="是" />
-		<item name="2" title="否" />
 	</dictionary>
 	
 	<dictionary name="ENSURE_PROJECT_LOAN" title="个人经营性贷款归属">
@@ -810,6 +858,7 @@
 	</dictionary>
 	
 	<dictionary name="ESTATE_ADJUST_TYPE" title="产业结构调整类型">
+	    <item name="4" title="其他" />
 		<item name="2" title="限制产业" />
 		<item name="3" title="淘汰" />
 		<item name="21" title="高污染产业" />
@@ -824,13 +873,12 @@
 		<item name="35" title="其他限制产业" />
 		<item name="0" title="产业结构调整类型" />
 		<item name="1" title="鼓励产业" />
-		<item name="4" title="其他" />
 	</dictionary>
 	
 	<dictionary name="STRATEGY_NEW_TYPE" title="战略新兴产业类型">
+	    <item name="02" title="否" />
 		<item name="0" title="战略新兴产业类型" />
 		<item name="01" title="是" />
-		<item name="02" title="否" />
 		<item name="1" title="节能环保" />
 		<item name="10" title="高技术服务业" />
 		<item name="11" title="其他高新产业" />
@@ -856,9 +904,9 @@
 	</dictionary>
 	
 	<dictionary name="LOAN_BELONG2" title="贷款归属2">
+	    <item name="20" title="对私贷款" />
 		<item name="10" title="对公贷款" />
 		<item name="1000" title="对公贷款" />
-		<item name="20" title="对私贷款" />
 		<item name="2000" title="个人住房按揭贷款" />
 		<item name="2005" title="个人商用房按揭贷款" />
 		<item name="2010" title="个人二手房贷款" />
@@ -880,13 +928,13 @@
 	</dictionary>
 	
 	<dictionary name="LOAN_BELONG3" title="贷款归属3">
+	    <item name="15" title="信用贷款及透支" />
+		<item name="1510" title="信用贷款及透支" />
 		<item name="10" title="公共企业贷款" />
 		<item name="1010" title="对国家投资的公共企业贷款" />
 		<item name="1020" title="对省级政府投资的公共企业贷款" />
 		<item name="1030" title="对地及地以下政府投资公共企业贷款" />
 		<item name="1040" title="对其他公共企业贷款" />
-		<item name="15" title="信用贷款及透支" />
-		<item name="1510" title="信用贷款及透支" />
 		<item name="20" title="保证贷款" />
 		<item name="2010" title="国有商业银行及政策性银行保证" />
 		<item name="2020" title="其他银行保证" />
@@ -1171,11 +1219,11 @@
 	
 	<!-- 个人客户信息新增 -->
 	<dictionary name="CLIENT_NAME_TYPE" title="客户名称类型">
+	    <item name="20" title="个人名称" />
 		<item name="10" title="公司名称" />
 		<item name="11" title="注册名" />
 		<item name="12" title="正式名称" />
 		<item name="13" title="简称" />
-		<item name="20" title="个人名称" />
 		<item name="21" title="正式名称（证件用名）" />
 		<item name="22" title="别名" />
 		<item name="23" title="音译名" />
@@ -1194,78 +1242,31 @@
 	</dictionary>	
 	
 	<dictionary name="CLIENT_TYPE" title="客户类型">
-		<item name="A" title="企业客户" />
-		<item name="A1" title="一般企业客户" />
-		<item name="A11" title="民营企业" />
-		<item name="A111" title="民营企业法人" />
-		<item name="A112" title="民营企业非法人" />
-		<item name="A12" title="国有企业" />
-		<item name="A121" title="国有企业法人" />
-		<item name="A122" title="国有企业非法人" />
-		<item name="A13" title="港澳台商投资企业" />
-		<item name="A131" title="港澳台商投资企业法人" />
-		<item name="A132" title="港澳台商投资企业非法人" />
-		<item name="A14" title="外商投资企业" />
-		<item name="A141" title="外商投资企业法人" />
-		<item name="A142" title="外商投资企业非法人" />
-		<item name="A2" title="担保公司客户" />
-		<item name="A3" title="小额贷款公司客户" />
-		<item name="B" title="机关客户" />
-		<item name="B1" title="机关法人" />
-		<item name="B2" title="机关非法人" />
-		<item name="C" title="行政客户" />
-		<item name="C1" title="行政法人" />
-		<item name="C2" title="行政非法人" />
-		<item name="D" title="事业客户" />
-		<item name="D1" title="事业法人" />
-		<item name="D2" title="事业非法人" />
-		<item name="E" title="社会团体客户" />
-		<item name="E1" title="社团法人" />
-		<item name="E2" title="社团非法人" />
-		<item name="F" title="其他组织机构" />
-		<item name="F9" title="其他" />
-		<item name="G" title="境外机构" />
-		<item name="Z" title="个人客户" />
+		<item name="Z3" title="个体工商户(无字号)" />
+		<item name="Z2" title="个体经营户(无字号)" />
 		<item name="Z1" title="一般自然人" />
-		<item name="Z2" title="个人经营户（无字号）" />
-		<item name="Z3" title="个人工商户（无字号）" />
-		<item name="J" title="同业客户" />
-		<item name="J1" title="银行业存款金融机构客户" />
-		<item name="J11" title="中央银行" />
-		<item name="J12" title="政策性银行" />
-		<item name="J13" title="商业银行" />
-		<item name="J131" title="国有商业银行" />
-		<item name="J132" title="股份制商业银行" />
-		<item name="J133" title="城市商业银行" />
-		<item name="J134" title="农村商业银行" />
-		<item name="J135" title="农村合作银行" />
-		<item name="J14" title="城市信用合作社（含联社）" />
-		<item name="J15" title="农村信用合作社（含联社）" />
-		<item name="J16" title="村镇银行" />
-		<item name="J17" title="农村资金互助社" />
-		<item name="J18" title="外资银行" />
-		<item name="J181" title="外资法人银行" />
-		<item name="J182" title="外资银行分行" />
-		<item name="J19" title="邮政储蓄银行" />
-		<item name="J2" title="银行业非存款金融机构客户" />
-		<item name="J21" title="信托投资公司" />
-		<item name="J22" title="金融资产管理公司" />
-		<item name="J23" title="金融租赁公司" />
-		<item name="J24" title="汽车金融公司" />
-		<item name="J25" title="贷款公司" />
-		<item name="J26" title="货币经纪公司" />
-		<item name="J27" title="消费金融公司" />
-		<item name="J28" title="贷款公司" />
-		<item name="J29" title="货币经纪公司" />
-		<item name="J20" title="消费金融公司" />
-		<item name="J3" title="证券业机构客户" />
-		<item name="J31" title="证券公司" />
-		<item name="J32" title="基金公司" />
-		<item name="J33" title="期货公司" />
-		<item name="J34" title="投资咨询公司" />
-		<item name="J4" title="保险业机构客户" />
-		<item name="J41" title="保险公司" />
-		<item name="J9" title="其他同业" />
+		<item name="H2" title="军事机关非法人" />
+		<item name="H1" title="军事机关法人" />
+		<item name="G" title="境外机构" />
+		<item name="F9" title="其他" />
+		<item name="E2" title="社团非法人" />
+		<item name="E1" title="社团法人" />
+		<item name="D2" title="事业非法人" />
+		<item name="D1" title="事业法人" />
+		<item name="C2" title="行政非法人" />
+		<item name="C1" title="行政法人" />
+		<item name="B2" title="党政机关非法人" />
+		<item name="B1" title="党政机关法人" />
+		<item name="A3" title="小额贷款公司客户" />
+		<item name="A2" title="担保公司客户" />
+		<item name="A142" title="外商企业投资非法人" />
+		<item name="A141" title="外商企业投资法人" />
+		<item name="A132" title="港澳台商投资企业非法人" />
+		<item name="A131" title="港澳台商投资企业法人" />
+		<item name="A122" title="国有企业非法人" />
+		<item name="A121" title="国有企业法人" />
+		<item name="A112" title="民营企业非法人" />
+		<item name="A111" title="民营企业法人" />
 	</dictionary>
 	
 	<dictionary name="CLIENT_STATUS" title="客户状态">
@@ -1521,12 +1522,8 @@
 	
 	<!-- 银票、保函到期扣款通知 -->
 	<dictionary name="BUSS_TYPE" title="业务类型">
-		<item name="01" title="银承" />
-		<item name="02" title="保函" />">
-		<item name="03" title="信用证垫款" />
-		<item name="04" title="保函垫款" />">
-		<item name="05" title="商贴垫款" />
-		<item name="06" title="保理" />
+		<item name="001" title="消费类" />
+		<item name="002" title="经营类" />
 	</dictionary>
 	
 	<!-- 垫款还款通知 -->

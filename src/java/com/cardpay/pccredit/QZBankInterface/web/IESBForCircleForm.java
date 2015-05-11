@@ -36,7 +36,7 @@ public class IESBForCircleForm extends BaseForm{
 	private String overdueIntRate;
 	private String penaltyIntRate;
 	private String repayType;
-	private Date repayDate;
+	private String repayDate;
 	private String fiveLevelType;
 	private String speLoanType;
 	private String limitUseedType;
@@ -48,8 +48,6 @@ public class IESBForCircleForm extends BaseForm{
 	private String loanKind_2;
 	private String loanKind_3;
 	private String loanKind_4;
-	private String loanKind_5;
-	private String loanKind_6;
 	
 	private String agriLoanKind;
 	
@@ -57,6 +55,7 @@ public class IESBForCircleForm extends BaseForm{
 	private String agriLoanKind_2;
 	private String agriLoanKind_3;
 	private String agriLoanKind_4;
+	private String agriLoanKind_5;
 	
 	private String personLoanKind;
 	private String adjustType;
@@ -118,12 +117,12 @@ public class IESBForCircleForm extends BaseForm{
 	private String higherOrgNo;
 	private String acctExec;
 	private Date openAcctDate;
-	private String ccy2;
+	private String feeCcy;
 	private String feeAmount;
-	private String acctNo;
+	private String feeAcctNo;
 	private String acctChrt;
 	private String ownBranchFlag;
-	private String acctNo1;
+	private String acctNo;
 	private String acctName;
 	private String openAcctBranchId;
 	private String openAcctBranchName;
@@ -131,6 +130,10 @@ public class IESBForCircleForm extends BaseForm{
 	private String glCode;
 	private String ccy3;
 	private String cInterbankId;
+	
+	private String acctNo1;//收息收款账号
+	private String acctNo2;//放款账号
+	
 	public String getContractNo() {
 		return contractNo;
 	}
@@ -263,10 +266,10 @@ public class IESBForCircleForm extends BaseForm{
 	public void setRepayType(String repayType) {
 		this.repayType = repayType;
 	}
-	public Date getRepayDate() {
+	public String getRepayDate() {
 		return repayDate;
 	}
-	public void setRepayDate(Date repayDate) {
+	public void setRepayDate(String repayDate) {
 		this.repayDate = repayDate;
 	}
 	public String getFiveLevelType() {
@@ -563,12 +566,6 @@ public class IESBForCircleForm extends BaseForm{
 	public void setOpenAcctDate(Date openAcctDate) {
 		this.openAcctDate = openAcctDate;
 	}
-	public String getCcy2() {
-		return ccy2;
-	}
-	public void setCcy2(String ccy2) {
-		this.ccy2 = ccy2;
-	}
 	public String getFeeAmount() {
 		return feeAmount;
 	}
@@ -592,12 +589,6 @@ public class IESBForCircleForm extends BaseForm{
 	}
 	public void setOwnBranchFlag(String ownBranchFlag) {
 		this.ownBranchFlag = ownBranchFlag;
-	}
-	public String getAcctNo1() {
-		return acctNo1;
-	}
-	public void setAcctNo1(String acctNo1) {
-		this.acctNo1 = acctNo1;
 	}
 	public String getAcctName() {
 		return acctName;
@@ -665,18 +656,6 @@ public class IESBForCircleForm extends BaseForm{
 	public void setLoanKind_4(String loanKind_4) {
 		this.loanKind_4 = loanKind_4;
 	}
-	public String getLoanKind_5() {
-		return loanKind_5;
-	}
-	public void setLoanKind_5(String loanKind_5) {
-		this.loanKind_5 = loanKind_5;
-	}
-	public String getLoanKind_6() {
-		return loanKind_6;
-	}
-	public void setLoanKind_6(String loanKind_6) {
-		this.loanKind_6 = loanKind_6;
-	}
 	public String getAgriLoanKind_1() {
 		return agriLoanKind_1;
 	}
@@ -700,6 +679,12 @@ public class IESBForCircleForm extends BaseForm{
 	}
 	public void setAgriLoanKind_4(String agriLoanKind_4) {
 		this.agriLoanKind_4 = agriLoanKind_4;
+	}
+	public String getAgriLoanKind_5() {
+		return agriLoanKind_5;
+	}
+	public void setAgriLoanKind_5(String agriLoanKind_5) {
+		this.agriLoanKind_5 = agriLoanKind_5;
 	}
 	public String getLoanDirection_1() {
 		return loanDirection_1;
@@ -772,6 +757,30 @@ public class IESBForCircleForm extends BaseForm{
 	}
 	public void setRegPermResidence_3(String regPermResidence_3) {
 		this.regPermResidence_3 = regPermResidence_3;
+	}
+	public String getFeeCcy() {
+		return feeCcy;
+	}
+	public void setFeeCcy(String feeCcy) {
+		this.feeCcy = feeCcy;
+	}
+	public String getFeeAcctNo() {
+		return feeAcctNo;
+	}
+	public void setFeeAcctNo(String feeAcctNo) {
+		this.feeAcctNo = feeAcctNo;
+	}
+	public String getAcctNo1() {
+		return acctNo1;
+	}
+	public void setAcctNo1(String acctNo1) {
+		this.acctNo1 = acctNo1;
+	}
+	public String getAcctNo2() {
+		return acctNo2;
+	}
+	public void setAcctNo2(String acctNo2) {
+		this.acctNo2 = acctNo2;
 	}
 	
 }

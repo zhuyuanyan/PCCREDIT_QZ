@@ -1,0 +1,849 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">循环</div>
+      </div>
+      <form id="id_module_form">
+        <div class="forms" id="formsId">
+          <table class="rule" bordercolor="#CCCCCC" border="1">
+          <caption>客户贷款信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            <tr>
+              	<td><label>客户号:</label></td>
+              	<td><select id="selectClientNo" onchange="changeClientNo(this)" disabled>
+              			<option value="0" >请选择</option>
+		              	#foreach($!obj in $!ECIF_ls)
+							<option value="$!obj.clientNo" #if($!circle.clientNo == $!obj.clientNo) selected #end>
+								$!obj.clientName
+							</option>
+						#end	
+		              </select><input type="hidden" id="clientNo" name="clientNo" value="$!circle.clientNo" disabled /></td>
+		      	<td></td>
+              	<td></td>
+            </tr>
+            <tr>
+            	<td><label>收息收款账号:</label><font color="#ff0000">*</font></td>
+              	<td><input type="text" name="acctNo1" value="$!circle.acctNo1" disabled /></td>
+              	<td><label>放款账号:</label><font color="#ff0000">*</font></td>
+              	<td><input type="text" name="acctNo2" value="$!circle.acctNo2" disabled /></td>
+            </tr>
+            <tr>
+              <td><label>合同号:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="contractNo" value="$!circle.contractNo" disabled /></td>
+              <td><label>卡号:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="cardNo" value="$!circle.cardNo" disabled /></td>
+            </tr>
+            <tr>
+              <td><label>担保方式:</label></td>
+              <td><select id="guaranteeMode" name="guaranteeMode" onchange="change_guaranteeMode(this);" disabled >#dict("ASSURE_MAIN", $!circle.guaranteeMode)</select></td>
+              <td><label>担保方式细分:</label></td>
+              <td><select id="guaranteeModeDetail" name="guaranteeModeDetail" disabled >#dict("ASSURE_MAIN_DETAILS", $!circle.guaranteeModeDetail)</select></td>
+            </tr>
+            <tr>
+			  <td><label>币种:</label></td>
+              <td><select id="ccy1" name="ccy1" disabled >#dict("CONT_CUR_TYPE", $!circle.ccy1)</select></td>
+              <td><label>外币时需要换算:</label></td>
+              <td><input type="text" id="exchangeRate" name="exchangeRate" value="$!circle.exchangeRate" disabled /></td>
+            </tr>
+            <tr>
+			  <td><label>协议起始日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="startDate" onmouseover="_calendar()" value="$date.format('yyyy-MM-dd', $!circle.startDate)" disabled /></td>
+			  <td><label>协议结束日期(授信期限+还款期限):</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="endDate" onmouseover="_calendar()" value="$date.format('yyyy-MM-dd', $!circle.endDate)" disabled /></td>
+            </tr>
+			<tr>
+			  <td><label>业务类型:</label></td>
+              <td><select id="bussType" name="bussType" disabled >#dict("BUSS_TYPE", $!circle.bussType)</select></td>
+              <td><label>合同金额(元):</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="contractAmt" name="contractAmt" value="$!circle.contractAmt" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>登记人:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="registeredId" name="registeredId" value="$!circle.registeredId" disabled /></td>
+			  <td><label>登记机构:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="registOrgNo" name="registOrgNo" value="$!circle.registOrgNo" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>入账机构码:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="incomeOrgNo" value="$!circle.incomeOrgNo" disabled  /></td>
+			  <td><label>登记日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="registeredDate" name="registeredDate" value="$date.format('yyyy-MM-dd', $!circle.registeredDate)" disabled onmouseover="_calendar()"/></td>
+            </tr>
+			<tr>
+              <td><label>还款周期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="term" value="$!circle.term" disabled /></td>
+			  <td><label>期限类型:</label></td>
+              <td><select name="termType" disabled >#dict("TERM_TYPE", $!circle.termType)</select></td>
+            </tr>
+			<tr>
+              <td><label>顺延标志:</label></td>
+              <td><select name="deferFlag" disabled >#dict("IS_DELAY", $!circle.deferFlag)</select></td>
+			  <td><label>年执行利率(%):</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="actIntRate" value="$!circle.actIntRate" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>年逾期利率(%):</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="overdueIntRate" value="$!circle.overdueIntRate" disabled /></td>
+			  <td><label>年违约利率(%):</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="penaltyIntRate" value="$!circle.penaltyIntRate" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>还款方式:</label></td>
+              <td><select name="repayType" disabled >#dict("REPAY_TYPE", $!circle.repayType)</select></td>
+			  <td><label>还款日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="repayDate" value="$!circle.repayDate" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>五级分类:</label></td>
+              <td><select name="fiveLevelType" disabled >#dict("FIVE_CLASSFIY", $!circle.fiveLevelType)</select></td>
+			  <td><label>特殊贷款类型:</label></td>
+              <td><select name="speLoanType" disabled >#dict("SPE_LOAN_TYPE", $!circle.speLoanType)</select></td>
+            </tr>
+			<tr>
+              <td><label>额度占用类型:</label></td>
+              <td><select name="limitUseedType" disabled >#dict("LIMIT_USEED_TYPE", $!circle.limitUseedType)</select></td>
+			  <td><label>借款用途:</label></td>
+              <td><select name="drUsage" disabled >#dict("LOAN_USE_TYPE", $!circle.drUsage)</select></td>
+            </tr>
+			<tr>
+              <td><label>工业转型升级标识:</label></td>
+              <td><select name="flag" disabled >#dict("COM_UP_INDTIFY", $!circle.flag)</select></td>
+			  <td><label>贷款种类:</label></td>
+              <td>
+              	1:<select disabled id="loanKind_1" name="loanKind_1" style="width:45%;margin:3px;" onchange="change_loanKind_1(this.value);">#dict("LOAN_TYPE_LEVEL_1", $!circle.loanKind_1)</select>
+              	2:<select disabled id="loanKind_2" name="loanKind_2" style="width:45%;margin:3px;" onchange="change_loanKind_2(this.value);">#dict("LOAN_TYPE_LEVEL_2", $!circle.loanKind_2)</select>
+              	3:<select disabled id="loanKind_3" name="loanKind_3" style="width:45%;margin:3px;" onchange="change_loanKind_3(this.value);">#dict("LOAN_TYPE_LEVEL_3", $!circle.loanKind_3)</select>
+              	4:<select disabled id="loanKind_4" name="loanKind_4" style="width:45%;margin:3px;">#dict("LOAN_TYPE_LEVEL_4", $!circle.loanKind_4)</select>
+              </td>
+            </tr>
+			<tr>
+              <td><label>涉农贷款类型:</label></td>
+              <td>
+	              1:<select disabled id="agriLoanKind_1" name="agriLoanKind_1" style="width:29%;margin:2px;" onchange="change_agriLoanKind_1(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_1", $!circle.agriLoanKind_1)</select>
+	              2:<select disabled id="agriLoanKind_2" name="agriLoanKind_2" style="width:29%;margin:2px;" onchange="change_agriLoanKind_2(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_2", $!circle.agriLoanKind_2)</select>
+	              3:<select disabled id="agriLoanKind_3" name="agriLoanKind_3" style="width:29%;margin:2px;" onchange="change_agriLoanKind_3(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_3", $!circle.agriLoanKind_3)</select>
+	              4:<select disabled id="agriLoanKind_4" name="agriLoanKind_4" style="width:29%;margin:2px;" onchange="change_agriLoanKind_4(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_4", $!circle.agriLoanKind_4)</select>
+	              5:<select disabled id="agriLoanKind_5" name="agriLoanKind_5" style="width:29%;margin:2px;">#dict("AGRICULTURE_TYPE_LEVEL_5", $!circle.agriLoanKind_5)</select>
+              </td>
+			  <td><label>个人经营性贷款类型:</label></td>
+              <td><select name="personLoanKind" disabled >#dict("ENSURE_PROJECT_LOAN", $!circle.personLoanKind)</select></td>
+            </tr>
+			<tr>
+              <td><label>调整类型:</label></td>
+              <td><select name="adjustType" disabled >#dict("ESTATE_ADJUST_TYPE", $!circle.adjustType)</select></td>
+			  <td><label>新兴产业类型:</label></td>
+              <td><select name="newPrdType" disabled >#dict("STRATEGY_NEW_TYPE", $!circle.newPrdType)</select></td>
+            </tr>
+			<tr>
+              <td><label>新兴产业贷款:</label></td>
+              <td><select name="newPrdLoan" disabled >#dict("NEW_PRD_LOAN", $!circle.newPrdLoan)</select></td>
+			  <td><label>贷款投向:</label></td>
+              <td>
+              	1:<select disabled id="loanDirection_1" name="loanDirection_1" style="width:45%;margin:3px;" onchange="change_loanDirection_1(this.value);">#dict("LOAN_DIRECTION_LEVEL_1",$!circle.loanDirection_1)</select>
+              	2:<select disabled id="loanDirection_2" name="loanDirection_2" style="width:45%;margin:3px;" onchange="change_loanDirection_2(this.value);">#dict("LOAN_DIRECTION_LEVEL_2",$!circle.loanDirection_2)</select>
+              	3:<select disabled id="loanDirection_3" name="loanDirection_3" style="width:45%;margin:3px;" onchange="change_loanDirection_3(this.value);">#dict("LOAN_DIRECTION_LEVEL_3",$!circle.loanDirection_3)</select>
+              	4:<select disabled id="loanDirection_4" name="loanDirection_4" style="width:45%;margin:3px;">#dict("LOAN_DIRECTION_LEVEL_4",$!circle.loanDirection_4)</select>
+              </td>
+            </tr>
+			<tr>
+              <td><label>贷款归属1:</label></td>
+              <td>
+              	1:<select disabled id="loanBelong1_1" name="loanBelong1_1" style="width:29%;margin:2px;" onchange="change_loanBelong1_1(this.value);">#dict("LOAN_BELONG1_LEVEL_1", $!circle.loanBelong1_1)</select>
+              	2:<select disabled id="loanBelong1_2" name="loanBelong1_2" style="width:29%;margin:2px;" onchange="change_loanBelong1_2(this.value);">#dict("LOAN_BELONG1_LEVEL_2", $!circle.loanBelong1_2)</select>
+              	3:<select disabled id="loanBelong1_3" name="loanBelong1_3" style="width:29%;margin:2px;" onchange="change_loanBelong1_3(this.value);">#dict("LOAN_BELONG1_LEVEL_3", $!circle.loanBelong1_3)</select>
+              	4:<select disabled id="loanBelong1_4" name="loanBelong1_4" style="width:29%;margin:2px;" onchange="change_loanBelong1_4(this.value);">#dict("LOAN_BELONG1_LEVEL_4", $!circle.loanBelong1_4)</select>
+              	5:<select disabled id="loanBelong1_5" name="loanBelong1_5" style="width:29%;margin:2px;">#dict("LOAN_BELONG1_LEVEL_5", $!circle.loanBelong1_5)</select>
+              </td>
+			  <td><label>贷款归属2:</label></td>
+              <td><select name="loanBelong2" disabled >#dict("LOAN_BELONG2", $!circle.loanBelong2)</select></td>
+            </tr>
+			<tr>
+              <td><label>贷款归属3:</label></td>
+              <td><select name="loanBelong3" disabled >#dict("LOAN_BELONG3", $!circle.loanBelong3)</select></td>
+			  <td><label>贷款归属4:</label></td>
+              <td><select name="loanBelong4" disabled >#dict("LOAN_BELONG4", $!circle.loanBelong4)</select></td>
+            </tr>
+			<tr>
+              <td><label>管理机构:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="manaOrg" value="$!circle.manaOrg" disabled /></td>
+			  <td><label>主管客户经理:</label></td>
+              <td><select name="chiCustManager" disabled >#dict("IS_MAIN_MANAGER", $!circle.chiCustManager)</select></td>
+            </tr>
+		  </table>
+		  <table class="rule" bordercolor="#cccccc" border="1">
+          <caption>客户信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+			<tr>
+              <td><label>客户号:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="aClientNo" name="aClientNo" value="$!circle.aClientNo" disabled /></td>
+			  <td><label>客户名称:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="clientName" name="clientName" value="$!circle.clientName" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>性别:</label></td>
+              <td><select id="sex" name="sex" disabled >#dict("INDIV_SEX", $!circle.sex)</select></td>
+			  <td><label>客户类型:</label></td>
+              <td><select id="clientType" name="clientType" disabled >#dict("CLIENT_TYPE", $!circle.clientType)</select></td>
+            </tr>
+			<tr>
+              <td><label>证件类型:</label><font color="#ff0000">*</font></td>
+              <td><select id="globalType" name="globalType" disabled >#dict("CERT_TYPE", $!circle.globalType)</select></td>
+			  <td><label>证件号码:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="globalId" name="globalId" value="$!circle.globalId" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>长期证件标志:</label></td>
+              <td><select id="longGlobalType" name="longGlobalType" disabled >#dict("IS_LONG_INDIV", $!circle.longGlobalType)</select></td>
+			  <td><label>签发日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="issDate" name="issDate" value="$date.format('yyyy-MM-dd', $!circle.issDate)" disabled onmouseover="_calendar()"/></td>
+            </tr>
+			<tr>
+              <td><label>证件有效日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="globalEffDate" name="globalEffDate" value="$date.format('yyyy-MM-dd', $!circle.globalEffDate)" disabled onmouseover="_calendar()"/></td>
+			  <td><label>农户标识:</label></td>
+              <td><select id="agriFlag" name="agriFlag" disabled >#dict("AGRI_FLG", $!circle.agriFlag)</select></td>
+            </tr>
+			<tr>
+              <td><label>国家代码:</label></td>
+              <td><select id="countryCode" name="countryCode" disabled >#dict("CUS_COUNTRY", $!circle.countryCode)</select></td>
+			  <td><label>民族代码:</label></td>
+              <td><select id="nationalityCode" name="nationalityCode" disabled >#dict("NATIONALITY_CODE", $!circle.nationalityCode)</select></td>
+            </tr>
+            <tr>
+              <td><label>户籍所在地:</label></td>
+              <td>
+             		1:<select disabled id="regPermResidence_1" name="regPermResidence_1" style="width:29%;margin:2px;" onchange="change_regPermResidence_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", $!circle.regPermResidence_1)</select>
+             		2:<select disabled id="regPermResidence_2" name="regPermResidence_2" style="width:29%;margin:2px;" onchange="change_regPermResidence_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", $!circle.regPermResidence_2)</select>
+             		3:<select disabled id="regPermResidence_3" name="regPermResidence_3" style="width:29%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", $!circle.regPermResidence_3)</select>
+              </td>
+			  <td><label>地址:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="address" name="address" value="$!circle.address" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>出生日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="birthDate" name="birthDate" value="$date.format('yyyy-MM-dd', $!circle.birthDate)" disabled onmouseover="_calendar()"/></td>
+			  <td><label>最高学历:</label></td>
+              <td><select id="education" name="education" disabled >#dict("INDIV_EDT", $!circle.education)</select></td>
+            </tr>
+			<tr>
+              <td><label>最高学位:</label></td>
+              <td><select id="degree" name="degree" disabled >#dict("INDIV_DGR", $!circle.degree)</select></td>
+			  <td><label>签约日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="signDate" name="signDate" value="$date.format('yyyy-MM-dd', $!circle.signDate)" disabled onmouseover="_calendar()"/></td>
+            </tr>
+			<tr>
+              <td><label>持卡情况:</label></td>
+              <td><select id="holdCardMsg" name="holdCardMsg" disabled >#dict("HOLD_CARD", $!circle.holdCardMsg)</select></td>
+			  <td><label>是否拥有外国护照或居住权:</label></td>
+              <td><select id="passportFlag" name="passportFlag" disabled >#dict("PASSPORT_FLG", $!circle.passportFlag)</select></td>
+            </tr>
+			<tr>
+              <td><label>信用等级:</label></td>
+              <td><select id="creditLevel" name="creditLevel" disabled >#dict("CUS_CRD_GRADE", $!circle.creditLevel)</select></td>
+			  <td><label>信用到期日期:</label></td>
+              <td><input type="text" id="expiryDate" name="expiryDate" value="$date.format('yyyy-MM-dd', $!circle.expiryDate)" disabled onmouseover="_calendar()"/></td>
+            </tr>
+			<tr>
+              <td><label>是否关联客户:</label></td>
+              <td><select id="relClientFlag" name="relClientFlag" disabled >#dict("IS_RELA_CUST", $!circle.relClientFlag)</select></td>
+			  <td><label>与我行关系:</label></td>
+              <td><select id="ownBranchRelation" name="ownBranchRelation" disabled >#dict("CUS_BANK_REL", $!circle.ownBranchRelation)</select></td>
+            </tr>
+			<tr>
+              <td><label>我行职务:</label></td>
+              <td><select id="post" name="post" disabled >#dict("BANK_DUTY", $!circle.post)</select></td>
+			  <td><label>贷款卡标识:</label></td>
+              <td><select id="loanCardFlag" name="loanCardFlag" disabled >#dict("LOAN_CARD_FLG", $!circle.loanCardFlag)</select></td>
+            </tr>
+			<tr>
+              <td><label>贷款卡号:</label></td>
+              <td><input type="text" id="loanCardNo" name="loanCardNo" value="$!circle.loanCardNo" disabled /></td>
+			  <td><label>手机号码:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="mobile" name="mobile" value="$!circle.mobile" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>上级机构:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="higherOrgNo" name="higherOrgNo" value="$!circle.higherOrgNo" disabled ></td>
+			  <td><label>客户经理:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="acctExec" name="acctExec" value="$!circle.acctExec" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>开户日期:</label><font color="#ff0000">*</font></td>
+              <td colspan="3"><input type="text" id="openAcctDate" name="openAcctDate" value="$date.format('yyyy-MM-dd', $!circle.openAcctDate)" disabled onmouseover="_calendar()"/></td>
+            </tr>
+		  </table>
+		  <table class="rule" bordercolor="#cccccc" border="1">
+          <caption>费用信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+			<tr>
+              <td><label>币种:</label></td>
+              <td><select name="feeCcy" disabled >#dict("CONT_CUR_TYPE", $!circle.feeCcy)</select></td>
+			  <td><label>费用金额:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" name="feeAmount" value="$!circle.feeAmount" disabled /></td>
+            </tr>
+			<tr>
+              <td><label>费用账号:</label><font color="#ff0000">*</font></td>
+              <td colspan="3"><input type="text" name="feeAcctNo" value="$!circle.feeAcctNo" disabled /></td>
+            </tr>
+		  </table>
+        </div>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+      </div>
+      </form>
+    </div>
+  </div>
+  <script type="text/javascript">
+    //新开户json信息
+  	var ecifJsonObj; 
+  	//级联菜单
+  	//贷款种类
+  	var loan_type_array2 = new Array();//用来保存为显示的select元素
+	var loan_type_array3 = new Array();//用来保存为显示的select元素
+	var loan_type_array4 = new Array();//用来保存为显示的select元素
+  	//涉农贷款类型
+  	var agriculture_type_array2 = new Array();//用来保存为显示的select元素
+	var agriculture_type_array3 = new Array();//用来保存为显示的select元素
+	var agriculture_type_array4 = new Array();//用来保存为显示的select元素
+	var agriculture_type_array5 = new Array();//用来保存为显示的select元素
+	//贷款投向
+	var loan_direction_array2 = new Array();//用来保存为显示的select元素
+	var loan_direction_array3 = new Array();//用来保存为显示的select元素
+	var loan_direction_array4 = new Array();//用来保存为显示的select元素
+	//贷款归属1
+	var loan_belong1_array2 = new Array();//用来保存为显示的select元素
+	var loan_belong1_array3 = new Array();//用来保存为显示的select元素
+	var loan_belong1_array4 = new Array();//用来保存为显示的select元素
+	var loan_belong1_array5 = new Array();//用来保存为显示的select元素
+	//户籍所在地
+	var indiv_brt_place_array2 = new Array();//用来保存为显示的select元素
+	var indiv_brt_place_array3 = new Array();//用来保存为显示的select元素
+	//担保方式细分
+	var guaranteeModeDetail_array2 = new Array();//用来保存为显示的select元素
+	
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	
+	#parse ("qzbankinterface/iesbforcircle_validation.js")
+	
+	$(document).ready(function() {	
+		
+		ecifJsonObj = $!ECIF_ls_json;
+		
+		#parse("common/part_create.js")
+		
+		//保存按钮
+		$("#id_save_button").click(function() {
+			if($("#selectClientNo").val() == 0){
+				alert("请先选择对应客户!")
+			}else{
+				//信用评级
+				$("label[name='expiryDate_check']").remove();
+				if($("#creditLevel").val() != "00" && $("#expiryDate").val() == ""){
+					$("input[name='expiryDate']").after("<label class='error' id='cardIde' name='expiryDate_check' generated='true'>信用到期日期不能为空</label>");
+				}
+				//贷款卡号
+				$("label[name='loanCardNo_check']").remove();
+				if($("#loanCardFlag").val() != "2" && $("#loanCardNo").val() == ""){
+					$("input[name='loanCardNo']").after("<label class='error' id='cardIde' name='loanCardNo_check' generated='true'>贷款卡号不能为空</label>");
+				}
+				//币种
+				$("label[name='exchangeRate_check']").remove();
+				if($("#ccy1").val() != "CNY" && $("#exchangeRate").val() == ""){
+					$("input[name='exchangeRate']").after("<label class='error' id='cardIde' name='exchangeRate_check' generated='true'>外币时需要换算不能为空</label>");
+				}
+				//bussType业务类型 经营贷额度需控制在5-50万元，个人消费类额度控制在1-30万元
+				$("label[name='contractAmt_check']").remove();
+				var contractAmt_value = parseInt($("#contractAmt").val(),10);
+				if($("#bussType").val() == "001" && (contractAmt_value>300000 || contractAmt_value<10000)){
+					$("input[name='contractAmt']").after("<label class='error' id='cardIde' name='contractAmt_check' generated='true'>个人消费类额度控制在1-30万元</label>");
+				}
+				else if($("#bussType").val() == "002" && (contractAmt_value>500000 || contractAmt_value<50000)){
+					$("input[name='contractAmt']").after("<label class='error' id='cardIde' name='contractAmt_check' generated='true'>经营贷额度需控制在5-50万元</label>");
+				}
+				
+				var leng = $("#cardIde").length;
+				if(leng > 0){
+					return;
+				}
+				else{
+					if ($($formName).valid()) {
+						var formjson = $($formName).serialize();
+			   	          $.post("${modulePath}/insert.json", formjson, function(data, textStatus, jqXhr) {
+			   	            if (data.success) {
+			   	            	Dialog.message("保存成功!");
+			   	            	window.location.href= contextPath+"/qzbankinterface/circle/create.page" ;
+			   	            }
+			   	          });
+					}
+				}
+			}
+		});
+		//信用评级
+		$("#creditLevel").click(function() {
+			$("label[name='expiryDate_check']").remove();
+			if($("#creditLevel").val() != "00" && $("#expiryDate").val() == ""){
+				$("input[name='expiryDate']").after("<label class='error' id='cardIde' name='expiryDate_check' generated='true'>信用到期日期不能为空</label>");
+			}
+		});
+		$("#expiryDate").change(function(){
+			$("label[name='expiryDate_check']").remove();
+			if($("#creditLevel").val() != "00" && $("#expiryDate").val() == ""){
+				$("input[name='expiryDate']").after("<label class='error' id='cardIde' name='expiryDate_check' generated='true'>信用到期日期不能为空</label>");
+			}
+		});
+		//贷款卡号
+		$("#loanCardFlag").click(function() {
+			$("label[name='loanCardNo_check']").remove();
+			if($("#loanCardFlag").val() != "2" && $("#loanCardNo").val() == ""){
+				$("input[name='loanCardNo']").after("<label class='error' id='cardIde' name='loanCardNo_check' generated='true'>贷款卡号不能为空</label>");
+			}
+		});
+		$("#loanCardNo").change(function() {
+			$("label[name='loanCardNo_check']").remove();
+			if($("#loanCardFlag").val() != "2" && $("#loanCardNo").val() == ""){
+				$("input[name='loanCardNo']").after("<label class='error' id='cardIde' name='loanCardNo_check' generated='true'>贷款卡号不能为空</label>");
+			}
+		});
+		//币种
+		$("#ccy1").click(function() {
+			$("label[name='exchangeRate_check']").remove();
+			if($("#ccy1").val() != "CNY" && $("#exchangeRate").val() == ""){
+				$("input[name='exchangeRate']").after("<label class='error' id='cardIde' name='exchangeRate_check' generated='true'>外币时需要换算不能为空</label>");
+			}
+		});
+		$("#exchangeRate").change(function() {
+			$("label[name='exchangeRate_check']").remove();
+			if($("#ccy1").val() != "CNY" && $("#exchangeRate").val() == ""){
+				$("input[name='exchangeRate']").after("<label class='error' id='cardIde' name='exchangeRate_check' generated='true'>外币时需要换算不能为空</label>");
+			}
+		});
+		//bussType业务类型 经营贷额度需控制在5-50万元，个人消费类额度控制在1-30万元
+		$("#bussType").click(function() {
+			$("label[name='contractAmt_check']").remove();
+			var contractAmt_value = parseInt($("#contractAmt").val(),10);
+
+			if($("#bussType").val() == "001" && (contractAmt_value>300000 || contractAmt_value<10000)){
+				$("input[name='contractAmt']").after("<label class='error' id='cardIde' name='contractAmt_check' generated='true'>个人消费类额度控制在1-30万元</label>");
+			}
+			else if($("#bussType").val() == "002" && (contractAmt_value>500000 || contractAmt_value<50000)){
+				$("input[name='contractAmt']").after("<label class='error' id='cardIde' name='contractAmt_check' generated='true'>经营贷额度需控制在5-50万元</label>");
+			}
+		});
+		$("#contractAmt").change(function() {
+			$("label[name='contractAmt_check']").remove();
+			var contractAmt_value = parseInt($("#contractAmt").val(),10);
+			if($("#bussType").val() == "001" && (contractAmt_value>300000 || contractAmt_value<10000)){
+				$("input[name='contractAmt']").after("<label class='error' id='cardIde' name='contractAmt_check' generated='true'>个人消费类额度控制在1-30万元</label>");
+			}
+			else if($("#bussType").val() == "002" && (contractAmt_value>500000 || contractAmt_value<50000)){
+				$("input[name='contractAmt']").after("<label class='error' id='cardIde' name='contractAmt_check' generated='true'>经营贷额度需控制在5-50万元</label>");
+			}
+		});
+		//级联菜单
+		//贷款种类
+		$("#loanKind_2 option").each(function(){ //遍历全部option
+			loan_type_array2.push($(this));
+	    });
+		$("#loanKind_3 option").each(function(){ //遍历全部option
+			loan_type_array3.push($(this));
+	    });
+		$("#loanKind_4 option").each(function(){ //遍历全部option
+			loan_type_array4.push($(this));
+	    });
+		//涉农贷款类型
+		$("#agriLoanKind_2 option").each(function(){ //遍历全部option
+			agriculture_type_array2.push($(this));
+	    });
+		$("#agriLoanKind_3 option").each(function(){ //遍历全部option
+			agriculture_type_array3.push($(this));
+	    });
+		$("#agriLoanKind_4 option").each(function(){ //遍历全部option
+			agriculture_type_array4.push($(this));
+	    });
+		$("#agriLoanKind_5 option").each(function(){ //遍历全部option
+			agriculture_type_array5.push($(this));
+	    });
+		//贷款投向
+		$("#loanDirection_2 option").each(function(){ //遍历全部option
+			loan_direction_array2.push($(this));
+	    });
+		$("#loanDirection_3 option").each(function(){ //遍历全部option
+			loan_direction_array3.push($(this));
+	    });
+		$("#loanDirection_4 option").each(function(){ //遍历全部option
+			loan_direction_array4.push($(this));
+	    });
+		//贷款归属1
+		$("#loanBelong1_2 option").each(function(){ //遍历全部option
+			loan_belong1_array2.push($(this));
+	    });
+		$("#loanBelong1_3 option").each(function(){ //遍历全部option
+			loan_belong1_array3.push($(this));
+	    });
+		$("#loanBelong1_4 option").each(function(){ //遍历全部option
+			loan_belong1_array4.push($(this));
+	    });
+		$("#loanBelong1_5 option").each(function(){ //遍历全部option
+			loan_belong1_array5.push($(this));
+	    });
+		//户籍所在地
+		$("#regPermResidence_2 option").each(function(){ //遍历全部option
+			indiv_brt_place_array2.push($(this));
+	    });
+		$("#regPermResidence_3 option").each(function(){ //遍历全部option
+			indiv_brt_place_array3.push($(this));
+	    });
+		//担保方式细分
+		$("#guaranteeModeDetail option").each(function(){ //遍历全部option
+			guaranteeModeDetail_array2.push($(this));
+	    });
+	});
+	
+	//级联菜单
+	//贷款种类
+	function change_loanKind_1(objval){
+		$("#loanKind_2").empty();
+		$("#loanKind_2").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_type_array2,function(n,opt) { 
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanKind_2").append(opt);
+				}
+			});
+		}
+		
+		$("#loanKind_2").css('visibility','visible');//IE7
+		
+		var tmp = $("#loanKind_2 option:first");//IE7
+		change_loanKind_2(tmp.val());
+	}
+	function change_loanKind_2(objval){
+		$("#loanKind_3").empty();
+		$("#loanKind_3").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_type_array3,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanKind_3").append(opt);
+				}
+			});
+		}
+		
+		$("#loanKind_3").css('visibility','visible');//IE7
+		
+		var tmp = $("#loanKind_3 option:first");//IE7
+		change_loanKind_3(tmp.val());
+	}
+	function change_loanKind_3(objval){
+		$("#loanKind_4").empty();
+		$("#loanKind_4").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_type_array4,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanKind_4").append(opt);
+				}
+			});
+		}
+		$("#loanKind_4").css('visibility','visible');//IE7
+		
+	}
+	//涉农贷款类型
+	function change_agriLoanKind_1(objval){
+		$("#agriLoanKind_2").empty();
+		$("#agriLoanKind_2").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(agriculture_type_array2,function(n,opt) { 
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#agriLoanKind_2").append(opt);
+				}
+			});
+		}
+		
+		$("#agriLoanKind_2").css('visibility','visible');//IE7
+		
+		var tmp = $("#agriLoanKind_2 option:first");//IE7
+		change_agriLoanKind_2(tmp.val());
+	}
+	function change_agriLoanKind_2(objval){
+		$("#agriLoanKind_3").empty();
+		$("#agriLoanKind_3").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(agriculture_type_array3,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#agriLoanKind_3").append(opt);
+				}
+			});
+		}
+		
+		$("#agriLoanKind_3").css('visibility','visible');//IE7
+		
+		var tmp = $("#agriLoanKind_3 option:first");//IE7
+		change_agriLoanKind_3(tmp.val());
+	}
+	function change_agriLoanKind_3(objval){
+		$("#agriLoanKind_4").empty();
+		$("#agriLoanKind_4").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(agriculture_type_array4,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#agriLoanKind_4").append(opt);
+				}
+			});
+		}
+		
+		$("#agriLoanKind_4").css('visibility','visible');//IE7
+		var tmp = $("#agriLoanKind_4 option:first");//IE7
+		change_agriLoanKind_4(tmp.val());
+	}
+	function change_agriLoanKind_4(objval){
+		$("#agriLoanKind_5").empty();
+		$("#agriLoanKind_5").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(agriculture_type_array5,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#agriLoanKind_5").append(opt);
+				}
+			});
+			$("#agriLoanKind_5").get(0).selectedIndex = 0;
+		}
+		
+		$("#agriLoanKind_5").css('visibility','visible');//IE7
+	}
+	//贷款投向
+	function change_loanDirection_1(objval){
+		$("#loanDirection_2").empty();
+		$("#loanDirection_2").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_direction_array2,function(n,opt) { 
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanDirection_2").append(opt);
+				}
+			});
+		}
+		
+		$("#loanDirection_2").css('visibility','visible');//IE7
+		
+		var tmp = $("#loanDirection_2 option:first");//IE7
+		change_loanDirection_2(tmp.val());
+	}
+	function change_loanDirection_2(objval){
+		$("#loanDirection_3").empty();
+		$("#loanDirection_3").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_direction_array3,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanDirection_3").append(opt);
+				}
+			});
+		}
+		
+		$("#loanDirection_3").css('visibility','visible');//IE7
+		
+		var tmp = $("#loanDirection_3 option:first");//IE7
+		change_loanDirection_3(tmp.val());
+	}
+	function change_loanDirection_3(objval){
+		$("#loanDirection_4").empty();
+		$("#loanDirection_4").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_direction_array4,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanDirection_4").append(opt);
+				}
+			});
+		}
+		
+		$("#loanDirection_4").css('visibility','visible');//IE7
+		
+	}
+	//贷款归属1
+	function change_loanBelong1_1(objval){
+		$("#loanBelong1_2").empty();
+		$("#loanBelong1_2").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_belong1_array2,function(n,opt) { 
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanBelong1_2").append(opt);
+				}
+			});
+		}
+		
+		$("#loanBelong1_2").css('visibility','visible');//IE7
+		
+		var tmp = $("#loanBelong1_2 option:first");//IE7
+		change_loanBelong1_2(tmp.val());
+	}
+	function change_loanBelong1_2(objval){
+		$("#loanBelong1_3").empty();
+		$("#loanBelong1_3").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_belong1_array3,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanBelong1_3").append(opt);
+				}
+			});
+		}
+		
+		$("#loanBelong1_3").css('visibility','visible');//IE7
+		
+		var tmp = $("#loanBelong1_3 option:first");//IE7
+		change_loanBelong1_3(tmp.val());
+	}
+	function change_loanBelong1_3(objval){
+		$("#loanBelong1_4").empty();
+		$("#loanBelong1_4").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_belong1_array4,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanBelong1_4").append(opt);
+				}
+			});
+		}
+		
+		$("#loanBelong1_4").css('visibility','visible');//IE7
+		
+		var tmp = $("#loanBelong1_4 option:first");//IE7
+		change_loanBelong1_4(tmp.val());
+	}
+	function change_loanBelong1_4(objval){
+		$("#loanBelong1_5").empty();
+		$("#loanBelong1_5").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(loan_belong1_array5,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#loanBelong1_5").append(opt);
+				}
+			});
+		}
+		
+		$("#loanBelong1_5").css('visibility','visible');//IE7
+		
+	}
+	//户籍所在地
+	function change_regPermResidence_1(objval){
+		$("#regPermResidence_2").empty();
+		$("#regPermResidence_2").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(indiv_brt_place_array2,function(n,opt) { 
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#regPermResidence_2").append(opt);
+				}
+			});
+		}
+		
+		$("#regPermResidence_2").css('visibility','visible');//IE7
+		
+		var tmp = $("#regPermResidence_2 option:first");//IE7
+		change_regPermResidence_2(tmp.val());
+	}
+	function change_regPermResidence_2(objval){
+		$("#regPermResidence_3").empty();
+		$("#regPermResidence_3").css('visibility','hidden');//IE7
+		if(objval != undefined){
+			$.each(indiv_brt_place_array3,function(n,opt) {  
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
+					$("#regPermResidence_3").append(opt);
+				}
+			});
+		}
+		
+		$("#regPermResidence_3").css('visibility','visible');//IE7
+		
+	}
+	//担保方式细分
+	function change_guaranteeMode(obj){
+		//$("#guaranteeMode").text();
+		var option = $("#guaranteeMode option:selected");
+		var option_text = option.text()//.substr(option.text().length-2,option.text().length);
+		
+		$("#guaranteeModeDetail").empty();
+		$("#guaranteeModeDetail").css('visibility','hidden');//IE7
+		
+		$.each(guaranteeModeDetail_array2,function(n,opt) { 
+			var opt_text = opt.text()//.substr(opt.text().length-2,opt.text().length);
+			if(option_text == "抵押"){
+				if(opt_text.indexOf("抵押")>=0){
+					$("#guaranteeModeDetail").append(opt);
+				}
+			}
+			if(option_text == "质押" || option_text == "准全额质押" || option_text == "低风险质押"){
+				if(opt_text.indexOf("质押")>=0){
+					$("#guaranteeModeDetail").append(opt);
+				}
+			}
+			else{
+				if(opt_text == option_text){
+					$("#guaranteeModeDetail").append(opt);
+				}
+			}
+		});
+		
+		$("#guaranteeModeDetail").css('visibility','visible');//IE7
+	}
+	
+	//信息自动填充
+	function changeClientNo(obj){
+		//贷款信息自动填充
+		$("#registeredId").val(ecifJsonObj[obj.selectedIndex-1].registeredTellerNo);//登记人
+		$("#registOrgNo").val(ecifJsonObj[obj.selectedIndex-1].registOrgNo);//登记机构
+		$("#registeredDate").val(ecifJsonObj[obj.selectedIndex-1].registeredDate);//登记日期
+		
+		//客户信息自动填充
+		$("#clientNo").val(ecifJsonObj[obj.selectedIndex-1].clientNo);
+		$("#aClientNo").val(ecifJsonObj[obj.selectedIndex-1].clientNo);
+		$("#clientName").val(ecifJsonObj[obj.selectedIndex-1].clientName);
+		$("#sex").val(ecifJsonObj[obj.selectedIndex-1].sex);
+		$("#clientType").val(ecifJsonObj[obj.selectedIndex-1].clientType);
+		$("#globalType").val(ecifJsonObj[obj.selectedIndex-1].globalType);
+		$("#globalId").val(ecifJsonObj[obj.selectedIndex-1].globalId);
+		//$("#longGlobalType").val();
+		$("#issDate").val(ecifJsonObj[obj.selectedIndex-1].issDate);
+		$("#globalEffDate").val(ecifJsonObj[obj.selectedIndex-1].expiryDate);//证件有效日期expiryDate
+		//$("#agriFlag").val();
+		$("#countryCode").val(ecifJsonObj[obj.selectedIndex-1].countryCitizen);//国籍countryCitizen
+		$("#nationalityCode").val(ecifJsonObj[obj.selectedIndex-1].nationalityCode);
+		$("#regPermResidence_1").val(ecifJsonObj[obj.selectedIndex-1].regPermResidence_1);
+		$("#regPermResidence_2").val(ecifJsonObj[obj.selectedIndex-1].regPermResidence_2);
+		$("#regPermResidence_3").val(ecifJsonObj[obj.selectedIndex-1].regPermResidence_3);
+		$("#address").val(ecifJsonObj[obj.selectedIndex-1].address);
+		$("#birthDate").val(ecifJsonObj[obj.selectedIndex-1].birthDate);
+		$("#education").val(ecifJsonObj[obj.selectedIndex-1].educationLevel);//教育水平educationLevel
+		//$("#degree").val();
+		//$("#signDate").val();
+		//$("#holdCardMsg").val();
+		//$("#passportFlag").val();
+		//$("#creditLevel").val();
+		//$("#expiryDate").val();
+		//$("#relClientFlag").val();
+		$("#ownBranchRelation").val(ecifJsonObj[obj.selectedIndex-1].incidenceRelation);//关联关系incidenceRelation
+		//$("#post").val();
+		//$("#loanCardFlag").val();
+		//$("#loanCardNo").val();
+		$("#mobile").val(ecifJsonObj[obj.selectedIndex-1].contactMode);//联系方式？
+		//$("#higherOrgNo").val();
+		$("#acctExec").val(ecifJsonObj[obj.selectedIndex-1].custManagerId);//客户经理
+		$("#openAcctDate").val(ecifJsonObj[obj.selectedIndex-1].openAcctDate);
+		
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

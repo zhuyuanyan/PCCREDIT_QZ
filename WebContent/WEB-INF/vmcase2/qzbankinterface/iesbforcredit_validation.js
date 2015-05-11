@@ -1,0 +1,52 @@
+var validator = $($formName).validate({
+	rules:
+    { 
+		creditLimit:{required:true},
+		term:{required:true},
+		startDate:{required:true},
+		endDate:{required:true},
+		
+		aClientNo:{required:true},
+		clientName:{required:true},
+		globalId:{required:true},
+		issDate:{required:true},
+		globalEffDate:{required:true},
+		address:{required:true},
+		birthDate:{required:true},
+		signDate:{required:true},
+		expiryDate:{required:true},
+		loanCardNo:{required:true},
+		mobile:{required:true},
+		higherOrgNo:{required:true},
+		acctExec:{required:true},
+		openAcctDate:{required:true}
+     },
+messages:
+    {
+		creditLimit:{required:"授信额度不能为空"},
+		term:{required:"期限不能为空"},
+		startDate:{required:"贷款起始日期不能为空"},
+		endDate:{required:"贷款结束日期不能为空"},
+	
+		aClientNo:{required:"客户号不能为空"},
+		clientName:{required:"客户名称不能为空"},
+		globalId:{required:"证件号码不能为空"},
+		issDate:{required:"签发日期不能为空"},
+		globalEffDate:{required:"证件有效日期不能为空"},
+		address:{required:"地址不能为空"},
+		birthDate:{required:"出生日期不能为空"},
+		signDate:{required:"签约日期不能为空"},
+		expiryDate:{required:"信用到期日期不能为空"},
+		loanCardNo:{required:"贷款卡号不能为空"},
+		mobile:{required:"手机号码不能为空"},
+		higherOrgNo:{required:"上级机构不能为空"},
+		acctExec:{required:"客户经理不能为空"},
+		openAcctDate:{required:"开户日期不能为空"}
+   },
+	errorPlacement : function(error, element) {
+		element.after(error);
+		if(layout){
+			layout.resizeLayout();
+		}
+	}
+});
