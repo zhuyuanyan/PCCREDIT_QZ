@@ -14,6 +14,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 @ModelParam(table = "qz_iesb_for_circle",generator=IDType.assigned)
 public class Circle extends BusinessModel{
 	private static final long serialVersionUID = 1L;
+	private String id;
 	private String contractNo;
 	private String cardNo;
 	private String clientNo;
@@ -36,7 +37,7 @@ public class Circle extends BusinessModel{
 	private String overdueIntRate;
 	private String penaltyIntRate;
 	private String repayType;
-	private Date repayDate;
+	private String repayDate;
 	private String fiveLevelType;
 	private String speLoanType;
 	private String limitUseedType;
@@ -48,8 +49,6 @@ public class Circle extends BusinessModel{
 	private String loanKind_2;
 	private String loanKind_3;
 	private String loanKind_4;
-	private String loanKind_5;
-	private String loanKind_6;
 	
 	private String agriLoanKind;
 	
@@ -57,6 +56,7 @@ public class Circle extends BusinessModel{
 	private String agriLoanKind_2;
 	private String agriLoanKind_3;
 	private String agriLoanKind_4;
+	private String agriLoanKind_5;
 	
 	private String personLoanKind;
 	private String adjustType;
@@ -89,7 +89,7 @@ public class Circle extends BusinessModel{
 	private String globalType;
 	private String globalId;
 	private String longGlobalType;
-	private String issDate;
+	private Date issDate;
 	private Date globalEffDate;
 	private String agriFlag;
 	private String countryCode;
@@ -118,21 +118,30 @@ public class Circle extends BusinessModel{
 	private String higherOrgNo;
 	private String acctExec;
 	private Date openAcctDate;
-	private String ccy2;
+	private String feeCcy;
 	private String feeAmount;
-	private String acctNo;
-	private String acctChrt;
-	private String ownBranchFlag;
-	private String acctNo1;
-	private String acctName;
-	private String openAcctBranchId;
-	private String openAcctBranchName;
-	private String payAmt;
-	private String glCode;
-	private String ccy3;
-	private String cInterbankId;
-	private String createBy;
+	private String feeAcctNo;
+//	private String acctChrt;
+//	private String ownBranchFlag;
+//	private String acctNo;
+//	private String acctName;
+//	private String openAcctBranchId;
+//	private String openAcctBranchName;
+//	private String payAmt;
+//	private String glCode;
+//	private String ccy3;
+//	private String cInterbankId;
 	private String userId;
+	
+	private String acctNo1;//收息收款账号
+	private String acctNo2;//放款账号
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getContractNo() {
 		return contractNo;
 	}
@@ -265,10 +274,10 @@ public class Circle extends BusinessModel{
 	public void setRepayType(String repayType) {
 		this.repayType = repayType;
 	}
-	public Date getRepayDate() {
+	public String getRepayDate() {
 		return repayDate;
 	}
-	public void setRepayDate(Date repayDate) {
+	public void setRepayDate(String repayDate) {
 		this.repayDate = repayDate;
 	}
 	public String getFiveLevelType() {
@@ -421,10 +430,11 @@ public class Circle extends BusinessModel{
 	public void setLongGlobalType(String longGlobalType) {
 		this.longGlobalType = longGlobalType;
 	}
-	public String getIssDate() {
+	
+	public Date getIssDate() {
 		return issDate;
 	}
-	public void setIssDate(String issDate) {
+	public void setIssDate(Date issDate) {
 		this.issDate = issDate;
 	}
 	public Date getGlobalEffDate() {
@@ -565,89 +575,11 @@ public class Circle extends BusinessModel{
 	public void setOpenAcctDate(Date openAcctDate) {
 		this.openAcctDate = openAcctDate;
 	}
-	public String getCcy2() {
-		return ccy2;
-	}
-	public void setCcy2(String ccy2) {
-		this.ccy2 = ccy2;
-	}
 	public String getFeeAmount() {
 		return feeAmount;
 	}
 	public void setFeeAmount(String feeAmount) {
 		this.feeAmount = feeAmount;
-	}
-	public String getAcctNo() {
-		return acctNo;
-	}
-	public void setAcctNo(String acctNo) {
-		this.acctNo = acctNo;
-	}
-	public String getAcctChrt() {
-		return acctChrt;
-	}
-	public void setAcctChrt(String acctChrt) {
-		this.acctChrt = acctChrt;
-	}
-	public String getOwnBranchFlag() {
-		return ownBranchFlag;
-	}
-	public void setOwnBranchFlag(String ownBranchFlag) {
-		this.ownBranchFlag = ownBranchFlag;
-	}
-	public String getAcctNo1() {
-		return acctNo1;
-	}
-	public void setAcctNo1(String acctNo1) {
-		this.acctNo1 = acctNo1;
-	}
-	public String getAcctName() {
-		return acctName;
-	}
-	public void setAcctName(String acctName) {
-		this.acctName = acctName;
-	}
-	public String getOpenAcctBranchId() {
-		return openAcctBranchId;
-	}
-	public void setOpenAcctBranchId(String openAcctBranchId) {
-		this.openAcctBranchId = openAcctBranchId;
-	}
-	public String getOpenAcctBranchName() {
-		return openAcctBranchName;
-	}
-	public void setOpenAcctBranchName(String openAcctBranchName) {
-		this.openAcctBranchName = openAcctBranchName;
-	}
-	public String getPayAmt() {
-		return payAmt;
-	}
-	public void setPayAmt(String payAmt) {
-		this.payAmt = payAmt;
-	}
-	public String getGlCode() {
-		return glCode;
-	}
-	public void setGlCode(String glCode) {
-		this.glCode = glCode;
-	}
-	public String getCcy3() {
-		return ccy3;
-	}
-	public void setCcy3(String ccy3) {
-		this.ccy3 = ccy3;
-	}
-	public String getcInterbankId() {
-		return cInterbankId;
-	}
-	public void setcInterbankId(String cInterbankId) {
-		this.cInterbankId = cInterbankId;
-	}
-	public String getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
 	}
 	public String getUserId() {
 		return userId;
@@ -679,18 +611,6 @@ public class Circle extends BusinessModel{
 	public void setLoanKind_4(String loanKind_4) {
 		this.loanKind_4 = loanKind_4;
 	}
-	public String getLoanKind_5() {
-		return loanKind_5;
-	}
-	public void setLoanKind_5(String loanKind_5) {
-		this.loanKind_5 = loanKind_5;
-	}
-	public String getLoanKind_6() {
-		return loanKind_6;
-	}
-	public void setLoanKind_6(String loanKind_6) {
-		this.loanKind_6 = loanKind_6;
-	}
 	public String getAgriLoanKind_1() {
 		return agriLoanKind_1;
 	}
@@ -714,6 +634,12 @@ public class Circle extends BusinessModel{
 	}
 	public void setAgriLoanKind_4(String agriLoanKind_4) {
 		this.agriLoanKind_4 = agriLoanKind_4;
+	}
+	public String getAgriLoanKind_5() {
+		return agriLoanKind_5;
+	}
+	public void setAgriLoanKind_5(String agriLoanKind_5) {
+		this.agriLoanKind_5 = agriLoanKind_5;
 	}
 	public String getLoanDirection_1() {
 		return loanDirection_1;
@@ -787,5 +713,29 @@ public class Circle extends BusinessModel{
 	public void setRegPermResidence_3(String regPermResidence_3) {
 		this.regPermResidence_3 = regPermResidence_3;
 	}
-
+	public String getFeeCcy() {
+		return feeCcy;
+	}
+	public void setFeeCcy(String feeCcy) {
+		this.feeCcy = feeCcy;
+	}
+	public String getFeeAcctNo() {
+		return feeAcctNo;
+	}
+	public void setFeeAcctNo(String feeAcctNo) {
+		this.feeAcctNo = feeAcctNo;
+	}
+	public String getAcctNo1() {
+		return acctNo1;
+	}
+	public void setAcctNo1(String acctNo1) {
+		this.acctNo1 = acctNo1;
+	}
+	public String getAcctNo2() {
+		return acctNo2;
+	}
+	public void setAcctNo2(String acctNo2) {
+		this.acctNo2 = acctNo2;
+	}
+	
 }

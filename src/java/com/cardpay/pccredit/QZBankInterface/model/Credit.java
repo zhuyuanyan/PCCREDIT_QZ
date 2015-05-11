@@ -34,6 +34,7 @@ public class Credit extends BusinessModel{
     	private Date globalEffDate;
     	private String agriFlag;
     	private String countryCode;
+    	private String nationalityCode;
     	private String regPermResidence;
     	
     	private String regPermResidence_1;
@@ -58,6 +59,7 @@ public class Credit extends BusinessModel{
     	private String higherOrgNo;
     	private String acctExec;
     	private Date openAcctDate;
+    	private String bussType;
     	
     	private String createBy;
     	private String userId;
@@ -319,5 +321,16 @@ public class Credit extends BusinessModel{
 		public void setRegPermResidence_3(String regPermResidence_3) {
 			this.regPermResidence_3 = regPermResidence_3;
 		}
-    	
+		public String getNationalityCode() {
+			return nationalityCode;
+		}
+		public void setNationalityCode(String nationalityCode) {
+			this.nationalityCode = nationalityCode;
+		}
+		public String getBussType() {
+			return bussType;
+		}
+		public void setBussType(String bussType) {
+			this.bussType = bussType;
+		}
     }
