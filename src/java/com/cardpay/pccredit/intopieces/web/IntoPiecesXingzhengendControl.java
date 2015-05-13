@@ -98,6 +98,14 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	public AbstractModelAndView createUpload(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
 		String appId = request.getParameter(ID);
 		List<QzDcnrUploadForm>  result =intoPiecesService.getUploadList(appId);
+		for(int i=0;i<result.size();i++){
+			if(result.get(i).getHetongId()==null){
+				result.get(i).setHetongId("");
+				result.get(i).setUserName("");
+				result.get(i).setCardId("");
+			}
+		}
+
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_xingzhengend_upload", request);
 		mv.addObject("result", result);
 		mv.addObject("appId",appId);

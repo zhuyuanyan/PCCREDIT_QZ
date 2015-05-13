@@ -79,15 +79,9 @@
              <td></td>
             #else
             <td>$video.remark</td>
-            #if($video.hetongId=='null')
-            <td></td>
-            <td></td>
-            <td></td>
-            #else
             <td>$video.hetongId</td>
             <td>$video.userName</td>
             <td>$video.cardId</td>
-            #end
             <td><a href="javascript:void(0)" onclick="viewOidPicture('${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=true')"><img src="${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=false"/></a></td>
             #end
             </tr>
