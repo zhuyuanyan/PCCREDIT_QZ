@@ -80,7 +80,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView(
-				"/intopieces/intopieces_wait/intopiecesApprove_xindai", request);
+				"/intopieces/intopieces_wait/intopiecesApprove_xingzhengend", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("filter", filter);
 		return mv;
@@ -98,6 +98,14 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	public AbstractModelAndView createUpload(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
 		String appId = request.getParameter(ID);
 		List<QzDcnrUploadForm>  result =intoPiecesService.getUploadList(appId);
+		for(int i=0;i<result.size();i++){
+			if(result.get(i).getHetongId()==null){
+				result.get(i).setHetongId("");
+				result.get(i).setUserName("");
+				result.get(i).setCardId("");
+			}
+		}
+
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_xingzhengend_upload", request);
 		mv.addObject("result", result);
 		mv.addObject("appId",appId);
@@ -122,7 +130,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 				map.put(JRadConstants.MESSAGE, Constant.FILE_EMPTY);
 				return map;
 			}
-			intoPiecesService.saveJydByCustomerId(request.getParameter("appId"),request.getParameter("remark"),file);
+			intoPiecesService.saveHtByCustomerId(request.getParameter("appId"),request.getParameter("remark"),request.getParameter("hetongId"),request.getParameter("userName"),request.getParameter("cardId"),file);
 			map.put(JRadConstants.SUCCESS, true);
 			map.put(JRadConstants.MESSAGE, Constant.SUCCESS_MESSAGE);
 		} catch (Exception e) {

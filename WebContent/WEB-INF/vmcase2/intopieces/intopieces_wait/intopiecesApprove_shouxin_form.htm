@@ -202,8 +202,7 @@
 	   	          $.post("${modulePath}/insert.json", formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
-	   	            	var url = "${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
-	   	                window.location.href = url;
+	   	            	javascript:history.back(-1);
 	   	            }
 	   	          });
 		})

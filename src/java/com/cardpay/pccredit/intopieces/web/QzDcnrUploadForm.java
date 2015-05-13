@@ -21,6 +21,12 @@ public class QzDcnrUploadForm extends BaseModel{
 	
 	private String applicationId;
 	
+	private String hetongId;
+	
+	private String userName;
+	
+	private String cardId;
+	
 	private String uploadId;
 	
 	private String fileName;
@@ -98,6 +104,30 @@ public class QzDcnrUploadForm extends BaseModel{
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getHetongId() {
+		return hetongId;
+	}
+
+	public void setHetongId(String hetongId) {
+		this.hetongId = hetongId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getCardId() {
+		return cardId;
+	}
+
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
 	}
 
 }
