@@ -172,4 +172,26 @@ public class IntoPiecesShouxinControl extends BaseController {
 		}
 		return returnMap;
 	}
+	
+	/**
+	 * 申请件退件
+	 * 从授信岗--行政岗
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "returnAppln.json")
+	public JRadReturnMap returnAppln(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			intoPiecesService.returnAppln(appId, request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
 }

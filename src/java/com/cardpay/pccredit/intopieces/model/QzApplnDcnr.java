@@ -22,6 +22,9 @@ public class QzApplnDcnr extends BusinessModel {
 	private String reportName;
 	private String loadStatus;
 	private String applicationId;
+	private String hetongId;
+	private String userName;
+	private String cardId;
 	public String getId() {
 		return id;
 	}
@@ -57,6 +60,24 @@ public class QzApplnDcnr extends BusinessModel {
 	}
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
+	}
+	public String getHetongId() {
+		return hetongId;
+	}
+	public void setHetongId(String hetongId) {
+		this.hetongId = hetongId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getCardId() {
+		return cardId;
+	}
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
 	}
 	
 }
