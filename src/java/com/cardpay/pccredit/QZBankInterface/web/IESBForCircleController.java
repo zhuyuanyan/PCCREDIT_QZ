@@ -1,13 +1,22 @@
 package com.cardpay.pccredit.QZBankInterface.web;
 
+import java.sql.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.QZBankInterface.filter.EcifFilter;
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
@@ -16,12 +25,17 @@ import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
+import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
+import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
@@ -35,11 +49,65 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
  * 程序的简单说明 
  */
 @Controller
-@RequestMapping("/qzbankinterface/circle/*")
-@JRadModule("qzbankinterface.circle")
+@RequestMapping("/intopieces/circle/*")
+@JRadModule("intopieces.circle")
 public class IESBForCircleController extends BaseController{
 	@Autowired
 	private CircleService circleService;
+	
+	@Autowired
+	private ECIFService eCIFService; 
+	
+	/**
+	 * 浏览页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute EcifFilter filter,
+			HttpServletRequest request) {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = user.getId();
+		filter.setUserId(userId);
+		QueryResult<Circle> result = circleService.findCircleByFilter(filter);
+		JRadPagedQueryResult<Circle> pagedResult = new JRadPagedQueryResult<Circle>(
+				filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView(
+				"/qzbankinterface/iesbforcircle_browse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
+		return mv;
+	}
+	
+	/*
+	 * 跳转到修改客户信息页面
+	 * 
+	 * @param request
+	 * @return
+	*/
+	@ResponseBody
+	@RequestMapping(value = "display.page")
+	public AbstractModelAndView change(HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_display", request);
+		
+		//查找新开户
+		List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_CIRCLE);
+		mv.addObject("ECIF_ls",ls);
+		JSONArray json = new JSONArray();
+		json = JSONArray.fromObject(ls);
+		mv.addObject("ECIF_ls_json",json.toString());
+				
+		String clientNo = request.getParameter(ID).split("_")[0];
+		Circle circle = circleService.findCircleByClientNo(clientNo);
+		mv.addObject("circle",circle);
+		return mv;
+	}
 	
 	/*
 	 * 跳转到增加客户信息页面
@@ -49,8 +117,27 @@ public class IESBForCircleController extends BaseController{
 	*/
 	@ResponseBody
 	@RequestMapping(value = "create.page")
-	public AbstractModelAndView create(HttpServletRequest request) {        
+	public AbstractModelAndView create(HttpServletRequest request) { 
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);
+		
+		//查找新开户
+		List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
+		mv.addObject("ECIF_ls",ls);
+		JSONArray json = new JSONArray();
+		json = JSONArray.fromObject(ls);
+		mv.addObject("ECIF_ls_json",json.toString());
+		
+		//查找登录用户信息
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String orgId = user.getOrganization().getId();//机构ID
+		String parentOrgId = user.getOrganization().getParentId();//机构ID
+		if(parentOrgId.equals("000000")){//替换为泉州总行id
+			parentOrgId = Constant.QZ_ORG_ROOT_ID;
+		}
+		String externalId = user.getLogin();//工号
+		mv.addObject("orgId",orgId);
+		mv.addObject("parentOrgId",parentOrgId);
+		mv.addObject("externalId",externalId);
 		return mv;
 	}
 	
@@ -67,12 +154,60 @@ public class IESBForCircleController extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				//设置级联选项
-				iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_6().split("_")[1]);
-				iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_4().split("_")[1]);
+				//设置级联选项 级联未考虑空情况，已注释
+				if(iesbForCircleForm.getLoanKind_1() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_1().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanKind_2() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_2().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanKind_3() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_3().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanKind_4() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_4().split("_")[1]);
+				}
+				
+				if(iesbForCircleForm.getAgriLoanKind_1() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_1().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_2() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_2().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_3() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_3().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_4() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_4().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_5() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_5().split("_")[1]);
+				}
+				
 				iesbForCircleForm.setLoanDirection(iesbForCircleForm.getLoanDirection_4().split("_")[1]);
-				iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_5().split("_")[1]);
+				
+				if(iesbForCircleForm.getLoanBelong1_1() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_1().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_2() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_2().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_3() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_3().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_4() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_4().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_5() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_5().split("_")[1]);
+				}
+				
 				iesbForCircleForm.setRegPermResidence(iesbForCircleForm.getRegPermResidence_3().split("_")[1]);
+				
+				//替换为总行id
+				if(iesbForCircleForm.getHigherOrgNo().equals(Constant.QZ_ORG_ROOT_ID)){
+					iesbForCircleForm.setHigherOrgNo("000000");
+				}
 				
 				Circle circle = iesbForCircleForm.createModel(Circle.class);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);

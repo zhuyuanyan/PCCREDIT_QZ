@@ -4,10 +4,12 @@ package com.cardpay.pccredit.QZBankInterface.service;
  * 信贷管理系统接口，经ESB转发
  * Created by johhny on 15/4/11.
  */
-import java.util.Collection;
-import java.util.Iterator;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import com.cardpay.pccredit.QZBankInterface.model.Credit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,11 @@ import com.dc.eai.data.CompositeData;
 import com.dc.eai.data.Field;
 import com.dc.eai.data.FieldAttr;
 import com.dc.eai.data.FieldType;
-import com.dcfs.esb.pack.standardxml.PackUtil;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.modules.dictionary.DictionaryManager;
+import com.wicresoft.jrad.modules.dictionary.model.Dictionary;
+import com.wicresoft.jrad.modules.dictionary.model.DictionaryItem;
+import com.wicresoft.util.spring.Beans;
 
 @Service
 public class IESBForCredit {
@@ -29,19 +34,32 @@ public class IESBForCredit {
      * @return
      */
     public static CompositeData createCommonCreditRequest(Credit credit) {
+    	SimpleDateFormat formatter8 = new SimpleDateFormat("yyyyMMdd");
+    	SimpleDateFormat formatter10 = new SimpleDateFormat("yyyy-MM-dd");
         CompositeData cd = new CompositeData();
 
         //SYS_HEAD
         CompositeData syaHead_struct = new CompositeData();
         //在syaHead_struct中加SERVICECODE
         Field serviceCodeField = new Field(new FieldAttr(FieldType.FIELD_STRING, 11));
-        serviceCodeField.setValue("02002000005");//传统微贷服务服务码
+        //serviceCodeField.setValue("02002000005");//传统微贷服务服务码
         syaHead_struct.addField("SERVICE_CODE", serviceCodeField);
 
         //在syaHead_struct中加SERVICESCENE
         Field serviceSceneField = new Field(new FieldAttr(FieldType.FIELD_STRING, 2));
         serviceSceneField.setValue("01"); //个人微贷对应服务场景01
         syaHead_struct.addField("SERVICE_SCENE", serviceSceneField);
+        
+        //在syaHead_struct中加TRAN_DATE
+        Field tran_datefield = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
+        tran_datefield.setValue(formatter8.format(new Date())); //交易日期
+        syaHead_struct.addField("TRAN_DATE", tran_datefield);
+        
+       //在syaHead_struct中加CONSUMER_ID
+        Field consumer_idField = new Field(new FieldAttr(FieldType.FIELD_STRING, 6));
+        consumer_idField.setValue("300025"); //消费系统编号
+        syaHead_struct.addField("CONSUMER_ID", consumer_idField);
+        
         cd.addStruct("SYS_HEAD", syaHead_struct);
 
         //BODY
@@ -49,12 +67,14 @@ public class IESBForCredit {
 
         //客户号
         Field CLIENT_NO=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
+		//CLIENT_NO.setValue("2000006234233009");//todo:传入客户号
         CLIENT_NO.setValue(credit.getClientNo());//todo:传入客户号
         body_struct.addField("CLIENT_NO", CLIENT_NO);
 
         //币种
         Field CCY=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        CCY.setValue("CNY");//人民币
+        //CCY.setValue("CNY");//人民币
+        CCY.setValue(credit.getCcy());//人民币
         body_struct.addField("CCY", CCY);
 
         //授信额度
@@ -64,12 +84,14 @@ public class IESBForCredit {
 
         //担保方式
         Field GUARANTEE_MODE=new Field(new FieldAttr(FieldType.FIELD_STRING,10));
-        GUARANTEE_MODE.setValue("B");//抵押 todo:置后担保，需确认
+        //GUARANTEE_MODE.setValue("B");//抵押 todo:置后担保，需确认
+        GUARANTEE_MODE.setValue(credit.getGuaranteeMode());//抵押 todo:置后担保，需确认
         body_struct.addField("GUARANTEE_MODE", GUARANTEE_MODE);
 
         //期限类型
         Field TERM_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        TERM_TYPE.setValue("002");//todo:传入期限类型，年，月，日
+        //TERM_TYPE.setValue("002");//todo:传入期限类型，年，月，日
+        TERM_TYPE.setValue(credit.getTermType());//todo:传入期限类型，年，月，日
         body_struct.addField("TERM_TYPE", TERM_TYPE);
 
         //期限
@@ -78,14 +100,20 @@ public class IESBForCredit {
         body_struct.addField("TERM", TERM);
 
         //贷款起始日期
-        Field START_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        START_DATE.setValue(credit.getStartDate());//todo:传入起始日期 YYYYMMdd
+        Field START_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        START_DATE.setValue(formatter10.format(credit.getStartDate()));//todo:传入起始日期 YYYYMMdd
         body_struct.addField("START_DATE", START_DATE);
 
         //贷款结束日期
-        Field END_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        END_DATE.setValue(credit.getEndDate());//todo:传入结束日期
+        Field END_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        END_DATE.setValue(formatter10.format(credit.getEndDate()));//todo:传入结束日期
         body_struct.addField("END_DATE", END_DATE);
+        
+        //业务类型
+        Field BUSS_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 50));
+        //BUSS_TYPE.setValue("001");//todo:传入业务类型 001 消费类 002 经营类
+        BUSS_TYPE.setValue(credit.getBussType());//todo:传入业务类型 001 消费类 002 经营类
+        body_struct.addField("BUSS_TYPE", BUSS_TYPE);
 
         /*
         客户信息数组 todo:需要在前端补录应在前端补录
@@ -96,7 +124,7 @@ public class IESBForCredit {
         //客户号
         Field A_CLIENT_NO = new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
         A_CLIENT_NO.setValue(credit.getClientNo());//todo:传入客户号
-        CusArrayStruct.addField("A_CLIENT_NO", A_CLIENT_NO);
+        CusArrayStruct.addField("CLIENT_NO", A_CLIENT_NO);
 
         //客户名称
         Field CLIENT_NAME = new Field(new FieldAttr(FieldType.FIELD_STRING, 150));
@@ -110,12 +138,35 @@ public class IESBForCredit {
 
         //客户类型
         Field CLIENT_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 6));
-        CLIENT_TYPE.setValue("Z");//个人客户 todo:文档中多个个人客户码，测试需明确
+        //CLIENT_TYPE.setValue("Z");//个人客户 todo:文档中多个个人客户码，测试需明确
+        CLIENT_TYPE.setValue(credit.getClientType());//个人客户 todo:文档中多个个人客户码，测试需明确
         CusArrayStruct.addField("CLIENT_TYPE", CLIENT_TYPE);
 
         //证件类型
         Field GLOBAL_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 5));
-        GLOBAL_TYPE.setValue(credit.getGlobalType());//身份证
+        GLOBAL_TYPE.setValue("99");//默认值
+        //GLOBAL_TYPE.setValue("0");//身份证
+        //GLOBAL_TYPE.setValue(circle.getGlobalType());//身份证
+        //转换"证件类型" 为 "信贷证件类型"
+        String tmp_title = "";
+        DictionaryManager dictMgr = Beans.get(DictionaryManager.class);
+        Dictionary dictionary = dictMgr.getDictionaryByName("CERT_TYPE");
+        List<DictionaryItem> dictItems = dictionary.getItems();
+		for(DictionaryItem item : dictItems){
+			if(item.getName().equals(credit.getGlobalType())){
+				tmp_title = item.getTitle();
+				break;
+			}
+		}
+		
+		Dictionary dictionary_for_xd = dictMgr.getDictionaryByName("CERT_TYPE_FOR_XD");
+		List<DictionaryItem> dictItems_for_xd = dictionary_for_xd.getItems();
+		for(DictionaryItem item : dictItems_for_xd){
+			if(item.getTitle().equals(tmp_title)){
+				GLOBAL_TYPE.setValue(item.getName());
+				break;
+			}
+		}
         CusArrayStruct.addField("GLOBAL_TYPE", GLOBAL_TYPE);
 
         //证件号码
@@ -125,17 +176,18 @@ public class IESBForCredit {
 
         //长期证件标志 todo:数据字典缺失
         Field LONG_GLOBAL_TYPE = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        LONG_GLOBAL_TYPE.setValue("1");//todo:传入标识
+        //LONG_GLOBAL_TYPE.setValue("1");//todo:传入标识
+        LONG_GLOBAL_TYPE.setValue(credit.getLongGlobalType());//todo:传入标识
         CusArrayStruct.addField("LONG_GLOBAL_TYPE", LONG_GLOBAL_TYPE);
 
         //签发日期
-        Field ISS_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        ISS_DATE.setValue(credit.getIssDate());//todo:传入数值，无则置空
+        Field ISS_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        ISS_DATE.setValue(formatter10.format(credit.getIssDate()));//todo:传入数值，无则置空
         CusArrayStruct.addField("ISS_DATE", ISS_DATE);
 
         //证件有效日期
-        Field GLOBAL_EFF_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        GLOBAL_EFF_DATE.setValue(credit.getGlobalEffDate());//todo:传入数值，无则置空
+        Field GLOBAL_EFF_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        GLOBAL_EFF_DATE.setValue(formatter10.format(credit.getGlobalEffDate()));//todo:传入数值，无则置空
         CusArrayStruct.addField("GLOBAL_EFF_DATE", GLOBAL_EFF_DATE);
 
         //农户标识 todo:数据字典缺失
@@ -145,12 +197,14 @@ public class IESBForCredit {
 
         //国家代码
         Field COUNTRY_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 3));
-        COUNTRY_CODE.setValue("CHN");//中国
+        //COUNTRY_CODE.setValue("CHN");//中国
+        COUNTRY_CODE.setValue(credit.getCountryCode());//中国
         CusArrayStruct.addField("COUNTRY_CODE", COUNTRY_CODE);
 
         //民族代码
         Field NATIONALITY_CODE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        NATIONALITY_CODE.setValue("01");//todo:传入民族，例如 “汉”
+        //NATIONALITY_CODE.setValue("01");//todo:传入民族，例如 “汉”
+        NATIONALITY_CODE.setValue(credit.getNationalityCode());//todo:传入民族，例如 “汉”
         CusArrayStruct.addField("NATIONALITY_CODE", NATIONALITY_CODE);
 
         //户籍所在地
@@ -165,7 +219,7 @@ public class IESBForCredit {
 
         //出生日期
         Field BIRTH_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
-        BIRTH_DATE.setValue(credit.getBirthDate());//todo:传入出生日期，格式YYYYMMdd
+        BIRTH_DATE.setValue(formatter10.format(credit.getBirthDate()));//todo:传入出生日期，格式YYYYMMdd
         CusArrayStruct.addField("BIRTH_DATE", BIRTH_DATE);
 
         //最高学历 todo:字典项缺失
@@ -179,8 +233,8 @@ public class IESBForCredit {
         CusArrayStruct.addField("DEGREE", DEGREE);
 
         //签约日期
-        Field SIGN_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        SIGN_DATE.setValue(credit.getSignDate());//todo:传入签约日期，格式YYYYMMdd
+        Field SIGN_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        SIGN_DATE.setValue(formatter10.format(credit.getSignDate()));//todo:传入签约日期，格式YYYYMMdd
         CusArrayStruct.addField("SIGN_DATE", SIGN_DATE);
 
         //持卡情况 todo:数据字典项缺失
@@ -199,8 +253,8 @@ public class IESBForCredit {
         CusArrayStruct.addField("CREDIT_LEVEL", CREDIT_LEVEL);
 
         //信用到期日期
-        Field EXPIRY_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        EXPIRY_DATE.setValue(credit.getExpiryDate());//todo:传入到期日期
+        Field EXPIRY_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        EXPIRY_DATE.setValue(formatter10.format(credit.getExpiryDate()));//todo:传入到期日期
         CusArrayStruct.addField("EXPIRY_DATE", EXPIRY_DATE);
 
         //是否关联客户 todo:数据字典项缺失
@@ -245,8 +299,8 @@ public class IESBForCredit {
         CusArrayStruct.addField("ACCT_EXEC", ACCT_EXEC);
 
         //开户日期
-        Field OPEN_ACCT_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 8));
-        OPEN_ACCT_DATE.setValue(credit.getOpenAcctDate());//todo:传入开户日期，YYYYMMdd
+        Field OPEN_ACCT_DATE = new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
+        OPEN_ACCT_DATE.setValue(formatter10.format(credit.getOpenAcctDate()));//todo:传入开户日期，YYYYMMdd
         CusArrayStruct.addField("OPEN_ACCT_DATE", OPEN_ACCT_DATE);
 
         //信息加入数组
@@ -261,7 +315,9 @@ public class IESBForCredit {
      * 解析CompositeData报文
      * @param cd
      */
-    public static void parseCreditResponse(CompositeData cd){
-        //todo:需要返回格式
-    }
+
+	public boolean parseEcifResponse(CompositeData resp) {
+		
+		return true;
+	}
 }

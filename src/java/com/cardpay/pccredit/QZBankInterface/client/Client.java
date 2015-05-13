@@ -8,11 +8,14 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.Log4JCategoryLog;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import com.dc.eai.data.CompositeData;
@@ -31,12 +34,19 @@ import com.cardpay.pccredit.QZBankInterface.service.IESBForECIF;
  */
 
 @Service
-public class Client {
+public class Client implements InitializingBean{
 	private static Log log = LogFactory.getLog(Client.class);
 	
-	public Client() {
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
 		//这一步不能少，这是指定密钥文件所在路径(密钥文件不必一定放在工程的src下，也可以放在工程外面) todo:需要秘钥文件
-        System.setProperty(ClientConfig.FILEPATH, new File("").getAbsolutePath()+"/src/java/");
+        //System.setProperty(ClientConfig.FILEPATH, new File("").getAbsolutePath()+"/src/java/");
+		//tomcat 可动态获取
+		//String path = this.getClass().getResource("/").toString();
+		//System.setProperty(ClientConfig.FILEPATH,path.substring(6, path.length()));
+		//jboss weblogic直接写死路径
+		System.setProperty(ClientConfig.FILEPATH,"/usr/cardpay/esb/");
         //设置log4j配置文件路径
         //PropertyConfigurator.configure(new File("").getAbsolutePath()+"/src/java/log4j.properties");
 	}

@@ -5,17 +5,32 @@
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
 			<menu id="030010" name="intopiecesquery" title="进件查询" url="/intopieces/intopiecesquery/browse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
 			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> -->
-			<menu id="030020" name="applyintopiecewait" title="申请件待审核" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|browse"></menu>
+			<!-- <menu id="030020" name="applyintopiecewait" title="申请件待审核" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|browse"></menu> -->
 			<!-- <menu id="030030" name="applyintopiecesquery" title="申请件上传银联" url="/intopieces/applyintopiecesquery/applyIntopiecesQuery.page" img="" operations="exportupload|display|browse"></menu> -->
+			<!--<menu id="030040" name="carcenter" title="卡中心卡片管理" url="/intopieces/carcenter/queryCard.page" img="" operations="create|issuedorg|display|browse"></menu> -->
+			<!--<menu id="030050" name="orgnization" title="分支机构卡片管理" url="/intopieces/orgnization/managerQueryCard.page" img="" operations="issuedcustomer|display|browse"></menu> -->
+			<menu id="030060" name="ecif" title="客户开户" url="/intopieces/ecif/browse.page" img="" operations="create|display|browse"/>
+			<menu id="030070" name="circle" title="申请循环贷款" url="/intopieces/circle/browse.page" img="" operations="create|display|browse"/>
+			<!-- <menu id="030080" name="credit" title="申请传统贷款" url="/intopieces/credit/create.page" img="" operations="create|browse"/> 传统贷不在本系统操作 -->
+<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse"></menu>
+			<menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/approve.page" img="" operations="browse"></menu>
+			 <menu id="030002" name="intopiecesreceive" title="初审进件" url="/intopieces/intopiecesrecieve/chushen.page" img="" operations="browse"></menu>
+			<menu id="030004" name="intopiecesxingzheng1" title="行政岗-初" url="/intopieces/intopiecesxingzheng1/xingzhengbegin.page" img="" operations="browse"></menu>
+			<menu id="030005" name="intopiecesshouxin" title="授信审批岗" url="/intopieces/intopiecesshouxin/shouxin.page" img="" operations="browse"></menu>
+			<menu id="030006" name="intopieceszhongxin" title="中心负责岗" url="/intopieces/intopieceszhongxin/zhongxin.page" img="" operations="browse"></menu>
+			<menu id="030007" name="intopiecesxindai" title="信贷岗" url="/intopieces/intopiecesxindai/xindai.page" img="" operations="browse"></menu>
+			<menu id="030007" name="intopiecesxingzheng2" title="行政岗-终" url="/intopieces/intopiecesxingzheng2/xingzhengend.page" img="" operations="browse"></menu>
+			
+			
+			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> 
+			<menu id="030020" name="applyintopiecewait" title="申请件待审核" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|browse"></menu>
+			<menu id="030030" name="applyintopiecesquery" title="申请件上传银联" url="/intopieces/applyintopiecesquery/applyIntopiecesQuery.page" img="" operations="exportupload|display|browse"></menu> 
 			<menu id="030040" name="carcenter" title="卡中心卡片管理" url="/intopieces/carcenter/queryCard.page" img="" operations="create|issuedorg|display|browse"></menu>
-			<menu id="030050" name="orgnization" title="分支机构卡片管理" url="/intopieces/orgnization/managerQueryCard.page" img="" operations="issuedcustomer|display|browse"></menu>
-		</menu>
+			<menu id="030050" name="orgnization" title="分支机构卡片管理" url="/intopieces/orgnization/managerQueryCard.page" img="" operations="issuedcustomer|display|browse"></menu>-->		</menu>
 		<menu id="040000" name="customer" title="客户管理" operations="">
 			<menu id="040010" name="basiccustomerinfor" title="客户原始信息管理" url="/customer/basiccustomerinfor/intopiecesbrowse.page" img="" operations="approveloguser|approvelog|displayaccount|display|browse"/>
 			<!-- <menu id="040011" name="basiccustomerinforCreate" title="客户信息新增" url="/customer/basiccustomerinforCreate/insert.page" img="" operations="create|browse"/> -->
-			<menu id="040011" name="basiccustomerinforCreate" title="客户信息新增（ECIF）" url="/qzbankinterface/ecif/create.page" img="" operations="create|browse"/>
-			<menu id="040023" name="basiccustomerinforCreate1" title="客户信息新增（循环）" url="/qzbankinterface/circle/create.page" img="" operations="create|browse"/>
-			<menu id="040024" name="basiccustomerinforCreate2" title="客户信息新增（传统）" url="/qzbankinterface/credit/create.page" img="" operations="create|browse"/>
+			
 			<menu id="040012" name="basiccustomerinforUpdate" title="客户维护信息" url="/customer/basiccustomerinforUpdate/browse.page" img="" operations="create|change|transfer|maintenance|addblacklist|browse|delete"/>
 			<menu id="040013" name="basiccustomerinforAssess" title="客户评估信息" url="/customer/basiccustomerinforAssess/browse.page" img="" operations="create|change|delete|display|browse"/>
 			<menu id="040014" name="customerfilter" title="产品筛选客户" url="/customer/customerfilter/browse.page" img="" operations="browse"/>

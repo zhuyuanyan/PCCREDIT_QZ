@@ -58,6 +58,7 @@ public class IESBForCreditForm extends BaseForm{
 	private String higherOrgNo;
 	private String acctExec;
 	private Date openAcctDate;
+	private String bussType;
 	public String getClientNo() {
 		return clientNo;
 	}
@@ -303,5 +304,11 @@ public class IESBForCreditForm extends BaseForm{
 	}
 	public void setRegPermResidence_3(String regPermResidence_3) {
 		this.regPermResidence_3 = regPermResidence_3;
+	}
+	public String getBussType() {
+		return bussType;
+	}
+	public void setBussType(String bussType) {
+		this.bussType = bussType;
 	}
 }

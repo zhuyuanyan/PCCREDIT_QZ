@@ -96,6 +96,7 @@ public class NodeAuditService {
 	 */
 	public void insertNodeAudit(NodeAuditForm nodeAuditForm) {
 		NodeAudit nodeAudit = nodeAuditForm.createModel(NodeAudit.class);
+		nodeAudit.setIsDeleted(false);
 		commonDao.insertObject(nodeAudit);
 		if(StringUtils.isNotEmpty(nodeAuditForm.getAuditUserIds())){
 			for(String userId : nodeAuditForm.getAuditUserIds().split(",")){

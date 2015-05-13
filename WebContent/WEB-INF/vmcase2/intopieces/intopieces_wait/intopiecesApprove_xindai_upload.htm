@@ -1,0 +1,99 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_yxzl.js'></script>
+<script type="text/javascript" src="jquery-1.js"></script>
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+       <div class="place">
+       <div class="title">上传决议单</div>
+      </div>
+
+          <form id="myForm" action="${contextPath}/intopieces/intopiecesxindai/saveYxzl.json" enctype="multipart/form-data" method="post">
+          <div class="form-bd" id="formsId" style="border: 0px; padding-top:10px;">
+          <table class="form-bd-info" >
+						<tr>
+							<td width="5%"></td>
+							<td width="30%"><label>决议单:</label><input type="file" name="file" id="file"/><input type="hidden" name="appId" value="${appId}"/></td>
+							<td width="5%"><label for="name">备注:</label></td>
+							<td width="30%"><textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea></td>
+							<td width="10%" class="search_button"><input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxindai/create_upload.page?id=${appId}');"/></td>
+							
+						</tr>
+		  </table>
+          </div>
+          
+  
+      <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%">
+              <col width="15%">
+              <col width="20%">
+              <col width="20%">
+              <col width="20%">
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">调查内容</th>
+              <th nowrap="nowrap">资料名称</th>
+              <th nowrap="nowrap">备注</th>
+              <th nowrap="nowrap">查看图片</th>
+            </tr>
+            </table>
+            </div>
+      <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+          	<colgroup>
+             <col width="5%">
+              <col width="15%">
+              <col width="20%">
+              <col width="20%">
+              <col width="20%">
+            </colgroup>
+            #foreach($video in $!result)
+            <tr>
+            <td class="checkbox"><input type="radio" name="checkbox" value="$video.uploadId"/></td>
+            <td>$video.reportName</td>
+            #if($video.loadStatus!=1)
+            <td></td>
+            <td></td>
+            <td></td>
+            #else
+            <td>$video.fileName</td>
+            <td>$video.remark</td>
+            <td><a href="javascript:void(0)" onclick="viewOidPicture('${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=true')"><img src="${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=false"/></a></td>
+            #end
+            </tr>
+            #end
+          </table>
+      </div>
+     </form>
+      <div class="submit">
+          <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
+          <a id="id_in_button" class="btn_g" title="审批通过">审批通过</a>
+      </div>
+
+  </div>
+  </div>
+  
+  <script type="text/javascript">
+    var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	$(document).ready(function() {
+		//通过
+		$("#id_in_button").click(function() {
+			$.post("${contextPath}/intopieces/intopiecesxindai/save_apply.json?id=${appId}", {},
+		            function(data, textStatus, jqXhr) {
+		                if (data.success) {
+		                	var url ="${contextPath}/intopieces/intopiecesxindai/xindai.page";
+		                    window.location.href=url;
+		                } else {
+		                }
+		            });
+		});
+	})
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

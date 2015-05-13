@@ -513,20 +513,6 @@ AND A.IS_DELETED = '0'
 		where levels=4
 		order by name
 	</dictionary>
-	<dictionary name="LOAN_TYPE_LEVEL_5" title="贷款种类" timeout="10000">
-		select
-		parent_code ||'_'|| type_code as name,type_name as title
-		from LOAN_TYPE
-		where levels=5
-		order by name
-	</dictionary>
-	<dictionary name="LOAN_TYPE_LEVEL_6" title="贷款种类" timeout="10000">
-		select
-		parent_code ||'_'|| type_code as name,type_name as title
-		from LOAN_TYPE
-		where levels=6
-		order by name
-	</dictionary>
 	
 	<dictionary name="AGRICULTURE_TYPE_LEVEL_1" title="涉农贷款类型" timeout="10000">
 		select
@@ -554,6 +540,13 @@ AND A.IS_DELETED = '0'
 		parent_code ||'_'|| type_code as name,type_name as title
 		from AGRICULTURE_TYPE
 		where levels=4
+		order by name
+	</dictionary>
+	<dictionary name="AGRICULTURE_TYPE_LEVEL_5" title="涉农贷款类型" timeout="10000">
+		select
+		parent_code ||'_'|| type_code as name,type_name as title
+		from AGRICULTURE_TYPE
+		where levels=5
 		order by name
 	</dictionary>
 	<!-- ESB 数据字典 -->
