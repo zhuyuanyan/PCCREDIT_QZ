@@ -1,6 +1,7 @@
 #parse ("common/iframe_page_header.htm")
 <script src="${contextPath}/common/js/common/jquery.form.js"></script>
 <script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_yxzl.js'></script>
+<script type="text/javascript" src="jquery-1.js"></script>
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
 <body>
   <div class="content_main">
@@ -70,10 +71,9 @@
       </div>
      </form>
       <div class="submit">
-          <input type="button" class="btn_g" value="下载" onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"/>
-          <input id="id_in_button" type="button" class="btn_g" value="审批通过" />
+          <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
+          <a id="id_in_button" class="btn_g" title="审批通过">审批通过</a>
       </div>
-      
 
   </div>
   </div>

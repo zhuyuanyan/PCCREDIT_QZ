@@ -10,25 +10,27 @@
       </div>
 
           <form id="myForm" action="${contextPath}/intopieces/intopiecesxingzheng2/saveYxzl.json" enctype="multipart/form-data" method="post">
-          <div class="form-bd" id="formsId" style="border: 0px; padding-top:10px;">
-          <table class="form-bd-info" >
-			          <tr>
-			          <td><label>合同号:</label></td>
-			          <td><input class="rinpsty"  type="text" name="hth"/></td>
-			          <td><label>经办人:</label></td>
-			          <td><input class="rinpsty"  type="text" name="jbr"/></td>
-			          <td><label>卡号:</label></td>
-			          <td><input class="rinpsty"  type="text" name="kh"/></td>
-			          </tr>
-						<tr>
-							<td width="5%"></td>
-							<td width="30%"><label>合同扫描件:</label><input type="file" name="file" id="file"/><input type="hidden" name="appId" value="${appId}"/></td>
-							<td width="5%"><label for="name">备注:</label></td>
-							<td width="30%"><textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea></td>
-							<td width="10%" class="search_button"><input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxindai/create_upload.page?id=${appId}');"/></td>
-							
-						</tr>
-		  </table>
+         <div class="search">
+           <ul>
+          	  <li style="margin-right:40px;">
+                <span>合&nbsp;&nbsp;&nbsp;同&nbsp;&nbsp;&nbsp;号:<input class="rinpsty"  type="text" name="hetongId"/></span>
+              </li>
+              <li style="margin-right:40px;">
+                <span>经办人:<input class="rinpsty"  type="text" name="userName"/></span>
+              </li>
+              <li style="margin-right:40px;">
+                <span>卡号:<input class="rinpsty"  type="text" name="cardId"/></span>
+              </li>
+              <li style="margin-right:40px;">
+                <span>合同扫描件:<input type="file" name="file" id="file" /><input type="hidden" name="appId" value="${appId}"/></span>
+              </li>
+              <li style="margin-right:40px;">
+                <span>备&nbsp;&nbsp;&nbsp;注:<textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea></span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng2/create_upload.page?id=${appId}');"/>
+              </li>
+          </ul>         
           </div>
           
   
@@ -38,14 +40,18 @@
               <col width="5%">
               <col width="15%">
               <col width="20%">
+              <col width="10%">
+              <col width="10%">
               <col width="20%">
               <col width="20%">
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">调查内容</th>
-              <th nowrap="nowrap">资料名称</th>
               <th nowrap="nowrap">备注</th>
+              <th nowrap="nowrap">合同号</th>
+              <th nowrap="nowrap">经办人</th>
+              <th nowrap="nowrap">卡号</th>
               <th nowrap="nowrap">查看图片</th>
             </tr>
             </table>
@@ -56,6 +62,8 @@
              <col width="5%">
               <col width="15%">
               <col width="20%">
+              <col width="10%">
+              <col width="10%">
               <col width="20%">
               <col width="20%">
             </colgroup>
@@ -67,9 +75,13 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
+             <td></td>
             #else
-            <td>$video.fileName</td>
             <td>$video.remark</td>
+            <td>$video.hetongId</td>
+            <td>$video.userName</td>
+            <td>$video.cardId</td>
             <td><a href="javascript:void(0)" onclick="viewOidPicture('${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=true')"><img src="${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=false"/></a></td>
             #end
             </tr>
@@ -78,11 +90,9 @@
       </div>
      </form>
       <div class="submit">
-          <input type="button" class="btn_g" value="下载" onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"/>
-          <input id="id_in_button" type="button" class="btn_g" value="审批通过" />
+          <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
+          <a id="id_in_button" class="btn_g" title="审批通过">审批通过</a>
       </div>
-      
-
   </div>
   </div>
   

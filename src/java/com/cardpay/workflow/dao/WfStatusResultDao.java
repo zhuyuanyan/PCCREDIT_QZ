@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.workflow.models.WfStatusQueueRecord;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -41,6 +42,25 @@ public class WfStatusResultDao {
 		params.put("currentStatus", currentStatus);
 		params.put("exResult", exResult);
 		List<WfStatusResult> list = commonDao.queryBySql(WfStatusResult.class, sql, params);
+		if(list != null && list.size() > 0){
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+	/**
+	 * 根据节点查找节点流程
+	 * @param currentStatus
+	 * @param exUserID
+	 * @param exResult
+	 * @return
+	 * @throws SQLException
+	 */
+	public WfStatusQueueRecord getLastStatus(String beforeStatus) {
+		String sql = "select * from WF_STATUS_QUEUE_RECORD where CURRENT_STATUS = #{beforeStatus}";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("beforeStatus", beforeStatus);
+		List<WfStatusQueueRecord> list = commonDao.queryBySql(WfStatusQueueRecord.class, sql, params);
 		if(list != null && list.size() > 0){
 			return list.get(0);
 		} else {

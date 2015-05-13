@@ -97,10 +97,30 @@
 
           </table>
         </div>
+         <div class="dialog">
+			<form id="checkForm1" class="dialog-box" action="${contextPath}/intopieces/intopieceszhongxin/returnAppln.json">
+				<input type="hidden" name="appId" id="appId" value="${appId}" />
+				<div class="top">
+					退件 <span onclick="$('.dialog').hide();"></span>
+				</div>
+				<div class="content">
+					<p>
+						退件原因:<font color="red">*</font>
+					<textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re_button" type="button" class="btn btn-submit" value="确定" /> <input
+						 type="button" class="btn btn-submit" value="关闭" onclick="$('.dialog').hide();"/>
+				</div>
+			</form>
+		</div>
       <div class="pagebar">
         <div class="controlbtn">
          <a id="id_apply_button" class="btn_g" href="javascript:void(0);"  title="决议单">决议单</a>
 		<a id="id_pass_button" class="btn_g" href="javascript:void(0);"  title="审批通过">审批通过</a>
+		 <a id="id_return_button" class="btn_g" title="退件">退件</a>
+		<a id="id_reject_button" class="btn_g" href="javascript:void(0);"  title="拒件">拒件</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -142,6 +162,25 @@
 			}
 		});
 		
+		//退件
+		$("#id_re_button").click(function() {
+			$('.dialog').hide();
+			var applicationId= $($(".checkbox :checked")[0]).attr("value");
+			$("#appId").val(applicationId);
+			#set ($formName = "'#checkForm1'")
+			var formjson = $($formName).serialize();
+			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("退件成功!");	
+	            	var url = "${contextPath}/intopieces/intopieceszhongxin/zhongxin.page";
+	                window.location.href = url;
+	            }
+	          });
+		});
+		$('.dialog').hide();
+		$("#id_return_button").click(function() {
+			$('.dialog').show();
+      });
 	});
 	
 </script>

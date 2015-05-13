@@ -95,4 +95,10 @@ public class Constant {
 	public static String status_xinshen="信审岗";
 	public static String status_xingzheng2="行政岗-终";
 	public static String jyd_id="00001";//决议单默认ID
+	public static String htd_id="00002";//合同单默认ID
+	
+	/*审批结果*/
+	public static String APPLN_TYPE_1="审批通过";
+	public static String APPLN_TYPE_2="退件";
+	public static String APPLN_TYPE_3="拒件";
 }
