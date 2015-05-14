@@ -1,0 +1,135 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<script type="text/javascript" src="jquery-1.js"></script>
+</head>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">初审拒件</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">进件查询</div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/intopieces/intopiecesshouxin/shouxin.page">
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="15%"/>
+              <col width="17%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="13%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">申请金额</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">审核状态</th>
+              <th nowrap="nowrap">申请时间</th>
+              <th nowrap="nowrap">节点名称</th>
+              <th nowrap="nowrap">拒件原因</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="15%"/>
+              <col width="17%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+              <col width="13%"/>
+            </colgroup>
+           #foreach ($wait in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.applicationId"/></td>
+              <td nowrap="nowrap">$!wait.chineseName</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
+              <td nowrap="nowrap">#dictVal("CERT_TYPE",$!wait.cardType)</td>
+              
+              <td nowrap="nowrap">$!wait.cardId</td>
+              <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.auditTime)</td>
+              <td nowrap="nowrap">$!wait.nodeName</td>
+              <td nowrap="nowrap">$!wait.rejectRemark</td>
+            </tr>
+            #end
+
+
+          </table>
+        </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        <a id="id_in_button" class="btn_g" title="同意">同意</a>
+        <a id="id_out_button" class="btn_g" title="不同意">不同意</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+        	
+      </div>
+    </div>
+  </div>
+
+
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		
+		//同意
+		$("#id_in_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var applicationId= $($(".checkbox :checked")[0]).attr("value");
+				$.post("${contextPath}/intopieces/intopiecesshouxin/inToReject.json?id="+applicationId, {},
+			            function(data, textStatus, jqXhr) {
+			                if (data.success) {
+			                	var url ="${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
+			                    window.location.href=url;
+			                } else {
+			                }
+			            });
+			}else{
+				 Dialog.message("请选择一行");
+			}
+		});
+		
+	//不同意
+	$("#id_out_button").click(function() {
+		if ($(".checkbox :checked").length == 1) {
+			var applicationId= $($(".checkbox :checked")[0]).attr("value");
+			$.post("${contextPath}/intopieces/intopiecesshouxin/outToreject.json?id="+applicationId, {},
+		            function(data, textStatus, jqXhr) {
+		                if (data.success) {
+		                	var url ="${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
+		                    window.location.href=url;
+		                } else {
+		                }
+		            });
+		}else{
+			 Dialog.message("请选择一行");
+		}
+	});
+	
+});
+	
+</script>
+
+</body>
+</html>
+#parse ("common/iframe_page_footer.htm")

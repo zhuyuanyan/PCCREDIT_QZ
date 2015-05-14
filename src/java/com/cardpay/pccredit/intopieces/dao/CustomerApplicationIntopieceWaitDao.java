@@ -52,4 +52,9 @@ public interface CustomerApplicationIntopieceWaitDao {
 	public List<CustomerApplicationIntopieceWaitForm> IntopieceWaitForm(CustomerApplicationProcessFilter filter);
 	// 获取相应状态的进件count
 	public int CountIntopieceWaitForm(CustomerApplicationProcessFilter filter);
+	
+	// 获取初审拒件的进件
+	public List<CustomerApplicationIntopieceWaitForm> IntopieceChushenRejectForm();
+	// 获取初审拒件的进件count
+	public int CountIntopieceChushenRejectForm();
 }

@@ -920,7 +920,33 @@ public class IntoPiecesService {
 		infor.setProcessId("1");
 		commonDao.updateObject(infor);
 	}
-	
+	/* 初审节点拒件 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public void reject(QzApplnSxjcForm filter, HttpServletRequest request) throws Exception{
+		QzApplnSxjc sxjc = commonDao.findObjectById(QzApplnSxjc.class, filter.getApplicationId());
+		if(sxjc==null){
+			sxjc = new QzApplnSxjc();
+			sxjc.setApplication_id(filter.getApplicationId());
+		}
+		sxjc.setReality(filter.getReality());
+		sxjc.setComplete(filter.getComplete());
+		sxjc.setStandard(filter.getStandard());
+		commonDao.insertObject(sxjc);
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, filter.getApplicationId());
+		//获取客户信息
+		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+		//更新客户信息--拒件
+		infor.setProcessId("3");
+		commonDao.updateObject(infor);
+		
+		//通过申请表ID获取流程表
+		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(filter.getApplicationId());
+		//插入流程log表
+		insertProcessLog(filter.getApplicationId(),Constant.APPLN_TYPE_3,request,request.getParameter("jjyy"),process);
+	}
 	/**
 	 * 根据进件id获取调查内容附件记录
 	 */
@@ -1172,4 +1198,81 @@ public class IntoPiecesService {
 		commonDao.insertObject(processResult);
 	}
 	
+	
+	/*
+	 * 拒件
+	 */
+	public void rejectAppln(String applicationId,HttpServletRequest request) throws Exception{
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(applicationId);
+		//查找当前所处流转状态
+		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, process.getSerialNumber());
+		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+		
+		//进入下一流转之前 先更新当前流转
+		wfStatusQueueRecord.setExamineUser(loginId);
+		wfStatusQueueRecord.setExamineResult(ApplicationStatusEnum.REJECTAPPROVE);
+		wfStatusQueueRecord.setStartExamineTime(new Date());
+		commonDao.updateObject(wfStatusQueueRecord);
+		
+		wfProcessRecord.setIsClosed("1");
+		commonDao.updateObject(wfProcessRecord);
+		
+		//获取进件信息（改为拒件状态）
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+		applicationInfo.setStatus(Constant.REFUSE_INTOPICES);
+		applicationInfo.setModifiedBy(user.getId());
+		applicationInfo.setModifiedTime(new Date());
+		commonDao.updateObject(applicationInfo);
+		
+		//插入流程log表
+		insertProcessLog(applicationId,Constant.APPLN_TYPE_3,request,request.getParameter("remark"),process);
+	}
+	
+	/*
+	 * 授信岗同意初审拒件（不需要插入log，更新basic表）
+	 */
+	public void inToReject(String applicationId,HttpServletRequest request) throws Exception{
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(applicationId);
+		//查找当前所处流转状态
+		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, process.getSerialNumber());
+		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+		
+		//进入下一流转之前 先更新当前流转
+		wfStatusQueueRecord.setExamineUser(loginId);
+		wfStatusQueueRecord.setExamineResult(ApplicationStatusEnum.REJECTAPPROVE);
+		wfStatusQueueRecord.setStartExamineTime(new Date());
+		commonDao.updateObject(wfStatusQueueRecord);
+		
+		wfProcessRecord.setIsClosed("1");
+		commonDao.updateObject(wfProcessRecord);
+		
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+		applicationInfo.setStatus(Constant.REFUSE_INTOPICES);
+		applicationInfo.setModifiedBy(user.getId());
+		applicationInfo.setModifiedTime(new Date());
+		commonDao.updateObject(applicationInfo);
+		//获取客户信息
+		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+		//更新客户信息--还原
+		infor.setProcessId("");
+		commonDao.updateObject(infor);
+	}
+	
+	/*
+	 * 授信岗不同意初审拒件（状态还原）
+	 */
+	public void outToReject(String applicationId,HttpServletRequest request) throws Exception{
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+		//获取客户信息
+		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+		//更新客户信息--还原
+		infor.setProcessId("");
+		commonDao.updateObject(infor);
+	}
 }

@@ -164,4 +164,25 @@ public class IntoPiecesZhongxinControl extends BaseController {
 		}
 		return returnMap;
 	}
+	
+	/**
+	 * 申请件拒件
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rejectAppln.json")
+	public JRadReturnMap rejectAppln(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId1");
+			intoPiecesService.rejectAppln(appId, request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
 }

@@ -15,6 +15,17 @@
 		.dialog .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
 		.dialog .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
 		.dialog .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
+		.dialog1{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
+		.dialog1 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
+		.dialog1 .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog1 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
+		.dialog1.dialog-box .top span:hover{background:url(${contextPath}/images/xm_appln/box_delete_hov.png);}
+		.dialog1 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog1 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog1 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/xm_appln/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog1 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
+		.dialog1 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog1 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
 	</style>
 </head>
 <body>
@@ -115,11 +126,31 @@
 				</div>
 			</form>
 		</div>
+		<div class="dialog1">
+			<form id="checkForm2" class="dialog-box">
+				<input type="hidden" name="appId1" id="appId1" value="${appId}" />
+				<div class="top">
+					拒件 <span onclick="$('.dialog1').hide();"></span>
+				</div>
+				<div class="content">
+					<p>
+						拒件原因:<font color="red">*</font>
+					<textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re1_button" type="button" class="btn btn-submit" value="确定" /> <input
+						 type="button" class="btn btn-submit" value="关闭" onclick="$('.dialog1').hide();"/>
+				</div>
+			</form>
+		</div>
       <div class="pagebar">
         <div class="controlbtn">
          <a id="id_apply_button" class="btn_g" href="javascript:void(0);"  title="决议单">决议单</a>
 		<a id="id_pass_button" class="btn_g" href="javascript:void(0);"  title="审批通过">审批通过</a>
         <a id="id_return_button" class="btn_g" title="退件">退件</a>
+        <a id="id_reject_button" class="btn_g" title="退件">拒件</a>
+        <a id="id_chureject_button" class="btn_g" title="初审拒件记录">初审拒件记录</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -180,6 +211,28 @@
 		$("#id_return_button").click(function() {
 			$('.dialog').show();
       });
+		$("#id_reject_button").click(function() {
+			$('.dialog1').show();
+      });
+		//拒件
+		$("#id_re1_button").click(function() {
+			$('.dialog1').hide();
+			var applicationId= $($(".checkbox :checked")[0]).attr("value");
+			$("#appId1").val(applicationId);
+			#set ($formName = "'#checkForm2'")
+			var formjson = $($formName).serialize();
+			 $.get("${contextPath}/intopieces/intopieceszhongxin/rejectAppln.json", formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("拒件成功!");	
+	            	var url = "${contextPath}/intopieces/intopieceszhongxin/zhongxin.page";
+	                window.location.href = url;
+	            }
+	          });
+		});
+		$("#id_chureject_button").click(function() {
+            var url = "${contextPath}/intopieces/intopiecesshouxin/chushen_reject.page";
+            window.location.href = url;
+		});
 		
 	});
 	
