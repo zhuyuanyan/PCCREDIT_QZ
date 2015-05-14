@@ -66,6 +66,8 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 	private String userId;
 	private String productName;
 	
+	private String rejectRemark;//拒件原因
+	
 	public String getNodeName() {
 		return nodeName;
 	}
@@ -424,6 +426,14 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getRejectRemark() {
+		return rejectRemark;
+	}
+
+	public void setRejectRemark(String rejectRemark) {
+		this.rejectRemark = rejectRemark;
 	}
 
 }
