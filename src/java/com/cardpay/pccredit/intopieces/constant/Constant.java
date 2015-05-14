@@ -80,9 +80,12 @@ public class Constant {
 	public static String APP_STATE_2="未申请";
 	public static String APP_STATE_3="退回";
 	
-	/*默认产品*/
-	public static String DEFAULT_TYPE="1";
+	//泉州银行根机构id
+	public static String QZ_ORG_ROOT_ID = "9350000000";
 	
+/*默认产品*/
+	public static String DEFAULT_TYPE="1";
+
 	/*进件状态*/
 	public static String status_shenqing="申请";
 	public static String status_chushen="初审";

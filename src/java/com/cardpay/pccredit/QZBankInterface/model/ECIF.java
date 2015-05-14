@@ -14,6 +14,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 @ModelParam(table = "qz_iesb_for_ecif",generator=IDType.assigned)
 public class ECIF extends BusinessModel{
 	private static final long serialVersionUID = 1L;
+	private String id;
 	private String globalType;
 	private String globalId;
 	private String globalDesc;
@@ -38,12 +39,22 @@ public class ECIF extends BusinessModel{
 	private String countryCitizen;
 	private String nationalityCode;
 	private String regPermResidence;
+	
+	private String regPermResidence_1;
+	private String regPermResidence_2;
+	private String regPermResidence_3;
+	
 	private String openAcctBranchId;
 	private String openTellerNo;
 	private Date openAcctDate;
 	private String maritalStatus;
 	private String educationLevel;
 	private String city;
+	
+	private String city_1;
+	private String city_2;
+	private String city_3;
+	
 	private String areaCode;
 	private String incidenceRelation;
 	private String identityType;
@@ -54,147 +65,52 @@ public class ECIF extends BusinessModel{
 	private String contactMode;
 	private String occupation;
 	private String companyName;
-	private String createBy;
 	private String userId;
 
+	//ecif返回的信息
+	
     //增加贷款所需客户资料字段
 
-    //农户标志，是否农户,todo:界面需增加
-    private String AGRI_FLAG;
+    /*//农户标志，是否农户,todo:界面需增加
+    private String agriFlag;
     //最高学历，todo:界面需增加
-    private String EDUCATION;
+    private String education;
     //最高学位,todo:界面需增加
-    private String DEGREE;
+    private String degree;
     //签约日期,todo:界面需增加
-    private String SIGN_DATE;
+    private String signDate;
     //持卡情况，todo:界面需增加
-    private String HOLD_CARD_MSG;
+    private String holdCardMsg;
     //是否持有外国护照，todo：界面需增加
-    private String PASSPORT_FLAG;
+    private String passportFlag;
     //信用等级 todo:默认，界面不用增加
-    private String CREDIT_LEVEL;
+    private String creditLevel;
     //信用到期日期 todo:默认置空
-    private String EXPIRY_DATE;
+    private String expiryDate;
     //是否关联客户 todo:页面需增加
-    private String REL_CLIENT_FLAG;
+    private String relClientFlag;
     //与我行关系，为关联客户后需填 todo:页面需增加
-    private String OWN_BRANCH_RELATION;
+    private String ownBranchRelation;
     //我行职务，为关联客户后需填 todo:页面需增加
-    private String POST;
+    private String post;
     //贷款卡标志
-    private String LOAN_CARD_FLAG;
+    private String loanCardFlag;
     //贷款卡卡号，todo:页面需增加
-    private String LOAN_CARD_NO;
-
-    public String getAGRI_FLAG() {
-        return AGRI_FLAG;
-    }
-
-    public void setAGRI_FLAG(String AGRI_FLAG) {
-        this.AGRI_FLAG = AGRI_FLAG;
-    }
-
-    public String getEDUCATION() {
-        return EDUCATION;
-    }
-
-    public void setEDUCATION(String EDUCATION) {
-        this.EDUCATION = EDUCATION;
-    }
-
-    public String getDEGREE() {
-        return DEGREE;
-    }
-
-    public void setDEGREE(String DEGREE) {
-        this.DEGREE = DEGREE;
-    }
-
-    public String getSIGN_DATE() {
-        return SIGN_DATE;
-    }
-
-    public void setSIGN_DATE(String SIGN_DATE) {
-        this.SIGN_DATE = SIGN_DATE;
-    }
-
-    public String getHOLD_CARD_MSG() {
-        return HOLD_CARD_MSG;
-    }
-
-    public void setHOLD_CARD_MSG(String HOLD_CARD_MSG) {
-        this.HOLD_CARD_MSG = HOLD_CARD_MSG;
-    }
-
-    public String getPASSPORT_FLAG() {
-        return PASSPORT_FLAG;
-    }
-
-    public void setPASSPORT_FLAG(String PASSPORT_FLAG) {
-        this.PASSPORT_FLAG = PASSPORT_FLAG;
-    }
-
-    public String getCREDIT_LEVEL() {
-        return CREDIT_LEVEL;
-    }
-
-    public void setCREDIT_LEVEL(String CREDIT_LEVEL) {
-        this.CREDIT_LEVEL = CREDIT_LEVEL;
-    }
-
-    public String getEXPIRY_DATE() {
-        return EXPIRY_DATE;
-    }
-
-    public void setEXPIRY_DATE(String EXPIRY_DATE) {
-        this.EXPIRY_DATE = EXPIRY_DATE;
-    }
-
-    public String getREL_CLIENT_FLAG() {
-        return REL_CLIENT_FLAG;
-    }
-
-    public void setREL_CLIENT_FLAG(String REL_CLIENT_FLAG) {
-        this.REL_CLIENT_FLAG = REL_CLIENT_FLAG;
-    }
-
-    public String getOWN_BRANCH_RELATION() {
-        return OWN_BRANCH_RELATION;
-    }
-
-    public void setOWN_BRANCH_RELATION(String OWN_BRANCH_RELATION) {
-        this.OWN_BRANCH_RELATION = OWN_BRANCH_RELATION;
-    }
-
-    public String getPOST() {
-        return POST;
-    }
-
-    public void setPOST(String POST) {
-        this.POST = POST;
-    }
-
-    public String getLOAN_CARD_FLAG() {
-        return LOAN_CARD_FLAG;
-    }
-
-    public void setLOAN_CARD_FLAG(String LOAN_CARD_FLAG) {
-        this.LOAN_CARD_FLAG = LOAN_CARD_FLAG;
-    }
-
-    public String getLOAN_CARD_NO() {
-        return LOAN_CARD_NO;
-    }
-
-    public void setLOAN_CARD_NO(String LOAN_CARD_NO) {
-        this.LOAN_CARD_NO = LOAN_CARD_NO;
-    }
-
-	//ecif返回的信息
-	private String clientNo;//客户号
+    private String loanCardNo;
+*/
 	
+	private String clientNo;//客户号
+	private String status;//状态 0 未贷款 1 自助 2 传统
+	private String customerId;
+    
 	public String getGlobalType() {
 		return globalType;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	public void setGlobalType(String globalType) {
 		this.globalType = globalType;
@@ -223,24 +139,6 @@ public class ECIF extends BusinessModel{
 	public void setCertOrg(String certOrg) {
 		this.certOrg = certOrg;
 	}
-	public Date getIssDate() {
-		return issDate;
-	}
-	public void setIssDate(Date issDate) {
-		this.issDate = issDate;
-	}
-	public Date getEffectDate() {
-		return effectDate;
-	}
-	public void setEffectDate(Date effectDate) {
-		this.effectDate = effectDate;
-	}
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
 	public String getClientName() {
 		return clientName;
 	}
@@ -265,12 +163,6 @@ public class ECIF extends BusinessModel{
 	public void setClientStatus(String clientStatus) {
 		this.clientStatus = clientStatus;
 	}
-	public Date getBirthDate() {
-		return birthDate;
-	}
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
 	public String getSex() {
 		return sex;
 	}
@@ -289,12 +181,6 @@ public class ECIF extends BusinessModel{
 	public void setRecordTellerNo(String recordTellerNo) {
 		this.recordTellerNo = recordTellerNo;
 	}
-	public Date getRegisteredDate() {
-		return registeredDate;
-	}
-	public void setRegisteredDate(Date registeredDate) {
-		this.registeredDate = registeredDate;
-	}
 	public String getClientBelongOrg() {
 		return clientBelongOrg;
 	}
@@ -312,12 +198,6 @@ public class ECIF extends BusinessModel{
 	}
 	public void setRegistOrgNo(String registOrgNo) {
 		this.registOrgNo = registOrgNo;
-	}
-	public Date getOrgRegisteredDate() {
-		return orgRegisteredDate;
-	}
-	public void setOrgRegisteredDate(Date orgRegisteredDate) {
-		this.orgRegisteredDate = orgRegisteredDate;
 	}
 	public String getCountryCitizen() {
 		return countryCitizen;
@@ -348,12 +228,6 @@ public class ECIF extends BusinessModel{
 	}
 	public void setOpenTellerNo(String openTellerNo) {
 		this.openTellerNo = openTellerNo;
-	}
-	public Date getOpenAcctDate() {
-		return openAcctDate;
-	}
-	public void setOpenAcctDate(Date openAcctDate) {
-		this.openAcctDate = openAcctDate;
 	}
 	public String getMaritalStatus() {
 		return maritalStatus;
@@ -433,12 +307,6 @@ public class ECIF extends BusinessModel{
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	public String getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
 	public String getUserId() {
 		return userId;
 	}
@@ -446,4 +314,115 @@ public class ECIF extends BusinessModel{
 		this.userId = userId;
 	}
 
+	public String getClientNo() {
+		return clientNo;
+	}
+
+	public void setClientNo(String clientNo) {
+		this.clientNo = clientNo;
+	}
+
+	public Date getIssDate() {
+		return issDate;
+	}
+
+	public void setIssDate(Date issDate) {
+		this.issDate = issDate;
+	}
+
+	public Date getEffectDate() {
+		return effectDate;
+	}
+
+	public void setEffectDate(Date effectDate) {
+		this.effectDate = effectDate;
+	}
+
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	public Date getRegisteredDate() {
+		return registeredDate;
+	}
+
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+
+	public Date getOrgRegisteredDate() {
+		return orgRegisteredDate;
+	}
+
+	public void setOrgRegisteredDate(Date orgRegisteredDate) {
+		this.orgRegisteredDate = orgRegisteredDate;
+	}
+
+	public Date getOpenAcctDate() {
+		return openAcctDate;
+	}
+
+	public void setOpenAcctDate(Date openAcctDate) {
+		this.openAcctDate = openAcctDate;
+	}
+	public String getRegPermResidence_1() {
+		return regPermResidence_1;
+	}
+	public void setRegPermResidence_1(String regPermResidence_1) {
+		this.regPermResidence_1 = regPermResidence_1;
+	}
+	public String getRegPermResidence_2() {
+		return regPermResidence_2;
+	}
+	public void setRegPermResidence_2(String regPermResidence_2) {
+		this.regPermResidence_2 = regPermResidence_2;
+	}
+	public String getRegPermResidence_3() {
+		return regPermResidence_3;
+	}
+	public void setRegPermResidence_3(String regPermResidence_3) {
+		this.regPermResidence_3 = regPermResidence_3;
+	}
+	public String getCity_1() {
+		return city_1;
+	}
+	public void setCity_1(String city_1) {
+		this.city_1 = city_1;
+	}
+	public String getCity_2() {
+		return city_2;
+	}
+	public void setCity_2(String city_2) {
+		this.city_2 = city_2;
+	}
+	public String getCity_3() {
+		return city_3;
+	}
+	public void setCity_3(String city_3) {
+		this.city_3 = city_3;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
 }

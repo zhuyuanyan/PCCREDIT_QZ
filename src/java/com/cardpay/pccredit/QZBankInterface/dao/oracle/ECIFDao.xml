@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.QZBankInterface.dao.ECIFDao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.QZBankInterface.model.ECIF">
+		<result property="id" column="ID" />
+		<result property="globalType" column="GLOBAL_TYPE" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="globalDesc" column="GLOBAL_DESC" />
+		<result property="certAreaCode" column="CERT_AREA_CODE" />
+		<result property="certOrg" column="CERT_ORG" />
+		<result property="issDate" column="ISS_DATE" />
+		<result property="effectDate" column="EFFECT_DATE" />
+		<result property="expiryDate" column="EXPIRY_DATE" />
+		<result property="clientName" column="CLIENT_NAME" />
+		<result property="clientNameType" column="CLIENT_NAME_TYPE" />
+		<result property="clientType" column="CLIENT_TYPE" />
+		<result property="clientStatus" column="CLIENT_STATUS" />
+		<result property="birthDate" column="BIRTH_DATE" />
+		<result property="sex" column="SEX" />
+		<result property="custManagerId" column="CUST_MANAGER_ID" />
+		<result property="recordTellerNo" column="RECORD_TELLER_NO" />
+		<result property="registeredDate" column="REGISTERED_DATE" />
+		<result property="clientBelongOrg" column="CLIENT_BELONG_ORG" />
+		<result property="registeredTellerNo" column="REGISTERED_TELLER_NO" />
+		<result property="registOrgNo" column="REGIST_ORG_NO" />
+		<result property="orgRegisteredDate" column="ORG_REGISTERED_DATE" />
+		<result property="countryCitizen" column="COUNTRY_CITIZEN" />
+		<result property="nationalityCode" column="NATIONALITY_CODE" />
+		<result property="regPermResidence" column="REG_PERM_RESIDENCE" />
+		
+		<result property="regPermResidence_1" column="REG_PERM_RESIDENCE_1" />
+		<result property="regPermResidence_2" column="REG_PERM_RESIDENCE_2" />
+		<result property="regPermResidence_3" column="REG_PERM_RESIDENCE_3" />
+		
+		<result property="openAcctBranchId" column="OPEN_ACCT_BRANCH_ID" />
+		<result property="openTellerNo" column="OPEN_TELLER_NO" />
+		<result property="openAcctDate" column="OPEN_ACCT_DATE" />
+		<result property="maritalStatus" column="MARITAL_STATUS" />
+		<result property="educationLevel" column="EDUCATION_LEVEL" />
+		<result property="city" column="CITY" />
+		
+		<result property="city_1" column="CITY_1" />
+		<result property="city_2" column="CITY_2" />
+		<result property="city_3" column="CITY_3" />
+		
+		<result property="areaCode" column="AREA_CODE" />
+		<result property="incidenceRelation" column="INCIDENCE_RELATION" />
+		<result property="identityType" column="IDENTITY_TYPE" />
+		<result property="address" column="ADDRESS" />
+		<result property="addressType" column="ADDRESS_TYPE" />
+		<result property="postalCode" column="POSTAL_CODE" />
+		<result property="contactModeType" column="CONTACT_MODE_TYPE" />
+		<result property="contactMode" column="CONTACT_MODE" />
+		<result property="occupation" column="OCCUPATION" />
+		<result property="companyName" column="COMPANY_NAME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATE_TIME" />
+		<result property="userId" column="USER_ID" />
+		<result property="clientNo" column="CLIENT_NO" />
+		<result property="status" column="STATUS" />
+		<result property="customerId" column="CUSTOMER_ID" />
+	</resultMap>
+	
+	<!-- 时间格式不好处理  增加一个查询 -->
+	<select id="findAllECIFByStatus2" resultType="com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap">
+		select 
+		id ,
+		client_Name as clientName,
+		client_No as clientNo,
+		GLOBAL_TYPE as globalType,
+		GLOBAL_ID as globalId,
+		GLOBAL_DESC as globalDesc,
+		CERT_AREA_CODE as certAreaCode,
+		CERT_ORG as certOrg,
+		to_char(ISS_DATE,'yyyy-mm-dd') as issDate,
+		to_char(EFFECT_DATE,'yyyy-mm-dd') as effectDate,
+		to_char(EXPIRY_DATE,'yyyy-mm-dd') as expiryDate,
+		CLIENT_NAME_TYPE as clientNameType,
+		CLIENT_TYPE as clientType,
+		CLIENT_STATUS as clientStatus,
+		to_char(BIRTH_DATE,'yyyy-mm-dd') as birthDate,
+		SEX as sex,
+		CUST_MANAGER_ID as custManagerId,
+		RECORD_TELLER_NO as recordTellerNo,
+		to_char(REGISTERED_DATE,'yyyy-mm-dd') as registeredDate,
+		CLIENT_BELONG_ORG as clientBelongOrg,
+		REGISTERED_TELLER_NO as registeredTellerNo,
+		REGIST_ORG_NO as registOrgNo,
+		to_char(ORG_REGISTERED_DATE,'yyyy-mm-dd') as orgRegisteredDate,
+		COUNTRY_CITIZEN as countryCitizen,
+		NATIONALITY_CODE as nationalityCode,
+		REG_PERM_RESIDENCE as regPermResidence,
+		
+		REG_PERM_RESIDENCE_1 as regPermResidence_1,
+		REG_PERM_RESIDENCE_2 as regPermResidence_2,
+		REG_PERM_RESIDENCE_3 as regPermResidence_3,
+		
+		OPEN_ACCT_BRANCH_ID as openAcctBranchId,
+		OPEN_TELLER_NO as openTellerNo,
+		to_char(OPEN_ACCT_DATE,'yyyy-mm-dd') as openAcctDate,
+		MARITAL_STATUS as maritalStatus,
+		EDUCATION_LEVEL as educationLevel,
+		CITY as city,
+		
+		CITY_1 as city_1,
+		CITY_2 as city_2,
+		CITY_3 as city_3,
+		
+		AREA_CODE as areaCode,
+		INCIDENCE_RELATION as incidenceRelation,
+		IDENTITY_TYPE as identityType,
+		ADDRESS as address,
+		ADDRESS_TYPE as addressType,
+		POSTAL_CODE as postalCode,
+		CONTACT_MODE_TYPE as contactModeType,
+		CONTACT_MODE as contactMode,
+		OCCUPATION as occupation,
+		COMPANY_NAME as companyName
+		
+		from QZ_IESB_FOR_ECIF
+		where 
+		STATUS = #{status} 
+	</select>
+
+	<select id="findEcifByClientNo" resultMap="ResultMap">
+		select 
+		*
+		from QZ_IESB_FOR_ECIF
+		where client_no  = #{clientNo}
+	</select>
+		
+	<select id="findAllECIFByStatus" resultMap="ResultMap">
+		select 
+		*
+		from QZ_IESB_FOR_ECIF
+		where 
+		STATUS = #{status}
+	</select>
+	<select id="findEcifByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
+	    resultMap="ResultMap">
+	    
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (
+			select
+			    *
+			 from QZ_IESB_FOR_ECIF
+		    where 1=1
+		    <if test="clientName != null and clientName != '' ">
+				AND CLIENT_NAME=#{clientName}
+			</if>
+			<if test="globalId != null and globalId != '' ">
+				AND GLOBAL_ID=#{globalId}
+			</if>
+		<![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+	<select id="findEcifCountByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
+	    resultType="int">
+			select
+			    count(*)
+			 from QZ_IESB_FOR_ECIF
+		    where 1=1
+		    <if test="clientName != null and clientName != '' ">
+				AND CLIENT_NAME=#{clientName}
+			</if>
+			<if test="globalId != null and globalId != '' ">
+				AND GLOBAL_ID=#{globalId}
+			</if>
+	</select>
+</mapper> 

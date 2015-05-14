@@ -94,24 +94,6 @@ public class IESBForECIFForm extends BaseForm{
 	public void setCertOrg(String certOrg) {
 		this.certOrg = certOrg;
 	}
-	public Date getIssDate() {
-		return issDate;
-	}
-	public void setIssDate(Date issDate) {
-		this.issDate = issDate;
-	}
-	public Date getEffectDate() {
-		return effectDate;
-	}
-	public void setEffectDate(Date effectDate) {
-		this.effectDate = effectDate;
-	}
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
 	public String getClientName() {
 		return clientName;
 	}
@@ -136,12 +118,6 @@ public class IESBForECIFForm extends BaseForm{
 	public void setClientStatus(String clientStatus) {
 		this.clientStatus = clientStatus;
 	}
-	public Date getBirthDate() {
-		return birthDate;
-	}
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
 	public String getSex() {
 		return sex;
 	}
@@ -160,12 +136,6 @@ public class IESBForECIFForm extends BaseForm{
 	public void setRecordTellerNo(String recordTellerNo) {
 		this.recordTellerNo = recordTellerNo;
 	}
-	public Date getRegisteredDate() {
-		return registeredDate;
-	}
-	public void setRegisteredDate(Date registeredDate) {
-		this.registeredDate = registeredDate;
-	}
 	public String getClientBelongOrg() {
 		return clientBelongOrg;
 	}
@@ -183,12 +153,6 @@ public class IESBForECIFForm extends BaseForm{
 	}
 	public void setRegistOrgNo(String registOrgNo) {
 		this.registOrgNo = registOrgNo;
-	}
-	public Date getOrgRegisteredDate() {
-		return orgRegisteredDate;
-	}
-	public void setOrgRegisteredDate(Date orgRegisteredDate) {
-		this.orgRegisteredDate = orgRegisteredDate;
 	}
 	public String getCountryCitizen() {
 		return countryCitizen;
@@ -219,12 +183,6 @@ public class IESBForECIFForm extends BaseForm{
 	}
 	public void setOpenTellerNo(String openTellerNo) {
 		this.openTellerNo = openTellerNo;
-	}
-	public Date getOpenAcctDate() {
-		return openAcctDate;
-	}
-	public void setOpenAcctDate(Date openAcctDate) {
-		this.openAcctDate = openAcctDate;
 	}
 	public String getMaritalStatus() {
 		return maritalStatus;
@@ -340,5 +298,48 @@ public class IESBForECIFForm extends BaseForm{
 	public void setCity_3(String city_3) {
 		this.city_3 = city_3;
 	}
+	public Date getIssDate() {
+		return issDate;
+	}
+	public void setIssDate(Date issDate) {
+		this.issDate = issDate;
+	}
+	public Date getEffectDate() {
+		return effectDate;
+	}
+	public void setEffectDate(Date effectDate) {
+		this.effectDate = effectDate;
+	}
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+	public Date getRegisteredDate() {
+		return registeredDate;
+	}
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+	public Date getOrgRegisteredDate() {
+		return orgRegisteredDate;
+	}
+	public void setOrgRegisteredDate(Date orgRegisteredDate) {
+		this.orgRegisteredDate = orgRegisteredDate;
+	}
+	public Date getOpenAcctDate() {
+		return openAcctDate;
+	}
+	public void setOpenAcctDate(Date openAcctDate) {
+		this.openAcctDate = openAcctDate;
+	}
+	
 
 }
