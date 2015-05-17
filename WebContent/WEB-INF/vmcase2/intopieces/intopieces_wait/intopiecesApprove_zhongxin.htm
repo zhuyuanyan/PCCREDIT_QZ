@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<style type="text/css">
-		.dialog {position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
+		.dialog{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
 		.dialog .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
 		.dialog .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
 		.dialog .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
@@ -43,7 +43,7 @@
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
               </li>
               <li>
-                <span>身份证号码：<input type="text" name="cardId"  maxlength="30" /></span>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" maxlength="30" /></span>
               </li>
               <li class="search_button">
                 <input type="button" value="筛选" class="search_button_inquiry" title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
@@ -94,7 +94,7 @@
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.applicationId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
-              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.contractAmt, 2, 1)</td>
               <td nowrap="nowrap">#dictVal("CERT_TYPE",$!wait.cardType)</td>
               
               <td nowrap="nowrap">$!wait.cardId</td>
@@ -109,10 +109,10 @@
           </table>
         </div>
          <div class="dialog">
-			<form id="checkForm1" class="dialog-box">
+			<form id="checkForm1" class="dialog-box" action="${contextPath}/intopieces/intopieceszhongxin/returnAppln.json">
 				<input type="hidden" name="appId" id="appId" value="${appId}" />
 				<div class="top">
-					 退件 <span onclick="$('.dialog').hide();"></span>
+					退件 <span onclick="$('.dialog').hide();"></span>
 				</div>
 				<div class="content">
 					<p>
@@ -147,6 +147,7 @@
       <div class="pagebar">
         <div class="controlbtn">
          <a id="id_apply_button" class="btn_g" href="javascript:void(0);"  title="决议单">决议单</a>
+         <a id="id_edu_button" class="btn_g" href="javascript:void(0);"  title="调额">调额</a>
 		<a id="id_pass_button" class="btn_g" href="javascript:void(0);"  title="审批通过">审批通过</a>
 		 <a id="id_return_button" class="btn_g" title="退件">退件</a>
 		<a id="id_reject_button" class="btn_g" href="javascript:void(0);"  title="拒件">拒件</a>
@@ -168,6 +169,17 @@
 			if ($(".checkbox :checked").length == 1) {
                 var applicationId= $($(".checkbox :checked")[0]).attr("value");
                 var url = "${contextPath}/intopieces/intopieceszhongxin/create_form.page?id="+applicationId;
+                window.location.href = url;
+            } else {
+                Dialog.message("请选择一行");
+            }
+		});
+		
+		//调额
+		$("#id_edu_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+                var applicationId= $($(".checkbox :checked")[0]).attr("value");
+                var url = "${contextPath}/intopieces/intopieceszhongxin/zhongxin_edu.page?id="+applicationId;
                 window.location.href = url;
             } else {
                 Dialog.message("请选择一行");
@@ -198,7 +210,7 @@
 			$("#appId").val(applicationId);
 			#set ($formName = "'#checkForm1'")
 			var formjson = $($formName).serialize();
-			 $.get("${contextPath}/intopieces/intopieceszhongxin/returnAppln.json", formjson, function(data, textStatus, jqXhr) {
+			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	            if (data.success) {
 	            	Dialog.message("退件成功!");	
 	            	var url = "${contextPath}/intopieces/intopieceszhongxin/zhongxin.page";

@@ -141,13 +141,22 @@ public class IESBForECIFController extends BaseController{
 				
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				//写入数据到basic_customer_information表
-				CustomerInfor info = new CustomerInfor();
+				CustomerInfor info = customerInforService.findCustomerInforByCardId(ecif.getGlobalId());
+				if(info == null){
+					info = new CustomerInfor();
+				}
 				info.setUserId(user.getId());
 				info.setChineseName(ecif.getClientName());
 				info.setBirthday(formatter10.format(ecif.getBirthDate()));
 				info.setNationality("NTC00000000156");
 				info.setSex(ecif.getSex().equals("01") ? "Male" : "Female");
-				customerInforService.insertCustomerInfor(info);
+				info.setCardId(ecif.getGlobalId());
+				if(info.getId() == null || info.getId().equals("")){
+					customerInforService.insertCustomerInfor(info);
+				}
+				else{
+					customerInforService.updateCustomerInfor(info);
+				}
 				
 				ecif.setCreatedBy(user.getId());
 				ecif.setUserId(user.getId());

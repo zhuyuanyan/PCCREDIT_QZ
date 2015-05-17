@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
+import com.cardpay.pccredit.QZBankInterface.service.CircleService;
+import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForCircleForm;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFForm;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -27,6 +32,7 @@ import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.QzShouxin;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
@@ -67,6 +73,10 @@ public class IntoPiecesZhongxinControl extends BaseController {
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
 	
+	@Autowired
+	private ECIFService eCIFService;
+	@Autowired
+	private CircleService circleService;
 	
 	/**
 	 * 授信岗进件页面
@@ -133,7 +143,12 @@ public class IntoPiecesZhongxinControl extends BaseController {
 			request.setAttribute("applicationId", process.getApplicationId());
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
-			request.setAttribute("examineAmount", "");
+			//查找审批金额
+			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
+			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
+			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			
+			request.setAttribute("examineAmount", circle.getContractAmt());
 			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
@@ -165,6 +180,66 @@ public class IntoPiecesZhongxinControl extends BaseController {
 		return returnMap;
 	}
 	
+	/*
+	 * 调额
+	 * 
+	 * @param request
+	 * @return
+	*/
+	@ResponseBody
+	@RequestMapping(value = "zhongxin_edu.page")
+	public AbstractModelAndView edu(HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/zhongxin_edu", request);
+		
+		//查找新开户
+		/*List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_CIRCLE);
+		mv.addObject("ECIF_ls",ls);
+		JSONArray json = new JSONArray();
+		json = JSONArray.fromObject(ls);
+		mv.addObject("ECIF_ls_json",json.toString());*/
+		String applicationId = request.getParameter(ID);
+		CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(applicationId);
+		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
+		mv.addObject("ecif",ecif);
+				
+		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		mv.addObject("circle",circle);
+		return mv;
+	}
+	
+	/**
+	 * 调额
+	 * @param customerinfoForm
+	 * @param request
+	 * @return
+	 */
+
+	@ResponseBody
+	@RequestMapping(value = "update_edu.json")
+	public JRadReturnMap update_edu(@ModelAttribute IESBForCircleForm iesbForCircleForm, HttpServletRequest request) {
+		String clientNo = request.getParameter(ID);
+		
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				Circle circle = circleService.findCircleByClientNo(clientNo);
+				circle.setContractAmt(iesbForCircleForm.getContractAmt());
+				
+				circleService.updateCustomerInforCircle(circle);
+//				returnMap.put(RECORD_ID, id);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+
 	/**
 	 * 申请件拒件
 	 * @param filter

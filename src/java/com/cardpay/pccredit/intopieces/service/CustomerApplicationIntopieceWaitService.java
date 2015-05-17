@@ -185,7 +185,7 @@ public class CustomerApplicationIntopieceWaitService {
 	}
 
 	
-	// 查询需要团队审批的进件信息
+	// 查询需要团队初审的进件信息
 	public QueryResult<CustomerApplicationIntopieceWaitForm> recieveIntopieceWaitForm(CustomerApplicationProcessFilter filter) {
 		List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.IntopieceWaitForm(filter);
 		int size = customerApplicationIntopieceWaitDao.CountIntopieceWaitForm(filter);
@@ -201,6 +201,7 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
+	
 	
 	public void updateCustomerApplicationProcessBySerialNumberApplicationInfo1(HttpServletRequest request) throws Exception {
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();

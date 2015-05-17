@@ -180,9 +180,7 @@ public class IntoPiecesComdao {
 			String applicationId) {
 		CustomerApplicationInfo customerApplicationInfo = commonDao
 				.findObjectById(
-						CustomerApplicationInfo.class,
-						"select * from customer_application_info f where f.id='"
-								+ applicationId + "'");
+						CustomerApplicationInfo.class,applicationId);
 		return customerApplicationInfo;
 	}
 	

@@ -14,7 +14,6 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 @ModelParam(table = "qz_iesb_for_ecif",generator=IDType.assigned)
 public class ECIF extends BusinessModel{
 	private static final long serialVersionUID = 1L;
-	private String id;
 	private String globalType;
 	private String globalId;
 	private String globalDesc;
@@ -105,12 +104,6 @@ public class ECIF extends BusinessModel{
     
 	public String getGlobalType() {
 		return globalType;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public void setGlobalType(String globalType) {
 		this.globalType = globalType;

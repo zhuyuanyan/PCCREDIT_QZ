@@ -63,11 +63,15 @@
               <td nowrap="nowrap">$!obj.clientNo</td>
               <td nowrap="nowrap">
               #if($!obj.status=="0")
-              	未办理贷款
+              	未填表  未申请
               #elseif($!obj.status=="1")
-              	自助贷款
+              	已填表  未申请
               #elseif($!obj.status=="2")
-              	传统贷款
+              	已申请
+              #elseif($!obj.status=="3")
+              	申请成功
+              #elseif($!obj.status=="4")
+              	申请失败
               #end
               </td>
             </tr>

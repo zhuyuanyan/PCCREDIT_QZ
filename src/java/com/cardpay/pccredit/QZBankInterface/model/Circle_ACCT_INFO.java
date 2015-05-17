@@ -15,6 +15,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 public class Circle_ACCT_INFO extends BusinessModel{
 	private static final long serialVersionUID = 1L;
 	
+	private String circleId;
 	private String acctChrt;
 	private String openAcctDate;
 	private String acctNo;
@@ -27,6 +28,12 @@ public class Circle_ACCT_INFO extends BusinessModel{
 	private String cInterbankId;
 	private String ownBranchFlag;
 	
+	public String getCircleId() {
+		return circleId;
+	}
+	public void setCircleId(String circleId) {
+		this.circleId = circleId;
+	}
 	public String getOwnBranchFlag() {
 		return ownBranchFlag;
 	}
