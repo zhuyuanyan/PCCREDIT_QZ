@@ -194,4 +194,90 @@ public class IntoPiecesShouxinControl extends BaseController {
 		}
 		return returnMap;
 	}
+	
+	/**
+	 * 申请件拒件
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rejectAppln.json")
+	public JRadReturnMap rejectAppln(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId1");
+			intoPiecesService.rejectAppln(appId, request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+	
+	/**
+	 * 进入初审拒件记录页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "chushen_reject.page", method = { RequestMethod.GET })
+	public AbstractModelAndView reject(@ModelAttribute CustomerApplicationProcessFilter filter, HttpServletRequest request) throws SQLException {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		filter.setLoginId(loginId);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.IntopieceChushenRejectForm();
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView(
+				"/intopieces/intopieces_wait/intopiecesApprove_chushen_reject", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 同意初审拒件
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "inToReject.json")
+	public JRadReturnMap inToreject(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("id");
+			intoPiecesService.inToReject(appId, request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+	
+	/**
+	 * 不同意初审拒件
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "outToReject.json")
+	public JRadReturnMap outToreject(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("id");
+			intoPiecesService.outToReject(appId, request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
 }

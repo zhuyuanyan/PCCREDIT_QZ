@@ -143,5 +143,25 @@ public class IntoPiecesChushenControl extends BaseController {
 		}
 		return returnMap;
 	}
-	
+	/**
+	 * 拒件（申报授信审批岗）
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "reject.json")
+	public JRadReturnMap reject(@ModelAttribute QzApplnSxjcForm filter, HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+
+		try {
+			intoPiecesService.reject(filter,request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("退回失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
 }
