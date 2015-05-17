@@ -8,31 +8,34 @@
        <div class="place">
        <div class="title">上传合同扫描单</div>
       </div>
-
+          
+      <div class="inquiry">
+       <div class="search_tag">上传合同扫描单</div>
+        <div class="search">
           <form id="myForm" action="${contextPath}/intopieces/intopiecesxingzheng2/saveYxzl.json" enctype="multipart/form-data" method="post">
-         <div class="search">
-           <ul>
-          	  <li style="margin-right:40px;">
-                <span>合&nbsp;&nbsp;&nbsp;同&nbsp;&nbsp;&nbsp;号:<input class="rinpsty"  type="text" name="hetongId"/></span>
+          <ul>
+          	  <li>
+                <span>合同号:<input class="rinpsty"  type="text" name="hetongId"/></span>
               </li>
-              <li style="margin-right:40px;">
+              <li>
                 <span>经办人:<input class="rinpsty"  type="text" name="userName"/></span>
               </li>
-              <li style="margin-right:40px;">
+              <li>
                 <span>卡号:<input class="rinpsty"  type="text" name="cardId"/></span>
               </li>
-              <li style="margin-right:40px;">
+              <li>
                 <span>合同扫描件:<input type="file" name="file" id="file" /><input type="hidden" name="appId" value="${appId}"/></span>
               </li>
-              <li style="margin-right:40px;">
-                <span>备&nbsp;&nbsp;&nbsp;注:<textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea></span>
+              <li>
+                <span>备注:<input type="text" name="remark" style="width:300px;"></textarea></span>
               </li>
               <li class="search_button">
                 <input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng2/create_upload.page?id=${appId}');"/>
               </li>
-          </ul>         
-          </div>
-          
+          </ul> 
+                
+          </form>
+        </div>
   
       <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
@@ -88,29 +91,24 @@
             #end
           </table>
       </div>
-     </form>
-      <div class="submit">
-          <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
-          <a id="id_in_button" class="btn_g" title="审批通过">审批通过</a>
-      </div>
-  </div>
-  </div>
   
+  <div class="pagebar">
+        <div class="controlbtn">
+          <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
+          <a href="javascript:history.back();" class="btn_g">返回</a>
+        </div>
+        <div class="clear"></div>
+        	
+      </div>
+    </div>
+  </div>
+</div>
+
   <script type="text/javascript">
     var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
 	$(document).ready(function() {
-		//通过
-		$("#id_in_button").click(function() {
-			$.post("${contextPath}/intopieces/intopiecesxingzheng2/save_apply.json?id=${appId}", {},
-		            function(data, textStatus, jqXhr) {
-		                if (data.success) {
-		                	var url ="${contextPath}/intopieces/intopiecesxingzheng2/xingzhengend.page";
-		                    window.location.href=url;
-		                } else {
-		                }
-		            });
-		});
+		
 	})
 	</script>
 </body>

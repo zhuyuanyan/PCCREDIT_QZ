@@ -16,11 +16,11 @@ input[type=text],select,textarea{ border:1px solid #dcdcdc;margin-right: 2px; }
 input[type=text]:hover{ border:1px solid #ffc600;}
 input[type=password],select,textarea{ border:1px solid #dcdcdc;}
 input[type=password]:hover{ border:1px solid #ffc600;}
-input[readonly]{ background-color:#EBEBE4;}//
+input[readonly]{ background-color:#EBEBE4;}
 select:hover{ border:1px solid #ffc600;}
 textarea{font-size:100%;padding-left:5px;}
 textarea:hover{ border:1px solid #ffc600;}
-textarea[readonly]{ background-color:#EBEBE4;}//
+textarea[readonly]{ background-color:#EBEBE4;}
 button,input,select {font-size:100%;}
 a:focus { -moz-outline-style: none; }
 a:focus { outline: none; }

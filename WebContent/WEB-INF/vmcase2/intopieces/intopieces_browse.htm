@@ -19,7 +19,7 @@
                <li>
                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
-               <li>
+              <!-- <li>
                 <span>进件状态：<select id="status" name="status" value="$!result.filter.status" >
                 <option  value="" >ALL</option>
                 <option #if($!result.filter.status=='save') selected="selected" #end value="save">暂存 </option>
@@ -29,7 +29,8 @@
                 <option #if($!result.filter.status=='approved') selected="selected" #end value="approved">审批结束  </option>
                 <option #if($!result.filter.status=='succeed') selected="selected" #end value="succeed">申请成功</option>
                 </select>
-              </li>
+              </li> -->
+               
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
@@ -94,12 +95,13 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("create")<a class="btn_g" href="javascript:void(0);" title="新建" onclick="self.location.href='${contextPath}/intopieces/intopiecesquery/chooseCustomer.page'">新建</a>#end
+        <!-- #btnpriv("create")<a class="btn_g" href="javascript:void(0);" title="新建" onclick="self.location.href='${contextPath}/intopieces/intopiecesquery/chooseCustomer.page'">新建</a>#end
           #btnpriv("addbatch")<a class="btn_g" href="javascript:void(0);" title="批量添加" onclick="self.location.href='${contextPath}/intopieces/intopiecesquery/chooseCustomerById.page'">批量添加</a>#end
           #btnpriv("change")<a class="btn_g" href="javascript:void(0);" title="修改" onclick="updateIntoPices()">修改</a>#end
           #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewIntoPices('view')">查看</a>#end
           #btnpriv("import")<a class="btn_g" href="javascript:void(0);" title="导入" onclick="linkImport('${contextPath}/intopieces/intopiecesquery/importCustomerInfo.page')">导入</a>#end
           #btnpriv("approveloguser")<a class="btn_g" href="javascript:void(0);" title="查看审批记录(显示用户)" onclick="viewIntoPicesApproveHistory('YES')">查看审批记录(显示用户)</a>#end
+           -->
           #btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end
         </div>
         #parse ("common/pagination.htm")
@@ -132,7 +134,7 @@
 		});
 		if(id!=null){
 			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
-			Dialog.table(url, "查看审批历史", "get", null, 800, 340);
+			Dialog.table(url, "查看审批历史", "get", null, 800, 400);
 		}else{
 			Dialog.message("请选择要被查看的进件!");
 		}
