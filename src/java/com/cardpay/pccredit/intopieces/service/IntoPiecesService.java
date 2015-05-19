@@ -3,6 +3,7 @@ package com.cardpay.pccredit.intopieces.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.QZBankInterface.model.Circle;
+import com.cardpay.pccredit.QZBankInterface.model.ECIF;
+import com.cardpay.pccredit.QZBankInterface.service.CircleService;
+import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -23,6 +30,7 @@ import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
@@ -49,6 +57,7 @@ import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
 import com.cardpay.pccredit.intopieces.web.QzDcnrUploadForm;
+import com.cardpay.pccredit.intopieces.web.QzShouxinForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
@@ -96,6 +105,11 @@ public class IntoPiecesService {
 	
 	@Autowired
 	private WfStatusResultDao wfStatusResultDao;
+	
+	@Autowired
+	private CircleService circleService;
+	@Autowired
+	private ECIFService eCIFService;
 	
 	/* 查询进价信息 */
 	/*
@@ -877,7 +891,7 @@ public class IntoPiecesService {
 	 */
 	public void addSxjc(QzApplnSxjcForm filter,HttpServletRequest request) throws Exception{
 		QzApplnSxjc sxjc = commonDao.findObjectById(QzApplnSxjc.class, filter.getApplicationId());
-		if(sxjc==null){
+		if(sxjc == null){
 			sxjc = new QzApplnSxjc();
 			sxjc.setApplication_id(filter.getApplicationId());
 		}
@@ -890,7 +904,12 @@ public class IntoPiecesService {
 		request.setAttribute("applicationId", process.getApplicationId());
 		request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 		request.setAttribute("objection", "false");
-		request.setAttribute("examineAmount", "");
+		//查找审批金额
+		CustomerApplicationInfo appInfo = this.findCustomerApplicationInfoByApplicationId(process.getApplicationId());
+		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
+		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		
+		request.setAttribute("examineAmount", circle.getContractAmt());
 		customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
 	}
 	
@@ -919,8 +938,14 @@ public class IntoPiecesService {
 		//更新客户信息--退回
 		infor.setProcessId("1");
 		commonDao.updateObject(infor);
+		
+		//重置ecif状态
+		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(infor.getId()).getClientNo());
+		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
+		commonDao.updateObject(ecif);
 	}
-	/* 初审节点拒件 */
+	
+/* 初审节点拒件 */
 	/*
 	 * TODO 1.添加注释 2.SQL写进DAO层
 	 */

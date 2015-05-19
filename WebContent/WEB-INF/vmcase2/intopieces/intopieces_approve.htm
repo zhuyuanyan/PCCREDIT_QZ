@@ -9,7 +9,7 @@
  <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-          <form id="submitForm">
+          <form id="submitForm" action="${contextPath}/intopieces/intopiecesapprove/approve.page">
             <ul>
               <li>
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
@@ -20,7 +20,7 @@
               
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
-                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
               </li>
             </ul>
           </form>
@@ -54,7 +54,7 @@
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id@$!customer.processId"
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id@$!customer.processId@$!customer.status"
                   /></td>
               <td nowrap="nowrap">$!customer.chineseName</td>
               <td nowrap="nowrap">#dictVal("CERT_TYPE",$!customer.cardType)</td>
@@ -67,8 +67,10 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-        <a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="添加客户进件信息">添加客户进件信息</a>
-			 #btnpriv("browse")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请">进件申请</a>#end 
+        	<a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="添加客户调查信息">添加客户调查信息</a>
+        	<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="填写自助信息">填写自助信息</a>
+        	<a id="id_display_button" class="btn_g" href="javascript:void(0);" title="查看自助信息">查看自助信息</a>
+			#btnpriv("browse")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请">申请贷款</a>#end 
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -83,29 +85,80 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		//改为xm_appln版本
-		opsObj.createUrl1 = "${modulePath}/changewh.page";
-		opsObj.changeUrl = "${modulePath}/change.page";
-		opsObj.deleteUrl = "${modulePath}/delete.json";
-		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/export.page";
 		
+		//填写自助信息
+		$("#id_create_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId().split("@")[0];
+				var sec = getCurrentRowId().split("@")[1];
+				var status = getCurrentRowId().split("@")[2];
+				if(sec=='已申请'){
+					Dialog.message("已申请贷款,无法重复填写！");
+					return;
+				}
+				if(rowId!=null){
+					if(status == '0'){
+						var url="${contextPath}/intopieces/circle/create.page?id="+rowId;
+						window.location.href = url;
+					}
+					else{
+						var url="${contextPath}/intopieces/circle/change.page?id="+rowId;
+						window.location.href = url;
+					}
+				}
+			}else{
+				Dialog.message("请选择一条记录!");
+			}
+	    });
+		
+		//查看自助信息
+		$("#id_display_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId().split("@")[0];
+				var sec = getCurrentRowId().split("@")[1];
+				var status = getCurrentRowId().split("@")[2];
+				if(status=='0'){
+					Dialog.message("贷款信息尚未填写！");
+					return;
+				} 
+				if(rowId!=null){
+					var url="${contextPath}/intopieces/circle/display.page?id="+rowId;
+					window.location.href = url;
+				}
+			}else{
+				Dialog.message("请选择一条记录!");
+			}
+	    });
+		
+		//提交进件
 		$("#id_apply_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowId = getCurrentRowId().split("@")[0];
-				
+				var sec = getCurrentRowId().split("@")[1];
+				var status = getCurrentRowId().split("@")[2];
+				if(status == '0'){
+					Dialog.message("请先填写自助贷款信息！");
+					return;
+				}
+				if(sec=='已申请'){
+					Dialog.message("已申请贷款,请勿重复提交！");
+					return;
+				} 
 				if(rowId!=null){
-					$.post("${modulePath}/save_apply.page", {id:rowId},
-		            function(data, textStatus, jqXhr) {
-		                if (data.success) {
-		                    window.location.reload(true);
-		                } else {
-		                    //Dialog.message(data.message);
-		                }
-		            });
+					Dialog.confirm("确定提交申请吗？", "提示",
+		                function() {
+							$.post("${modulePath}/save_apply.page", {id:rowId},
+				            function(data, textStatus, jqXhr) {
+				                if (data.success) {
+				                    window.location.reload(true);
+				                } else {
+				                    //Dialog.message(data.message);
+				                }
+				            });
+		                });
 				}
 			}else{
-				Dialog.message("请选择要申请的客户!");
+				Dialog.message("请选择一条记录!");
 			}
 	    });
 		

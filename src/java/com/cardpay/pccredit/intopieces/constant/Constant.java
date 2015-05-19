@@ -20,7 +20,7 @@ public class Constant {
 	public static String RESULT_LIST2 = "resultList2";
 	
 	/* 影像资料上传路径 */
-	public static String FILE_PATH = "/usr/pccreditFile/";
+	public static String FILE_PATH = "/home/pccredit/pccredit_upload/";
 	
 	/* 保存进件*/
 	public static String SAVE_INTOPICES = "save";
@@ -91,7 +91,7 @@ public class Constant {
 	public static String status_chushen="初审";
 	public static String status_xingzheng1="行政岗-初";
 	public static String status_shouxin="授信审批岗";
-	public static String status_zhongxin="中心负责人岗";
+	public static String status_zhongxin="中心负责岗";
 	public static String status_xinshen="信审岗";
 	public static String status_xingzheng2="行政岗-终";
 	public static String jyd_id="00001";//决议单默认ID

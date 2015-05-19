@@ -52,6 +52,7 @@
 
 		<result column="USER_ID" property="userId"/>
 		<result column="PRODUCT_NAME" property="productName"/>
+
 	</resultMap>
 
 	<select id="findCustomerApplicationIntopieceWaitForm" resultMap="BaseResultMap">
@@ -218,12 +219,15 @@
 		A.SERIAL_NUMBER as SERIALNUMBER,
    		N.NODE_NAME as nodeName,
 		A.AUDIT_TIME as auditTime,
-		A.id as processId,b.id as applicationId
+		A.id as processId,b.id as applicationId,
+		circle.CONTRACT_AMT as contractAmt
 		FROM
 		CUSTOMER_APPLICATION_INFO b,
 		BASIC_CUSTOMER_INFORMATION U,
 		CUSTOMER_APPLICATION_PROCESS A,
-   		NODE_AUDIT N,NODE_AUDIT_USER p
+   		NODE_AUDIT N,NODE_AUDIT_USER p,
+		QZ_IESB_FOR_ECIF ecif,
+		QZ_IESB_FOR_CIRCLE circle 
 		WHERE
 		1=1
 		and U.ID = b.CUSTOMER_ID and (U .process_id !='3' or U .process_id is null)
@@ -231,6 +235,8 @@
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
 		and b.status='audit' 
+		and ecif.CUSTOMER_ID = b.CUSTOMER_ID
+		and circle.CLIENT_NO = ecif.CLIENT_NO
 		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>
@@ -296,7 +302,7 @@
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID
-		and b.status='audit' and s.application_id=a.application_id and s.operate_type='æ‹’ä»¶'
+		and b.status='audit' and s.application_id=a.application_id and s.operate_type='¾Ü¼þ'
 	
 		</select>
 		<select id="CountIntopieceChushenRejectForm" resultType="int">
@@ -308,7 +314,7 @@
    		NODE_AUDIT N,NODE_AUDIT_USER p,qz_appln_process_result s 
 		WHERE
 		1=1
-		and U.ID = b.CUSTOMER_ID and u.process_id='æ‹’ä»¶'
+		and U.ID = b.CUSTOMER_ID and u.process_id='¾Ü¼þ'
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID

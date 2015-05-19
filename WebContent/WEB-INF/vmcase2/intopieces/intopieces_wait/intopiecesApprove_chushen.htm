@@ -34,7 +34,7 @@
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
               </li>
               <li>
-                <span>身份证号码：<input type="text" name="cardId"  maxlength="30" /></span>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" maxlength="30" /></span>
               </li>
               <li class="search_button">
                 <input type="button" value="筛选" class="search_button_inquiry" title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
@@ -85,7 +85,7 @@
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.applicationId@"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
-              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.contractAmt, 2, 1)</td>
               <td nowrap="nowrap">#dictVal("CERT_TYPE",$!wait.cardType)</td>
               
               <td nowrap="nowrap">$!wait.cardId</td>

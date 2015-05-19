@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.common.Dictionary;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
@@ -92,6 +93,9 @@ public class CustomerInforService {
 	@Autowired
 	private ProcessService processService;
 	
+	@Autowired
+	private ECIFService eCIFService;
+	
 	/**
 	 * 得到该客户经理下的客户数量
 	 * @param userId
@@ -137,6 +141,17 @@ public class CustomerInforService {
 		/*filter.setSqlString(dataAccessSqlService.getSqlByResTbl(filter.getRequest(), ResourceTableEnum.KEHU));*/
 		
 		return commonDao.findObjectsByFilter(CustomerInfor.class, filter);
+	}
+	
+	/**
+	 * 过滤查询  关联ecif开户信息
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<CustomerInfor> findCustomerInforWithEcifByFilter(CustomerInforFilter filter) {
+		/*filter.setSqlString(dataAccessSqlService.getSqlByResTbl(filter.getRequest(), ResourceTableEnum.KEHU));*/
+		
+		return eCIFService.findCustomerInforWithEcifByFilter(filter);
 	}
 	
 	/**

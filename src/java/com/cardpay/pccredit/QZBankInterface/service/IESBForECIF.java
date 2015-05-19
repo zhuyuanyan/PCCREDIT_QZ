@@ -28,7 +28,6 @@ public class IESBForECIF {
      */
     public CompositeData createEcifRequest(ECIF ecif) {
     	SimpleDateFormat formatter8 = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat formatter10 = new SimpleDateFormat("yyyy-MM-dd");
         
         CompositeData cd = new CompositeData();
 
@@ -36,7 +35,7 @@ public class IESBForECIF {
         CompositeData syaHead_struct = new CompositeData();
         //在syaHead_struct中加SERVICECODE
         Field serviceCodeField = new Field(new FieldAttr(FieldType.FIELD_STRING, 11));
-        //serviceCodeField.setValue("11002000019");//ECIF服务服务码
+        serviceCodeField.setValue("11002000019");//ECIF服务服务码
         syaHead_struct.addField("SERVICE_CODE", serviceCodeField);
 
         //在syaHead_struct中加SERVICESCENE

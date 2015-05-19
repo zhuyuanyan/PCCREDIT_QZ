@@ -14,7 +14,6 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 @ModelParam(table = "qz_iesb_for_circle",generator=IDType.assigned)
 public class Circle extends BusinessModel{
 	private static final long serialVersionUID = 1L;
-	private String id;
 	private String contractNo;
 	private String cardNo;
 	private String clientNo;
@@ -136,12 +135,8 @@ public class Circle extends BusinessModel{
 	private String acctNo1;//收息收款账号
 	private String acctNo2;//放款账号
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+	private String status;//状态码  标记客户对应的该笔贷款是否结清,同步更新ecif的status字段
+	
 	public String getContractNo() {
 		return contractNo;
 	}
@@ -737,5 +732,10 @@ public class Circle extends BusinessModel{
 	public void setAcctNo2(String acctNo2) {
 		this.acctNo2 = acctNo2;
 	}
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

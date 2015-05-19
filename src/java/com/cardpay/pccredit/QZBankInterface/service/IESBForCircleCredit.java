@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.Circle_ACCT_INFO;
+import com.cardpay.pccredit.QZBankInterface.util.DateUtil;
 import com.cardpay.pccredit.common.Arith;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -48,7 +49,7 @@ public class IESBForCircleCredit {
         CompositeData syaHead_struct = new CompositeData();
         //在syaHead_struct中加SERVICECODE
         Field serviceCodeField = new Field(new FieldAttr(FieldType.FIELD_STRING, 11));
-        //serviceCodeField.setValue("02002000010");//循环贷服务服务码
+        serviceCodeField.setValue("02002000010");//循环贷服务服务码
         syaHead_struct.addField("SERVICE_CODE", serviceCodeField);
 
         //在syaHead_struct中加SERVICESCENE
@@ -127,7 +128,9 @@ public class IESBForCircleCredit {
         //贷款结束日期
         Field END_DATE=new Field(new FieldAttr(FieldType.FIELD_STRING, 10));
         //END_DATE.setValue("20160414");//todo:传入结束日期
-        END_DATE.setValue(formatter10.format(circle.getEndDate()));//todo:传入结束日期
+        //END_DATE.setValue(formatter10.format(circle.getEndDate()));//todo:传入结束日期
+        //结束日期加上期限传给信贷
+        END_DATE.setValue(formatter10.format(DateUtil.shiftMonth(circle.getEndDate(), Integer.parseInt(circle.getTerm()))));
         body_struct.addField("END_DATE", END_DATE);
 
         //外币时需要换算
