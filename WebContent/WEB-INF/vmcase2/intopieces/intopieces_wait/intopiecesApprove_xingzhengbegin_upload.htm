@@ -3,19 +3,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
 <script src="${contextPath}/common/js/common/jquery.form.js"></script>
 <script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_yxzl.js'></script>
-<style type="text/css">
-		.dialog{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
-		.dialog .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
-		.dialog .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
-		.dialog .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
-		.dialog .dialog-box .top span:hover{background:url(${contextPath}/images/xm_appln/box_delete_hov.png);}
-		.dialog .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
-		.dialog .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
-		.dialog .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/xm_appln/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
-		.dialog .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
-		.dialog .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
-		.dialog .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
-	</style>
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
 </head>
 <body>
@@ -24,28 +11,31 @@
        <div class="place">
        <div class="title">上传扫描件</div>
       </div>
-
+		
+	  <div class="inquiry">
+       <div class="search_tag">上传扫描件</div>
+       <div class="search">
           <form id="myForm" action="${contextPath}/intopieces/intopiecesxingzheng1/saveYxzl.json" enctype="multipart/form-data" method="post">
-          <div class="form-bd" id="formsId" style="border: 0px; padding-top:10px;">
-          <table class="form-bd-info" >
-						<tr>
-							<td width="5%"></td>
-							<td width="35%"><label>影像文件:</label><input type="file" name="file" id="file"/><input type="hidden" name="appId" value="${appId}"/></td>
-							<td width="20%">选择调查内容：
-							</td>
-							<td width="10%"><select name="reportId">
-								#foreach ($video in $!result)
+		  		<ul>
+		  			<li>
+		  				<span>影像文件:<input type="file" name="file" id="file"/><input type="hidden" name="appId" value="${appId}"/></span>
+		  			</li>
+		  			<li>
+		  				<span>选择调查内容:<select name="reportId">
+		  					#foreach ($video in $!result)
 								<option value="$video.id">$video.reportName</option>
-								#end
-								</select></td>
-							<td width="5%"><label for="name">备注:</label></td>
-							<td width="20%"><textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea></td>
-							<td width="5%" class="search_button"><input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng1/create_upload.page?id=${appId}');"/></td>
-							
-						</tr>
-		  </table>
+							#end
+		  				</select></span>
+		  			</li>
+		  			<li>
+		  				<span>备注:<input type="text" name="remark" clos="300px" rows="2" style="width:300px;" /></span>
+		  			</li>
+		  			<li class="search_button">
+		  				<input type="button" value="提交" class="search_button_inquiry" title="提交" style="height:26px;line-height:24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng1/create_upload.page?id=${appId}');"/>
+		  			</li>
+		  		</ul>
+		  	</form>
           </div>
-          
   
       <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
@@ -65,7 +55,7 @@
             </tr>
             </table>
             </div>
-      <div id="downDiv" class="inquiry_list inquiry_down">
+      <div id="downDiv" class="inquiry_list inquiry_down" style="height:300px;overflow:auto;">
           <table>
           	<colgroup>
              <col width="5%">
@@ -91,68 +81,26 @@
             #end
           </table>
       </div>
-     </form>
      
-      			 <div class="dialog">
-					<form id="checkForm1" class="dialog-box" action="${contextPath}/intopieces/intopiecesxingzheng1/returnAppln.json">
-						<input type="hidden" name="appId" id="appId" value="${appId}" />
-						<div class="top">
-							退件 <span onclick="$('.dialog').hide();"></span>
-						</div>
-						<div class="content">
-							<p>
-								退件原因:<font color="red">*</font>
-							<textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea>
-							</p>
-						</div>
-						<div class="bottom">
-							<input id="id_re_button" type="button" class="btn btn-submit" value="确定" /> <input
-								 type="button" class="btn btn-submit" value="关闭" onclick="$('.dialog').hide();"/>
-						</div>
-					</form>
-				</div>
-      <div class="submit">
+	  
+      <div class="pagebar">
+      	<div class="controlbtn">
           <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
-          <a id="id_in_button" class="btn_g" title="审批通过">审批通过</a>
-          <a id="id_return_button" class="btn_g" title="退件">退件</a>
-      </div>
+          <a href="javascript:history.back();" class="btn_g">返回</a>
+      	</div>
       
-
-  </div>
-  </div>
+ <div class="clear"></div>
+        	
+      </div>
+		  </div>
+          </div>
+  	</div>
   
   <script type="text/javascript">
     var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
 	$(document).ready(function() {
-		//通过
-		$("#id_in_button").click(function() {
-			$.post("${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}", {},
-		            function(data, textStatus, jqXhr) {
-		                if (data.success) {
-		                	var url ="${contextPath}/intopieces/intopiecesxingzheng1/xingzhengbegin.page";
-		                    window.location.href=url;
-		                } else {
-		                }
-		            });
-		});
-		//退件
-		$("#id_re_button").click(function() {
-			$('.dialog').hide();
-			#set ($formName = "'#checkForm1'")
-			var formjson = $($formName).serialize();
-			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-	            if (data.success) {
-	            	Dialog.message("退件成功!");	
-	            	var url = "${contextPath}/intopieces/intopiecesxingzheng1/xingzhengbegin.page";
-	                window.location.href = url;
-	            }
-	          });
-		});
-		$('.dialog').hide();
-		$("#id_return_button").click(function() {
-			$('.dialog').show();
-      });
+		
 	})
 	</script>
 </body>

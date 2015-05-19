@@ -37,6 +37,8 @@ public class CustomerInfor extends BusinessModel{
 	private String customerBusinessAptitude;
 	private String processId;
 	
+	private String status;//增加一个属性，表中不新增。  方便查看该进件的状态
+	
 	public String getChineseName() {
 		return chineseName;
 	}
@@ -183,5 +185,10 @@ public class CustomerInfor extends BusinessModel{
 	public void setProcessId(String processId) {
 		this.processId = processId;
 	}
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

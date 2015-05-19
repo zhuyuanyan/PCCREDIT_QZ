@@ -193,6 +193,14 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
+	// 查询需要团队初审拒件的进件
+	public QueryResult<CustomerApplicationIntopieceWaitForm> IntopieceChushenRejectForm() {
+		List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.IntopieceChushenRejectForm();
+		int size = customerApplicationIntopieceWaitDao.CountIntopieceChushenRejectForm();
+		QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
+		return qs;
+
+	}
 	
 	
 	public void updateCustomerApplicationProcessBySerialNumberApplicationInfo1(HttpServletRequest request) throws Exception {

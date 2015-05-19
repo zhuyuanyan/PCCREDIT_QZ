@@ -26,6 +26,9 @@ import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
+import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -57,6 +60,9 @@ public class IESBForCircleController extends BaseController{
 	
 	@Autowired
 	private ECIFService eCIFService; 
+	
+	@Autowired
+	private IntoPiecesService intoPiecesService;
 	
 	/**
 	 * 浏览页面
@@ -93,18 +99,20 @@ public class IESBForCircleController extends BaseController{
 	*/
 	@ResponseBody
 	@RequestMapping(value = "display.page")
-	public AbstractModelAndView change(HttpServletRequest request) {        
+	public AbstractModelAndView display(HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_display", request);
 		
 		//查找新开户
-		List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_CIRCLE);
+		/*List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_CIRCLE);
 		mv.addObject("ECIF_ls",ls);
 		JSONArray json = new JSONArray();
 		json = JSONArray.fromObject(ls);
-		mv.addObject("ECIF_ls_json",json.toString());
+		mv.addObject("ECIF_ls_json",json.toString());*/
+		String customerId = request.getParameter(ID);
+		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+		mv.addObject("ecif",ecif);
 				
-		String clientNo = request.getParameter(ID).split("_")[0];
-		Circle circle = circleService.findCircleByClientNo(clientNo);
+		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
 		mv.addObject("circle",circle);
 		return mv;
 	}
@@ -121,11 +129,16 @@ public class IESBForCircleController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);
 		
 		//查找新开户
-		List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
+		/*List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
 		mv.addObject("ECIF_ls",ls);
 		JSONArray json = new JSONArray();
 		json = JSONArray.fromObject(ls);
-		mv.addObject("ECIF_ls_json",json.toString());
+		mv.addObject("ECIF_ls_json",json.toString());*/
+		String customerId = request.getParameter(ID);
+		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+		JSONObject json = new JSONObject();
+		json = JSONObject.fromObject(ecif);
+		mv.addObject("ecif",json);
 		
 		//查找登录用户信息
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
@@ -138,6 +151,28 @@ public class IESBForCircleController extends BaseController{
 		mv.addObject("orgId",orgId);
 		mv.addObject("parentOrgId",parentOrgId);
 		mv.addObject("externalId",externalId);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "change.page")
+	public AbstractModelAndView change(HttpServletRequest request) { 
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_change", request);
+		
+		//查找新开户
+		/*List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
+		mv.addObject("ECIF_ls",ls);
+		JSONArray json = new JSONArray();
+		json = JSONArray.fromObject(ls);
+		mv.addObject("ECIF_ls_json",json.toString());*/
+		String customerId = request.getParameter(ID);
+		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+		JSONObject json = new JSONObject();
+		json = JSONObject.fromObject(ecif);
+		mv.addObject("ecif",json);
+		
+		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		mv.addObject("circle",circle);
 		return mv;
 	}
 	
@@ -227,5 +262,96 @@ public class IESBForCircleController extends BaseController{
 		}
 		return returnMap;
 	}
+	
+	/**
+	 * 执行添加客户信息
+	 * @param customerinfoForm
+	 * @param request
+	 * @return
+	 */
+
+	@ResponseBody
+	@RequestMapping(value = "update.json")
+	public JRadReturnMap update(@ModelAttribute IESBForCircleForm iesbForCircleForm, HttpServletRequest request) {
+		String circleId = request.getParameter(ID);
+		
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				//设置级联选项 级联未考虑空情况，已注释
+				if(iesbForCircleForm.getLoanKind_1() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_1().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanKind_2() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_2().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanKind_3() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_3().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanKind_4() != null){
+					iesbForCircleForm.setLoanKind(iesbForCircleForm.getLoanKind_4().split("_")[1]);
+				}
+				
+				if(iesbForCircleForm.getAgriLoanKind_1() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_1().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_2() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_2().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_3() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_3().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_4() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_4().split("_")[1]);
+				}
+				if(iesbForCircleForm.getAgriLoanKind_5() != null){
+					iesbForCircleForm.setAgriLoanKind(iesbForCircleForm.getAgriLoanKind_5().split("_")[1]);
+				}
+				
+				iesbForCircleForm.setLoanDirection(iesbForCircleForm.getLoanDirection_4().split("_")[1]);
+				
+				if(iesbForCircleForm.getLoanBelong1_1() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_1().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_2() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_2().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_3() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_3().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_4() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_4().split("_")[1]);
+				}
+				if(iesbForCircleForm.getLoanBelong1_5() != null){
+					iesbForCircleForm.setLoanBelong1(iesbForCircleForm.getLoanBelong1_5().split("_")[1]);
+				}
+				
+				iesbForCircleForm.setRegPermResidence(iesbForCircleForm.getRegPermResidence_3().split("_")[1]);
+				
+				//替换为总行id
+				if(iesbForCircleForm.getHigherOrgNo().equals(Constant.QZ_ORG_ROOT_ID)){
+					iesbForCircleForm.setHigherOrgNo("000000");
+				}
+				
+				Circle circle = iesbForCircleForm.createModel(Circle.class);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				circle.setCreatedBy(user.getId());
+				circle.setUserId(user.getId());
+				circle.setId(circleId);
+				circleService.updateCustomerInforCircle(circle);
+//				returnMap.put(RECORD_ID, id);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
 }
 

@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
+
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.QZBankInterface.service.CircleService;
+import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
@@ -101,6 +107,12 @@ public class IntoPiecesApproveControl extends BaseController {
 	@Autowired
 	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
 	
+	@Autowired
+	private CircleService circleService;
+	
+	@Autowired
+	private ECIFService eCIFService;
+	
 	/**
 	 * 申请页面
 	 * 
@@ -114,7 +126,7 @@ public class IntoPiecesApproveControl extends BaseController {
         filter.setRequest(request);
         IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		filter.setUserId(user.getId());
-		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilter(filter);
+		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforWithEcifByFilter(filter);
 		for(int i=0;i<result.getItems().size();i++){
 				Boolean processBoolean = customerInforservice.ifProcess(result.getItems().get(i).getId());
 				if(processBoolean){
@@ -141,7 +153,6 @@ public class IntoPiecesApproveControl extends BaseController {
 	*/
 	@ResponseBody
 	@RequestMapping(value = "changewh.page")
-	@JRadOperation(JRadOperation.MAINTENANCE)
 	public AbstractModelAndView changewh(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/qz_customerinfor_base", request);
 		String customerInforId = RequestHelper.getStringValue(request, ID);
@@ -175,6 +186,10 @@ public class IntoPiecesApproveControl extends BaseController {
 					else{
 						//设置流程开始
 						saveApply(customerId);
+						
+						//查找customerId对应当前申请中的贷款，并更新其状态为申请中
+						IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+						circleService.updateCustomerInforCircle_APPLY(ecif.getClientNo());
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);

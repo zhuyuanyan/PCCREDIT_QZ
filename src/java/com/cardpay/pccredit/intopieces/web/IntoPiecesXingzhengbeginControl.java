@@ -18,11 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.QZBankInterface.model.Circle;
+import com.cardpay.pccredit.QZBankInterface.service.CircleService;
+import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
@@ -60,7 +65,10 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
 	
-	
+	@Autowired
+	private CircleService circleService;
+	@Autowired
+	private ECIFService eCIFService;
 	/**
 	 * 行政岗初进件页面
 	 * 
@@ -94,7 +102,6 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "create_upload.page")
-	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView createUpload(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
 		String appId = request.getParameter(ID);
 		List<QzDcnrUploadForm>  result =intoPiecesService.getUploadList(appId);
@@ -152,7 +159,12 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 			request.setAttribute("applicationId", process.getApplicationId());
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
-			request.setAttribute("examineAmount", "");
+			//查找审批金额
+			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
+			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
+			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			
+			request.setAttribute("examineAmount", circle.getContractAmt());
 			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {

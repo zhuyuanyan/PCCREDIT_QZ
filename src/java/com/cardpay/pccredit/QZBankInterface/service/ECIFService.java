@@ -13,6 +13,8 @@ import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.filter.AmountAdjustmentFilter;
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.web.AmountAdjustmentForm;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.product.model.ProductAttribute;
@@ -76,10 +78,6 @@ public class ECIFService {
 	public List<IESBForECIFReturnMap> findAllECIFByStatus(String status){
 		return ecifDao.findAllECIFByStatus(status);
 	}
-
-	public List<IESBForECIFReturnMap> findAllECIFByStatus2(String status) {
-		return ecifDao.findAllECIFByStatus2(status);
-	}
 	
 	/**
 	 * 查询新开户
@@ -91,5 +89,24 @@ public class ECIFService {
 		int size = ecifDao.findEcifCountByFilter(filter);
 		QueryResult<ECIF> qs = new QueryResult<ECIF>(size, ls);
 		return qs;
+	}
+
+	/**
+	 * 过滤查询  关联ecif开户信息
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<CustomerInfor> findCustomerInforWithEcifByFilter(CustomerInforFilter filter) {
+		List<CustomerInfor> ls = ecifDao.findCustomerInforWithEcifByFilter(filter);
+		int size = ecifDao.findCustomerInforWithEcifCountByFilter(filter);
+		QueryResult<CustomerInfor> qs = new QueryResult<CustomerInfor>(size, ls);
+		return qs;
+	}
+
+	/**
+	 * 按customerId查找ecif
+	 */
+	public IESBForECIFReturnMap findEcifByCustomerId(String customerId) {
+		return ecifDao.findEcifByCustomerId(customerId);
 	}
 }

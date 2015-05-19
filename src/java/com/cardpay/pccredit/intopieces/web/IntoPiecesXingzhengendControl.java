@@ -18,13 +18,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.QZBankInterface.model.Circle;
+import com.cardpay.pccredit.QZBankInterface.service.CircleService;
+import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -60,6 +66,10 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
 	
+	@Autowired
+	private CircleService circleService;
+	@Autowired
+	private ECIFService eCIFService;
 	
 	/**
 	 * 行政岗终进件页面
@@ -160,9 +170,23 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			request.setAttribute("applicationId", process.getApplicationId());
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
-			request.setAttribute("examineAmount", "");
-			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
-			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			//查找审批金额
+			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
+			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
+			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			
+			request.setAttribute("examineAmount", circle.getContractAmt());
+			
+			//通过applicationId查找circle并放款 
+			boolean rtn = circleService.updateCustomerInforCircle_ESB(circle);
+			if(rtn){
+				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			}
+			else{
+				returnMap.addGlobalMessage("保存失败");
+			}
+			
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("保存失败");
 			e.printStackTrace();
