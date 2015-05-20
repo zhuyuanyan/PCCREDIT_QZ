@@ -302,7 +302,7 @@
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID
-		and b.status='audit' and s.application_id=a.application_id and s.operate_type='¾Ü¼þ'
+		and b.status='audit' and s.application_id=a.application_id and s.operate_type='æ‹’ä»¶'
 	
 		</select>
 		<select id="CountIntopieceChushenRejectForm" resultType="int">
@@ -314,7 +314,7 @@
    		NODE_AUDIT N,NODE_AUDIT_USER p,qz_appln_process_result s 
 		WHERE
 		1=1
-		and U.ID = b.CUSTOMER_ID and u.process_id='¾Ü¼þ'
+		and U.ID = b.CUSTOMER_ID and u.process_id='æ‹’ä»¶'
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID

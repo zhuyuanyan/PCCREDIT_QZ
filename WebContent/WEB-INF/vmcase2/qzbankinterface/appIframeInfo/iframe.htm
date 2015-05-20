@@ -1,0 +1,29 @@
+#parse ("common/iframe_page_header2.htm")
+
+<body>
+	<ul class="Tabs">
+		<li class="active" onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page1.page')" style="margin-left:0;">业务申请表</li>
+		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page4_list.page')" style="margin-left:0;">担保人信息表</li>
+		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page5.page')" style="margin-left:0;">待决策资料清单</li>
+		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page7.page')" style="margin-left:0;">内部审查意见表</li>
+		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page8.page')" style="margin-left:0;">审贷会决议单</li>
+		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page10.page')" style="margin-left:0;">审贷会审议纪要</li>
+		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page11.page')" style="margin-left:0;">合同签订台账</li>
+	</ul>
+	<div class="TabContent" id="Content1">
+		<!--*************************************行内评分项*****************************************-->
+		<div class="tabContent selectTab" id="tabContent0">			
+			<iframe frameborder="0" id="contentFrame" width="100%;" src="${contextPath}/intopieces/intopiecesapprove/page1.page" marginheight="0" marginwidth="0" height="500px"></iframe>
+		</div>
+	</div>
+	<script type="text/javascript">			
+		function selectTab(id,obj){//tab页
+			$(".Tabs li").attr("class","");
+			$(obj).attr("class","active");
+			//$(".TabContent div").hide();			
+			//$("#"+id).show();
+		}
+	</script>	
+</body>
+</html>
+
