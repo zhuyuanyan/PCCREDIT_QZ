@@ -1,0 +1,293 @@
+#parse ("common/iframe_page_header3.htm")
+<body>
+<form>
+<!--*************************************************************新增担保人信息表*************************************************************-->
+	<div class="box">
+		<div name="content">
+			<table class="myTable">
+				<caption>新增担保人信息表</caption>
+			</table>	
+		</div><!--/content-->
+	</div>
+	<!--*************************************************************个人基本情况（必填）*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>个人基本情况（必填）</td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
+			</tr>
+		</table>
+		<div name="content">
+			<table class="myTable">
+				<colgroup>					
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>	
+				<tr>
+					<td class="table-label">姓名：</td>
+					<td><input type="text" name="name"/></td>	
+					<td class="table-label">性别：</td>
+					<td>
+						<label><input type="radio" name="sex" checked/>男</label>
+						<label><input type="radio" name="sex" />女</label>
+					</td>				
+				</tr>
+				<tr>
+					<td class="table-label">出生日期：</td>
+					<td><input type="text" name="birthday" onmouseover="_calendar()"/></td>	
+					<td class="table-label">居住年限：</td>
+					<td><input type="text" name="yeah"/>年</td>
+				</tr>				
+				<tr>	
+					<td class="table-label">证件类型：</td>
+					<td>
+						<select name="globalType">
+							<option>身份证</option>
+							<option>户口簿</option>
+							<option>护照</option>
+							<option>其他</option>
+						</select>
+					</td>
+					<td class="table-label">证件号码：</td>
+					<td><input type="text" name="globalId"/></td>		
+				</tr>								
+				<tr>	
+					<td class="table-label">身份证复印件：</td>
+					<td colspan="3">
+						<label><input type="radio" name="haveGlobalIdCopy" checked/>有</label>
+						<label><input type="radio" name="haveGlobalIdCopy" />无</label>
+					</td>		
+				</tr>								
+				<tr>	
+					<td class="table-label">联系电话：</td>
+					<td colspan="3">
+						手机1<input type="text" name="phone_1"/>
+						手机2<input type="text" name="phone_2"/>
+						其他3<input type="text" name="phoneOther"/>
+					</td>		
+				</tr>
+			</table>
+		</div>
+	</div>
+	<!--*************************************************************工作情况（必填）*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>工作情况（必填）</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>					
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>	
+				<tr>
+					<td class="table-label">单位名称：</td>
+					<td><input type="text" name="workUnitName"/></td>	
+					<td class="table-label">本单位工作年限：</td>
+					<td><input type="text" name="workYear"/>年</td>
+				</tr>				
+				<tr>	
+					<td class="table-label">单位地址：</td>					
+					<td><input type="text" name="workUnitAddr"/></td>	
+					<td class="table-label">单位电话：</td>
+					<td><input type="text" name="workUnitPhone"/></td>		
+				</tr>								
+				<tr>	
+					<td class="table-label">个人年收入：</td>				
+					<td><input type="text" name="yeahIncome"/>万元</td>	
+					<td class="table-label">工作及收入证明文件：</td>
+					<td>
+						<label><input type="radio" name="haveProveFile" onclick="$('#wjmc').removeAttr('disabled');" />有</label>
+						文件名称:<input type="text" name="fileName" id="wjmc" disabled/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" name="haveProveFile" onclick="$('#wjmc').val('');$('#wjmc').attr('disabled','disabled');" checked/>无</label>
+					</td>		
+				</tr>	
+			</table>
+		</div>
+	</div>
+	<!--*************************************************************家庭情况（必填）*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>家庭情况（必填）</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>					
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>	
+				<tr>
+					<td class="table-label">婚姻情况：</td>
+					<td>
+						<select name="marriage">
+							<option>已婚</option>
+							<option>未婚</option>
+							<option>离异</option>
+							<option>丧偶</option>
+						</select>
+					</td>	
+					<td class="table-label">住宅电话：</td>
+					<td><input type="text" name="homePhone"/></td>
+				</tr>				
+				<tr>	
+					<td class="table-label">居住地址：</td>					
+					<td><input type="text" name="homeAddr"/></td>	
+					<td class="table-label">权属：</td>
+					<td>
+						<select name="homeType">
+							<option>自购</option>
+							<option>自建</option>
+							<option>租用</option>
+							<option>其他</option>
+						</select>
+					</td>		
+				</tr>	
+			</table>
+		</div>
+	</div>
+	
+	<!--*************************************************************贷款记录*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>贷款记录</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="dkjl">
+				<tr>
+					<td class="tableTitle" colspan="9" style="text-align:left;">
+						贷款记录
+						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('dkjl')"/>
+						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('dkjl')"/>
+					</td>		
+				</tr>
+				<tr>
+					<td><b>融资来源</b></td>	
+					<td><b>金额</b></td>					
+					<td><b>期限</b></td>	
+					<td><b>发放日期</b></td>					
+					<td><b>用途</b></td>	
+					<td><b>余额</b></td>					
+					<td><b>对外担保</b></td>					
+					<td><b>金额</b></td>					
+					<td><b>期限</b></td>
+				</tr>
+				<tr>
+					<td><input type="text" class="input" name="loanType" /></td>	
+					<td><input type="text" class="input" name="amount" /></td>					
+					<td><input type="text" class="input" name="deadline" /></td>	
+					<td><input type="text" class="input" name="loanDate" onmouseover="_calendar()"/></td>	
+					<td><input type="text" class="input" name="purpose" /></td>					
+					<td><input type="text" class="input" name="remainAmount" /></td>	
+					<td><input type="text" class="input" name="guntForOther" /></td>	
+					<td><input type="text" class="input" name="guntAmount" /></td>	
+					<td><input type="text" class="input" name="guntDeadline" /></td>		
+				</tr>
+			</table>
+		</div>
+	</div>
+	<!--*************************************************************资产情况（可选项）*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>资产情况（可选项）</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="fc">
+				<tr>
+					<td class="tableTitle" colspan="9" style="text-align:left;">
+						房产
+						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('fc')"/>
+						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('fc')"/>
+					</td>		
+				</tr>
+				<tr>
+					<td><b>地 址</b></td>	
+					<td><b>购买/自建成本</b></td>					
+					<td><b>使用情况</b></td>	
+					<td><b>房产证（权证）复印件</b></td>
+				</tr>
+				<tr>
+					<td><input type="text" class="input" name="addr" /></td>	
+					<td><input type="text" class="input" name="price" /></td>					
+					<td>
+						<select name="usrSituation">
+							<option>自住</option>
+							<option>出租</option>
+							<option>商业</option>
+							<option>空置</option>
+						</select>
+					</td>	
+					<td>
+						<select name="haveCopy">
+							<option>有</option>
+							<option>无</option>
+						</select>
+					</td>		
+				</tr>
+			</table>
+			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="jdc">
+				<tr>
+					<td class="tableTitle" colspan="9" style="text-align:left;">
+						机动车
+						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('jdc')"/>
+						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('jdc')"/>
+					</td>		
+				</tr>
+				<tr>
+					<td><b>车牌号</b></td>	
+					<td><b>购置价格</b></td>					
+					<td><b>购置日期</b></td>	
+					<td><b>机动车登记证复印件</b></td>
+					<td><b>行驶证复印件</b></td>
+				</tr>
+				<tr>
+					<td><input type="text" class="input" name="cardNo" /></td>	
+					<td><input type="text" class="input" name="price" /></td>	
+					<td><input type="text" class="input" name="buyDate" onmouseover="_calendar()"/></td>				
+					<td>
+						<select name="haveCopy_1">
+							<option>有</option>
+							<option>无</option>
+						</select>
+					</td>	
+					<td>
+						<select name="haveCopy_2">
+							<option>有</option>
+							<option>无</option>
+						</select>
+					</td>		
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="controlbtn">
+		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
+		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	</div>
+</form>	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript">			
+		
+		
+	</script>	
+</body>
+</html>
+

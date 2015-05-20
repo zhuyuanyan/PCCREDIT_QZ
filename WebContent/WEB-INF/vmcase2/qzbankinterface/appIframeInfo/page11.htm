@@ -1,0 +1,54 @@
+#parse ("common/iframe_page_header3.htm")
+<body>
+<form>
+<!--*************************************************************合同签订台账*************************************************************-->
+	<div class="box">
+		<div name="content">
+			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="htqdtz">
+				<tr>
+					<td class="tableTitle" colspan="8" style="text-align:left;">
+						合同签订台账
+						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('htqdtz')"/>
+						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('htqdtz')"/>
+					</td>		
+				</tr>
+				<tr>
+					<td><b>受理日期</b></td>	
+					<td><b>借款人姓名</b></td>					
+					<td><b>批准金额</b></td>	
+					<td><b>预约签订日期</b></td>	
+					<td><b>实际签订日期</b></td>					
+					<td><b>主办客户经理</b></td>					
+					<td><b>经办人</b></td>					
+					<td><b>备注</b></td>	
+				</tr>
+				<tr>
+					<td><input type="text" class="input" name="slrq" onmouseover='_calendar()'/></td>	
+					<td><input type="text" class="input" name="jkrxm"/></td>					
+					<td><input type="text" class="input" name="pzje"/></td>		
+					<td><input type="text" class="input" name="yyqdrq" onmouseover='_calendar()'/></td>	
+					<td><input type="text" class="input" name="sjqdrq" onmouseover='_calendar()'/></td>					
+					<td><input type="text" class="input" name="zbkhjl"/></td>	
+					<td><input type="text" class="input" name="jbr"/></td>	
+					<td><input type="text" class="input" name="bz"/></td>	
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="controlbtn">
+		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
+		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	</div>
+</form>	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript">			
+		function checkJKTJ(obj){
+			$('.jktj').val('');
+			$('.jktj').attr('disabled','disabled');
+			$(obj).parent().find('.jktj').removeAttr('disabled')
+		}
+	</script>	
+</body>
+</html>
+

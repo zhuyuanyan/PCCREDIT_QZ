@@ -1,0 +1,195 @@
+#parse ("common/iframe_page_header3.htm")
+<body>
+<form>
+<!--*************************************************************审贷会决议单*************************************************************-->
+	<div class="box">
+		<div name="content">
+			<table class="myTable">
+				<caption>审贷会决议单</caption>
+				<colgroup>
+					<col width="10%">
+					<col width="10%">					
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+				</colgroup>
+				<tr>
+					<td class="table-label">审议日期</td>
+					<td colspan="8"><input type="text" name="syrq" onmouseover="_calendar()"/></td>			
+				</tr>
+				<tr>
+					<td class="table-label">办理机构</td>
+					<td colspan="2"><input type="text" name="bljg"/></td>
+					<td class="table-label">主办客户经理</td>
+					<td><input type="text" name="zbkhjl"/></td>	
+					<td class="table-label">客户名称</td>
+					<td colspan="3"><input type="text" name="khmc"/></td>		
+				</tr>				
+				<tr>
+					<td class="table-label">审议事项</td>
+					<td colspan="2"><input type="text" name="sysx"/></td>
+					<td class="table-label">产品名称</td>
+					<td><input type="text" name="cpmc"/></td>	
+					<td class="table-label">证件号码</td>
+					<td colspan="3"><input type="text" name="zjhm"/></td>		
+				</tr>			
+				<tr>
+					<td class="table-label">建议金额</td>
+					<td colspan="2"><input type="text" name="jyje"/></td>
+					<td class="table-label">建议期限</td>
+					<td><input type="text" name="jyqx"/></td>	
+					<td class="table-label" colspan="2">建议利率（年）</td>
+					<td colspan="2"><input type="text" name="jyll"/></td>		
+				</tr>			
+				<tr>
+					<td class="table-label">授信用途</td>
+					<td colspan="4"><input type="text" name="sxyt"/></td>
+					<td class="table-label" colspan="2">还款方式</td>
+					<td colspan="2"><input type="text" name="hkfs"/></td>		
+				</tr>		
+				<tr>
+					<td class="table-label" rowspan="8">建议担保方式</td>
+					<td class="table-label" rowspan="3">共同借款人</td>					
+					<td class="table-label" colspan="3" style="text-align:center;">姓名</td>					
+					<td class="table-label" colspan="4" style="text-align:center;">证件号码</td>	
+				</tr>						
+				<tr>			
+					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm1"/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm1"/></td>	
+				</tr>					
+				<tr>			
+					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm2"/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm2"/></td>	
+				</tr>		
+				<tr>
+					<td class="table-label" rowspan="2">保证担保</td>					
+					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm1"/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm1"/></td>	
+				</tr>					
+				<tr>			
+					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm2"/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm2"/></td>	
+				</tr>		
+				<tr>
+					<td class="table-label" rowspan="3">抵押担保</td>					
+					<td class="table-label" style="text-align:center;">抵押人</td>					
+					<td class="table-label" colspan="2" style="text-align:center;">抵押物名称</td>					
+					<td class="table-label" style="text-align:center;">数量</td>	
+					<td class="table-label" colspan="2" style="text-align:center;">权证或单据号码</td>					
+					<td class="table-label" style="text-align:center;">可抵押价值</td>	
+				</tr>		
+				<tr>				
+					<td style="text-align:center;"><input type="text" name="dyr1"/></td>					
+					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc1"/></td>					
+					<td style="text-align:center;"><input type="text" name="sl1"/></td>	
+					<td colspan="2" style="text-align:center;"><input type="text" name="djhm1"/></td>					
+					<td style="text-align:center;"><input type="text" name="kdyjz1"/></td>	
+				</tr>			
+				<tr>				
+					<td style="text-align:center;"><input type="text" name="dyr2"/></td>					
+					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc2"/></td>					
+					<td style="text-align:center;"><input type="text" name="sl2"/></td>	
+					<td colspan="2" style="text-align:center;"><input type="text" name="djhm2"/></td>					
+					<td style="text-align:center;"><input type="text" name="kdyjz2"/></td>	
+				</tr>	
+				<tr>
+					<td class="table-label" rowspan="12">授信决策情况</td>					
+					<td class="table-label">金额（元）</td>					
+					<td colspan="3"><input type="text" name="je"/></td>					
+					<td class="table-label">利率（年）</td>	
+					<td colspan="3"><input type="text" name="ll"/></td>	
+				</tr>	
+				<tr>				
+					<td class="table-label">期限（月）</td>					
+					<td colspan="3"><input type="text" name="qx"/></td>					
+					<td class="table-label">还款方式</td>	
+					<td colspan="3"><input type="text" name="hkfs"/></td>	
+				</tr>	
+				<tr>				
+					<td class="table-label" rowspan="2">抵押担保</td>					
+					<td colspan="7">
+						<label><input type="radio" name="dydb1" checked/>1、同意建议</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="dydb1" />2、对建议的补充或修改</label>
+						<textarea name="dydb2"></textarea>
+					</td>	
+				</tr>		
+				<tr>				
+					<td class="table-label" rowspan="2">保证担保</td>					
+					<td colspan="7">
+						<label><input type="radio" name="bzdb1" checked />1、同意客户经理建议</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="bzdb1" />2、对建议的补充或修改</label>
+						<textarea name="bzdb2"></textarea>
+					</td>	
+				</tr>			
+				<tr>				
+					<td class="table-label" rowspan="4">监控条件</td>					
+					<td colspan="7">
+						<label><input type="radio" name="radio3" onclick="checkJKTJ(this)" checked/>
+						1、落实贷款用途时间 ：贷款发放后在<input type="text" name="jktj1" class="jktj"/>天内落实贷款用途。</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="radio3" onclick="checkJKTJ(this)"/>
+						2、贷款用途落实需提供的书面材料为：<input type="text" name="jktj2" class="jktj" disabled/></label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="radio3" onclick="checkJKTJ(this)" />
+						3、实地回访频率： 每<input type="text" name="jktj3" class="jktj" disabled/>个月进行一实地回访。</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="radio3" onclick="checkJKTJ(this)"/>
+						4、重点监控内容：<input type="text" name="jktj4" class="jktj" disabled/></label>
+					</td>	
+				</tr>		
+				<tr>				
+					<td class="table-label">其他要求</td>					
+					<td colspan="7"><textarea name="qtyq"></textarea></td>	
+				</tr>		
+				<tr>				
+					<td class="table-label">拒绝申请</td>					
+					<td colspan="7">主要原因：<textarea name="jjsq"></textarea></td>	
+				</tr>			
+				<tr>				
+					<td class="table-label">组员</td>					
+					<td colspan="8">
+						组员:<input type="text" name="zy1"/>
+						组员:<input type="text" name="zy2"/>
+						组员:<input type="text" name="zy3"/>
+					</td>	
+				</tr>		
+			</table>			
+		</div>
+	</div>
+	<div class="controlbtn">
+		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
+		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	</div>
+</form>	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript">			
+		function checkJKTJ(obj){
+			$('.jktj').val('');
+			$('.jktj').attr('disabled','disabled');
+			$(obj).parent().find('.jktj').removeAttr('disabled')
+		}
+	</script>	
+</body>
+</html>
+

@@ -6,14 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-
-
-
-
-
-
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -162,6 +154,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("customerId", customerInfor.getId());
 		}
 		return mv;
+		
 	}
 	
 	/**
@@ -170,119 +163,245 @@ public class IntoPiecesApproveControl extends BaseController {
 	 * @param request
 	 * @return
 	 */
-		@ResponseBody
-		@RequestMapping(value = "save_apply.page")
-		public JRadReturnMap save_apply(@ModelAttribute CustomerInforFilter customerInforFilter, HttpServletRequest request) {
-			JRadReturnMap returnMap = new JRadReturnMap();
-			if (returnMap.isSuccess()) {
-				try {
-					String customerId = request.getParameter("id");
-					//先判断是否已有流程
-					Boolean processBoolean = customerInforservice.ifProcess(customerId);
-					if(processBoolean){
-						returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
-						returnMap.put(RECORD_ID, customerId);
-					}
-					else{
-						//设置流程开始
-						saveApply(customerId);
-						
-						//查找customerId对应当前申请中的贷款，并更新其状态为申请中
-						IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
-						circleService.updateCustomerInforCircle_APPLY(ecif.getClientNo());
-						
-						returnMap.put(RECORD_ID, customerId);
-						returnMap.addGlobalMessage(CREATE_SUCCESS);
-					}
-				}catch (Exception e) {
-					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
-					returnMap.put(JRadConstants.SUCCESS, false);
-					return WebRequestHelper.processException(e);
+	@ResponseBody
+	@RequestMapping(value = "save_apply.page")
+	public JRadReturnMap save_apply(@ModelAttribute CustomerInforFilter customerInforFilter, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("id");
+				//先判断是否已有流程
+				Boolean processBoolean = customerInforservice.ifProcess(customerId);
+				if(processBoolean){
+					returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
+					returnMap.put(RECORD_ID, customerId);
 				}
-			}else{
-				returnMap.setSuccess(false);
-				returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+				else{
+					//设置流程开始
+					saveApply(customerId);
+					
+					//查找customerId对应当前申请中的贷款，并更新其状态为申请中
+					IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+					circleService.updateCustomerInforCircle_APPLY(ecif.getClientNo());
+					
+					returnMap.put(RECORD_ID, customerId);
+					returnMap.addGlobalMessage(CREATE_SUCCESS);
+				}
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
 			}
-			return returnMap;
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 		}
+		return returnMap;
+	}
 
-		/**
-		 * 提交申请，开始流程
-		 * @param customer_id
-		 */
-		public void saveApply(String customer_id){
-			//设置申请
-			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
-			//customerApplicationInfo.setStatus(status);
-			customerApplicationInfo.setId(IDGenerator.generateID());
-				customerApplicationInfo.setApplyQuota("0");//设置额度
-			customerApplicationInfo.setCustomerId(customer_id);
-			if(customerApplicationInfo.getApplyQuota()!=null){
-				customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
+	/**
+	 * 提交申请，开始流程
+	 * @param customer_id
+	 */
+	public void saveApply(String customer_id){
+		//设置申请
+		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+		//customerApplicationInfo.setStatus(status);
+		customerApplicationInfo.setId(IDGenerator.generateID());
+			customerApplicationInfo.setApplyQuota("0");//设置额度
+		customerApplicationInfo.setCustomerId(customer_id);
+		if(customerApplicationInfo.getApplyQuota()!=null){
+			customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
+		}
+		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+		//查找默认产品
+		ProductFilter filter = new ProductFilter();
+		filter.setDefault_type(Constant.DEFAULT_TYPE);
+		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
+		customerApplicationInfo.setProductId(productAttribute.getId());
+				
+		commonDao.insertObject(customerApplicationInfo);
+		
+		
+		//添加申请件流程
+		WfProcessInfo wf=new WfProcessInfo();
+		wf.setProcessType(WfProcessInfoType.process_type);
+		wf.setVersion("1");
+		commonDao.insertObject(wf);
+		List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productAttribute.getId());
+		boolean startBool=false;
+		boolean endBool=false;
+		//节点id和WfStatusInfo id的映射
+		Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
+		for(NodeAudit nodeAudit:list){
+			if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+				startBool=true;
 			}
-			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
-			//查找默认产品
-			ProductFilter filter = new ProductFilter();
-			filter.setDefault_type(Constant.DEFAULT_TYPE);
-			ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
-			customerApplicationInfo.setProductId(productAttribute.getId());
-					
-			commonDao.insertObject(customerApplicationInfo);
 			
-			
-			//添加申请件流程
-			WfProcessInfo wf=new WfProcessInfo();
-			wf.setProcessType(WfProcessInfoType.process_type);
-			wf.setVersion("1");
-			commonDao.insertObject(wf);
-			List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productAttribute.getId());
-			boolean startBool=false;
-			boolean endBool=false;
-			//节点id和WfStatusInfo id的映射
-			Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
-			for(NodeAudit nodeAudit:list){
+			if(startBool&&!endBool){
+				WfStatusInfo wfStatusInfo=new WfStatusInfo();
+				wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setRelationedProcess(wf.getId());
+				wfStatusInfo.setStatusName(nodeAudit.getNodeName());
+				wfStatusInfo.setStatusCode(nodeAudit.getId());
+				commonDao.insertObject(wfStatusInfo);
+				
+				nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
+				
 				if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-					startBool=true;
-				}
-				
-				if(startBool&&!endBool){
-					WfStatusInfo wfStatusInfo=new WfStatusInfo();
-					wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
-					wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
-					wfStatusInfo.setRelationedProcess(wf.getId());
-					wfStatusInfo.setStatusName(nodeAudit.getNodeName());
-					wfStatusInfo.setStatusCode(nodeAudit.getId());
-					commonDao.insertObject(wfStatusInfo);
+					//添加初始审核
+					CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
+					String serialNumber = processService.start(wf.getId());
+					customerApplicationProcess.setSerialNumber(serialNumber);
+					customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
+					customerApplicationProcess.setApplicationId(customerApplicationInfo.getId());
+					commonDao.insertObject(customerApplicationProcess);
 					
-					nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
-					
-					if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-						//添加初始审核
-						CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
-						String serialNumber = processService.start(wf.getId());
-						customerApplicationProcess.setSerialNumber(serialNumber);
-						customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
-						customerApplicationProcess.setApplicationId(customerApplicationInfo.getId());
-						commonDao.insertObject(customerApplicationProcess);
-						
-						CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, customerApplicationInfo.getId());
-						applicationInfo.setSerialNumber(serialNumber);
-						commonDao.updateObject(applicationInfo);
-					}
-				}
-				
-				if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
-					endBool=true;
+					CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, customerApplicationInfo.getId());
+					applicationInfo.setSerialNumber(serialNumber);
+					commonDao.updateObject(applicationInfo);
 				}
 			}
-			//节点关系
-			List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productAttribute.getId());
-			for(NodeControl control : nodeControls){
-				WfStatusResult wfStatusResult = new WfStatusResult();
-				wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
-				wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
-				wfStatusResult.setExamineResult(control.getCurrentStatus());
-				commonDao.insertObject(wfStatusResult);
+			
+			if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
+				endBool=true;
 			}
 		}
+		//节点关系
+		List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productAttribute.getId());
+		for(NodeControl control : nodeControls){
+			WfStatusResult wfStatusResult = new WfStatusResult();
+			wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
+			wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
+			wfStatusResult.setExamineResult(control.getCurrentStatus());
+			commonDao.insertObject(wfStatusResult);
+		}
+	}
+	
+	//iframe
+	@ResponseBody
+	@RequestMapping(value = "iframe.page")
+	public AbstractModelAndView iframe(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page1
+	@ResponseBody
+	@RequestMapping(value = "page1.page")
+	public AbstractModelAndView page1(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page4
+	@ResponseBody
+	@RequestMapping(value = "page4.page")
+	public AbstractModelAndView page4(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page4", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page4_list
+	@ResponseBody
+	@RequestMapping(value = "page4_list.page")
+	public AbstractModelAndView page4_list(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page4_list", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page5
+	@ResponseBody
+	@RequestMapping(value = "page5.page")
+	public AbstractModelAndView page5(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page5", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page7
+	@ResponseBody
+	@RequestMapping(value = "page7.page")
+	public AbstractModelAndView page7(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page8
+	@ResponseBody
+	@RequestMapping(value = "page8.page")
+	public AbstractModelAndView page8(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page10
+	@ResponseBody
+	@RequestMapping(value = "page10.page")
+	public AbstractModelAndView page10(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page10", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//page11
+	@ResponseBody
+	@RequestMapping(value = "page11.page")
+	public AbstractModelAndView page11(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page11", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
 }
