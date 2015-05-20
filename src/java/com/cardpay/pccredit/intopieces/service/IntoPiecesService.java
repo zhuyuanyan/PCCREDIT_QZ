@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.intopieces.service;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,11 +54,15 @@ import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
 import com.cardpay.pccredit.intopieces.model.QzApplnProcessResult;
 import com.cardpay.pccredit.intopieces.model.QzApplnSxjc;
+import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
 import com.cardpay.pccredit.intopieces.model.QzShouxin;
+import com.cardpay.pccredit.intopieces.model.QzSyjy;
+import com.cardpay.pccredit.intopieces.model.QzTz;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
 import com.cardpay.pccredit.intopieces.web.QzDcnrUploadForm;
+import com.cardpay.pccredit.intopieces.web.QzSdhjydForm;
 import com.cardpay.pccredit.intopieces.web.QzShouxinForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.system.model.NodeAudit;
@@ -1309,5 +1315,98 @@ public class IntoPiecesService {
 		//更新客户信息--还原
 		infor.setProcessId("");
 		commonDao.updateObject(infor);
+	}
+	
+	/**
+	 * 保存审贷会决议单form
+	 */
+	public void insertSdhjydForm(QzSdhjyd qzSdhjyd,String customerId){
+		String sql="select * from qz_appln_ywsqb_jyd where customer_id='"+customerId+"'";
+		List<QzSdhjyd> qz = commonDao.queryBySql(QzSdhjyd.class,sql, null);
+		if(qz.size()>0){
+			commonDao.deleteObject(QzSdhjyd.class, qz.get(0).getId());
+		}
+			commonDao.insertObject(qzSdhjyd);
+	}
+	
+	/**
+	 * 获取审贷会决议单form
+	 */
+	public QzSdhjyd getSdhjydForm(String customerId){
+		String sql="select * from qz_appln_ywsqb_jyd where customer_id='"+customerId+"'";
+		List<QzSdhjyd> qz = commonDao.queryBySql(QzSdhjyd.class,sql, null);
+		if(qz.size()>0){
+			return qz.get(0);
+		}
+			return null;
+	}
+	
+	/**
+	 * 保存审议纪要form
+	 */
+	public void insertSyjyForm(QzSyjy qzSyjy,String customerId){
+		String sql="select * from qz_appln_ywsqb_sdhjy where customer_id='"+customerId+"'";
+		List<QzSyjy> qz = commonDao.queryBySql(QzSyjy.class,sql, null);
+		if(qz.size()>0){
+			commonDao.deleteObject(QzSyjy.class, qz.get(0).getId());
+		}
+			commonDao.insertObject(qzSyjy);
+	}
+	/**
+	 * 获取审议纪要form
+	 */
+	public QzSyjy getSyjyForm(String customerId){
+		String sql="select * from qz_appln_ywsqb_sdhjy where customer_id='"+customerId+"'";
+		List<QzSyjy> qz = commonDao.queryBySql(QzSyjy.class,sql, null);
+		if(qz.size()>0){
+			return qz.get(0);
+		}
+			return null;
+	}
+	
+	/**
+	 * 保存台帐form
+	 * @throws Exception 
+	 */
+	public void insertTzList(HttpServletRequest request,String customerId) throws Exception{
+		//先删除历史记录
+		String sql="select * from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'";
+		List<QzTz> qz = commonDao.queryBySql(QzTz.class,sql, null);
+		if(qz.size()>0){
+			commonDao.queryBySql("delete from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'", null);
+		}
+		String[] slrq = request.getParameterValues("slrq");
+		String[] jkrxm = request.getParameterValues("jkrxm");
+		String[] pzje = request.getParameterValues("pzje");
+		String[] yyqdrq = request.getParameterValues("yyqdrq");
+		String[] sjqdrq = request.getParameterValues("sjqdrq");
+		String[] zbkhjl = request.getParameterValues("zbkhjl");
+		String[] jbr = request.getParameterValues("jbr");
+		String[] bz = request.getParameterValues("bz");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(slrq!=null){
+			for(int i=0;i<slrq.length;i++){
+				QzTz tz = new QzTz();
+				tz.setSlrq(sdf.parse(slrq[i]));
+				tz.setJkrxm(jkrxm[i]);
+				tz.setPzje(pzje[i]);
+				tz.setYyqdrq(sdf.parse(yyqdrq[i]));
+				tz.setSjqdrq(sdf.parse(sjqdrq[i]));
+				tz.setZbkhjl(zbkhjl[i]);
+				tz.setJbr(jbr[i]);
+				tz.setBz(bz[i]);
+				tz.setCustomerId(customerId);
+				tz.setCreatedTime(new Date());
+				commonDao.insertObject(tz);
+			}
+		}
+	}
+	/**
+	 * 获取台帐form
+	 */
+	public List<QzTz> getTzList(String customerId){
+		String sql="select * from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'";
+		List<QzTz> qz = commonDao.queryBySql(QzTz.class,sql, null);
+		return qz;
 	}
 }
