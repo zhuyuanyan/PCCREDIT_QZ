@@ -1,4 +1,7 @@
 #parse ("common/iframe_page_header3.htm")
+<style type="text/css">
+	
+</style>
 <body>
 <form>
 <!--*************************************************************新增担保人信息表*************************************************************-->
@@ -171,8 +174,8 @@
 				<tr>
 					<td class="tableTitle" colspan="9" style="text-align:left;">
 						贷款记录
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('dkjl')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('dkjl')"/>
+						<a class="add" onclick="addTd('dkjl')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('dkjl')"><img src="${contextPath}/images/del.png"/></a>
 					</td>		
 				</tr>
 				<tr>
@@ -213,8 +216,8 @@
 				<tr>
 					<td class="tableTitle" colspan="9" style="text-align:left;">
 						房产
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('fc')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('fc')"/>
+						<a class="add" onclick="addTd('fc')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('fc')"><img src="${contextPath}/images/del.png"/></a>
 					</td>		
 				</tr>
 				<tr>
@@ -246,8 +249,8 @@
 				<tr>
 					<td class="tableTitle" colspan="9" style="text-align:left;">
 						机动车
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('jdc')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('jdc')"/>
+						<a class="add" onclick="addTd('jdc')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('jdc')"><img src="${contextPath}/images/del.png"/></a>
 					</td>		
 				</tr>
 				<tr>
@@ -277,11 +280,11 @@
 			</table>
 		</div>
 	</div>
-	<div class="controlbtn">
-		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
-		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
-	</div>
 </form>	
+<div class="controlbtn">
+	<a class="btn_g" href="#" title="提交">提交</a>
+	<a class="btn_gr" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+</div>
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">			

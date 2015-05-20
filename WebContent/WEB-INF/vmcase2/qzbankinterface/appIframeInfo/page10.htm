@@ -1,7 +1,10 @@
 #parse ("common/iframe_page_header3.htm")
+<style type="text/css">
+	
+</style>
 <body>
-<form>
 <!--*************************************************************审贷会审议纪要*************************************************************-->
+<form id="id_module_form">
 	<div class="box">
 		<div name="content">
 			<table class="myTable">
@@ -16,78 +19,88 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">借款人名称</td>
-					<td><span name="jkrxm">XX</span></td>
+					<td><input type="text" name="jkrxm" value="$!result.jkrxm"/></td>
 					<td class="table-label">申请金额</td>
-					<td><span name="sqje">XX</span></td>
+					<td><input type="text" name="sqje" value="$!result.sqje"/></td>
 					<td class="table-label">申请期限</td>
-					<td><span name="sqqx">XX</span></td>	
+					<td><input type="text" name="sqqx" value="$!result.sqqx"/></td>
 				</tr>	
 				<tr>
 					<td class="table-label">申请日期</td>
-					<td><span name="sqrq">XX</span></td>
+					<td><input type="text" name="sqrq" value="$!date.format("yyyy-MM-dd", $!result.sqrq)"/></td>
 					<td class="table-label">申请利率</td>
-					<td><span name="sqll">XX</span></td>
+					<td><input type="text" name="sqll" value="$!result.sqll"/></td>
 					<td class="table-label">担保方式</td>
-					<td><span name="dbfs">XX</span></td>	
+					<td><input type="text" name="dbfs" value="$!result.dbfs"/></td>
 				</tr>			
 				<tr>
 					<td class="table-label">借款人优势</td>
 					<td>
-						<textarea  name="jkrys"></textarea>
+						<textarea  name="jkrys">$!result.jkrys</textarea>
 			
 					</td>
 					<td class="table-label">借款人劣势</td>
-					<td>
-						<textarea  name="jkrls"></textarea>
+					<td colspan="4">
+						<textarea  name="jkrls">$!result.jkrls</textarea>
 					</td>
 				</tr>			
 				<tr>					
 					<td colspan="2">
 						借款人资料是否完整：
-						<label><input type="radio" name="sfwz" checked/>是</label>
-						<label><input type="radio" name="sfwz" />否</label>
+						<label><input type="radio" name="sfwz" value="1" #if($!result.sfwz=='1') checked #end/>是</label>
+						<label><input type="radio" name="sfwz" value="2" #if($!result.sfwz=='2') checked #end/>否</label>
 					</td>
 					<td colspan="4">
 						是否形成最终决议结果：
-						<label><input type="radio" name="zzjyjg" checked/>是</label>
-						<label><input type="radio" name="zzjyjg" />否</label>
+						<label><input type="radio" name="zzjyjg" value="1" #if($!result.zzjyjg=='1') checked #end/>是</label>
+						<label><input type="radio" name="zzjyjg" value="2" #if($!result.zzjyjg=='2') checked #end/>否</label>
 					</td>
 				</tr>	
 				<tr>					
 					<td class="table-label">首次上会须核实问题:</td>
 					<td>
-						<textarea  name="hswt"></textarea>
+						<textarea  name="hswt">$!result.hswt</textarea>
 					</td>
 					<td class="table-label">核实情况：</td>
-					<td>
-						<textarea  name="hsqk"></textarea>
+					<td colspan="4">
+						<textarea  name="hsqk">$!result.hsqk</textarea>
 					</td>
 				</tr>	
 				<tr>
 					<td class="table-label">贷审成员</td>
-					<td><input type="text" name="dscyqz"/></td>
+					<td><input type="text" name="dscyqz" value="$!result.dscyqz"/></td>
 					<td class="table-label">日期</td>
-					<td colspan="3"><input type="text" name="rq" onmouseover="_calendar()"/></td>	
+					<td colspan="3"><input type="text" name="rq" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.rq)"/></td>	
 				</tr>		
 				<tr>
 					<td class="table-label">主办客户经理</td>
-					<td><input type="text" name="zbkhjlqz"/></td>
+					<td><input type="text" name="zbkhjlqz" value="$!result.zbkhjlqz"/></td>
 					<td class="table-label">协助调查人员</td>
-					<td><input type="text" name="xzdcryqz"/></td>
+					<td><input type="text" name="xzdcryqz" value="$!result.xzdcryqz"/></td>
 					<td class="table-label">日期</td>
-					<td><input type="text" name="rq1" onmouseover="_calendar()"/></td>	
+					<td><input type="text" name="rq1" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.rq1)"/></td>	
 				</tr>	
 			</table>			
 		</div>
 	</div>
 	<div class="controlbtn">
-		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
-		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+		<input id="id_save_button" type="button" value="#i18n('button.save')" class="btn btn-info" />
+		<input type="button" onclick="javascript:history.back(-1);" value="#i18n('button.cancel')" class="btn btn-info"/>
 	</div>
-</form>	
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<script type="text/javascript" src="script.js"></script>
-	<script type="text/javascript">			
+	<script type="text/javascript">		
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {
+		$("#id_save_button").click(function() {
+			var formjson = $($formName).serialize();
+   	          $.post("${contextPath}/intopieces/intopiecesshouxin/syjy_save.json?id=${customerId}", formjson, function(data, textStatus, jqXhr) {
+   	            if (data.success) {
+   	            	Dialog.message("保存成功!");
+   	            }
+	          });
+		})
+	})
 		function checkJKTJ(obj){
 			$('.jktj').val('');
 			$('.jktj').attr('disabled','disabled');

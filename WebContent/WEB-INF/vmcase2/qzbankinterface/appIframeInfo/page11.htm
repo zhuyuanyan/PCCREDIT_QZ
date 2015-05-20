@@ -1,6 +1,12 @@
 #parse ("common/iframe_page_header3.htm")
+<style type="text/css">
+	
+</style>
 <body>
-<form>
+<div class="fixed">
+		<h1>合同签订台账</h1>
+	</div>
+<form id="id_module_form" style="height:420px;position:absolute;top:70px;max-height:420px;">
 <!--*************************************************************合同签订台账*************************************************************-->
 	<div class="box">
 		<div name="content">
@@ -8,8 +14,8 @@
 				<tr>
 					<td class="tableTitle" colspan="8" style="text-align:left;">
 						合同签订台账
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('htqdtz')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('htqdtz')"/>
+						<a class="add" onclick="addTd('htqdtz')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('htqdtz')"><img src="${contextPath}/images/del.png"/></a>
 					</td>		
 				</tr>
 				<tr>
@@ -22,27 +28,40 @@
 					<td><b>经办人</b></td>					
 					<td><b>备注</b></td>	
 				</tr>
+				#foreach ($result in $list)
 				<tr>
-					<td><input type="text" class="input" name="slrq" onmouseover='_calendar()'/></td>	
-					<td><input type="text" class="input" name="jkrxm"/></td>					
-					<td><input type="text" class="input" name="pzje"/></td>		
-					<td><input type="text" class="input" name="yyqdrq" onmouseover='_calendar()'/></td>	
-					<td><input type="text" class="input" name="sjqdrq" onmouseover='_calendar()'/></td>					
-					<td><input type="text" class="input" name="zbkhjl"/></td>	
-					<td><input type="text" class="input" name="jbr"/></td>	
-					<td><input type="text" class="input" name="bz"/></td>	
+					<td><input type="text" class="input" name="slrq" onmouseover='_calendar()' value="$!date.format("yyyy-MM-dd", $!result.slrq)"/></td>	
+					<td><input type="text" class="input" name="jkrxm" value="$!result.jkrxm"/></td>					
+					<td><input type="text" class="input" name="pzje" value="$!result.pzje"/></td>		
+					<td><input type="text" class="input" name="yyqdrq" onmouseover='_calendar()' value="$!date.format("yyyy-MM-dd", $!result.yyqdrq)"/></td>	
+					<td><input type="text" class="input" name="sjqdrq" onmouseover='_calendar()' value="$!date.format("yyyy-MM-dd", $!result.sjqdrq)"/></td>					
+					<td><input type="text" class="input" name="zbkhjl" value="$!result.zbkhjl"/></td>	
+					<td><input type="text" class="input" name="jbr" value="$!result.jbr"/></td>	
+					<td><input type="text" class="input" name="bz" value="$!result.bz"/></td>	
 				</tr>
+				#end
 			</table>
 		</div>
 	</div>
-	<div class="controlbtn">
-		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
-		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
-	</div>
 </form>	
+	<div class="controlbtn" style="position:absolute;top:500px;">
+		<a class="btn_g" id="id_save_button" href="#" title="提交">提交</a>
+	<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
+	</div>
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<script type="text/javascript" src="script.js"></script>
-	<script type="text/javascript">			
+	<script type="text/javascript">		
+	#set ($formName = "'#id_module_form'")
+	$(document).ready(function() {
+		$("#id_save_button").click(function() {
+			var formjson = $($formName).serialize();
+   	          $.post("${contextPath}/intopieces/intopiecesxingzheng2/tz_save.json?id=${customerId}", formjson, function(data, textStatus, jqXhr) {
+   	            if (data.success) {
+   	            	Dialog.message("保存成功!");
+   	            }
+	          });
+		})
+	})
 		function checkJKTJ(obj){
 			$('.jktj').val('');
 			$('.jktj').attr('disabled','disabled');
@@ -51,4 +70,4 @@
 	</script>	
 </body>
 </html>
-
+#parse ("common/iframe_page_footer.htm")
