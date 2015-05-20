@@ -142,14 +142,14 @@
 				var rowId = getCurrentRowId().split("@")[0];
 				var sec = getCurrentRowId().split("@")[1];
 				var status = getCurrentRowId().split("@")[2];
-				if(status == '0'){
+				/* if(status == '0'){
 					Dialog.message("请先填写自助贷款信息！");
 					return;
 				}
 				if(sec=='已申请'){
 					Dialog.message("已申请贷款,请勿重复提交！");
 					return;
-				} 
+				}  */
 				if(rowId!=null){
 					Dialog.confirm("确定提交申请吗？", "提示",
 		                function() {
@@ -172,10 +172,10 @@
 			if ($(".checkbox :checked").length == 1) {
 				var rowId = getCurrentRowId().split("@")[0];
 				var sec = getCurrentRowId().split("@")[1];
-				 if(sec=='已申请'){
+			/* 	 if(sec=='已申请'){
 					Dialog.message("已申请进件，无法继续添加进件信息！");
 					return;
-				} 
+				}  */
 				if(rowId!=null){
 					//var url="${modulePath}/changewh.page?id="+rowId;
 					var url="${modulePath}/iframe.page?id="+rowId;
