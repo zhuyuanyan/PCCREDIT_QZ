@@ -1,4 +1,7 @@
 #parse ("common/iframe_page_header3.htm")
+<style type="text/css">
+	
+</style>
 <body>
 <form>
 <!--*************************************************************业务申请表*************************************************************-->
@@ -26,7 +29,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>个人信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/max.gif" /></td>
 			</tr>
 		</table>
 		<div name="content" class="display">
@@ -174,8 +177,8 @@
 							<option>租用</option>
 							<option>其他</option>
 						</select>
-						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" disabled/>）			
-						<input type="text" name="bussAddr" style="width:250px;"/>
+						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" style="width:90px;" disabled/>）			
+						<input type="text" name="bussAddr" style="width:200px;"/>
 					</td>		
 				</tr>
 				<tr>
@@ -301,8 +304,8 @@
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
 						主要供应商
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zygys')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zygys')"/>
+						<a class="add" onclick="addTd('zygys')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zygys')"><img src="${contextPath}/images/del.png"/></a>
 					</td>		
 				</tr>
 				<tr>
@@ -320,8 +323,8 @@
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
 						主要客户
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zykh')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zykh')"/>
+						<a class="add" onclick="addTd('zykh')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zykh')"><img src="${contextPath}/images/del.png"/></a>
 					</td>		
 				</tr>
 				<tr>
@@ -353,8 +356,8 @@
 						<label><input type="radio" name="borrowHistory" value="1" onclick="$('#buttons').show();$('#jkjl .input').removeAttr('disabled')"/>有</label>
 						<label><input type="radio" name="borrowHistory" value="0" onclick="$('#buttons').hide();$('#jkjl .input').val('');$('#jkjl .input').attr('disabled','disabled')" checked/>无</label>
 						<span class="display" id="buttons">
-							<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('jkjl')" />
-							<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('jkjl')" />
+							<a class="add" onclick="addTd('jkjl')" ><img src="${contextPath}/images/add.png"/></a>
+							<a class="del" onclick="removeTd('jkjl')"><img src="${contextPath}/images/del.png"/></a>
 						</span>
 					</td>		
 				</tr>
@@ -547,11 +550,12 @@
 			</table>
 		</div><!--/content-->
 	</div>		
-	<div class="controlbtn">
-		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
-		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
-	</div>
+	
 </form>	
+<div class="controlbtn">
+	<a class="btn_g" href="javascript:void(0);" title="提交">提交</a>
+	<a class="btn_gr" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+</div>
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">			
