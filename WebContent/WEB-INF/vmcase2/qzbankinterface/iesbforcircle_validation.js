@@ -1,9 +1,6 @@
 var validator = $($formName).validate({
 	rules:
     { 
-		acctNo:{required:true},
-		contractNo:{required:true},
-		cardNo:{required:true},
 		contractAmt:{required:true},
 		startDate:{required:true},
 		endDate:{required:true},
@@ -35,16 +32,10 @@ var validator = $($formName).validate({
 		openAcctDate:{required:true},
 		
 		feeAmount:{required:true},
-		feeAcctNo:{required:true},
-		
-		acctNo1:{required:true},
-		acctNo2:{required:true}
+		feeAcctNo:{required:true}
      },
 messages:
     {
-		acctNo:{required:"账号不能为空"},
-		contractNo:{required:"合同号不能为空"},
-		cardNo:{required:"卡号不能为空"},
 		contractAmt:{required:"合同金额不能为空"},
 		startDate:{required:"贷款起始日期不能为空"},
 		endDate:{required:"贷款结束日期不能为空"},
@@ -76,10 +67,7 @@ messages:
 		openAcctDate:{required:"开户日期不能为空"},
 		
 		feeAmount:{required:"费用金额不能为空"},
-		feeAcctNo:{required:"费用账号不能为空"},
-		
-		acctNo1:{required:"收息收款账号不能为空"},
-		acctNo2:{required:"放款账号不能为空"}
+		feeAcctNo:{required:"费用账号不能为空"}
    },
 	errorPlacement : function(error, element) {
 		element.after(error);

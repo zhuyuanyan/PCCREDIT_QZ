@@ -114,8 +114,8 @@ public class IESBForECIFController extends BaseController{
 	public AbstractModelAndView change(HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforecif_display", request);
 		
-		String clientNo = request.getParameter(ID).split("_")[0];
-		ECIF ecif = ecifService.findEcifByClientNo(clientNo);
+		String customerId = request.getParameter(ID);
+		ECIF ecif = ecifService.findEcifByClientNo(ecifService.findEcifByCustomerId(customerId).getClientNo());
 		mv.addObject("ecif",ecif);
 		return mv;
 	}

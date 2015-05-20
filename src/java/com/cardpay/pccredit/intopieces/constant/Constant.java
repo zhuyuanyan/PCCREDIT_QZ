@@ -83,7 +83,7 @@ public class Constant {
 	//泉州银行根机构id
 	public static String QZ_ORG_ROOT_ID = "9350000000";
 	
-/*默认产品*/
+	/*默认产品*/
 	public static String DEFAULT_TYPE="1";
 
 	/*进件状态*/

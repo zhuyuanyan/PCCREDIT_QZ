@@ -941,7 +941,7 @@ public class IntoPiecesService {
 		
 		//重置ecif状态
 		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(infor.getId()).getClientNo());
-		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
+		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_APPLY_FAILURE);
 		commonDao.updateObject(ecif);
 	}
 	
@@ -971,6 +971,11 @@ public class IntoPiecesService {
 		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(filter.getApplicationId());
 		//插入流程log表
 		insertProcessLog(filter.getApplicationId(),Constant.APPLN_TYPE_3,request,request.getParameter("jjyy"),process);
+		
+		//重置ecif状态
+		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(infor.getId()).getClientNo());
+		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_APPLY_FAILURE);
+		commonDao.updateObject(ecif);
 	}
 	/**
 	 * 根据进件id获取调查内容附件记录
@@ -1253,6 +1258,11 @@ public class IntoPiecesService {
 		
 		//插入流程log表
 		insertProcessLog(applicationId,Constant.APPLN_TYPE_3,request,request.getParameter("remark"),process);
+		
+		//重置ecif状态
+		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(applicationInfo.getCustomerId()).getClientNo());
+		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_APPLY_FAILURE);
+		commonDao.updateObject(ecif);
 	}
 	
 	/*

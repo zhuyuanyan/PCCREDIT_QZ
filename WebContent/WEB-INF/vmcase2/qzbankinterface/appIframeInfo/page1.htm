@@ -1,0 +1,571 @@
+#parse ("common/iframe_page_header3.htm")
+<body>
+<form>
+<!--*************************************************************业务申请表*************************************************************-->
+	<div class="box">
+		<div name="content">
+			<table class="myTable">
+				<caption>业务申请表</caption>
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="table-label">机构名称：</td>
+					<td><input type="text" value="" ><input type="hidden" name="orgId" value=""></select></td>
+					<td class="table-label">申请日期：</td>
+					<td><input type="text" name="applyTime" onmouseover="_calendar()"/></td>					
+				</tr>
+			</table>
+		</div>
+	</div>
+<!--*************************************************************个人信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>个人信息</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="table-label">姓名：</td>
+					<td><input type="text" name="name"/></td>	
+					<td class="table-label">性别：</td>
+					<td>
+						<label><input type="radio" name="sex" checked/>男</label>
+						<label><input type="radio" name="sex" />女</label>
+					</td>		
+				</tr>
+				<tr>
+					<td class="table-label">证件号码：</td>
+					<td><input type="text" name="globalId"/></td>	
+					<td class="table-label">证件类型：</td>
+					<td>
+						<select name="globalType" onchange="setSelect(this,'qtzjlx')">
+							<option>身份证</option>
+							<option>户口簿</option>
+							<option>护照</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="globalTypeOther" id="qtzjlx" disabled/>
+					</td>		
+				</tr>
+				<tr>
+					<td class="table-label">教育水平：</td>
+					<td>
+						<select name="educationLevel" onchange="setSelect(this,'qtjysp')">
+							<option>研究生</option>
+							<option>本科</option>
+							<option>大专</option>
+							<option>中专</option>
+							<option>高中</option>
+							<option>初中</option>
+							<option>小学</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="educationLevelOther" id="qtjysp" disabled/>
+					</td>	
+					<td class="table-label">婚姻状况：</td>
+					<td>
+						<select name="maritalStatus" onchange="setSelect(this,'qthyzk')">
+							<option>未婚</option>
+							<option>已婚</option>
+							<option>离婚</option>
+							<option>丧偶</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="maritalStatusOther" id="qthyzk" disabled/>
+					</td>		
+				</tr>
+				<tr>
+					<td class="table-label">配偶姓名：</td>
+					<td><input type="text" name="maritalName"/></td>	
+					<td class="table-label">配偶证件类型：</td>
+					<td>
+						<select name="maritalGlobalType" onchange="setSelect(this,'qtpozjlx')">
+							<option>身份证</option>
+							<option>户口簿</option>
+							<option>护照</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="maritalGlobalTypeOther" id="qtpozjlx" disabled/>
+					</td>		
+				</tr>
+				<tr>
+					<td class="table-label">证件号码：</td>
+					<td><input type="text" name="maritalGlobalId"/></td>	
+					<td class="table-label">配偶工作单位：</td>					
+					<td><input type="text" name="maritalWorkunit"/></td>		
+				</tr>
+				<tr>
+					<td class="table-label">配偶联系方式：</td>
+					<td><input type="text" name="maritalPhone"/></td>	
+					<td class="table-label">家庭人数：</td>					
+					<td><input type="text" name="familyNum"/>人</td>		
+				</tr>
+				<tr>
+					<td class="table-label">家庭住址类型：</td>
+					<td colspan="3">
+						（<select name="addressType" onchange="setSelect(this,'qtjtzz')" style="width:80px">
+							<option>自置</option>
+							<option>按揭</option>
+							<option>亲属楼宇</option>
+							<option>租用</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="addressTypeOther" id="qtjtzz" disabled/>）			
+						<input type="text" name="address" style="width:250px;"/>
+					</td>		
+				</tr>				
+				<tr>
+					<td class="table-label">移动电话1：</td>
+					<td><input type="text" name="phone_1"/></td>	
+					<td class="table-label">移动电话2：</td>					
+					<td><input type="text" name="phone_2"/></td>		
+				</tr>			
+				<tr>
+					<td class="table-label">家庭固定电话：</td>
+					<td colspan="3"><input type="text" name="homePhone"/></td>	
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>
+	<!--*************************************************************营业信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>营业信息</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="table-label">经营名称：</td>
+					<td><input type="text" name="bussName"/></td>	
+					<td class="table-label">经营范围：</td>					
+					<td><input type="text" name="bussScope"/></td>		
+				</tr>	
+				<tr>
+					<td class="table-label">开业时间：</td>
+					<td><input type="text" name="bussStartYear"/>年</td>	
+					<td class="table-label">实际经营地址：</td>					
+					<td>
+						（<select name="bussAddrType" onchange="setSelect(this,'qtsjjydz')" style="width:80px">
+							<option>自置</option>
+							<option>按揭</option>
+							<option>亲属楼宇</option>
+							<option>租用</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" disabled/>）			
+						<input type="text" name="bussAddr" style="width:250px;"/>
+					</td>		
+				</tr>
+				<tr>
+					<td class="table-label">营业地址电话：</td>
+					<td><input type="text" name="bussPhone"/></td>	
+					<td class="table-label">雇员人数：</td>					
+					<td><input type="text" name="bussEmployeeNum"/>人</td>		
+				</tr>	
+				<tr>
+					<td class="table-label">组织形式：</td>
+					<td colspan="3">
+						<select name="bussType" onchange="setSelect(this,'qtzzxs')">
+							<option>个体户</option>
+							<option>企业</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="bussTypeOther" id="qtzzxs" disabled/>	
+					</td>			
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+	<!--*************************************************************贷款申请*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>贷款申请</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="table-label">贷款金额：</td>
+					<td><input type="text" name="applyAmount"/>万元</td>	
+					<td class="table-label">贷款期限：</td>					
+					<td><input type="text" name="applyDeadline"/>月</td>		
+				</tr>	
+				<tr>
+					<td class="table-label">贷款用途：</td>
+					<td><input type="text" name="applyUse"/></td>	
+					<td class="table-label">申请到期日：</td>					
+					<td><input type="text" name="applyEndTime" onmouseover="_calendar()"/></td>		
+				</tr>	
+				<tr>
+					<td class="table-label">月还款能力：</td>
+					<td><input type="text" name="monthRepay"/></td>	
+					<td class="table-label">可提供的抵押物：</td>					
+					<td><input type="text" name="guntThing"/></td>		
+				</tr>		
+				<tr>
+					<td class="table-label">可提供的保证人：</td>
+					<td colspan="3"><input type="text" name="guntPeople"/></td>	
+				</tr>		
+			</table>
+		</div><!--/content-->
+	</div>	
+	<!--*************************************************************财务信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>财务信息</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="table-label">年营业额：</td>
+					<td><input type="text" name="yearIncome"/></td>	
+					<td class="table-label">利润：</td>					
+					<td>
+						<select name="profitType">
+							<option>毛利润</option>
+							<option>净利润</option>
+						</select>
+						<input type="text" name="profit"/>
+					</td>		
+				</tr>	
+				<tr>
+					<td class="table-label">总资产：</td>
+					<td><input type="text" name="totalAssets"/></td>	
+					<td class="table-label">应收账款：</td>	
+					<td><input type="text" name="inMoney"/></td>	
+				</tr>		
+				<tr>
+					<td class="table-label">应付账款：</td>
+					<td><input type="text" name="outMoney"/></td>	
+					<td class="table-label">其他负债：</td>	
+					<td><input type="text" name="otherOut"/></td>	
+				</tr>	
+				<tr>
+					<td class="table-label">每月其他收入金额：</td>
+					<td><input type="text" name="monthOtherIncome"/></td>	
+					<td class="table-label">其他收入来源：</td>	
+					<td><input type="text" name="otherIncomeSrc"/></td>	
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+	<!--*************************************************************业务信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>业务信息</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="zygys">
+				<tr>
+					<td class="tableTitle" colspan="3" style="text-align:left;">
+						主要供应商
+						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zygys')"/>
+						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zygys')"/>
+					</td>		
+				</tr>
+				<tr>
+					<td><b>名称</b></td>	
+					<td><b>所占份额 (%) </b></td>					
+					<td><b>付款条件</b></td>		
+				</tr>
+				<tr>
+					<td><input type="text" name="name"/></td>	
+					<td><input type="text" name="rate"/></td>					
+					<td><input type="text" name="condition"/></td>		
+				</tr>
+			</table>
+			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="zykh">
+				<tr>
+					<td class="tableTitle" colspan="3" style="text-align:left;">
+						主要客户
+						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zykh')"/>
+						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zykh')"/>
+					</td>		
+				</tr>
+				<tr>
+					<td><b>名称</b></td>	
+					<td><b>所占份额 (%) </b></td>					
+					<td><b>付款条件</b></td>		
+				</tr>
+				<tr>
+					<td><input type="text" name="name"/></td>	
+					<td><input type="text" name="rate"/></td>					
+					<td><input type="text" name="condition"/></td>		
+				</tr>
+			</table>	
+		</div><!--/content-->
+	</div>		
+	<!--*************************************************************借款记录*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>借款记录</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>	
+		<div name="content" class="display">	
+			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="jkjl">
+				<tr>
+					<td class="tableTitle" colspan="8" style="text-align:left;">
+						借款记录
+						<label><input type="radio" name="borrowHistory" value="1" onclick="$('#buttons').show();$('#jkjl .input').removeAttr('disabled')"/>有</label>
+						<label><input type="radio" name="borrowHistory" value="0" onclick="$('#buttons').hide();$('#jkjl .input').val('');$('#jkjl .input').attr('disabled','disabled')" checked/>无</label>
+						<span class="display" id="buttons">
+							<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('jkjl')" />
+							<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('jkjl')" />
+						</span>
+					</td>		
+				</tr>
+				<tr>
+					<td><b>银行或其他方式</b></td>	
+					<td><b>目的</b></td>					
+					<td><b>贷款总额</b></td>	
+					<td><b>发放日期</b></td>					
+					<td><b>期限</b></td>	
+					<td><b>利率</b></td>					
+					<td><b>还款方式</b></td>					
+					<td><b>贷款余额</b></td>
+				</tr>
+				<tr>
+					<td><input type="text" class="input" name="bankOrOtherType" disabled/></td>	
+					<td><input type="text" class="input" name="purpose" disabled/></td>					
+					<td><input type="text" class="input" name="totalAmount" disabled/></td>	
+					<td><input type="text" class="input" name="loanDate" onmouseover="_calendar()" disabled/></td>	
+					<td><input type="text" class="input" name="deadline" disabled/></td>					
+					<td><input type="text" class="input" name="rates" disabled/></td>	
+					<td><input type="text" class="input" name="repayType" disabled/></td>	
+					<td><input type="text" class="input" name="remainSum" disabled/></td>		
+				</tr>
+			</table>
+			<table class="myTable" style="width:95%;margin:5px auto;" id="dywp">
+				<tr>
+					<td class="tableTitle" colspan="5" >
+						抵押物品
+						<label><input type="radio" name="radio2" onclick="$('#dywp .input').removeAttr('disabled')"/>有</label>
+						<label><input type="radio" name="radio2" onclick="$('#dywp .input').val('');$('#dywp .input').attr('disabled','disabled')" checked/>无</label>						
+					</td>		
+				</tr>
+				<tr>
+					<td><b>物品：</b></td>
+					<td>1、<input type="text" class="input" name="thing_1" disabled/></td>	
+					<td>2、<input type="text" class="input" name="thing_2" disabled/></td>					
+					<td>3、<input type="text" class="input" name="thing_3" disabled/></td>	
+					<td>4、<input type="text" class="input" name="thing_4" disabled/></td>		
+				</tr>
+			</table>
+			<table class="myTable" style="width:95%;margin:5px auto;">				
+				<tr>
+					<td><b>贷款使用人：</b></td>
+					<td>1、<input type="text" class="input" name="loanUser_1" /></td>	
+					<td>2、<input type="text" class="input" name="loanUser_2" /></td>					
+					<td>3、<input type="text" class="input" name="loanUser_3" /></td>	
+					<td>4、<input type="text" class="input" name="loanUser_4" /></td>		
+				</tr>
+				<tr>
+					<td><b>是否为其他人担保？</b></td>
+					<td colspan="4">
+						<label><input type="radio" name="guntForOther" onclick="$('#yh').removeAttr('disabled');$('#khmc').removeAttr('disabled')"/>是</label>
+						银行：<input type="text" name="guntForOtherBankname" id="yh" disabled/>
+						客户名称：<input type="text" name="guntForOtherClientname" id="khmc" disabled/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" name="guntForOther" onclick="$('#yh').val('');$('#khmc').val('');$('#yh').attr('disabled','disabled');$('#khmc').attr('disabled','disabled')" checked/>否</label>
+					</td>		
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+	<!--*************************************************************其他信息 *************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>其他信息</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>
+					<col width="30%">
+					<col width="70%">
+				</colgroup>
+				<tr>
+					<td class="table-label">是否曾在泉州银行申请过贷款？ </td>
+					<td>
+						<label><input type="radio" name="haveApplyLoan" onclick="$('#jksj').removeAttr('disabled');"/>是</label>
+						借款时间：<input type="text" name="haveLoanTime" id="jksj" onmouseover="_calendar()" disabled/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" name="haveApplyLoan" onclick="$('#jksj').val('');$('#jksj').attr('disabled','disabled');" checked/>否</label>
+					</td>
+				</tr>
+				<tr>	
+					<td class="table-label">是否曾使用泉州银行电子银行产品？ </td>
+					<td>
+						<label><input type="radio" name="haveElePro" onclick="$('.dzyhcp').removeAttr('disabled');"/>是</label>
+						<label><input type="radio" class="dzyhcp" name="haveEleProType" disabled/>POS机</label>
+						<label><input type="radio" class="dzyhcp" name="haveEleProType" disabled/>网上银行</label>
+						<label><input type="radio" class="dzyhcp" name="haveEleProType" disabled/>手机银行</label>
+						<label><input type="radio" class="dzyhcp" name="haveEleProType" disabled/>信用卡</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" name="haveElePro" onclick="$('.dzyhcp').removeAttr('checked');$('.dzyhcp').attr('disabled','disabled');" checked/>否</label>
+					</td>
+				</tr>
+				<tr>	
+					<td class="table-label">有关联的个人或实体是否获得过泉州银行贷款？ </td>
+					<td>
+						<label><input type="radio" name="haveGotLoan" onclick="$('#xm').removeAttr('disabled');$('#gxlx').removeAttr('disabled');"/>是</label>
+						姓名/名称：<input type="text" name="haveGotLoanName" id="xm" disabled/>
+						关系类型：<input type="text" name="haveGotLoanRelation" id="gxlx" disabled/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" name="haveGotLoan" onclick="$('#xm').val('');$('#gxlx').val('');$('#xm').attr('disabled','disabled');$('#gxlx').attr('disabled','disabled')" checked/>否</label>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+	<!--*************************************************************声明 *************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>声明</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>					
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td colspan="4">本人特提出贷款申请，我与财产共有人授权你行收集关于我和财产共有人个人或者经营的有关信息，并且承诺我们向贵行提供的信息和资料均真实、完整、合法且有效。</td>					
+				</tr>						
+				<tr>
+					<td class="table-label">客户签名：</td>
+					<td><input type="text" name="sign"/></td>	
+					<td class="table-label">签名日期：</td>	
+					<td><input type="text" name="signDate" onmouseover="_calendar()"/></td>	
+				</tr>	
+			</table>
+		</div><!--/content-->
+	</div>	
+	<!--*************************************************************信息渠道*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>信息渠道</td>
+				<td><img src="${contextPath}/images/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="myTable">
+				<colgroup>					
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>	
+				<tr>
+					<td class="table-label">信息渠道：</td>
+					<td colspan="3">
+						<select name="infoType" onchange="setSelect(this,'qtxxqd')">
+							<option>宣传单</option>
+							<option>电话</option>
+							<option>朋友/家人</option>
+							<option>农商行客户</option>
+							<option>报纸/杂志</option>
+							<option>广播/电视</option>
+							<option>流动广告</option>
+							<option>其他</option>
+						</select>
+						<input type="text" name="infoTypeOther" id="qtxxqd" disabled/>	
+					</td>	
+						
+				</tr>
+			</table>
+		</div>
+	</div>
+<!--**************************************************************************************************************************-->
+	<div class="box">
+		<div name="content">
+			<table class="myTable">
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="table-label">评论(客户第一印象,观察到的特殊情况,等等)</td>
+					<td colspan="3"><textarea name="commet"></textarea></td>	
+				</tr>
+				<tr>
+					<td class="table-label">经办人：</td>
+					<td><input type="text" name="managerId"/></td>	
+					<td class="table-label">日期：</td>	
+					<td><input type="text" name="managerTime" onmouseover="_calendar()"/></td>	
+				</tr>	
+			</table>
+		</div><!--/content-->
+	</div>		
+	<div class="controlbtn">
+		<a class="btn btn-info" href="page2.html" title="提交">提交</a>
+		<a class="btn" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	</div>
+</form>	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript">			
+		function setSelect(obj,id){//其他证件类型、其他教育水平等
+			if($(obj).children('option:selected').text()=="其他"){
+				$("#"+id).removeAttr('disabled');
+			}
+			else{
+				$("#"+id).val('');
+				$("#"+id).attr('disabled','disabled');
+			}
+		}
+		
+	</script>	
+</body>
+</html>
+
