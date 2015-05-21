@@ -1,32 +1,24 @@
 package com.cardpay.pccredit.intopieces.web;
 
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
-import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForCircleForm;
-import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFForm;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
-import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
@@ -34,14 +26,14 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
 import com.cardpay.pccredit.intopieces.model.QzShouxin;
-import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.model.QzSyjy;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
-import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
@@ -50,9 +42,9 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
-import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
+import com.wicresoft.util.web.RequestHelper;
 
 @Controller
 @RequestMapping("/intopieces/intopiecesshouxin/*")
@@ -112,14 +104,12 @@ public class IntoPiecesShouxinControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "create_form.page")
 	public AbstractModelAndView createForm(HttpServletRequest request) {
-		String appId = request.getParameter(ID);
-		List<QzShouxin>  result =intoPiecesService.getShouxinform(appId);
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_shouxin_form", request);
-		mv.addObject("appId",appId);
-		if(result.size()>0){
-			mv.addObject("result",result.get(0));
-		}else{
-			mv.addObject("result",result);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8", request);
+		String customerId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerId)) {
+			QzSdhjyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
+			mv.addObject("customerId", customerId);
+			mv.addObject("result", qzSdhjyd);
 		}
 		return mv;
 	}
@@ -154,6 +144,54 @@ public class IntoPiecesShouxinControl extends BaseController {
 		return returnMap;
 	}
 	
+	/**
+	 * 进入审议纪要页面
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "create_syjy_form.page")
+	public AbstractModelAndView createSyjyForm(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page10", request);
+		String customerId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerId)) {
+			QzSyjy qzSyjy = intoPiecesService.getSyjyForm(customerId);
+			mv.addObject("customerId", customerId);
+			mv.addObject("result", qzSyjy);
+		}
+		return mv;
+	}
+	/**
+	 * 审议纪要保存
+	 * @param customerinfoForm
+	 * @param request
+	 * @return
+	 */
+
+	@ResponseBody
+	@RequestMapping(value = "syjy_save.json")
+	public JRadReturnMap syjySave(@ModelAttribute QzSyjyForm qzSyjyForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = RequestHelper.getStringValue(request, ID);
+				QzSyjy QzSyjy = qzSyjyForm.createModel(QzSyjy.class);
+				QzSyjy.setCustomerId(customerId);
+				QzSyjy.setCreatedTime(new Date());
+				intoPiecesService.insertSyjyForm(QzSyjy,customerId);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
 	/**
 	 * 申请件审批通过 
 	 * 从授信审批岗--中心负责岗

@@ -1,11 +1,13 @@
 package com.cardpay.pccredit.intopieces.web;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
+import com.cardpay.pccredit.intopieces.model.QzShouxin;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
@@ -368,11 +372,11 @@ public class IntoPiecesApproveControl extends BaseController {
 	@RequestMapping(value = "page8.page")
 	public AbstractModelAndView page8(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
+		String customerId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerId)) {
+			QzSdhjyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
+			mv.addObject("customerId", customerId);
+			mv.addObject("result", qzSdhjyd);
 		}
 		return mv;
 	}
@@ -403,5 +407,36 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("customerId", customerInfor.getId());
 		}
 		return mv;
+	}
+	
+	/**
+	 * 审贷会决议单保存
+	 * @param customerinfoForm
+	 * @param request
+	 * @return
+	 */
+
+	@ResponseBody
+	@RequestMapping(value = "page8insert.json")
+	public JRadReturnMap insert(@ModelAttribute QzSdhjydForm qzSdhjydForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = RequestHelper.getStringValue(request, ID);
+				QzSdhjyd qzSdhjyd = qzSdhjydForm.createModel(QzSdhjyd.class);
+				qzSdhjyd.setCustomerId(customerId);
+				qzSdhjyd.setCreatedTime(new Date());
+				intoPiecesService.insertSdhjydForm(qzSdhjyd,customerId);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
 	}
 }
