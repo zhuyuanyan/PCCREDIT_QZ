@@ -942,7 +942,7 @@ public class IntoPiecesService {
 		//删除流程表信息
 		commonDao.queryBySql("delete from customer_application_process where application_id='"+filter.getApplicationId()+"'", null);
 		//更新客户信息--退回
-		infor.setProcessId("1");
+		infor.setProcessId(Constant.APPROVE_EDIT_1);
 		commonDao.updateObject(infor);
 		
 		//重置ecif状态
@@ -970,7 +970,7 @@ public class IntoPiecesService {
 		//获取客户信息
 		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
 		//更新客户信息--拒件
-		infor.setProcessId("3");
+		infor.setProcessId(Constant.APPROVE_EDIT_2);
 		commonDao.updateObject(infor);
 		
 		//通过申请表ID获取流程表
@@ -1408,5 +1408,19 @@ public class IntoPiecesService {
 		String sql="select * from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'";
 		List<QzTz> qz = commonDao.queryBySql(QzTz.class,sql, null);
 		return qz;
+	}
+	
+	/* 授信岗补充上会操作 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public void returnToCu(HttpServletRequest request) throws Exception{
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class,request.getParameter("id"));
+		//获取客户信息
+		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+		//更新客户信息--补充上会
+		infor.setProcessId(Constant.APPROVE_EDIT_3);
+		commonDao.updateObject(infor);
 	}
 }

@@ -154,6 +154,7 @@
          <a id="id_return_button" class="btn_g" title="退件">退件</a>
 		<a id="id_reject_button" class="btn_g" title="拒件">拒件</a>
         <a id="id_chureject_button" class="btn_g" title="初审拒件记录">初审拒件记录</a>
+        <a id="id_return_to_cu_button" class="btn_g" href="javascript:void(0);"  title="补充上会">补充上会</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -281,6 +282,26 @@
 				Dialog.message("请选择一条记录!");
 			}
 	    });
+		
+		//补充上会
+		$("#id_return_to_cu_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var applicationId= $($(".checkbox :checked")[0]).attr("value").split("@")[0];
+				Dialog.confirm("确定提交吗？", "提示",
+					    function() {
+							$.post("${contextPath}/intopieces/intopiecesshouxin/return_to_cu.json?id="+applicationId, {},
+						            function(data, textStatus, jqXhr) {
+						                if (data.success) {
+						                	var url ="${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
+						                    window.location.href=url;
+						                } else {
+						                }
+						            });
+				});
+			}else{
+				 Dialog.message("请选择一条记录!");
+			}
+		});
 	});
 	
 </script>
