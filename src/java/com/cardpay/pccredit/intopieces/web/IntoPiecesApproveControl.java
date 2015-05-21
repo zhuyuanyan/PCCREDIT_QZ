@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.intopieces.web;
 
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
@@ -28,7 +30,9 @@ import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
+import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
@@ -436,6 +440,53 @@ public class IntoPiecesApproveControl extends BaseController {
 		}else{
 			returnMap.setSuccess(false);
 			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
+	/**
+	 * 进入补充上会记录页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "add_information.page", method = { RequestMethod.GET })
+	public AbstractModelAndView reject(@ModelAttribute CustomerApplicationProcessFilter filter, HttpServletRequest request) throws SQLException {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		filter.setLoginId(loginId);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.shouxinAddInforForm(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView(
+				"/intopieces/intopieces_wait/intopiecesApprove_shouxin_add_infor", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 客户经理补充上会提交
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "pass.json")
+	public JRadReturnMap pass(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String customerId = request.getParameter("customerId");
+			//更新客户信息状态
+			CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, customerId);
+			infor.setProcessId("");
+			commonDao.updateObject(infor);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
 		}
 		return returnMap;
 	}
