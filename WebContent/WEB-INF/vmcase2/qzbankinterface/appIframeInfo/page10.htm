@@ -84,14 +84,24 @@
 		</div>
 	</div>
 	<div class="controlbtn">
-		<input id="id_save_button" type="button" value="#i18n('button.save')" class="btn btn-info" />
-		<input type="button" onclick="javascript:history.back(-1);" value="#i18n('button.cancel')" class="btn btn-info"/>
+	#if($!readType!="readType")
+		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+	#end
+		<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
 	</div>
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">		
 	#set ($formName = "'#id_module_form'")
 	$(document).ready(function() {
+		if("${readType}"=="readType"){
+			$("input[type='text']").attr("disabled",true);
+			$("input[type='radio']").attr("disabled",true);
+			$("input[type='checkbox']").attr("disabled",true);
+			$("select").attr("disabled",true);
+			$("textarea").attr("disabled",true);
+		}
+		
 		$("#id_save_button").click(function() {
 			var formjson = $($formName).serialize();
    	          $.post("${contextPath}/intopieces/intopiecesshouxin/syjy_save.json?id=${customerId}", formjson, function(data, textStatus, jqXhr) {

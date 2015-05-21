@@ -104,7 +104,7 @@ public class IntoPiecesShouxinControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "create_form.page")
 	public AbstractModelAndView createForm(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8", request);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8_for_approve", request);
 		String customerId = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(customerId)) {
 			QzSdhjyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
@@ -388,6 +388,28 @@ public class IntoPiecesShouxinControl extends BaseController {
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+	
+	/**
+	 * 补充上会(添加标记，客户经理补充)
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "return_to_cu.json")
+	public JRadReturnMap returnToCu(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+
+		try {
+			intoPiecesService.returnToCu(request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("退回失败");
 			e.printStackTrace();
 		}
 		return returnMap;

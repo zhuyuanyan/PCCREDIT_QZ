@@ -230,7 +230,7 @@
 		QZ_IESB_FOR_CIRCLE circle 
 		WHERE
 		1=1
-		and U.ID = b.CUSTOMER_ID and (U .process_id !='3' or U .process_id is null)
+		and U.ID = b.CUSTOMER_ID and ((U .process_id !='3' and U .process_id !='4') or U .process_id is null)
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
@@ -261,7 +261,7 @@
    		NODE_AUDIT N,NODE_AUDIT_USER p
 		WHERE
 		1=1
-		and U.ID = b.CUSTOMER_ID and (U .process_id !='3' or U .process_id is null)
+		and U.ID = b.CUSTOMER_ID and ((U .process_id !='3' and U .process_id !='4') or U .process_id is null)
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
@@ -303,7 +303,7 @@
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID
 		and b.status='audit' and s.application_id=a.application_id and s.operate_type='拒件'
-	
+		
 		</select>
 		<select id="CountIntopieceChushenRejectForm" resultType="int">
 		SELECT count(*) 
@@ -319,5 +319,48 @@
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID
 		and b.status='audit' and s.application_id=a.application_id and s.operate_type='3'
+		
+		</select>
+		
+		<select id="shouxinAddInforForm" resultMap="BaseResultMap">
+		SELECT
+		b.*, U.CHINESE_NAME as chineseName,
+		U.RESIDENTIAL_ADDRESS AS residentialAddress,
+		U.CARD_TYPE AS cardType,
+		U.CARD_ID AS cardId,
+		b.APPLY_QUOTA AS applyQuota,
+		A.SERIAL_NUMBER as SERIALNUMBER,
+   		N.NODE_NAME as nodeName,
+		A.AUDIT_TIME as auditTime,
+		A.id as processId,b.id as applicationId
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION U,
+		CUSTOMER_APPLICATION_PROCESS A,
+   		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID and U .process_id ='4'
+		and a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' 
+		</select>
+		
+		<select id="CountshouxinAddInforForm" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION U,
+		CUSTOMER_APPLICATION_PROCESS A,
+   		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID and U .process_id ='4'
+		and a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' 
 		</select>
 </mapper>

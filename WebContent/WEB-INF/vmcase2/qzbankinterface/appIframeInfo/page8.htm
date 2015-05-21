@@ -98,90 +98,13 @@
 					<td colspan="2" style="text-align:center;"><input type="text" name="djhm2" value="$!result.djhm2"/></td>					
 					<td style="text-align:center;"><input type="text" name="kdyjz2" value="$!result.kdyjz2"/></td>	
 				</tr>	
-				<tr>
-					<td class="table-label" rowspan="12">授信决策情况</td>					
-					<td class="table-label">金额（元）</td>					
-					<td colspan="3"><input type="text" name="je" value="$!result.je"/></td>					
-					<td class="table-label">利率（年）</td>	
-					<td colspan="3"><input type="text" name="ll" value="$!result.ll"/></td>	
-				</tr>	
-				<tr>				
-					<td class="table-label">期限（月）</td>					
-					<td colspan="3"><input type="text" name="qx" value="$!result.qx"/></td>					
-					<td class="table-label">还款方式</td>	
-					<td colspan="3"><input type="text" name="hkfs1" value="$!result.hkfs1"/></td>	
-				</tr>	
-				<tr>				
-					<td class="table-label" rowspan="2">抵押担保</td>					
-					<td colspan="7">
-						<label><input type="radio" name="dydb1" onclick="$('#jy1').val('');$('#jy1').attr('disabled','disabled')" value="1" #if($!result.dydb1=='1') checked #end/>1、同意建议</label>
-					</td>	
-				</tr>		
-				<tr>								
-					<td colspan="7">
-						<label><input type="radio" name="dydb1" value="2" onclick="$('#jy1').removeAttr('disabled')" #if($!result.dydb1=='2') checked #end/>2、对建议的补充或修改</label>
-						<textarea name="dydb2" id="jy1"  #if($!result.dydb1!='2') disabled #end>$!result.dydb2</textarea>
-					</td>	
-				</tr>		
-				<tr>				
-					<td class="table-label" rowspan="2">保证担保</td>					
-					<td colspan="7">
-						<label><input type="radio" name="bzdb1" value="1" onclick="$('#jy2').val('');$('#jy2').attr('disabled','disabled')"   #if($!result.bzdb1=='1') checked #end />1、同意客户经理建议</label>
-					</td>	
-				</tr>		
-				<tr>								
-					<td colspan="7">
-						<label><input type="radio" name="bzdb1" value="2" onclick="$('#jy2').removeAttr('disabled')" #if($!result.bzdb1=='2') checked #end />2、对建议的补充或修改</label>
-						<textarea name="bzdb2" id="jy2"   #if($!result.bzdb1!='2') disabled #end>$!result.bzdb2</textarea>
-					</td>	
-				</tr>			
-				<tr>				
-					<td class="table-label" rowspan="4">监控条件</td>					
-					<td colspan="7">
-						<label><input type="radio" name="jktj" value="1" onclick="checkJKTJ(this)"  #if($!result.jktj=='1') checked #end />
-						1、落实贷款用途时间 ：贷款发放后在<input type="text" name="jktj1"  value="$!result.jktj1" class="jktj" #if($!result.jktj!='1') disabled #end/>天内落实贷款用途。</label>
-					</td>	
-				</tr>		
-				<tr>								
-					<td colspan="7">
-						<label><input type="radio" name="jktj" value="2" onclick="checkJKTJ(this)"  #if($!result.jktj=='2') checked #end />
-						2、贷款用途落实需提供的书面材料为：<input type="text" name="jktj2"  value="$!result.jktj2" class="jktj"  #if($!result.jktj!='2') disabled #end/></label>
-					</td>	
-				</tr>		
-				<tr>								
-					<td colspan="7">
-						<label><input type="radio" name="jktj" value="3" onclick="checkJKTJ(this)"   #if($!result.jktj=='3') checked #end />
-						3、实地回访频率： 每<input type="text" name="jktj3"  value="$!result.jktj3" class="jktj"  #if($!result.jktj!='3') disabled #end/>个月进行一实地回访。</label>
-					</td>	
-				</tr>		
-				<tr>								
-					<td colspan="7">
-						<label><input type="radio" name="jktj" value="4" onclick="checkJKTJ(this)"  #if($!result.jktj=='4') checked #end />
-						4、重点监控内容：<input type="text" name="jktj4"  value="$!result.jktj4" class="jktj"  #if($!result.jktj!='4') disabled #end/></label>
-					</td>	
-				</tr>		
-				<tr>				
-					<td class="table-label">其他要求</td>					
-					<td colspan="7"><textarea name="qtyq">$!result.qtyq</textarea></td>	
-				</tr>		
-				<tr>				
-					<td class="table-label">拒绝申请</td>					
-					<td colspan="7">主要原因：<textarea name="jjsq">$!result.jjsq</textarea></td>	
-				</tr>			
-				<tr>				
-					<td class="table-label">组员</td>					
-					<td colspan="8">
-						组员:<input type="text" name="zy1" value="$!result.zy1"/>
-						组员:<input type="text" name="zy2" value="$!result.zy2"/>
-						组员:<input type="text" name="zy3" value="$!result.zy3"/>
-					</td>	
-				</tr>		
+				
 			</table>			
 		</div>
 	</div>
 	<div class="controlbtn">
-		<input id="id_save_button" type="button" value="#i18n('button.save')" class="btn btn-info" />
-		<input type="button" onclick="javascript:history.back(-1);" value="#i18n('button.cancel')" class="btn btn-info"/>
+		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+		<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
 	</div>
 </form>	
 	<script type="text/javascript">		

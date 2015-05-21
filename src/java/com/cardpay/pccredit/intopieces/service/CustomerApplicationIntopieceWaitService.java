@@ -201,7 +201,14 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
-	
+	// 查询需要补充上会的进件
+	public QueryResult<CustomerApplicationIntopieceWaitForm> shouxinAddInforForm(CustomerApplicationProcessFilter filter) {
+		List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.shouxinAddInforForm(filter);
+		int size = customerApplicationIntopieceWaitDao.CountshouxinAddInforForm(filter);
+		QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
+		return qs;
+
+	}
 	
 	public void updateCustomerApplicationProcessBySerialNumberApplicationInfo1(HttpServletRequest request) throws Exception {
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
