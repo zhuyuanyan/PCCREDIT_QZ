@@ -1,7 +1,6 @@
 package com.cardpay.pccredit.intopieces.web;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,14 +25,13 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
-import com.cardpay.pccredit.intopieces.model.QzShouxin;
-import com.cardpay.pccredit.intopieces.model.QzSyjy;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
+import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
-import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
@@ -95,27 +93,6 @@ public class IntoPiecesZhongxinControl extends BaseController {
 		return mv;
 	}
 	
-	/**
-	 * 进入团队管理岗复核页面
-	 * 
-	 * @param request
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "create_form.page")
-	@JRadOperation(JRadOperation.CREATE)
-	public AbstractModelAndView createForm(HttpServletRequest request) {
-		String appId = request.getParameter(ID);
-		List<QzShouxin>  result =intoPiecesService.getShouxinform(appId);
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_zhongxin_form", request);
-		mv.addObject("appId",appId);
-		if(result.size()>0){
-			mv.addObject("result",result.get(0));
-		}else{
-			mv.addObject("result",result);
-		}
-		return mv;
-	}
 	
 	/**
 	 * 申请件审批通过 
@@ -263,11 +240,29 @@ public class IntoPiecesZhongxinControl extends BaseController {
 	@RequestMapping(value = "show_syjy_form.page")
 	public AbstractModelAndView showSyjyForm(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page10", request);
-		String customerId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerId)) {
-			QzSyjy qzSyjy = intoPiecesService.getSyjyForm(customerId);
-			mv.addObject("customerId", customerId);
+		String appId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(appId)) {
+			QzApplnSdhjy qzSyjy = intoPiecesService.getSyjyForm(appId);
 			mv.addObject("result", qzSyjy);
+			mv.addObject("readType", "readType");
+		}
+		return mv;
+	}
+	
+	/**
+	 * 进入授信决议单页面(只读)
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "jyd_form.page")
+	public AbstractModelAndView jydForm(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8_for_approve", request);
+		String appId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(appId)) {
+			QzApplnJyd qzSdhjyd = intoPiecesService.getSdhjydFormAfter(appId);
+			mv.addObject("result", qzSdhjyd);
 			mv.addObject("readType", "readType");
 		}
 		return mv;

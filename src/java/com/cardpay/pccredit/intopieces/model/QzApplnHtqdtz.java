@@ -13,7 +13,10 @@ import com.wicresoft.jrad.base.database.model.BusinessModel;
 public class QzApplnHtqdtz extends BusinessModel {
 
 	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * 
+	 */
+	private String customerId;
 	private String applicationId;
 	private Date slrq;
 	private String jkrxm;
@@ -23,17 +26,11 @@ public class QzApplnHtqdtz extends BusinessModel {
 	private String zbkhjl;
 	private String jbr;
 	private String bz;
-	public String getApplicationId() {
-		return applicationId;
+	public String getCustomerId() {
+		return customerId;
 	}
-	public void setApplicationId(String applicationId) {
-		this.applicationId = applicationId;
-	}
-	public Date getSlrq() {
-		return slrq;
-	}
-	public void setSlrq(Date slrq) {
-		this.slrq = slrq;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	public String getJkrxm() {
 		return jkrxm;
@@ -46,18 +43,6 @@ public class QzApplnHtqdtz extends BusinessModel {
 	}
 	public void setPzje(String pzje) {
 		this.pzje = pzje;
-	}
-	public Date getYyqdrq() {
-		return yyqdrq;
-	}
-	public void setYyqdrq(Date yyqdrq) {
-		this.yyqdrq = yyqdrq;
-	}
-	public Date getSjqdrq() {
-		return sjqdrq;
-	}
-	public void setSjqdrq(Date sjqdrq) {
-		this.sjqdrq = sjqdrq;
 	}
 	public String getZbkhjl() {
 		return zbkhjl;
@@ -77,4 +62,29 @@ public class QzApplnHtqdtz extends BusinessModel {
 	public void setBz(String bz) {
 		this.bz = bz;
 	}
+	public Date getSlrq() {
+		return slrq;
+	}
+	public void setSlrq(Date slrq) {
+		this.slrq = slrq;
+	}
+	public Date getYyqdrq() {
+		return yyqdrq;
+	}
+	public void setYyqdrq(Date yyqdrq) {
+		this.yyqdrq = yyqdrq;
+	}
+	public Date getSjqdrq() {
+		return sjqdrq;
+	}
+	public void setSjqdrq(Date sjqdrq) {
+		this.sjqdrq = sjqdrq;
+	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
+	
 }

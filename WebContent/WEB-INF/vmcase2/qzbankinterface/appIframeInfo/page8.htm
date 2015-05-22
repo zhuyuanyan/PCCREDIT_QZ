@@ -104,7 +104,7 @@
 	</div>
 	<div class="controlbtn">
 		<a class="btn_g" id="id_save_button" title="提交">提交</a>
-		<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
+		<a class="btn_gr" id="id_back_button" title="返回">返回</a>
 	</div>
 </form>	
 	<script type="text/javascript">		
@@ -112,11 +112,15 @@
 		$(document).ready(function() {
 			$("#id_save_button").click(function() {
 				var formjson = $($formName).serialize();
-	   	          $.post("${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}", formjson, function(data, textStatus, jqXhr) {
+	   	          $.post("${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
 	   	            }
    	          });
+			});
+			$("#id_back_button").click(function() {
+				var url = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+                parent.location.href = url;
 			})
 		})
 		function checkJKTJ(obj){

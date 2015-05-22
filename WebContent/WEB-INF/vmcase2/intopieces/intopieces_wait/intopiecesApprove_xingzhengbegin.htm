@@ -139,7 +139,6 @@
 		$("#id_apply_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
                 var applicationId= $($(".checkbox :checked")[0]).attr("value").split("@")[0];
-                $("#appId").val(applicationId);
                 var url = "${contextPath}/intopieces/intopiecesxingzheng1/create_upload.page?id="+applicationId;
                 window.location.href = url;
             } else {

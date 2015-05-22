@@ -26,9 +26,8 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
-import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
-import com.cardpay.pccredit.intopieces.model.QzShouxin;
-import com.cardpay.pccredit.intopieces.model.QzSyjy;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
+import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -106,31 +105,35 @@ public class IntoPiecesShouxinControl extends BaseController {
 	public AbstractModelAndView createForm(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8_for_approve", request);
 		String customerId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
 		if (StringUtils.isNotEmpty(customerId)) {
-			QzSdhjyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
+			QzApplnJyd qzSdhjyd = intoPiecesService.getSdhjydFormAfter(appId);
 			mv.addObject("customerId", customerId);
+			mv.addObject("appId", appId);
 			mv.addObject("result", qzSdhjyd);
 		}
 		return mv;
 	}
-	
 	/**
-	 * 授信决议单保存
+	 * 授信决议单保存(申请后)
 	 * @param customerinfoForm
 	 * @param request
 	 * @return
 	 */
 
 	@ResponseBody
-	@RequestMapping(value = "insert.json")
-	public JRadReturnMap insert(@ModelAttribute QzShouxinForm qzShouxinForm, HttpServletRequest request) {
+	@RequestMapping(value = "page8insert.json")
+	public JRadReturnMap insert(@ModelAttribute QzSdhjydForm qzSdhjydForm, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				String appId = request.getParameter("appId");
-				QzShouxin qzShouxin = qzShouxinForm.createModel(QzShouxin.class);
-				qzShouxin.setApplicationId(appId);
-				intoPiecesService.insertShouxinForm(qzShouxin,appId);
+				String customerId = RequestHelper.getStringValue(request, ID);
+				String appId = RequestHelper.getStringValue(request, "appId");
+				QzApplnJyd qzSdhjyd = qzSdhjydForm.createModel(QzApplnJyd.class);
+				qzSdhjyd.setCustomerId(customerId);
+				qzSdhjyd.setApplicationId(appId);
+				qzSdhjyd.setCreatedTime(new Date());
+				intoPiecesService.insertSdhjydFormAfter(qzSdhjyd);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
@@ -155,9 +158,11 @@ public class IntoPiecesShouxinControl extends BaseController {
 	public AbstractModelAndView createSyjyForm(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page10", request);
 		String customerId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
 		if (StringUtils.isNotEmpty(customerId)) {
-			QzSyjy qzSyjy = intoPiecesService.getSyjyForm(customerId);
+			QzApplnSdhjy qzSyjy = intoPiecesService.getSyjyForm(appId);
 			mv.addObject("customerId", customerId);
+			mv.addObject("appId", appId);
 			mv.addObject("result", qzSyjy);
 		}
 		return mv;
@@ -176,10 +181,12 @@ public class IntoPiecesShouxinControl extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				String customerId = RequestHelper.getStringValue(request, ID);
-				QzSyjy QzSyjy = qzSyjyForm.createModel(QzSyjy.class);
+				String appId = RequestHelper.getStringValue(request, "appId");
+				QzApplnSdhjy QzSyjy = qzSyjyForm.createModel(QzApplnSdhjy.class);
 				QzSyjy.setCustomerId(customerId);
+				QzSyjy.setApplicationId(appId);
 				QzSyjy.setCreatedTime(new Date());
-				intoPiecesService.insertSyjyForm(QzSyjy,customerId);
+				intoPiecesService.insertSyjyForm(QzSyjy);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);

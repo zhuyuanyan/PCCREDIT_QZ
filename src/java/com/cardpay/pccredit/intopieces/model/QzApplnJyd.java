@@ -13,7 +13,10 @@ import com.wicresoft.jrad.base.database.model.BusinessModel;
 public class QzApplnJyd extends BusinessModel {
 
 	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * 
+	 */
+	private String customerId;
 	private String applicationId;
 	private Date syrq;
 	private String bljg;
@@ -53,6 +56,7 @@ public class QzApplnJyd extends BusinessModel {
 	private String dydb2;
 	private String bzdb1;
 	private String bzdb2;
+	private String jktj;
 	private String jktj1;
 	private String jktj2;
 	private String jktj3;
@@ -62,11 +66,12 @@ public class QzApplnJyd extends BusinessModel {
 	private String zy1;
 	private String zy2;
 	private String zy3;
-	public String getApplicationId() {
-		return applicationId;
+
+	public String getCustomerId() {
+		return customerId;
 	}
-	public void setApplicationId(String applicationId) {
-		this.applicationId = applicationId;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	public Date getSyrq() {
 		return syrq;
@@ -350,4 +355,17 @@ public class QzApplnJyd extends BusinessModel {
 	public void setZy3(String zy3) {
 		this.zy3 = zy3;
 	}
+	public String getJktj() {
+		return jktj;
+	}
+	public void setJktj(String jktj) {
+		this.jktj = jktj;
+	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
+	
 }
