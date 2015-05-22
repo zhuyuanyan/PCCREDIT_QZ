@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
@@ -30,13 +29,11 @@ import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
-import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
-import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
-import com.cardpay.pccredit.intopieces.model.QzShouxin;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
@@ -53,7 +50,6 @@ import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
-import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -285,6 +281,9 @@ public class IntoPiecesApproveControl extends BaseController {
 			wfStatusResult.setExamineResult(control.getCurrentStatus());
 			commonDao.insertObject(wfStatusResult);
 		}
+		
+		//对之前无appId的表添加id(尤其是调查内容记录表添加appId)
+		intoPiecesService.addAppId(customer_id,customerApplicationInfo.getId());
 	}
 	
 	//iframe
@@ -297,6 +296,22 @@ public class IntoPiecesApproveControl extends BaseController {
 			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
 			mv.addObject("customerInfor", customerInfor);
 			mv.addObject("customerId", customerInfor.getId());
+		}
+		return mv;
+	}
+	
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
 		}
 		return mv;
 	}
@@ -377,44 +392,24 @@ public class IntoPiecesApproveControl extends BaseController {
 	public AbstractModelAndView page8(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8", request);
 		String customerId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerId)) {
-			QzSdhjyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
-			mv.addObject("customerId", customerId);
-			mv.addObject("result", qzSdhjyd);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if(appId==null){
+			appId="";
 		}
-		return mv;
-	}
-	
-	//page10
-	@ResponseBody
-	@RequestMapping(value = "page10.page")
-	public AbstractModelAndView page10(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page10", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
+		QzApplnJyd qzSdhjyd = new QzApplnJyd();
+		if (StringUtils.isNotEmpty(appId)) {
+			qzSdhjyd = intoPiecesService.getSdhjydFormAfter(appId);
+		}else{
+			qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
 		}
-		return mv;
-	}
-	
-	//page11
-	@ResponseBody
-	@RequestMapping(value = "page11.page")
-	public AbstractModelAndView page11(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page11", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
-		}
+		mv.addObject("customerId", customerId);
+		mv.addObject("appId", appId);
+		mv.addObject("result", qzSdhjyd);
 		return mv;
 	}
 	
 	/**
-	 * 审贷会决议单保存
+	 * 审贷会决议单保存(申请前)
 	 * @param customerinfoForm
 	 * @param request
 	 * @return
@@ -427,10 +422,16 @@ public class IntoPiecesApproveControl extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				String customerId = RequestHelper.getStringValue(request, ID);
-				QzSdhjyd qzSdhjyd = qzSdhjydForm.createModel(QzSdhjyd.class);
+				String appId = RequestHelper.getStringValue(request, "appId");
+				QzApplnJyd qzSdhjyd = qzSdhjydForm.createModel(QzApplnJyd.class);
 				qzSdhjyd.setCustomerId(customerId);
 				qzSdhjyd.setCreatedTime(new Date());
-				intoPiecesService.insertSdhjydForm(qzSdhjyd,customerId);
+				qzSdhjyd.setApplicationId(appId);
+				if(StringUtils.isNotEmpty(appId)){
+					intoPiecesService.insertSdhjydFormAfter(qzSdhjyd);
+				}else{
+					intoPiecesService.insertSdhjydForm(qzSdhjyd,customerId);
+				}
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);

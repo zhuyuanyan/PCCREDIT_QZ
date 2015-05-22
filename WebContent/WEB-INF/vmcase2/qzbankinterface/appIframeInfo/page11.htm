@@ -57,7 +57,7 @@
 	$(document).ready(function() {
 		$("#id_save_button").click(function() {
 			var formjson = $($formName).serialize();
-   	          $.post("${contextPath}/intopieces/intopiecesxingzheng2/tz_save.json?id=${customerId}", formjson, function(data, textStatus, jqXhr) {
+   	          $.post("${contextPath}/intopieces/intopiecesxingzheng2/tz_save.json?id=${appId}", formjson, function(data, textStatus, jqXhr) {
    	            if (data.success) {
    	            	Dialog.message("保存成功!");
    	            }

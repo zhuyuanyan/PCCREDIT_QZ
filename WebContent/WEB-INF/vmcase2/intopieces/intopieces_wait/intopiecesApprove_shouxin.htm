@@ -173,7 +173,8 @@
 		$("#id_apply_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
                 var customerId= $($(".checkbox :checked")[0]).attr("value").split("@")[1];
-                var url = "${contextPath}/intopieces/intopiecesshouxin/create_form.page?id="+customerId;
+                var appId= $($(".checkbox :checked")[0]).attr("value").split("@")[0];
+                var url = "${contextPath}/intopieces/intopiecesshouxin/create_form.page?id="+customerId+"&appId="+appId;
                 window.location.href = url;
             } else {
                 Dialog.message("请选择一条记录!");
@@ -183,7 +184,8 @@
 		$("#id_syjy_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
                 var customerId= $($(".checkbox :checked")[0]).attr("value").split("@")[1];
-                var url = "${contextPath}/intopieces/intopiecesshouxin/create_syjy_form.page?id="+customerId;
+                var appId= $($(".checkbox :checked")[0]).attr("value").split("@")[0];
+                var url = "${contextPath}/intopieces/intopiecesshouxin/create_syjy_form.page?id="+customerId+"&appId="+appId;
                 window.location.href = url;
             } else {
                 Dialog.message("请选择一条记录!");

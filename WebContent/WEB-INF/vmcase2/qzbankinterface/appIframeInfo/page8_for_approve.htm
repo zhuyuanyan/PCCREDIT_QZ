@@ -184,15 +184,24 @@
 	</div>
 </form>	
 	<div class="controlbtn" style="position:absolute;top:500px;">
+	#if($!readType!="readType")
 		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+	#end
 		<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
 	</div>
 	<script type="text/javascript">		
 		#set ($formName = "'#id_module_form'")
 		$(document).ready(function() {
+			if("${readType}"=="readType"){
+				$("input[type='text']").attr("disabled",true);
+				$("input[type='radio']").attr("disabled",true);
+				$("input[type='checkbox']").attr("disabled",true);
+				$("select").attr("disabled",true);
+				$("textarea").attr("disabled",true);
+			}
 			$("#id_save_button").click(function() {
 				var formjson = $($formName).serialize();
-	   	          $.post("${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}", formjson, function(data, textStatus, jqXhr) {
+	   	          $.post("${contextPath}/intopieces/intopiecesshouxin/page8insert.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
 	   	            }
