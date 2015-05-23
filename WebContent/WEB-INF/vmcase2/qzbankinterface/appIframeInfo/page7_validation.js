@@ -1,0 +1,32 @@
+var validator = $($formName).validate({
+	rules:
+    { 
+		checkDate:{required:true},
+		clientName:{required:true},
+		applyAmount:{required:true},
+		applyDeadline:{required:true},
+		sugContent:{required:true},
+		sugAmount:{required:true},
+		sugDeadline:{required:true},
+		sugRates:{required:true},
+		sugGuntType:{required:true}
+     },
+messages:
+    {
+		checkDate:{required:"内部审查日期不能为空"},
+		clientName:{required:"客户名称不能为空"},
+		applyAmount:{required:"申请金额不能为空"},
+		applyDeadline:{required:"申请期限不能为空"},
+		sugContent:{required:"建议结论不能为空"},
+		sugAmount:{required:"建议金额不能为空"},
+		sugDeadline:{required:"建议期限不能为空"},
+		sugRates:{required:"建议利率不能为空"},
+		sugGuntType:{required:"担保方式不能为空"}
+   },
+	errorPlacement : function(error, element) {
+		element.after(error);
+		if(layout){
+			layout.resizeLayout();
+		}
+	}
+});

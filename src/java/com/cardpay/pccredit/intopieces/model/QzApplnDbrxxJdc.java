@@ -4,6 +4,8 @@
 
 package com.cardpay.pccredit.intopieces.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.model.ModelParam;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 
@@ -16,7 +18,7 @@ public class QzApplnDbrxxJdc extends BusinessModel {
 	private int lsh;
 	private String cardNo;
 	private String price;
-	private String buyDate;
+	private Date buyDate;
 	private String haveCopy_1;
 	private String haveCopy_2;
 	public String getDbrxxId() {
@@ -43,10 +45,10 @@ public class QzApplnDbrxxJdc extends BusinessModel {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-	public String getBuyDate() {
+	public Date getBuyDate() {
 		return buyDate;
 	}
-	public void setBuyDate(String buyDate) {
+	public void setBuyDate(Date buyDate) {
 		this.buyDate = buyDate;
 	}
 	public String getHaveCopy_1() {

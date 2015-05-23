@@ -2,22 +2,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+
+<script src='${contextPath}/common/js/common/lhgcalendar.js'></script>
+<script src='${contextPath}/common/js/common/jquery.validate.js'></script>
+<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script src='${contextPath}/common/js/common/jquery.autocomplete.min.js'></script>
+<script src="${contextPath}/common/js/common/common.js"></script>
+<script src="${contextPath}/common/js/common/dialog.js"></script>
+
+<script type="text/javascript" src="${uicasePath}/js/common/layoutInfo.js"></script>
 <title>#if ($pageTitle)$pageTitle#else#i18n("system.title")#end</title>
 <script type="text/javascript">
   var contextPath="${contextPath}";
   var uicasePath="${uicasePath}";
 </script>
-<script src="${contextPath}/common/js/common/jquery-1.js"></script>
-<script src='${contextPath}/common/js/common/lhgcalendar.js'></script>
-<script src="${contextPath}/common/js/common/common.js"></script>
 <script src="${contextPath}/common/js/common/script.js"></script>
-<script src="${contextPath}/common/js/common/dialog.js"></script>
 
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/boxnew.css" /> 
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/btn.css" /> 
 <style type="text/css"/>
 	form{padding-top:0px;padding-bottom:15px;margin:0px 15px 0 0;}
 	.input{width:80%;}
+	.error {font-family:Microsoft YaHei, Arial, Helvetica;color:red;font-weight:bold;}
 </style>
 	
 </head>
