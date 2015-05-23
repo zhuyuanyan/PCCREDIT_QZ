@@ -733,7 +733,7 @@
 			$("#id_save_button").click(function() {
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
-					var url = "${contextPath}/intopieces/intopiecesapprove/update_page5.json?id=${qzApplnAttachmentList.id}";
+					var url = "${contextPath}/intopieces/intopiecesapprove/update_page5.json?id=${qzApplnAttachmentList.id}&customerId=${qzApplnAttachmentList.customerId}";
 					$.ajax({
 						url : url,
 						type : "get",

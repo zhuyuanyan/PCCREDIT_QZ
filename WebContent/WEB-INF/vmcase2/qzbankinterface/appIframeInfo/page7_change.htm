@@ -51,30 +51,7 @@
 					<td class="table-label">担保方式：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="sugGuntType" value="$!qzApplnNbscyjb.sugGuntType"/></td>			
 				</tr>
-				<tr>
-					<td class="tableTitle" colspan="4">内部审查人员意见</td>				
-				</tr>
-				<tr>
-					<td class="table-label">须核实的问题：</td>
-					<td colspan="3"><textarea name="needCheckContent">$!qzApplnNbscyjb.needCheckContent</textarea></td>			
-				</tr>
-				<tr>
-					<td class="table-label">问题核实情况：</td>
-					<td colspan="3"><textarea name="checkCondition">$!qzApplnNbscyjb.checkCondition</textarea></td>			
-				</tr>
-				<tr>
-					<td class="table-label">内部审查建议：</td>
-					<td colspan="3"><textarea name="checkSug">$!qzApplnNbscyjb.checkSug</textarea></td>			
-				</tr>
-				<tr>
-					<td class="table-label">核查人员签字</td>
-					<td><input type="text" name=""/></td>
-					<td class="table-label">客户资料是否完整：</td>
-					<td>
-						<label><input type="radio" value="1" name="isComplete" #if($!qzApplnNbscyjb.isComplete=='1') checked #end/>是</label>
-						<label><input type="radio" value="0" name="isComplete" #if($!qzApplnNbscyjb.isComplete=='0') checked #end/>否</label>
-					</td>		
-				</tr>
+				
 			</table>			
 		</div>
 	</div>
@@ -82,7 +59,7 @@
 </form>	
 <div class="controlbtn">
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
-	<a class="btn_gr" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	<a class="btn_gr" id="id_back_button" title="返回">返回</a>
 </div>
 	<script type="text/javascript">			
 	var layout=new FormsLayout("formsId");	
@@ -113,6 +90,11 @@
 				});
 			}
 		});
+		
+		$("#id_back_button").click(function() {
+			var url = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+            parent.location.href = url;
+		})
 		
 	});
 	</script>	
