@@ -11,9 +11,11 @@ import com.wicresoft.jrad.base.database.model.BusinessModel;
 
 @ModelParam(table = "qz_appln_sdhjy")
 public class QzApplnSdhjy extends BusinessModel {
-
-	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8993484474057696853L;
+	private String customerId;
 	private String applicationId;
 	private String jkrxm;
 	private String sqje;
@@ -32,11 +34,11 @@ public class QzApplnSdhjy extends BusinessModel {
 	private String zbkhjlqz;
 	private String xzdcryqz;
 	private Date rq1;
-	public String getApplicationId() {
-		return applicationId;
+	public String getCustomerId() {
+		return customerId;
 	}
-	public void setApplicationId(String applicationId) {
-		this.applicationId = applicationId;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	public String getJkrxm() {
 		return jkrxm;
@@ -56,6 +58,7 @@ public class QzApplnSdhjy extends BusinessModel {
 	public void setSqqx(String sqqx) {
 		this.sqqx = sqqx;
 	}
+
 	public Date getSqrq() {
 		return sqrq;
 	}
@@ -140,4 +143,11 @@ public class QzApplnSdhjy extends BusinessModel {
 	public void setRq1(Date rq1) {
 		this.rq1 = rq1;
 	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
+	
 }

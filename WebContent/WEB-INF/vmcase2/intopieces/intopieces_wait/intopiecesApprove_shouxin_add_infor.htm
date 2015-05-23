@@ -1,0 +1,129 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<script type="text/javascript" src="jquery-1.js"></script>
+</head>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">补充上会记录</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">进件查询</div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/intopieces/intopiecesapprove/add_information.page">
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="15%"/>
+              <col width="17%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">申请金额</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">审核状态</th>
+              <th nowrap="nowrap">申请时间</th>
+              <th nowrap="nowrap">节点名称</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%"/>
+              <col width="15%"/>
+              <col width="17%"/>
+              <col width="10%"/>
+              <col width="10%"/>
+            </colgroup>
+           #foreach ($wait in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.customerId@$!wait.applicationId"/></td>
+              <td nowrap="nowrap">$!wait.chineseName</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
+              <td nowrap="nowrap">#dictVal("CERT_TYPE",$!wait.cardType)</td>
+              
+              <td nowrap="nowrap">$!wait.cardId</td>
+              <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.auditTime)</td>
+              <td nowrap="nowrap">$!wait.nodeName</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        <a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="补充客户信息">补充客户信息</a>
+        <a id="id_pass_button" class="btn_g" href="javascript:void(0);"  title="提交">提交</a>
+        <a id="id_return_button" class="btn_g" onclick="javascript:history.back(-1);"  title="返回">返回</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+        	
+      </div>
+    </div>
+  </div>
+
+
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		
+		$("#id_create_button_1").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId().split("@")[0];
+				var appId = getCurrentRowId().split("@")[1];
+				if(rowId!=null){
+					var url="${modulePath}/iframe_approve.page?id="+rowId+"&appId="+appId;
+					window.location.href = url;
+				}
+			}else{
+				Dialog.message("请选择要进件的客户!");
+			}
+	    });
+		
+		//提交
+		$("#id_pass_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var customerId= $($(".checkbox :checked")[0]).attr("value").split("@")[0];
+				Dialog.confirm("确定提交吗？", "提示",
+					    function() {
+							$.post("${contextPath}/intopieces/intopiecesapprove/pass.json?customerId="+customerId, {},
+						            function(data, textStatus, jqXhr) {
+						                if (data.success) {
+						                	var url ="${contextPath}/intopieces/intopiecesapprove/add_information.page";
+						                    window.location.href=url;
+						                } else {
+						                }
+						            });
+				});
+			}else{
+				 Dialog.message("请选择一条记录!");
+			}
+		});
+	
+});
+	
+</script>
+
+</body>
+</html>
+#parse ("common/iframe_page_footer.htm")

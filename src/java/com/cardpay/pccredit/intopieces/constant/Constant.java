@@ -91,9 +91,9 @@ public class Constant {
 	public static String status_chushen="初审";
 	public static String status_xingzheng1="行政岗-初";
 	public static String status_shouxin="授信审批岗";
-	public static String status_zhongxin="中心负责岗";
-	public static String status_xinshen="信审岗";
-	public static String status_xingzheng2="行政岗-终";
+	public static String status_zhongxin="团队管理岗复核";
+	public static String status_xinshen="行政岗-终";
+	public static String status_xingzheng2="团队管理岗最终复核";
 	public static String jyd_id="00001";//决议单默认ID
 	public static String htd_id="00002";//合同单默认ID
 	
@@ -101,4 +101,9 @@ public class Constant {
 	public static String APPLN_TYPE_1="审批通过";
 	public static String APPLN_TYPE_2="退件";
 	public static String APPLN_TYPE_3="拒件";
+	
+	/*审批特殊标志*/
+	public static String APPROVE_EDIT_1="1";//初审退回--直接删除申请件
+	public static String APPROVE_EDIT_2="3";//初审拒件--授信岗审批
+	public static String APPROVE_EDIT_3="4";//授信岗补充上会--退回客户经理
 }

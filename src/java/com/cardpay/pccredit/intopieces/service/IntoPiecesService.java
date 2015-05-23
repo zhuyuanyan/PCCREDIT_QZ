@@ -1,11 +1,9 @@
 package com.cardpay.pccredit.intopieces.service;
 
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +29,6 @@ import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
-import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
@@ -52,18 +48,17 @@ import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
+import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
+import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.QzApplnProcessResult;
+import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
 import com.cardpay.pccredit.intopieces.model.QzApplnSxjc;
-import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
-import com.cardpay.pccredit.intopieces.model.QzShouxin;
-import com.cardpay.pccredit.intopieces.model.QzSyjy;
-import com.cardpay.pccredit.intopieces.model.QzTz;
+import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
 import com.cardpay.pccredit.intopieces.web.QzDcnrUploadForm;
-import com.cardpay.pccredit.intopieces.web.QzSdhjydForm;
-import com.cardpay.pccredit.intopieces.web.QzShouxinForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
@@ -942,7 +937,7 @@ public class IntoPiecesService {
 		//删除流程表信息
 		commonDao.queryBySql("delete from customer_application_process where application_id='"+filter.getApplicationId()+"'", null);
 		//更新客户信息--退回
-		infor.setProcessId("1");
+		infor.setProcessId(Constant.APPROVE_EDIT_1);
 		commonDao.updateObject(infor);
 		
 		//重置ecif状态
@@ -970,7 +965,7 @@ public class IntoPiecesService {
 		//获取客户信息
 		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
 		//更新客户信息--拒件
-		infor.setProcessId("3");
+		infor.setProcessId(Constant.APPROVE_EDIT_2);
 		commonDao.updateObject(infor);
 		
 		//通过申请表ID获取流程表
@@ -991,7 +986,7 @@ public class IntoPiecesService {
 		String sql="SELECT A .id ,a.CUSTOMER_ID ,a.REPORT_ID ,a.REPORT_NAME ,";
 				sql+=" a.LOAD_STATUS ,a.APPLICATION_ID ,a.hetong_id,a.user_name,a.card_id,b.id as upload_id,b.FILE_NAME ,";
 				sql+="b.REMARK   FROM QZ_APPLN_DCNR A LEFT JOIN VIDEO_ACCESSORIES b on b.dcnr_id=a.id WHERE";
-				sql+=" A .CUSTOMER_ID = '"+infor.getCustomerId()+"'";
+				sql+=" A .APPLICATION_ID = '"+infor.getCustomerId()+"'";
 		return commonDao.queryBySql(QzDcnrUploadForm.class,sql, null);
 	}
 	
@@ -1031,25 +1026,6 @@ public class IntoPiecesService {
 		commonDao.updateObject(dcnr);
 	}
 	
-	/**
-	 * 根据进件id获取授信决议单form
-	 */
-	public List<QzShouxin> getShouxinform(String appId){
-		String sql="select * from qz_appln_sxjyd where application_id='"+appId+"'";
-		return commonDao.queryBySql(QzShouxin.class,sql, null);
-	}
-	
-	/**
-	 * 保存授信决议单form
-	 */
-	public void insertShouxinForm(QzShouxin qzShouxin,String appId){
-		String sql="select * from qz_appln_sxjyd where application_id='"+appId+"'";
-		List<QzShouxin> qz = commonDao.queryBySql(QzShouxin.class,sql, null);
-		if(qz.size()>0){
-			commonDao.deleteObject(QzShouxin.class, qz.get(0).getId());
-		}
-			commonDao.insertObject(qzShouxin);
-	}
 	
 	/**
 	 * 保存决议单
@@ -1318,23 +1294,23 @@ public class IntoPiecesService {
 	}
 	
 	/**
-	 * 保存审贷会决议单form
+	 * 保存审贷会决议单form(申请前)
 	 */
-	public void insertSdhjydForm(QzSdhjyd qzSdhjyd,String customerId){
-		String sql="select * from qz_appln_ywsqb_jyd where customer_id='"+customerId+"'";
-		List<QzSdhjyd> qz = commonDao.queryBySql(QzSdhjyd.class,sql, null);
+	public void insertSdhjydForm(QzApplnJyd qzSdhjyd,String customerId){
+		String sql="select * from qz_appln_jyd where customer_id='"+customerId+"' and application_id is null";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
 		if(qz.size()>0){
-			commonDao.deleteObject(QzSdhjyd.class, qz.get(0).getId());
+			commonDao.deleteObject(QzApplnJyd.class, qz.get(0).getId());
 		}
 			commonDao.insertObject(qzSdhjyd);
 	}
 	
 	/**
-	 * 获取审贷会决议单form
+	 * 获取审贷会决议单form(申请前)
 	 */
-	public QzSdhjyd getSdhjydForm(String customerId){
-		String sql="select * from qz_appln_ywsqb_jyd where customer_id='"+customerId+"'";
-		List<QzSdhjyd> qz = commonDao.queryBySql(QzSdhjyd.class,sql, null);
+	public QzApplnJyd getSdhjydForm(String customerId){
+		String sql="select * from qz_appln_jyd where customer_id='"+customerId+"' and application_id is null";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
 		if(qz.size()>0){
 			return qz.get(0);
 		}
@@ -1342,24 +1318,63 @@ public class IntoPiecesService {
 	}
 	
 	/**
+	 * 获取审贷会决议单form(申请后)
+	 */
+	public QzApplnJyd getSdhjydFormAfter(String appId){
+		String sql="select * from qz_appln_jyd where application_id='"+appId+"'";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
+		if(qz.size()>0){
+			return qz.get(0);
+		}
+			return null;
+	}
+	
+	/**
+	 * 保存审贷会决议单form(申请后)
+	 */
+	public void insertSdhjydFormAfter(QzApplnJyd qzSdhjyd){
+		String sql="select * from qz_appln_jyd where application_id='"+qzSdhjyd.getApplicationId()+"'";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
+		if(qz.size()>0){
+			commonDao.deleteObject(QzApplnJyd.class, qz.get(0).getId());
+		}
+			commonDao.insertObject(qzSdhjyd);
+	}
+	
+	/**
 	 * 保存审议纪要form
 	 */
-	public void insertSyjyForm(QzSyjy qzSyjy,String customerId){
-		String sql="select * from qz_appln_ywsqb_sdhjy where customer_id='"+customerId+"'";
-		List<QzSyjy> qz = commonDao.queryBySql(QzSyjy.class,sql, null);
+	public void insertSyjyForm(QzApplnSdhjy qzSyjy){
+		String sql="select * from qz_appln_sdhjy where application_id='"+qzSyjy.getApplicationId()+"'";
+		List<QzApplnSdhjy> qz = commonDao.queryBySql(QzApplnSdhjy.class,sql, null);
 		if(qz.size()>0){
-			commonDao.deleteObject(QzSyjy.class, qz.get(0).getId());
+			commonDao.deleteObject(QzApplnSdhjy.class, qz.get(0).getId());
 		}
 			commonDao.insertObject(qzSyjy);
 	}
 	/**
 	 * 获取审议纪要form
 	 */
-	public QzSyjy getSyjyForm(String customerId){
-		String sql="select * from qz_appln_ywsqb_sdhjy where customer_id='"+customerId+"'";
-		List<QzSyjy> qz = commonDao.queryBySql(QzSyjy.class,sql, null);
+	public QzApplnSdhjy getSyjyForm(String appId){
+		String sql="select * from qz_appln_sdhjy where application_id='"+appId+"'";
+		List<QzApplnSdhjy> qz = commonDao.queryBySql(QzApplnSdhjy.class,sql, null);
 		if(qz.size()>0){
-			return qz.get(0);
+			QzApplnSdhjy sdhjy = qz.get(0);
+			if(sdhjy.getJkrxm()==null){
+				String sql1="select * from qz_appln_ywsqb where  application_id='"+appId+"'";
+				List<QzApplnYwsqb> qz1 = commonDao.queryBySql(QzApplnYwsqb.class,sql1, null);
+				String sql2="select * from qz_appln_nbscyjb where  application_id='"+appId+"'";
+				List<QzApplnNbscyjb> qz2= commonDao.queryBySql(QzApplnNbscyjb.class,sql2, null);
+				if(qz1.size()>0&&qz2.size()>0){
+					sdhjy.setJkrxm(qz1.get(0).getName());
+					sdhjy.setSqje(qz2.get(0).getApplyAmount());
+					sdhjy.setSqqx(qz2.get(0).getApplyDeadline());
+					sdhjy.setSqrq(qz1.get(0).getApplyTime());
+					sdhjy.setSqll(qz2.get(0).getSugRates());
+					sdhjy.setDbfs(qz2.get(0).getSugGuntType());
+				}
+			}
+			return sdhjy;
 		}
 			return null;
 	}
@@ -1368,12 +1383,12 @@ public class IntoPiecesService {
 	 * 保存台帐form
 	 * @throws Exception 
 	 */
-	public void insertTzList(HttpServletRequest request,String customerId) throws Exception{
+	public void insertTzList(HttpServletRequest request,String appId) throws Exception{
 		//先删除历史记录
-		String sql="select * from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'";
-		List<QzTz> qz = commonDao.queryBySql(QzTz.class,sql, null);
+		String sql="select * from qz_appln_htqdtz where application_id='"+appId+"'";
+		List<QzApplnHtqdtz> qz = commonDao.queryBySql(QzApplnHtqdtz.class,sql, null);
 		if(qz.size()>0){
-			commonDao.queryBySql("delete from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'", null);
+			commonDao.queryBySql("delete from qz_appln_htqdtz where application_id='"+appId+"'", null);
 		}
 		String[] slrq = request.getParameterValues("slrq");
 		String[] jkrxm = request.getParameterValues("jkrxm");
@@ -1386,7 +1401,7 @@ public class IntoPiecesService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		if(slrq!=null){
 			for(int i=0;i<slrq.length;i++){
-				QzTz tz = new QzTz();
+				QzApplnHtqdtz tz = new QzApplnHtqdtz();
 				tz.setSlrq(sdf.parse(slrq[i]));
 				tz.setJkrxm(jkrxm[i]);
 				tz.setPzje(pzje[i]);
@@ -1395,7 +1410,7 @@ public class IntoPiecesService {
 				tz.setZbkhjl(zbkhjl[i]);
 				tz.setJbr(jbr[i]);
 				tz.setBz(bz[i]);
-				tz.setCustomerId(customerId);
+				tz.setApplicationId(appId);
 				tz.setCreatedTime(new Date());
 				commonDao.insertObject(tz);
 			}
@@ -1404,9 +1419,51 @@ public class IntoPiecesService {
 	/**
 	 * 获取台帐form
 	 */
-	public List<QzTz> getTzList(String customerId){
-		String sql="select * from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'";
-		List<QzTz> qz = commonDao.queryBySql(QzTz.class,sql, null);
+	public List<QzApplnHtqdtz> getTzList(String appId){
+		String sql="select * from qz_appln_htqdtz where application_id='"+appId+"'";
+		List<QzApplnHtqdtz> qz = commonDao.queryBySql(QzApplnHtqdtz.class,sql, null);
 		return qz;
+	}
+	
+	/* 授信岗补充上会操作 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public void returnToCu(HttpServletRequest request) throws Exception{
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class,request.getParameter("id"));
+		//获取客户信息
+		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+		//更新客户信息--补充上会
+		infor.setProcessId(Constant.APPROVE_EDIT_3);
+		commonDao.updateObject(infor);
+	}
+	
+	/*
+	 * 对客户信息表中没有appId的表添加appid
+	 */
+	public void addAppId(String customerId,String applicationId){
+//		String sql1= "select * from qz_appln_sdhjy where customer_id='"+customerId+"' and application_id is null" ;
+//		List<QzApplnSdhjy> sdhjyList = commonDao.queryBySql(QzApplnSdhjy.class, sql1, null);
+//		if(sdhjyList.size()>0){
+//			QzApplnSdhjy sdhjy = sdhjyList.get(0);
+//			sdhjy.setApplicationId(applicationId);
+//			commonDao.updateObject(sdhjy);
+//		}
+
+		String sql2= "select * from qz_appln_jyd where customer_id='"+customerId+"' and application_id is null" ;
+		List<QzApplnJyd> jydList = commonDao.queryBySql(QzApplnJyd.class, sql2, null);
+		if(jydList.size()>0){
+			QzApplnJyd jyd = jydList.get(0);
+			jyd.setApplicationId(applicationId);
+			commonDao.updateObject(jyd);
+		}
+//		String sql3= "select * from qz_appln_htqdtz where customer_id='"+customerId+"' and application_id is null" ;
+//		List<QzApplnHtqdtz> htqdtzList = commonDao.queryBySql(QzApplnHtqdtz.class, sql3, null);
+//		if(htqdtzList.size()>0){
+//			QzApplnHtqdtz htqdtzs = htqdtzList.get(0);
+//			htqdtzs.setApplicationId(applicationId);
+//			commonDao.updateObject(htqdtzs);
+//		}
 	}
 }

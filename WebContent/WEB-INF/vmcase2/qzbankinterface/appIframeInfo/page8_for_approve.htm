@@ -1,0 +1,219 @@
+#parse ("common/iframe_page_header3.htm")
+<style type="text/css">
+	
+</style>
+<body>
+<div class="fixed">
+		<h1>审贷会决议单</h1>
+	</div>
+<!--*************************************************************审贷会决议单*************************************************************-->
+<form id="id_module_form" style="height:480px;position:absolute;margin-top:60px;max-height:420px;">
+	<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+		<div name="content">
+			<table class="myTable">
+				<caption>审贷会决议单</caption>
+				<colgroup>
+					<col width="10%">
+					<col width="10%">					
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+					<col width="10%">
+				</colgroup>
+				<tr>
+					<td class="table-label">审议日期</td>
+					<td colspan="8"><input type="text" name="syrq" value="$!date.format("yyyy-MM-dd", $!result.syrq)" readonly/></td>			
+				</tr>
+				<tr>
+					<td class="table-label">办理机构</td>
+					<td colspan="2"><input type="text" name="bljg" value="$!result.bljg" readonly/></td>
+					<td class="table-label">主办客户经理</td>
+					<td><input type="text" name="zbkhjl" value="$!result.zbkhjl" readonly/></td>	
+					<td class="table-label">客户名称</td>
+					<td colspan="3"><input type="text" name="khmc" value="$!result.khmc" readonly/></td>		
+				</tr>				
+				<tr>
+					<td class="table-label">审议事项</td>
+					<td colspan="2"><input type="text" name="sysx" value="$!result.sysx" readonly/></td>
+					<td class="table-label">产品名称</td>
+					<td><input type="text" name="cpmc" value="$!result.cpmc" readonly/></td>	
+					<td class="table-label">证件号码</td>
+					<td colspan="3"><input type="text" name="zjhm" value="$!result.zjhm" readonly/></td>		
+				</tr>			
+				<tr>
+					<td class="table-label">建议金额</td>
+					<td colspan="2"><input type="text" name="jyje" value="$!result.jyje" readonly/></td>
+					<td class="table-label">建议期限</td>
+					<td><input type="text" name="jyqx" value="$!result.jyqx" readonly/></td>	
+					<td class="table-label" colspan="2">建议利率（年）</td>
+					<td colspan="2"><input type="text" name="jyll" value="$!result.jyll" readonly/></td>		
+				</tr>			
+				<tr>
+					<td class="table-label">授信用途</td>
+					<td colspan="4"><input type="text" name="sxyt" value="$!result.sxyt" readonly/></td>
+					<td class="table-label" colspan="2">还款方式</td>
+					<td colspan="2"><input type="text" name="hkfs" value="$!result.hkfs" readonly/></td>		
+				</tr>		
+				<tr>
+					<td class="table-label" rowspan="8">建议担保方式</td>
+					<td class="table-label" rowspan="3">共同借款人</td>					
+					<td class="table-label" colspan="3" style="text-align:center;">姓名</td>					
+					<td class="table-label" colspan="4" style="text-align:center;">证件号码</td>	
+				</tr>						
+				<tr>			
+					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm1" value="$!result.gtjkrxm1" readonly/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm1" value="$!result.gtjkrhm1" readonly/></td>	
+				</tr>					
+				<tr>			
+					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm2" value="$!result.gtjkrxm2" readonly/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm2" value="$!result.gtjkrhm2" readonly/></td>	
+				</tr>		
+				<tr>
+					<td class="table-label" rowspan="2">保证担保</td>					
+					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm1" value="$!result.bzdbxm1" readonly/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm1" value="$!result.bzdbhm1" readonly/></td>	
+				</tr>					
+				<tr>			
+					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm2" value="$!result.bzdbxm2" readonly/></td>					
+					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm2" value="$!result.bzdbhm2" readonly/></td>	
+				</tr>		
+				<tr>
+					<td class="table-label" rowspan="3">抵押担保</td>					
+					<td class="table-label" style="text-align:center;">抵押人</td>					
+					<td class="table-label" colspan="2" style="text-align:center;">抵押物名称</td>					
+					<td class="table-label" style="text-align:center;">数量</td>	
+					<td class="table-label" colspan="2" style="text-align:center;">权证或单据号码</td>					
+					<td class="table-label" style="text-align:center;">可抵押价值</td>	
+				</tr>		
+				<tr>				
+					<td style="text-align:center;"><input type="text" name="dyr1" value="$!result.dyr1" readonly/></td>					
+					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc1" value="$!result.dywmc1" readonly/></td>					
+					<td style="text-align:center;"><input type="text" name="sl1" value="$!result.sl1" readonly/></td>	
+					<td colspan="2" style="text-align:center;"><input type="text" name="djhm1" value="$!result.djhm1" readonly/></td>					
+					<td style="text-align:center;"><input type="text" name="kdyjz1" value="$!result.kdyjz1" readonly/></td>	
+				</tr>			
+				<tr>				
+					<td style="text-align:center;"><input type="text" name="dyr2" value="$!result.dyr2" readonly/></td>					
+					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc2" value="$!result.dywmc2" readonly/></td>					
+					<td style="text-align:center;"><input type="text" name="sl2" value="$!result.sl2" readonly/></td>	
+					<td colspan="2" style="text-align:center;"><input type="text" name="djhm2" value="$!result.djhm2" readonly/></td>					
+					<td style="text-align:center;"><input type="text" name="kdyjz2" value="$!result.kdyjz2" readonly/></td>	
+				</tr>	
+				<tr>
+					<td class="table-label" rowspan="12">授信决策情况</td>					
+					<td class="table-label">金额（元）</td>					
+					<td colspan="3"><input type="text" name="je" value="$!result.je"/></td>					
+					<td class="table-label">利率（年）</td>	
+					<td colspan="3"><input type="text" name="ll" value="$!result.ll"/></td>	
+				</tr>	
+				<tr>				
+					<td class="table-label">期限（月）</td>					
+					<td colspan="3"><input type="text" name="qx" value="$!result.qx"/></td>					
+					<td class="table-label">还款方式</td>	
+					<td colspan="3"><input type="text" name="hkfs1" value="$!result.hkfs1"/></td>	
+				</tr>	
+				<tr>				
+					<td class="table-label" rowspan="2">抵押担保</td>					
+					<td colspan="7">
+						<label><input type="radio" name="dydb1" onclick="$('#jy1').val('');$('#jy1').attr('disabled','disabled')" value="1" #if($!result.dydb1=='1') checked #end/>1、同意建议</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="dydb1" value="2" onclick="$('#jy1').removeAttr('disabled')" #if($!result.dydb1=='2') checked #end/>2、对建议的补充或修改</label>
+						<textarea name="dydb2" id="jy1"  #if($!result.dydb1!='2') disabled #end>$!result.dydb2</textarea>
+					</td>	
+				</tr>		
+				<tr>				
+					<td class="table-label" rowspan="2">保证担保</td>					
+					<td colspan="7">
+						<label><input type="radio" name="bzdb1" value="1" onclick="$('#jy2').val('');$('#jy2').attr('disabled','disabled')"   #if($!result.bzdb1=='1') checked #end />1、同意客户经理建议</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="bzdb1" value="2" onclick="$('#jy2').removeAttr('disabled')" #if($!result.bzdb1=='2') checked #end />2、对建议的补充或修改</label>
+						<textarea name="bzdb2" id="jy2"   #if($!result.bzdb1!='2') disabled #end>$!result.bzdb2</textarea>
+					</td>	
+				</tr>			
+				<tr>				
+					<td class="table-label" rowspan="4">监控条件</td>					
+					<td colspan="7">
+						<label><input type="radio" name="jktj" value="1" onclick="checkJKTJ(this)"  #if($!result.jktj=='1') checked #end />
+						1、落实贷款用途时间 ：贷款发放后在<input type="text" name="jktj1"  value="$!result.jktj1" class="jktj" #if($!result.jktj!='1') disabled #end/>天内落实贷款用途。</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="jktj" value="2" onclick="checkJKTJ(this)"  #if($!result.jktj=='2') checked #end />
+						2、贷款用途落实需提供的书面材料为：<input type="text" name="jktj2"  value="$!result.jktj2" class="jktj"  #if($!result.jktj!='2') disabled #end/></label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="jktj" value="3" onclick="checkJKTJ(this)"   #if($!result.jktj=='3') checked #end />
+						3、实地回访频率： 每<input type="text" name="jktj3"  value="$!result.jktj3" class="jktj"  #if($!result.jktj!='3') disabled #end/>个月进行一实地回访。</label>
+					</td>	
+				</tr>		
+				<tr>								
+					<td colspan="7">
+						<label><input type="radio" name="jktj" value="4" onclick="checkJKTJ(this)"  #if($!result.jktj=='4') checked #end />
+						4、重点监控内容：<input type="text" name="jktj4"  value="$!result.jktj4" class="jktj"  #if($!result.jktj!='4') disabled #end/></label>
+					</td>	
+				</tr>		
+				<tr>				
+					<td class="table-label">其他要求</td>					
+					<td colspan="7"><textarea name="qtyq">$!result.qtyq</textarea></td>	
+				</tr>		
+				<tr>				
+					<td class="table-label">拒绝申请</td>					
+					<td colspan="7">主要原因：<textarea name="jjsq">$!result.jjsq</textarea></td>	
+				</tr>			
+				<tr>				
+					<td class="table-label">组员</td>					
+					<td colspan="8">
+						组员:<input type="text" name="zy1" value="$!result.zy1"/>
+						组员:<input type="text" name="zy2" value="$!result.zy2"/>
+						组员:<input type="text" name="zy3" value="$!result.zy3"/>
+					</td>	
+				</tr>		
+			</table>			
+		</div>
+	</div>
+</form>	
+	<div class="controlbtn" style="position:absolute;top:500px;">
+	#if($!readType!="readType")
+		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+	#end
+		<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
+	</div>
+	<script type="text/javascript">		
+		#set ($formName = "'#id_module_form'")
+		$(document).ready(function() {
+			if("${readType}"=="readType"){
+				$("input[type='text']").attr("disabled",true);
+				$("input[type='radio']").attr("disabled",true);
+				$("input[type='checkbox']").attr("disabled",true);
+				$("select").attr("disabled",true);
+				$("textarea").attr("disabled",true);
+			}
+			$("#id_save_button").click(function() {
+				var formjson = $($formName).serialize();
+	   	          $.post("${contextPath}/intopieces/intopiecesshouxin/page8insert.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	Dialog.message("保存成功!");
+	   	            }
+   	          });
+			})
+		})
+		function checkJKTJ(obj){
+			$('.jktj').val('');
+			$('.jktj').attr('disabled','disabled');
+			$(obj).parent().find('.jktj').removeAttr('disabled')
+		}
+	</script>	
+</body>
+</html>
+

@@ -2,7 +2,6 @@ package com.cardpay.pccredit.intopieces.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +32,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
-import com.cardpay.pccredit.intopieces.model.QzSyjy;
-import com.cardpay.pccredit.intopieces.model.QzTz;
-import com.cardpay.pccredit.intopieces.model.VideoAccessories;
-import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
+import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -211,10 +207,10 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	@RequestMapping(value = "create_tz_form.page")
 	public AbstractModelAndView createSyjyForm(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page11", request);
-		String customerId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerId)) {
-			List<QzTz> qzTz = intoPiecesService.getTzList(customerId);
-			mv.addObject("customerId", customerId);
+		String appId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(appId)) {
+			List<QzApplnHtqdtz> qzTz = intoPiecesService.getTzList(appId);
+			mv.addObject("appId", appId);
 			mv.addObject("list", qzTz);
 		}
 		return mv;
@@ -232,8 +228,8 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				String customerId = RequestHelper.getStringValue(request, ID);
-				intoPiecesService.insertTzList(request,customerId);
+				String appId = RequestHelper.getStringValue(request, ID);
+				intoPiecesService.insertTzList(request,appId);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);

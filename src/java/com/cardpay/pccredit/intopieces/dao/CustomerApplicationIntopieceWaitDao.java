@@ -57,4 +57,9 @@ public interface CustomerApplicationIntopieceWaitDao {
 	public List<CustomerApplicationIntopieceWaitForm> IntopieceChushenRejectForm();
 	// 获取初审拒件的进件count
 	public int CountIntopieceChushenRejectForm();
+	
+	// 获取补充上会的进件
+	public List<CustomerApplicationIntopieceWaitForm> shouxinAddInforForm(CustomerApplicationProcessFilter filter);
+	// 获取补充上会的进件count
+	public int CountshouxinAddInforForm(CustomerApplicationProcessFilter filter);
 }
