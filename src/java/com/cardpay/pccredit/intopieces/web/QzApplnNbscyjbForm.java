@@ -2,15 +2,15 @@
  * Copyright 2013 Wicresoft, Inc. All rights reserved.
  */
 
-package com.cardpay.pccredit.intopieces.model;
+package com.cardpay.pccredit.intopieces.web;
 
 import java.util.Date;
 
 import com.wicresoft.jrad.base.database.model.ModelParam;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
+import com.wicresoft.jrad.base.web.form.BaseForm;
 
-@ModelParam(table = "qz_appln_nbscyjb")
-public class QzApplnNbscyjb extends BusinessModel {
+public class QzApplnNbscyjbForm extends BaseForm {
 
 	private static final long serialVersionUID = 1L;
 	private String customerId;
