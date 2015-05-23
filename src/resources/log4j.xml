@@ -28,11 +28,6 @@
 		<priority value="INFO" />
 		<appender-ref ref="STDOUT" />
 	</category>
-
-	<category name="com.cardpay">
-		<priority value="INFO" />
-		<appender-ref ref="STDOUT" />
-	</category>
 	
 	<category name="com.dcfs">
 		<priority value="DEBUG" />

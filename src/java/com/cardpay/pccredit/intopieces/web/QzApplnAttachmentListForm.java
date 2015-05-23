@@ -2,13 +2,11 @@
  * Copyright 2013 Wicresoft, Inc. All rights reserved.
  */
 
-package com.cardpay.pccredit.intopieces.model;
+package com.cardpay.pccredit.intopieces.web;
 
-import com.wicresoft.jrad.base.database.model.ModelParam;
-import com.wicresoft.jrad.base.database.model.BusinessModel;
+import com.wicresoft.jrad.base.web.form.BaseForm;
 
-@ModelParam(table = "qz_appln_attachment_list")
-public class QzApplnAttachmentList extends BusinessModel {
+public class QzApplnAttachmentListForm extends BaseForm{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -54,12 +52,6 @@ public class QzApplnAttachmentList extends BusinessModel {
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
 	}
-	public String getChkValue() {
-		return chkValue;
-	}
-	public void setChkValue(String chkValue) {
-		this.chkValue = chkValue;
-	}
 	public String getShopId() {
 		return shopId;
 	}
@@ -71,6 +63,12 @@ public class QzApplnAttachmentList extends BusinessModel {
 	}
 	public void setBussType(String bussType) {
 		this.bussType = bussType;
+	}
+	public String getChkValue() {
+		return chkValue;
+	}
+	public void setChkValue(String chkValue) {
+		this.chkValue = chkValue;
 	}
 	public String getUser_1() {
 		return user_1;
@@ -96,4 +94,5 @@ public class QzApplnAttachmentList extends BusinessModel {
 	public void setUser_4(String user_4) {
 		this.user_4 = user_4;
 	}
+
 }

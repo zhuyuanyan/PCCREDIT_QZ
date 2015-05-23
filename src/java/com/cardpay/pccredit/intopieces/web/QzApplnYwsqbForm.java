@@ -2,20 +2,19 @@
  * Copyright 2013 Wicresoft, Inc. All rights reserved.
  */
 
-package com.cardpay.pccredit.intopieces.model;
+package com.cardpay.pccredit.intopieces.web;
 
 import java.util.Date;
 
-import com.wicresoft.jrad.base.database.model.ModelParam;
-import com.wicresoft.jrad.base.database.model.BusinessModel;
+import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
+import com.wicresoft.jrad.base.database.model.BaseModel;
+import com.wicresoft.jrad.base.web.form.BaseForm;
 
-@ModelParam(table = "qz_appln_ywsqb")
-public class QzApplnYwsqb extends BusinessModel {
+public class QzApplnYwsqbForm extends BaseForm{
 
 	private static final long serialVersionUID = 1L;
-	private String customerId;
 	private String applicationId;
-	private String orgName;//记录orgname 方便显示
+	private String orgName;
 	private String orgId;
 	private Date applyTime;
 	private String name;
@@ -91,16 +90,10 @@ public class QzApplnYwsqb extends BusinessModel {
 	private String infoType;
 	private String infoTypeOther;
 	private String commet;
-	private String managerName;//记录managerName 方便显示
+	private String managerName;
 	private String managerId;
 	private Date managerTime;
 	
-	public String getCustomerId() {
-		return customerId;
-	}
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
 	public String getApplicationId() {
 		return applicationId;
 	}
