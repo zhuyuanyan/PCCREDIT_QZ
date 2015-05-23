@@ -110,6 +110,12 @@
 	<script type="text/javascript">		
 		#set ($formName = "'#id_module_form'")
 		$(document).ready(function() {
+			if("${type}"=="readonly"){
+				$("input[type='text']").attr("disabled",true);
+				$("input[type='radio']").attr("disabled",true);
+				$("input[type='checkbox']").attr("disabled",true);
+				$("select").attr("disabled",true);
+			}
 			$("#id_save_button").click(function() {
 				var formjson = $($formName).serialize();
 	   	          $.post("${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {

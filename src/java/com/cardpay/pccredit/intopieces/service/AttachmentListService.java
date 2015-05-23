@@ -122,6 +122,9 @@ public class AttachmentListService {
 	@Autowired
 	private AttachmentListDao attachmentListDao;
 	
+	@Autowired
+	private IntoPiecesService intoPiecesService;
+	
 	/* 查询附件列表 */
 	/*
 	 * TODO 1.添加注释 2.SQL写进DAO层
@@ -131,10 +134,14 @@ public class AttachmentListService {
 	}
 
 	public void insert_page5(QzApplnAttachmentList QzApplnAttachmentList,HttpServletRequest request){
+		//保存清单至调查内容表
+		intoPiecesService.addAttachList(QzApplnAttachmentList);
 		commonDao.insertObject(QzApplnAttachmentList);
 	}
 
 	public void update_page5(QzApplnAttachmentList QzApplnAttachmentList,HttpServletRequest request){
+		//保存清单至调查内容表
+		intoPiecesService.addAttachList(QzApplnAttachmentList);
 		commonDao.updateObject(QzApplnAttachmentList);
 	}
 }

@@ -79,6 +79,7 @@ public class Constant {
 	public static String APP_STATE_1="已申请";
 	public static String APP_STATE_2="未申请";
 	public static String APP_STATE_3="退回";
+	public static String APP_STATE_4="审批完成";
 	
 	//泉州银行根机构id
 	public static String QZ_ORG_ROOT_ID = "9350000000";
@@ -106,4 +107,33 @@ public class Constant {
 	public static String APPROVE_EDIT_1="1";//初审退回--直接删除申请件
 	public static String APPROVE_EDIT_2="3";//初审拒件--授信岗审批
 	public static String APPROVE_EDIT_3="4";//授信岗补充上会--退回客户经理
+	
+	/*待决策资料清单列表*/
+	public static String ATTACH_LIST1="贷款申请表";
+	public static String ATTACH_LIST2="调查报告";
+	public static String ATTACH_LIST3="征信查询授权书";
+	public static String ATTACH_LIST4="工作底稿";
+	public static String ATTACH_LIST5="信用报告及联网核查";
+	public static String ATTACH_LIST6="贷审小组决议表";
+	public static String ATTACH_LIST7="规范操作承诺书";
+	public static String ATTACH_LIST8="收入证明文件";
+	public static String ATTACH_LIST9="借款人资产文件、住址证明";
+	public static String ATTACH_LIST10="借款人及共同借款人身份证复印件";
+	public static String ATTACH_LIST11="借款人及共同借款人婚姻状况证明";
+	public static String ATTACH_LIST12="担保人及配偶身份证明复印件";
+	public static String ATTACH_LIST13="担保人及配偶婚姻状况说明";
+	public static String ATTACH_LIST14="担保人收入证明";
+	public static String ATTACH_LIST15="申请表";
+	public static String ATTACH_LIST16="营业执照（副本）复印件";
+	public static String ATTACH_LIST17="税务登记证（副本）复印件";
+	public static String ATTACH_LIST18="组织机构代码证（副本）复印件";
+	public static String ATTACH_LIST19="贷款卡及年检报告复印件";
+	public static String ATTACH_LIST20="公司章程（包括验资报告复印件）";
+	public static String ATTACH_LIST21="股东会或董事会决议原件";
+	public static String ATTACH_LIST22="法定代表人身份证明文件复印件";
+	public static String ATTACH_LIST23="股东身份证明复印件";
+	public static String ATTACH_LIST24="担保人身份证明复印件";
+	public static String ATTACH_LIST25="担保人贷款卡复印件";
+	public static String ATTACH_LIST26="担保人收入证明";
+	public static String ATTACH_LIST27="信用等级证复印件（如有）";
 }

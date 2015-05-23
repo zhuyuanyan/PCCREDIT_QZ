@@ -1385,14 +1385,14 @@ public class CustomerInforService {
 	/**
 	 * 查询客户是否已有进件流程
 	 */
-	public Boolean ifProcess(String customerId){
+	public CustomerApplicationInfo ifProcess(String customerId){
 		CustomerApplicationInfoFilter info = new CustomerApplicationInfoFilter();
 		info.setCustomerId(customerId);
 		List<CustomerApplicationInfo> listApplicationInfo = customerinforcommDao.ifProcess(customerId);
 		if(listApplicationInfo.size()>0){
-			return true;
+			return listApplicationInfo.get(0);
 		}else{
-			return false;
+			return null;
 		}
 	}
 	/**

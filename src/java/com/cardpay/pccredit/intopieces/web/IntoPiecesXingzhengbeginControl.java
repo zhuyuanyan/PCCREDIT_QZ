@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,16 +24,19 @@ import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.NbscyjbService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -45,6 +49,7 @@ import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
+import com.wicresoft.util.web.RequestHelper;
 
 @Controller
 @RequestMapping("/intopieces/intopiecesxingzheng1/*")
@@ -69,6 +74,9 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	private CircleService circleService;
 	@Autowired
 	private ECIFService eCIFService;
+	
+	@Autowired
+	private NbscyjbService nbscyjbService;
 	/**
 	 * 行政岗初进件页面
 	 * 
@@ -104,10 +112,16 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	@RequestMapping(value = "create_upload.page")
 	public AbstractModelAndView createUpload(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
 		String appId = request.getParameter(ID);
+		//是否只读标记
+		String type = request.getParameter("type");
+		if(type==null){
+			type="";
+		}
 		List<QzDcnrUploadForm>  result =intoPiecesService.getUploadList(appId);
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_xingzhengbegin_upload", request);
 		mv.addObject("result", result);
 		mv.addObject("appId",appId);
+		mv.addObject("type",type);
 		return mv;
 	}
 	
@@ -194,6 +208,24 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 			e.printStackTrace();
 		}
 		return returnMap;
+	}
+	
+	/**
+	 * 进入电核页面
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "in_applove.page")
+	public AbstractModelAndView inApplove(HttpServletRequest request) {
+		String appId = request.getParameter(ID);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_change", request);
+		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjb(null, appId);
+		mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_for_approve", request);
+		mv.addObject("qzApplnNbscyjb", qzApplnNbscyjb);
+		
+		return mv;
 	}
 
 }

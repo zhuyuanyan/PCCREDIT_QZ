@@ -145,7 +145,7 @@ public class CustomerInforCommDao {
 	 * 通过客户id查询申请表
 	 */
 		public List<CustomerApplicationInfo> ifProcess(String customerId){
-			String sql = "select * from customer_application_info where CUSTOMER_ID='"+customerId+"'";
+			String sql = "select * from customer_application_info where CUSTOMER_ID='"+customerId+"' order by created_time desc";
 			return commonDao.queryBySql(CustomerApplicationInfo.class, sql, null);
 		}
 }
