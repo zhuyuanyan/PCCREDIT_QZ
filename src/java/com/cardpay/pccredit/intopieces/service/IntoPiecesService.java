@@ -49,6 +49,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
+import com.cardpay.pccredit.intopieces.model.QzApplnDbrxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
 import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
@@ -113,6 +114,15 @@ public class IntoPiecesService {
 	private CircleService circleService;
 	@Autowired
 	private ECIFService eCIFService;
+	
+	@Autowired
+	private YwsqbService ywsqbService;
+	@Autowired
+	private DbrxxService dbrxxService;
+	@Autowired
+	private AttachmentListService attachmentListService;
+	@Autowired
+	private NbscyjbService nbscyjbService;
 	
 	/* 查询进价信息 */
 	/*
@@ -1446,6 +1456,25 @@ public class IntoPiecesService {
 	 * 对客户信息表中没有appId的表添加appid
 	 */
 	public void addAppId(String customerId,String applicationId){
+		//添加业务申请表appId
+		QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
+		qzApplnYwsqb.setApplicationId(applicationId);
+		commonDao.updateObject(qzApplnYwsqb);
+		//添加担保人appId
+		List<QzApplnDbrxx> dbrxx_ls = dbrxxService.findDbrxx(customerId, null);
+		for(QzApplnDbrxx obj : dbrxx_ls){
+			obj.setApplicationId(applicationId);
+			commonDao.updateObject(obj);
+		}
+		//添加附件appId
+		QzApplnAttachmentList qzApplnAttachmentList = attachmentListService.findAttachmentList(customerId, null);
+		qzApplnAttachmentList.setApplicationId(applicationId);
+		commonDao.updateObject(qzApplnAttachmentList);
+		//添加内部审查appId
+		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjb(customerId, null);
+		qzApplnNbscyjb.setApplicationId(applicationId);
+		commonDao.updateObject(qzApplnNbscyjb);
+		
 		//添加调查内容appId
 		String sql1= "select * from qz_appln_dcnr where customer_id='"+customerId+"' and application_id is null" ;
 		List<QzApplnDcnr> dcnrList = commonDao.queryBySql(QzApplnDcnr.class, sql1, null);
@@ -1570,19 +1599,19 @@ public class IntoPiecesService {
 				map.put("8192", Constant.ATTACH_LIST22);
 			}
 			if((Integer.parseInt(chkValue)&16384) != 0){
-				map.put("16384", Constant.ATTACH_LIST22);
+				map.put("16384", Constant.ATTACH_LIST23);
 			}
 			if((Integer.parseInt(chkValue)&32768) != 0){
-				map.put("32768", Constant.ATTACH_LIST22);
+				map.put("32768", Constant.ATTACH_LIST24);
 			}
 			if((Integer.parseInt(chkValue)&65536) != 0){
-				map.put("65536", Constant.ATTACH_LIST22);
+				map.put("65536", Constant.ATTACH_LIST25);
 			}
 			if((Integer.parseInt(chkValue)&131072) != 0){
-				map.put("131072", Constant.ATTACH_LIST22);
+				map.put("131072", Constant.ATTACH_LIST26);
 			}
 			if((Integer.parseInt(chkValue)&262144) != 0){
-				map.put("262144", Constant.ATTACH_LIST22);
+				map.put("262144", Constant.ATTACH_LIST27);
 			}
 		}
 		//先删除之前调查内容

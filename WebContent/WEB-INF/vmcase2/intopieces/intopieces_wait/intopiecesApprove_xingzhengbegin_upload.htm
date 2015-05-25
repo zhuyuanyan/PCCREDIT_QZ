@@ -14,7 +14,7 @@
 		
 	  <div class="inquiry">
        <div class="search_tag">上传扫描件</div>
-       <div class="search">
+       <div class="search" style="padding:0;overflow-x:hidden;">
        #if($!type!="readonly")
           <form id="myForm" action="${contextPath}/intopieces/intopiecesxingzheng1/saveYxzl.json" enctype="multipart/form-data" method="post">
 		  		<ul>
@@ -43,9 +43,9 @@
             <colgroup>
               <col width="5%">
               <col width="15%">
+              <col width="30%">
               <col width="20%">
-              <col width="20%">
-              <col width="20%">
+              <col width="30%">
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -56,14 +56,14 @@
             </tr>
             </table>
             </div>
-      <div id="downDiv" class="inquiry_list inquiry_down" style="height:300px;overflow:auto;">
+      <div id="downDiv" class="inquiry_list inquiry_down" style="height:290px;overflow:auto;">
           <table>
           	<colgroup>
-             <col width="5%">
+              <col width="5%">
               <col width="15%">
+              <col width="30%">
               <col width="20%">
-              <col width="20%">
-              <col width="20%">
+              <col width="30%">
             </colgroup>
             #foreach($video in $!result)
             <tr>
@@ -87,10 +87,10 @@
       <div class="pagebar">
       	<div class="controlbtn">
           <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
-          <a href="javascript:history.back();" class="btn_g">返回</a>
+          <a href="javascript:history.back();" class="btn_gr">返回</a>
       	</div>
       
- <div class="clear"></div>
+ 		<div class="clear"></div>
         	
       </div>
 		  </div>
