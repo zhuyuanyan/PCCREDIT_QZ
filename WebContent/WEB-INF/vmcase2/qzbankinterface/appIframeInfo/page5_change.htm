@@ -539,14 +539,14 @@
 					<td>
 						#if($!qzApplnAttachmentList.bussType=='2')
 							<script>
-								if(parseInt(chkValue&524288) != 0){
-									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288" checked/>');
+								if(parseInt(chkValue&2048) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="2048" checked/>');
 								}else{
-									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288"/>');
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="2048"/>');
 								}
 							</script>
 						#else
-							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288"/>
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="2048"/>
 						#end
 						</td>						
 					<td>6</td>	
@@ -690,7 +690,7 @@
 </form>	
 <div class="controlbtn">
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
-	<a class="btn_gr" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 </div>
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<script type="text/javascript" src="script.js"></script>
@@ -749,6 +749,11 @@
 						}
 					});
 				}
+			});
+			
+			//返回
+			$("#id_back_button").click(function() {
+				window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
 			});
 			
 		});

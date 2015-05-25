@@ -34,7 +34,8 @@
 <div class="controlbtn">
 	<a class="btn_g" href="${contextPath}/intopieces/intopiecesapprove/page4.page?customerId=${customerId}" title="新增">新增</a>
 	<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="修改">修改</a>
-	<a class="btn_gr" href="#" title="删除">删除</a>
+	<a class="btn_g" href="javascript:void(0);" title="删除">删除</a>
+	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 </div>
 	<script type="text/javascript">			
 	$(document).ready(function() {
@@ -47,6 +48,11 @@
 	            topWin.Dialog.message("请选择一行");
 	        }
 	    });
+		
+		//返回
+		$("#id_back_button").click(function() {
+			window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+		});
 	});
 	</script>	
 </body>

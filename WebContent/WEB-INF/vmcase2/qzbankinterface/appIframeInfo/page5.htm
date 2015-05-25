@@ -289,7 +289,7 @@
 </form>	
 <div class="controlbtn">
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
-	<a class="btn_gr" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 </div>
 	<script type="text/javascript" src="jquery-1.js"></script>
 	<script type="text/javascript" src="script.js"></script>
@@ -348,6 +348,11 @@
 						}
 					});
 				}
+			});
+			
+			//返回
+			$("#id_back_button").click(function() {
+				window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
 			});
 			
 		});
