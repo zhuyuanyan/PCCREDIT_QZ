@@ -6,7 +6,9 @@
 .button:hover{background:url(../../images/xm_appln/icon_button_hover.png) repeat-x;}
 h1{font-size:20px;font-weight:normal;color:#313439;line-height:40px;border-bottom:2px solid #1c6bae;margin-bottom:15px;margin:0 15px;}
 /*表单*/
-form{padding-top:67px;padding-bottom:15px;margin:0 17px 0 15px;max-height:350px;width:99.5%;padding-right:0.5%;overflow-y:auto;overflow-x:hidden}
+
+form{padding-top:67px;margin:0 17px 0 15px;padding-bottom:0;height:375px;height:345px\9;width:99.5%;padding-right:0.5%;overflow-y:auto;overflow-x:hidden}
+
 
 .box{border:1px solid #547586;width:98%;margin-bottom:2px;}
 .box table{width:100%;}
@@ -57,12 +59,13 @@ span{display:inline-block;width:160px;color:blue;}
 .border{background:#5facd8;width:100%;height:1px;margin:5px 0;}
 /*form元素*/
 input[readonly]{background:#e5e5e5;}
-input[type=text],input[type=password],select{border:1px solid #bababa;outline:none;height:22px;line-height:22px;}
+input[type=text],input[type=password],select{border:1px solid #bababa;outline:none;height:22px;line-height:22px;vertical-align:middle}
 input[type=text]:hover,input[type=password]:hover,select:hover{border-color:#ffc600;}
 input[type=text]:focus,input[type=password]:focus,select:focus{border-color:#1583dd;}
 textarea{margin:5px;width:80%;height:50px;resize: none;vertical-align:middle;}
 input[type=radio],input[type=checkbox]{vertical-align:middle;}
-input[disabled=disabled],textarea[disabled=disabled]{background:#ddd;}
+textarea{border:1px solid #bababa;outline:none;}
+input[disabled=disabled],textarea[disabled=disabled]{background:#ebebe4;}
 
 .controlbtn{text-align:center;margin:10px 0;padding-bottom:0;margin-bottom:0;}
 .controlbtn a{text-decoration:none;line-height:25px;height:25px;padding:0px 10px;}
