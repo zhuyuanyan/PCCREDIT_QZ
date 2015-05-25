@@ -13,6 +13,7 @@ import com.wicresoft.jrad.base.database.model.BusinessModel;
 public class QzApplnNbscyjb extends BusinessModel {
 
 	private static final long serialVersionUID = 1L;
+	private String customerId;
 	private String applicationId;
 	private Date checkDate;
 	private String clientName;
@@ -29,6 +30,13 @@ public class QzApplnNbscyjb extends BusinessModel {
 	private String checkSug;
 	private Date checkSignDate;
 	private String isComplete;
+	
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
 	public String getApplicationId() {
 		return applicationId;
 	}

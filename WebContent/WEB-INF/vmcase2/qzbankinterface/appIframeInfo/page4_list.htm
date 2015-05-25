@@ -16,20 +16,15 @@
 					<td><b>证件号码</b></td>				
 					<td><b>联系电话</b></td>		
 				</tr>
+				#foreach ($obj in $dbrxx_ls)
 				<tr>
-					<td><input type="radio" name="radio"/></td>
-					<td>担保人1</td>	
-					<td>男</td>					
-					<td>32014569856561669</td>					
-					<td>12365985215</td>	
+					<td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
+					<td>$obj.name</td>	
+					<td>#if($obj.sex=="01")男#else女#end</td>					
+					<td>$obj.globalId</td>					
+					<td>$obj.phone_1</td>	
 				</tr>
-				<tr>
-					<td><input type="radio" name="radio"/></td>
-					<td>担保人2</td>	
-					<td>男</td>					
-					<td>32014569856561669</td>					
-					<td>12365985215</td>	
-				</tr>
+				#end
 			</table>	
 			
 		</div><!--/content-->
@@ -37,14 +32,28 @@
 	
 </form>	
 <div class="controlbtn">
-	<a class="btn_g" href="${contextPath}/intopieces/intopiecesapprove/page4.page" title="新增">新增</a>
-	<a class="btn_gr" href="#" title="删除">删除</a>
+	<a class="btn_g" href="${contextPath}/intopieces/intopiecesapprove/page4.page?customerId=${customerId}" title="新增">新增</a>
+	<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="修改">修改</a>
+	<a class="btn_g" href="javascript:void(0);" title="删除">删除</a>
+	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 </div>
-	<script type="text/javascript" src="jquery-1.js"></script>
-	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">			
+	$(document).ready(function() {
+		$("#id_change_button").click(function() {
+	        if ($(".checkbox :checked").length == 1) {
+	            var rowid = $($(".checkbox :checked")[0]).attr("value");
+	            var url = "${contextPath}/intopieces/intopiecesapprove/update_page4.page?id="+rowid;
+	            window.location.href = url;
+	        } else {
+	            topWin.Dialog.message("请选择一行");
+	        }
+	    });
 		
-		
+		//返回
+		$("#id_back_button").click(function() {
+			window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+		});
+	});
 	</script>	
 </body>
 </html>

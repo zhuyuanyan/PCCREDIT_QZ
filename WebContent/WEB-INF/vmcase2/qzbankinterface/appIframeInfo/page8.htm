@@ -21,7 +21,7 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">审议日期</td>
-					<td colspan="8"><input type="text" name="syrq" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.syrq)"/></td>			
+					<td colspan="8"><input type="text" name="syrq" onmouseover="_calendar()"/></td>			
 				</tr>
 				<tr>
 					<td class="table-label">办理机构</td>
@@ -102,14 +102,20 @@
 			</table>			
 		</div>
 	</div>
-	<div class="controlbtn">
+</form>	
+<div class="controlbtn">
 		<a class="btn_g" id="id_save_button" title="提交">提交</a>
 		<a class="btn_gr" id="id_back_button" title="返回">返回</a>
 	</div>
-</form>	
 	<script type="text/javascript">		
 		#set ($formName = "'#id_module_form'")
 		$(document).ready(function() {
+			if("${type}"=="readonly"){
+				$("input[type='text']").attr("disabled",true);
+				$("input[type='radio']").attr("disabled",true);
+				$("input[type='checkbox']").attr("disabled",true);
+				$("select").attr("disabled",true);
+			}
 			$("#id_save_button").click(function() {
 				var formjson = $($formName).serialize();
 	   	          $.post("${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {

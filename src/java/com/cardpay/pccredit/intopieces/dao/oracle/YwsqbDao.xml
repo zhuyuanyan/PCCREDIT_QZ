@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.YwsqbDao" >
+    <resultMap id="ResultMapYwsqb" type="com.cardpay.pccredit.intopieces.model.QzApplnYwsqb">
+        <result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+		<result property="orgName" column="ORG_NAME" />
+		<result property="orgId" column="ORG_ID" />
+		<result property="applyTime" column="APPLY_TIME" />
+		<result property="name" column="NAME" />
+		<result property="sex" column="SEX" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="globalType" column="GLOBAL_TYPE" />
+		<result property="globalTypeOther" column="GLOBAL_TYPE_OTHER" />
+		<result property="educationLevel" column="EDUCATION_LEVEL" />
+		<result property="educationLevelOther" column="EDUCATION_LEVEL_OTHER" />
+		<result property="maritalStatus" column="MARITAL_STATUS" />
+		<result property="maritalStatusOther" column="MARITAL_STATUS_OTHER" />
+		<result property="maritalName" column="MARITAL_NAME" />
+		<result property="maritalGlobalType" column="MARITAL_GLOBAL_TYPE" />
+		<result property="maritalGlobalTypeOther" column="MARITAL_GLOBAL_TYPE_OTHER" />
+		<result property="maritalGlobalId" column="MARITAL_GLOBAL_ID" />
+		<result property="maritalWorkunit" column="MARITAL_WORKUNIT" />
+		<result property="maritalPhone" column="MARITAL_PHONE" />
+		<result property="familyNum" column="FAMILY_NUM" />
+		<result property="addressType" column="ADDRESS_TYPE" />
+		<result property="addressTypeOther" column="ADDRESS_TYPE_OTHER" />
+		<result property="address" column="ADDRESS" />
+		<result property="phone_1" column="PHONE_1" />
+		<result property="phone_2" column="PHONE_2" />
+		<result property="homePhone" column="HOME_PHONE" />
+		<result property="bussName" column="BUSS_NAME" />
+		<result property="bussScope" column="BUSS_SCOPE" />
+		<result property="bussStartYear" column="BUSS_START_YEAR" />
+		<result property="bussAddrType" column="BUSS_ADDR_TYPE" />
+		<result property="bussAddrTypeOther" column="BUSS_ADDR_TYPE_OTHER" />
+		<result property="bussAddr" column="BUSS_ADDR" />
+		<result property="bussPhone" column="BUSS_PHONE" />
+		<result property="bussEmployeeNum" column="BUSS_EMPLOYEE_NUM" />
+		<result property="bussType" column="BUSS_TYPE" />
+		<result property="bussTypeOther" column="BUSS_TYPE_OTHER" />
+		<result property="applyAmount" column="APPLY_AMOUNT" />
+		<result property="applyDeadline" column="APPLY_DEADLINE" />
+		<result property="applyUse" column="APPLY_USE" />
+		<result property="applyEndTime" column="APPLY_END_TIME" />
+		<result property="monthRepay" column="MONTH_REPAY" />
+		<result property="guntThing" column="GUNT_THING" />
+		<result property="guntPeople" column="GUNT_PEOPLE" />
+		<result property="yearIncome" column="YEAR_INCOME" />
+		<result property="profitType" column="PROFIT_TYPE" />
+		<result property="profit" column="PROFIT" />
+		<result property="totalAssets" column="TOTAL_ASSETS" />
+		<result property="inMoney" column="IN_MONEY" />
+		<result property="outMoney" column="OUT_MONEY" />
+		<result property="otherOut" column="OTHER_OUT" />
+		<result property="monthOtherIncome" column="MONTH_OTHER_INCOME" />
+		<result property="otherIncomeSrc" column="OTHER_INCOME_SRC" />
+		<result property="borrowHistory" column="BORROW_HISTORY" />
+		<result property="haveGunt" column="HAVE_GUNT" />
+		<result property="thing_1" column="THING_1" />
+		<result property="thing_2" column="THING_2" />
+		<result property="thing_3" column="THING_3" />
+		<result property="thing_4" column="THING_4" />
+		<result property="loanUser_1" column="LOAN_USER_1" />
+		<result property="loanUser_2" column="LOAN_USER_2" />
+		<result property="loanUser_3" column="LOAN_USER_3" />
+		<result property="loanUser_4" column="LOAN_USER_4" />
+		<result property="guntForOther" column="GUNT_FOR_OTHER" />
+		<result property="guntForOtherBankname" column="GUNT_FOR_OTHER_BANKNAME" />
+		<result property="guntForOtherClientname" column="GUNT_FOR_OTHER_CLIENTNAME" />
+		<result property="haveApplyLoan" column="HAVE_APPLY_LOAN" />
+		<result property="haveLoanTime" column="HAVE_LOAN_TIME" />
+		<result property="haveElePro" column="HAVE_ELE_PRO" />
+		<result property="haveEleProType" column="HAVE_ELE_PRO_TYPE" />
+		<result property="haveGotLoan" column="HAVE_GOT_LOAN" />
+		<result property="haveGotLoanName" column="HAVE_GOT_LOAN_NAME" />
+		<result property="haveGotLoanRelation" column="HAVE_GOT_LOAN_RELATION" />
+		<result property="sign" column="SIGN" />
+		<result property="signDate" column="SIGN_DATE" />
+		<result property="infoType" column="INFO_TYPE" />
+		<result property="infoTypeOther" column="INFO_TYPE_OTHER" />
+		<result property="commet" column="COMMET" />
+		<result property="managerName" column="MANAGER_NAME" />
+		<result property="managerId" column="MANAGER_ID" />
+		<result property="managerTime" column="MANAGER_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+	</resultMap>
+	<resultMap id="ResultMapYwsqbZygys" type="com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZygys">
+	    <result property="id" column="ID" />
+	    <result property="ywsqbId" column="YWSQB_ID" />
+	    <result property="lsh" column="LSH" />
+	    <result property="name" column="NAME" />
+	    <result property="rate" column="RATE" />
+	    <result property="condition" column="CONDITION" />
+	</resultMap>
+	<resultMap id="ResultMapYwsqbZykh" type="com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZykh">
+	    <result property="id" column="ID" />
+	    <result property="ywsqbId" column="YWSQB_ID" />
+	    <result property="lsh" column="LSH" />
+	    <result property="name" column="NAME" />
+	    <result property="rate" column="RATE" />
+	    <result property="condition" column="CONDITION" />
+	</resultMap>
+	<resultMap id="ResultMapYwsqbJkjl" type="com.cardpay.pccredit.intopieces.model.QzApplnYwsqbJkjl">
+	    <result property="id" column="ID" />
+	    <result property="ywsqbId" column="YWSQB_ID" />
+	    <result property="lsh" column="LSH" />
+	    <result property="bankOrOtherType" column="BANK_OR_OTHER_TYPE" />
+	    <result property="purpose" column="PURPOSE" />
+	    <result property="totalAmount" column="TOTAL_AMOUNT" />
+	    <result property="loanDate" column="LOAN_DATE" />
+	    <result property="deadline" column="DEADLINE" />
+	    <result property="rates" column="RATES" />
+	    <result property="repayType" column="REPAY_TYPE" />
+	    <result property="remainSum" column="REMAIN_SUM" />
+	</resultMap>
+	<select id="findYwsqb" resultMap="ResultMapYwsqb">
+		 select * 
+		 from qz_appln_ywsqb   
+		 where 1=1
+	 	<if test="customerId != null and customerId != '' ">
+			AND CUSTOMER_ID=#{customerId}
+		</if>
+		<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if> 
+	</select>
+	<select id="findYwsqbZygys" resultMap="ResultMapYwsqbZygys">
+		select * 
+		from qz_appln_ywsqb_zygys   
+		where 1=1
+		<if test="ywsqbId != null and ywsqbId != '' ">
+			AND YWSQB_ID=#{ywsqbId}
+		</if>
+	</select>
+	<select id="findYwsqbZykh" resultMap="ResultMapYwsqbZykh">
+		select * 
+		from qz_appln_ywsqb_zykh   
+		where 1=1
+		<if test="ywsqbId != null and ywsqbId != '' ">
+			AND YWSQB_ID=#{ywsqbId}
+		</if>
+	</select>
+	<select id="findYwsqbJkjl" resultMap="ResultMapYwsqbJkjl">
+		select * 
+		from qz_appln_ywsqb_Jkjl   
+		where 1=1
+		<if test="ywsqbId != null and ywsqbId != '' ">
+			AND YWSQB_ID=#{ywsqbId}
+		</if>
+	</select>
+	<delete id="deleteYwsqbZygys" parameterType="String" >
+		delete from qz_appln_ywsqb_zygys
+		where YWSQB_ID = #{ywsqbId}
+	</delete>
+	<delete id="deleteYwsqbZykh" parameterType="String" >
+		delete from qz_appln_ywsqb_zykh
+		where YWSQB_ID = #{ywsqbId}
+	</delete>
+	<delete id="deleteYwsqbJkjl" parameterType="String" >
+		delete from qz_appln_ywsqb_jkjl
+		where YWSQB_ID = #{ywsqbId}
+	</delete>
+</mapper>

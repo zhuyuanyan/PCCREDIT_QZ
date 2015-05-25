@@ -1,9 +1,13 @@
 package com.cardpay.pccredit.intopieces.web;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +15,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
+import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForCircleForm;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFForm;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
@@ -28,11 +37,13 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
+import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
+import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
@@ -41,6 +52,7 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;

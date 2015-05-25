@@ -15,6 +15,7 @@
 	  <div class="inquiry">
        <div class="search_tag">上传扫描件</div>
        <div class="search">
+       #if($!type!="readonly")
           <form id="myForm" action="${contextPath}/intopieces/intopiecesxingzheng1/saveYxzl.json" enctype="multipart/form-data" method="post">
 		  		<ul>
 		  			<li>
@@ -36,7 +37,7 @@
 		  		</ul>
 		  	</form>
           </div>
-  
+  		#end
       <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>

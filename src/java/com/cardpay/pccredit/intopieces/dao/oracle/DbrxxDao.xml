@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.DbrxxDao" >
+    <resultMap id="ResultMapDbrxx" type="com.cardpay.pccredit.intopieces.model.QzApplnDbrxx">
+        <result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+		<result property="name" column="NAME" />
+		<result property="sex" column="SEX" />
+		<result property="birthday" column="BIRTHDAY" />
+		<result property="yeah" column="YEAH" />
+		<result property="globalType" column="GLOBAL_TYPE" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="haveGlobalIdCopy" column="HAVE_GLOBAL_ID_COPY" />
+		<result property="phone_1" column="PHONE_1" />
+		<result property="phone_2" column="PHONE_2" />
+		<result property="phoneOther" column="PHONE_OTHER" />
+		<result property="workUnitName" column="WORK_UNIT_NAME" />
+		<result property="workYear" column="WORK_YEAR" />
+		<result property="workUnitAddr" column="WORK_UNIT_ADDR" />
+		<result property="workUnitPhone" column="WORK_UNIT_PHONE" />
+		<result property="yeahIncome" column="YEAH_INCOME" />
+		<result property="haveProveFile" column="HAVE_PROVE_FILE" />
+		<result property="fileName" column="FILE_NAME" />
+		<result property="marriage" column="MARRIAGE" />
+		<result property="homePhone" column="HOME_PHONE" />
+		<result property="homeAddr" column="HOME_ADDR" />
+		<result property="homeType" column="HOME_TYPE" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+	</resultMap>
+	<resultMap id="ResultMapDbrxxDkjl" type="com.cardpay.pccredit.intopieces.model.QzApplnDbrxxDkjl">
+        <result property="id" column="ID" />
+        <result property="dbrxxId" column="DBRXX_ID" />
+		<result property="lsh" column="LSH" />
+		<result property="loanType" column="LOAN_TYPE" />
+		<result property="amount" column="AMOUNT" />
+		<result property="deadline" column="DEADLINE" />
+		<result property="loanDate" column="LOAN_DATE" />
+		<result property="purpose" column="PURPOSE" />
+		<result property="remainAmount" column="REMAIN_AMOUNT" />
+		<result property="guntForOther" column="GUNT_FOR_OTHER" />
+		<result property="guntAmount" column="GUNT_AMOUNT" />
+		<result property="guntDeadline" column="GUNT_DEADLINE" />
+	</resultMap>
+	<resultMap id="ResultMapDbrxxFc" type="com.cardpay.pccredit.intopieces.model.QzApplnDbrxxFc">
+        <result property="id" column="ID" />
+        <result property="dbrxxId" column="DBRXX_ID" />
+        <result property="lsh" column="LSH" />
+		<result property="addr" column="ADDR" />
+		<result property="price" column="PRICE" />
+		<result property="usrSituation" column="USR_SITUATION" />
+		<result property="haveCopy" column="HAVE_COPY" />
+	</resultMap>
+	<resultMap id="ResultMapDbrxxJdc" type="com.cardpay.pccredit.intopieces.model.QzApplnDbrxxJdc">
+        <result property="id" column="ID" />
+        <result property="dbrxxId" column="DBRXX_ID" />
+        <result property="lsh" column="LSH" />
+        <result property="cardNo" column="CARD_NO" />
+		<result property="price" column="PRICE" />
+		<result property="buyDate" column="BUY_DATE" />
+		<result property="haveCopy_1" column="HAVE_COPY_1" />
+		<result property="haveCopy_2" column="HAVE_COPY_2" />
+	</resultMap>
+	
+	<select id="findDbrxx" resultMap="ResultMapDbrxx">
+		 select * 
+		 from qz_appln_dbrxx   
+		 where 1=1
+	 	<if test="customerId != null and customerId != '' ">
+			AND CUSTOMER_ID=#{customerId}
+		</if>
+		<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if> 
+	</select>
+	<select id="findDbrxxById" resultMap="ResultMapDbrxx">
+		 select * 
+		 from qz_appln_dbrxx   
+		 where ID=#{id}
+	</select>
+	<select id="findDbrxxDkjl" resultMap="ResultMapDbrxxDkjl">
+		select * 
+		from qz_appln_dbrxx_dkjl   
+		where 1=1
+		<if test="dbrxxId != null and dbrxxId != '' ">
+			AND DBRXX_ID=#{dbrxxId}
+		</if>
+	</select>
+	<select id="findDbrxxFc" resultMap="ResultMapDbrxxFc">
+		select * 
+		from qz_appln_dbrxx_fc   
+		where 1=1
+		<if test="dbrxxId != null and dbrxxId != '' ">
+			AND DBRXX_ID=#{dbrxxId}
+		</if>
+	</select>
+	<select id="findDbrxxJdc" resultMap="ResultMapDbrxxJdc">
+		select * 
+		from qz_appln_dbrxx_jdc   
+		where 1=1
+		<if test="dbrxxId != null and dbrxxId != '' ">
+			AND DBRXX_ID=#{dbrxxId}
+		</if>
+	</select>
+	<delete id="deleteDbrxxDkjl" parameterType="String" >
+		delete from qz_appln_dbrxx_dkjl
+		where DBRXX_ID = #{dbrxxId}
+	</delete>
+	<delete id="deleteDbrxxFc" parameterType="String" >
+		delete from qz_appln_dbrxx_fc
+		where DBRXX_ID = #{dbrxxId}
+	</delete>
+	<delete id="deleteDbrxxJdc" parameterType="String" >
+		delete from qz_appln_dbrxx_jdc
+		where DBRXX_ID = #{dbrxxId}
+	</delete>
+</mapper>
