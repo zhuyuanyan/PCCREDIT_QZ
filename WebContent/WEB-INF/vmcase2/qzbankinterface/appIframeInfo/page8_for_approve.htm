@@ -1,14 +1,16 @@
 #parse ("common/iframe_page_header3.htm")
 <style type="text/css">
-	
+	form{height:420px;position:absolute;right:0;width:98%;margin-right:0;top:70px;height:410px;height:380px\0;}
+	.box{border:none;}
+	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
 </style>
 <body>
 <div class="fixed">
-		<h1>审贷会决议单</h1>
-	</div>
+	<h1>审贷会决议单</h1>
+</div>
 <!--*************************************************************审贷会决议单*************************************************************-->
-<form id="id_module_form" style="height:480px;position:absolute;margin-top:60px;max-height:420px;">
-	<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+<form id="id_module_form" >
+	<div class="form-bd" id="formsId" >
 		<div name="content">
 			<table class="myTable">
 				<caption>审贷会决议单</caption>
@@ -183,12 +185,12 @@
 		</div>
 	</div>
 </form>	
-	<div class="controlbtn" style="position:absolute;top:500px;">
-	#if($!readType!="readType")
-		<a class="btn_g" id="id_save_button" title="提交">提交</a>
-	#end
-		<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
-	</div>
+<div class="controlbtn">
+#if($!readType!="readType")
+	<a class="btn_g" id="id_save_button" title="提交">提交</a>
+#end
+	<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
+</div>
 	<script type="text/javascript">		
 		#set ($formName = "'#id_module_form'")
 		$(document).ready(function() {
