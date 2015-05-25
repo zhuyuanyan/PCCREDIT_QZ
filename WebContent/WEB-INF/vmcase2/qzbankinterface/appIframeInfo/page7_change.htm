@@ -58,8 +58,12 @@
 	</div>
 </form>	
 <div class="controlbtn">
+#if($!type=="readonly")
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#else
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
 	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	#end
 </div>
 	<script type="text/javascript">			
 	var layout=new FormsLayout("formsId");	
@@ -69,6 +73,13 @@
 	#parse ("qzbankinterface/appIframeInfo/page7_validation.js")
 	
 	$(document).ready(function() {	
+		if("${type}"=="readonly"){
+			$("input[type='text']").attr("disabled",true);
+			$("input[type='radio']").attr("disabled",true);
+			$("input[type='checkbox']").attr("disabled",true);
+			$("select").attr("disabled",true);
+			$("textarea").attr("disabled",true);
+		}
 		//保存
 		$("#id_save_button").click(function() {
 			if ($($formName).valid()) {

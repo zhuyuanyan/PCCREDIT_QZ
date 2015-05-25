@@ -26,24 +26,7 @@ public class QzSdhjydForm extends BaseForm{
 	private String jyll;
 	private String sxyt;
 	private String hkfs;
-	private String gtjkrxm1;
-	private String gtjkrhm1;
-	private String gtjkrxm2;
-	private String gtjkrhm2;
-	private String bzdbxm1;
-	private String bzdbhm1;
-	private String bzdbxm2;
-	private String bzdbhm2;
-	private String dyr1;
-	private String dywmc1;
-	private String sl1;
-	private String djhm1;
-	private String kdyjz1;
-	private String dyr2;
-	private String dywmc2;
-	private String sl2;
-	private String djhm2;
-	private String kdyjz2;
+
 	private String je;
 	private String ll;
 	private String qx;
@@ -142,114 +125,8 @@ public class QzSdhjydForm extends BaseForm{
 	public void setHkfs(String hkfs) {
 		this.hkfs = hkfs;
 	}
-	public String getGtjkrxm1() {
-		return gtjkrxm1;
-	}
-	public void setGtjkrxm1(String gtjkrxm1) {
-		this.gtjkrxm1 = gtjkrxm1;
-	}
-	public String getGtjkrhm1() {
-		return gtjkrhm1;
-	}
-	public void setGtjkrhm1(String gtjkrhm1) {
-		this.gtjkrhm1 = gtjkrhm1;
-	}
-	public String getGtjkrxm2() {
-		return gtjkrxm2;
-	}
-	public void setGtjkrxm2(String gtjkrxm2) {
-		this.gtjkrxm2 = gtjkrxm2;
-	}
-	public String getGtjkrhm2() {
-		return gtjkrhm2;
-	}
-	public void setGtjkrhm2(String gtjkrhm2) {
-		this.gtjkrhm2 = gtjkrhm2;
-	}
-	public String getBzdbxm1() {
-		return bzdbxm1;
-	}
-	public void setBzdbxm1(String bzdbxm1) {
-		this.bzdbxm1 = bzdbxm1;
-	}
-	public String getBzdbhm1() {
-		return bzdbhm1;
-	}
-	public void setBzdbhm1(String bzdbhm1) {
-		this.bzdbhm1 = bzdbhm1;
-	}
-	public String getBzdbxm2() {
-		return bzdbxm2;
-	}
-	public void setBzdbxm2(String bzdbxm2) {
-		this.bzdbxm2 = bzdbxm2;
-	}
-	public String getBzdbhm2() {
-		return bzdbhm2;
-	}
-	public void setBzdbhm2(String bzdbhm2) {
-		this.bzdbhm2 = bzdbhm2;
-	}
-	public String getDyr1() {
-		return dyr1;
-	}
-	public void setDyr1(String dyr1) {
-		this.dyr1 = dyr1;
-	}
-	public String getDywmc1() {
-		return dywmc1;
-	}
-	public void setDywmc1(String dywmc1) {
-		this.dywmc1 = dywmc1;
-	}
-	public String getSl1() {
-		return sl1;
-	}
-	public void setSl1(String sl1) {
-		this.sl1 = sl1;
-	}
-	public String getDjhm1() {
-		return djhm1;
-	}
-	public void setDjhm1(String djhm1) {
-		this.djhm1 = djhm1;
-	}
-	public String getKdyjz1() {
-		return kdyjz1;
-	}
-	public void setKdyjz1(String kdyjz1) {
-		this.kdyjz1 = kdyjz1;
-	}
-	public String getDyr2() {
-		return dyr2;
-	}
-	public void setDyr2(String dyr2) {
-		this.dyr2 = dyr2;
-	}
-	public String getDywmc2() {
-		return dywmc2;
-	}
-	public void setDywmc2(String dywmc2) {
-		this.dywmc2 = dywmc2;
-	}
-	public String getSl2() {
-		return sl2;
-	}
-	public void setSl2(String sl2) {
-		this.sl2 = sl2;
-	}
-	public String getDjhm2() {
-		return djhm2;
-	}
-	public void setDjhm2(String djhm2) {
-		this.djhm2 = djhm2;
-	}
-	public String getKdyjz2() {
-		return kdyjz2;
-	}
-	public void setKdyjz2(String kdyjz2) {
-		this.kdyjz2 = kdyjz2;
-	}
+
+
 	public String getJe() {
 		return je;
 	}

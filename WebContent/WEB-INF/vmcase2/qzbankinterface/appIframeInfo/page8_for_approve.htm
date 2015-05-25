@@ -1,16 +1,13 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
-	form{height:420px;position:absolute;right:0;width:98%;margin-right:0;top:70px;height:410px;height:380px\0;}
-	.box{border:none;}
-	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
-</style>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<script type="text/javascript" src="jquery-1.js"></script>
+
+</head>
 <body>
-<div class="fixed">
-	<h1>审贷会决议单</h1>
-</div>
 <!--*************************************************************审贷会决议单*************************************************************-->
-<form id="id_module_form" >
-	<div class="form-bd" id="formsId" >
+<form id="id_module_form" style="height:480px;position:absolute;max-height:420px;">
+	<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
 		<div name="content">
 			<table class="myTable">
 				<caption>审贷会决议单</caption>
@@ -40,7 +37,7 @@
 					<td class="table-label">审议事项</td>
 					<td colspan="2"><input type="text" name="sysx" value="$!result.sysx" readonly/></td>
 					<td class="table-label">产品名称</td>
-					<td><input type="text" name="cpmc" value="$!result.cpmc" readonly/></td>	
+					<td><select name="cpmc" readonly>#dict("ProductName",$!result.cpmc)</select></td>	
 					<td class="table-label">证件号码</td>
 					<td colspan="3"><input type="text" name="zjhm" value="$!result.zjhm" readonly/></td>		
 				</tr>			
@@ -59,49 +56,104 @@
 					<td colspan="2"><input type="text" name="hkfs" value="$!result.hkfs" readonly/></td>		
 				</tr>		
 				<tr>
-					<td class="table-label" rowspan="8">建议担保方式</td>
-					<td class="table-label" rowspan="3">共同借款人</td>					
-					<td class="table-label" colspan="3" style="text-align:center;">姓名</td>					
-					<td class="table-label" colspan="4" style="text-align:center;">证件号码</td>	
+					<td class="table-label" rowspan="3">建议担保方式</td>					
+					<td class="table-label" colspan="8">
+						<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="gtjkr">
+							<tr>
+								<td class="tableTitle" colspan="2" style="text-align:left;">
+									共同借款人
+									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('gtjkr')"/>
+									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('gtjkr')"/>
+								</td>		
+							</tr>
+							<tr>
+								<td><b>姓名</b></td>	
+								<td><b>证件号码</b></td>		
+							</tr>
+							#if(!$gtjkrs)
+							<tr>
+								<td><input type="text" name="gtjkrxm" readonly/></td>	
+								<td><input type="text" name="gtjkrhm" readonly/></td>		
+							</tr>
+							#else
+								#foreach ($result in $gtjkrs)
+								<tr>
+									<td><input type="text" name="gtjkrxm" value="$!result.name" readonly/></td>	
+									<td><input type="text" name="gtjkrhm" value="$!result.cardId" readonly/></td>		
+								</tr>
+								#end
+							#end
+						</table>
+					</td>	
 				</tr>						
 				<tr>			
-					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm1" value="$!result.gtjkrxm1" readonly/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm1" value="$!result.gtjkrhm1" readonly/></td>	
+					<td class="table-label" colspan="8">
+						<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="bzdb">
+							<tr>
+								<td class="tableTitle" colspan="2" style="text-align:left;">
+									保证担保
+									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('bzdb')"/>
+									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('bzdb')"/>
+								</td>		
+							</tr>
+							#if(!$bzdbs)
+							<tr>
+								<td><b>姓名</b></td>	
+								<td><b>证件号码</b></td>		
+							</tr>
+							<tr>
+								<td><input type="text" name="bzdbxm" readonly/></td>	
+								<td><input type="text" name="bzdbhm" readonly/></td>		
+							</tr>
+							#else
+								#foreach ($result in $bzdbs)
+								<tr>
+									<td><input type="text" name="bzdbxm" value="$!result.name" readonly/></td>	
+									<td><input type="text" name="bzdbhm" value="$!result.cardId" readonly/></td>		
+								</tr>
+								#end
+							#end
+						</table>
+					</td>	
 				</tr>					
 				<tr>			
-					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm2" value="$!result.gtjkrxm2" readonly/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm2" value="$!result.gtjkrhm2" readonly/></td>	
-				</tr>		
-				<tr>
-					<td class="table-label" rowspan="2">保证担保</td>					
-					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm1" value="$!result.bzdbxm1" readonly/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm1" value="$!result.bzdbhm1" readonly/></td>	
-				</tr>					
-				<tr>			
-					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm2" value="$!result.bzdbxm2" readonly/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm2" value="$!result.bzdbhm2" readonly/></td>	
-				</tr>		
-				<tr>
-					<td class="table-label" rowspan="3">抵押担保</td>					
-					<td class="table-label" style="text-align:center;">抵押人</td>					
-					<td class="table-label" colspan="2" style="text-align:center;">抵押物名称</td>					
-					<td class="table-label" style="text-align:center;">数量</td>	
-					<td class="table-label" colspan="2" style="text-align:center;">权证或单据号码</td>					
-					<td class="table-label" style="text-align:center;">可抵押价值</td>	
-				</tr>		
-				<tr>				
-					<td style="text-align:center;"><input type="text" name="dyr1" value="$!result.dyr1" readonly/></td>					
-					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc1" value="$!result.dywmc1" readonly/></td>					
-					<td style="text-align:center;"><input type="text" name="sl1" value="$!result.sl1" readonly/></td>	
-					<td colspan="2" style="text-align:center;"><input type="text" name="djhm1" value="$!result.djhm1" readonly/></td>					
-					<td style="text-align:center;"><input type="text" name="kdyjz1" value="$!result.kdyjz1" readonly/></td>	
-				</tr>			
-				<tr>				
-					<td style="text-align:center;"><input type="text" name="dyr2" value="$!result.dyr2" readonly/></td>					
-					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc2" value="$!result.dywmc2" readonly/></td>					
-					<td style="text-align:center;"><input type="text" name="sl2" value="$!result.sl2" readonly/></td>	
-					<td colspan="2" style="text-align:center;"><input type="text" name="djhm2" value="$!result.djhm2" readonly/></td>					
-					<td style="text-align:center;"><input type="text" name="kdyjz2" value="$!result.kdyjz2" readonly/></td>	
+					<td class="table-label" colspan="8">
+						<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="dydb">
+							<tr>
+								<td class="tableTitle" colspan="5" style="text-align:left;">
+									抵押担保
+									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('dydb')"/>
+									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('dydb')"/>
+								</td>		
+							</tr>
+							<tr>
+								<td><b>抵押人</b></td>	
+								<td><b>抵押物名称</b></td>		
+								<td><b>数量</b></td>	
+								<td><b>权证或单据号码</b></td>	
+								<td><b>可抵押价值</b></td>	
+							</tr>
+							#if(!$dydbs)
+							<tr>
+								<td><input type="text" name="dyr" readonly/></td>	
+								<td><input type="text" name="dywmc" readonly/></td>	
+								<td><input type="text" name="sl" readonly/></td>	
+								<td><input type="text" name="djhm" readonly/></td>	
+								<td><input type="text" name="kdyjz" readonly/></td>		
+							</tr>
+							#else
+								#foreach ($result in $dydbs)
+								<tr>
+									<td><input type="text" name="dyr" value="$!result.userName" readonly/></td>	
+								<td><input type="text" name="dywmc" value="$!result.goodsName" readonly/></td>
+								<td><input type="text" name="sl" value="$!result.goodsCount" readonly/></td>
+								<td><input type="text" name="djhm" value="$!result.card" readonly/></td>
+								<td><input type="text" name="kdyjz" value="$!result.goodsValues" readonly/></td>	
+								</tr>
+								#end
+							#end
+						</table>
+					</td>	
 				</tr>	
 				<tr>
 					<td class="table-label" rowspan="12">授信决策情况</td>					
@@ -185,16 +237,19 @@
 		</div>
 	</div>
 </form>	
-<div class="controlbtn">
-#if($!readType!="readType")
-	<a class="btn_g" id="id_save_button" title="提交">提交</a>
-#end
-	<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
-</div>
+	<div class="controlbtn" style="position:absolute;top:500px;">
+	#if($!type=='modify')
+		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#else
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#end
+	</div>
+	
 	<script type="text/javascript">		
 		#set ($formName = "'#id_module_form'")
 		$(document).ready(function() {
-			if("${readType}"=="readType"){
+			if("${type}"=="readonly"){
 				$("input[type='text']").attr("disabled",true);
 				$("input[type='radio']").attr("disabled",true);
 				$("input[type='checkbox']").attr("disabled",true);
@@ -215,6 +270,7 @@
 			$('.jktj').attr('disabled','disabled');
 			$(obj).parent().find('.jktj').removeAttr('disabled')
 		}
+		
 	</script>	
 </body>
 </html>

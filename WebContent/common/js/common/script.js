@@ -122,6 +122,27 @@ function addTd(table){	//表格添加行
 								"<td><input type='text' class='input' name='bz'/></td>" + 
 							"</tr>");      
 	}
+	if(table=="gtjkr"){//共同借款人
+		$("#"+table).append("<tr>" + 
+								"<td><input type='text' name='gtjkrxm'/></td>" +  
+								"<td><input type='text' name='gtjkrhm'/></td>" +  
+							"</tr>");      
+	}
+	if(table=="bzdb"){//保证担保
+		$("#"+table).append("<tr>" + 
+								"<td><input type='text' name='bzdbxm'/></td>" +  
+								"<td><input type='text' name='bzdbhm'/></td>" +  
+							"</tr>");      
+	}
+	if(table=="dydb"){//抵押担保
+		$("#"+table).append("<tr>" + 
+								"<td><input type='text' name='dyr'/></td>" +  
+								"<td><input type='text' name='dywmc'/></td>" +  
+								"<td><input type='text' name='sl'/></td>" +  
+								"<td><input type='text' name='djhm'/></td>" +  
+								"<td><input type='text' name='kdyjz'/></td>" +  
+							"</tr>");      
+	}
 	
 }
 

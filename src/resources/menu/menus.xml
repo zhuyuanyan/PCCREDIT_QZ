@@ -10,11 +10,11 @@
 			<!-- <menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse"></menu> -->
 			<menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/approve.page" img="" operations="browse|create"></menu>
 			<menu id="030002" name="intopiecesreceive" title="初审进件" url="/intopieces/intopiecesrecieve/chushen.page" img="" operations="browse|create"></menu>
-			<menu id="030004" name="intopiecesxingzheng1" title="行政岗-初" url="/intopieces/intopiecesxingzheng1/xingzhengbegin.page" img="" operations="browse|create"></menu>
-			<menu id="030005" name="intopiecesshouxin" title="授信审批岗" url="/intopieces/intopiecesshouxin/shouxin.page" img="" operations="browse|create"></menu>
-			<menu id="030006" name="intopieceszhongxin" title="团队管理岗复核" url="/intopieces/intopieceszhongxin/zhongxin.page" img="" operations="browse|create"></menu>
-			<menu id="030007" name="intopiecesxindai" title="行政岗-终" url="/intopieces/intopiecesxindai/xindai.page" img="" operations="browse|create"></menu>
-			<menu id="030008" name="intopiecesxingzheng2" title="团队管理岗最终复核" url="/intopieces/intopiecesxingzheng2/xingzhengend.page" img="" operations="browse|create"></menu>
+			<menu id="030004" name="intopiecesxingzheng1" title="内部审查" url="/intopieces/intopiecesxingzheng1/xingzhengbegin.page" img="" operations="browse|create"></menu>
+			<menu id="030005" name="intopiecesshouxin" title="授信审批" url="/intopieces/intopiecesshouxin/shouxin.page" img="" operations="browse|create"></menu>
+			<menu id="030006" name="intopieceszhongxin" title="中心复核" url="/intopieces/intopieceszhongxin/zhongxin.page" img="" operations="browse|create"></menu>
+			<menu id="030007" name="intopiecesxindai" title="填写合同信息" url="/intopieces/intopiecesxindai/xindai.page" img="" operations="browse|create"></menu>
+			<menu id="030008" name="intopiecesxingzheng2" title="中心终审" url="/intopieces/intopiecesxingzheng2/xingzhengend.page" img="" operations="browse|create"></menu>
 			
 			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> 
 			<menu id="030020" name="applyintopiecewait" title="申请件待审核" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|browse"></menu>
