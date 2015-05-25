@@ -1,7 +1,6 @@
 package com.cardpay.pccredit.intopieces.service;
 
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +30,6 @@ import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
-import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
@@ -51,19 +48,19 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
+import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
+import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.QzApplnProcessResult;
+import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
 import com.cardpay.pccredit.intopieces.model.QzApplnSxjc;
-import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
-import com.cardpay.pccredit.intopieces.model.QzShouxin;
-import com.cardpay.pccredit.intopieces.model.QzSyjy;
-import com.cardpay.pccredit.intopieces.model.QzTz;
+import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
 import com.cardpay.pccredit.intopieces.web.QzDcnrUploadForm;
-import com.cardpay.pccredit.intopieces.web.QzSdhjydForm;
-import com.cardpay.pccredit.intopieces.web.QzShouxinForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
@@ -987,11 +984,10 @@ public class IntoPiecesService {
 	 * 根据进件id获取调查内容附件记录
 	 */
 	public List<QzDcnrUploadForm> getUploadList(String appId){
-		CustomerApplicationInfo infor = commonDao.findObjectById(CustomerApplicationInfo.class, appId);
 		String sql="SELECT A .id ,a.CUSTOMER_ID ,a.REPORT_ID ,a.REPORT_NAME ,";
 				sql+=" a.LOAD_STATUS ,a.APPLICATION_ID ,a.hetong_id,a.user_name,a.card_id,b.id as upload_id,b.FILE_NAME ,";
 				sql+="b.REMARK   FROM QZ_APPLN_DCNR A LEFT JOIN VIDEO_ACCESSORIES b on b.dcnr_id=a.id WHERE";
-				sql+=" A .CUSTOMER_ID = '"+infor.getCustomerId()+"'";
+				sql+=" A .APPLICATION_ID = '"+appId+"'";
 		return commonDao.queryBySql(QzDcnrUploadForm.class,sql, null);
 	}
 	
@@ -1031,25 +1027,6 @@ public class IntoPiecesService {
 		commonDao.updateObject(dcnr);
 	}
 	
-	/**
-	 * 根据进件id获取授信决议单form
-	 */
-	public List<QzShouxin> getShouxinform(String appId){
-		String sql="select * from qz_appln_sxjyd where application_id='"+appId+"'";
-		return commonDao.queryBySql(QzShouxin.class,sql, null);
-	}
-	
-	/**
-	 * 保存授信决议单form
-	 */
-	public void insertShouxinForm(QzShouxin qzShouxin,String appId){
-		String sql="select * from qz_appln_sxjyd where application_id='"+appId+"'";
-		List<QzShouxin> qz = commonDao.queryBySql(QzShouxin.class,sql, null);
-		if(qz.size()>0){
-			commonDao.deleteObject(QzShouxin.class, qz.get(0).getId());
-		}
-			commonDao.insertObject(qzShouxin);
-	}
 	
 	/**
 	 * 保存决议单
@@ -1318,23 +1295,23 @@ public class IntoPiecesService {
 	}
 	
 	/**
-	 * 保存审贷会决议单form
+	 * 保存审贷会决议单form(申请前)
 	 */
-	public void insertSdhjydForm(QzSdhjyd qzSdhjyd,String customerId){
-		String sql="select * from qz_appln_ywsqb_jyd where customer_id='"+customerId+"'";
-		List<QzSdhjyd> qz = commonDao.queryBySql(QzSdhjyd.class,sql, null);
+	public void insertSdhjydForm(QzApplnJyd qzSdhjyd,String customerId){
+		String sql="select * from qz_appln_jyd where customer_id='"+customerId+"' and application_id is null";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
 		if(qz.size()>0){
-			commonDao.deleteObject(QzSdhjyd.class, qz.get(0).getId());
+			commonDao.deleteObject(QzApplnJyd.class, qz.get(0).getId());
 		}
 			commonDao.insertObject(qzSdhjyd);
 	}
 	
 	/**
-	 * 获取审贷会决议单form
+	 * 获取审贷会决议单form(申请前)
 	 */
-	public QzSdhjyd getSdhjydForm(String customerId){
-		String sql="select * from qz_appln_ywsqb_jyd where customer_id='"+customerId+"'";
-		List<QzSdhjyd> qz = commonDao.queryBySql(QzSdhjyd.class,sql, null);
+	public QzApplnJyd getSdhjydForm(String customerId){
+		String sql="select * from qz_appln_jyd where customer_id='"+customerId+"' and application_id is null";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
 		if(qz.size()>0){
 			return qz.get(0);
 		}
@@ -1342,38 +1319,79 @@ public class IntoPiecesService {
 	}
 	
 	/**
+	 * 获取审贷会决议单form(申请后)
+	 */
+	public QzApplnJyd getSdhjydFormAfter(String appId){
+		String sql="select * from qz_appln_jyd where application_id='"+appId+"'";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
+		if(qz.size()>0){
+			return qz.get(0);
+		}
+			return null;
+	}
+	
+	/**
+	 * 保存审贷会决议单form(申请后)
+	 */
+	public void insertSdhjydFormAfter(QzApplnJyd qzSdhjyd){
+		String sql="select * from qz_appln_jyd where application_id='"+qzSdhjyd.getApplicationId()+"'";
+		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
+		if(qz.size()>0){
+			commonDao.deleteObject(QzApplnJyd.class, qz.get(0).getId());
+		}
+			commonDao.insertObject(qzSdhjyd);
+	}
+	
+	/**
 	 * 保存审议纪要form
 	 */
-	public void insertSyjyForm(QzSyjy qzSyjy,String customerId){
-		String sql="select * from qz_appln_ywsqb_sdhjy where customer_id='"+customerId+"'";
-		List<QzSyjy> qz = commonDao.queryBySql(QzSyjy.class,sql, null);
+	public void insertSyjyForm(QzApplnSdhjy qzSyjy){
+		String sql="select * from qz_appln_sdhjy where application_id='"+qzSyjy.getApplicationId()+"'";
+		List<QzApplnSdhjy> qz = commonDao.queryBySql(QzApplnSdhjy.class,sql, null);
 		if(qz.size()>0){
-			commonDao.deleteObject(QzSyjy.class, qz.get(0).getId());
+			commonDao.deleteObject(QzApplnSdhjy.class, qz.get(0).getId());
 		}
 			commonDao.insertObject(qzSyjy);
 	}
 	/**
 	 * 获取审议纪要form
 	 */
-	public QzSyjy getSyjyForm(String customerId){
-		String sql="select * from qz_appln_ywsqb_sdhjy where customer_id='"+customerId+"'";
-		List<QzSyjy> qz = commonDao.queryBySql(QzSyjy.class,sql, null);
+	public QzApplnSdhjy getSyjyForm(String appId){
+		String sql="select * from qz_appln_sdhjy where application_id='"+appId+"'";
+		List<QzApplnSdhjy> qz = commonDao.queryBySql(QzApplnSdhjy.class,sql, null);
 		if(qz.size()>0){
-			return qz.get(0);
+			QzApplnSdhjy sdhjy = qz.get(0);
+			return sdhjy;
+		}else{
+			QzApplnSdhjy sdhjy = new QzApplnSdhjy();
+			String sql1="select * from qz_appln_ywsqb where  application_id='"+appId+"'";
+			List<QzApplnYwsqb> qz1 = commonDao.queryBySql(QzApplnYwsqb.class,sql1, null);
+			String sql2="select * from qz_appln_nbscyjb where  application_id='"+appId+"'";
+			List<QzApplnNbscyjb> qz2= commonDao.queryBySql(QzApplnNbscyjb.class,sql2, null);
+			if(qz1.size()>0){
+				sdhjy.setJkrxm(qz1.get(0).getName());
+				sdhjy.setSqrq(qz1.get(0).getApplyTime());
+			}
+			if(qz2.size()>0){
+				sdhjy.setSqje(qz2.get(0).getApplyAmount());
+				sdhjy.setSqqx(qz2.get(0).getApplyDeadline());
+				sdhjy.setSqll(qz2.get(0).getSugRates());
+				sdhjy.setDbfs(qz2.get(0).getSugGuntType());
+			}
+			return sdhjy;
 		}
-			return null;
 	}
 	
 	/**
 	 * 保存台帐form
 	 * @throws Exception 
 	 */
-	public void insertTzList(HttpServletRequest request,String customerId) throws Exception{
+	public void insertTzList(HttpServletRequest request,String appId) throws Exception{
 		//先删除历史记录
-		String sql="select * from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'";
-		List<QzTz> qz = commonDao.queryBySql(QzTz.class,sql, null);
+		String sql="select * from qz_appln_htqdtz where application_id='"+appId+"'";
+		List<QzApplnHtqdtz> qz = commonDao.queryBySql(QzApplnHtqdtz.class,sql, null);
 		if(qz.size()>0){
-			commonDao.queryBySql("delete from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'", null);
+			commonDao.queryBySql("delete from qz_appln_htqdtz where application_id='"+appId+"'", null);
 		}
 		String[] slrq = request.getParameterValues("slrq");
 		String[] jkrxm = request.getParameterValues("jkrxm");
@@ -1386,7 +1404,7 @@ public class IntoPiecesService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		if(slrq!=null){
 			for(int i=0;i<slrq.length;i++){
-				QzTz tz = new QzTz();
+				QzApplnHtqdtz tz = new QzApplnHtqdtz();
 				tz.setSlrq(sdf.parse(slrq[i]));
 				tz.setJkrxm(jkrxm[i]);
 				tz.setPzje(pzje[i]);
@@ -1395,7 +1413,7 @@ public class IntoPiecesService {
 				tz.setZbkhjl(zbkhjl[i]);
 				tz.setJbr(jbr[i]);
 				tz.setBz(bz[i]);
-				tz.setCustomerId(customerId);
+				tz.setApplicationId(appId);
 				tz.setCreatedTime(new Date());
 				commonDao.insertObject(tz);
 			}
@@ -1404,9 +1422,9 @@ public class IntoPiecesService {
 	/**
 	 * 获取台帐form
 	 */
-	public List<QzTz> getTzList(String customerId){
-		String sql="select * from qz_appln_ywsqb_htqdtz where customer_id='"+customerId+"'";
-		List<QzTz> qz = commonDao.queryBySql(QzTz.class,sql, null);
+	public List<QzApplnHtqdtz> getTzList(String appId){
+		String sql="select * from qz_appln_htqdtz where application_id='"+appId+"'";
+		List<QzApplnHtqdtz> qz = commonDao.queryBySql(QzApplnHtqdtz.class,sql, null);
 		return qz;
 	}
 	
@@ -1422,5 +1440,167 @@ public class IntoPiecesService {
 		//更新客户信息--补充上会
 		infor.setProcessId(Constant.APPROVE_EDIT_3);
 		commonDao.updateObject(infor);
+	}
+	
+	/*
+	 * 对客户信息表中没有appId的表添加appid
+	 */
+	public void addAppId(String customerId,String applicationId){
+		//添加调查内容appId
+		String sql1= "select * from qz_appln_dcnr where customer_id='"+customerId+"' and application_id is null" ;
+		List<QzApplnDcnr> dcnrList = commonDao.queryBySql(QzApplnDcnr.class, sql1, null);
+		if(dcnrList.size()>0){
+			for(int i=0;i<dcnrList.size();i++){
+				QzApplnDcnr dcnr = dcnrList.get(i);
+				dcnr.setApplicationId(applicationId);
+				commonDao.updateObject(dcnr);
+			}
+		}
+		//添加决议单
+		String sql2= "select * from qz_appln_jyd where customer_id='"+customerId+"' and application_id is null" ;
+		List<QzApplnJyd> jydList = commonDao.queryBySql(QzApplnJyd.class, sql2, null);
+		if(jydList.size()>0){
+			QzApplnJyd jyd = jydList.get(0);
+			jyd.setApplicationId(applicationId);
+			commonDao.updateObject(jyd);
+		}
+		
+		//添加内部审查意见表
+		String sql3= "select * from qz_appln_nbscyjb where customer_id='"+customerId+"' and application_id is null" ;
+		List<QzApplnNbscyjb> yjbList = commonDao.queryBySql(QzApplnNbscyjb.class, sql3, null);
+		if(yjbList.size()>0){
+			QzApplnNbscyjb jyd = yjbList.get(0);
+			jyd.setApplicationId(applicationId);
+			commonDao.updateObject(jyd);
+		}
+	}
+	
+	/**
+	 * 保存清单至调查内容表
+	 */
+	public void addAttachList(QzApplnAttachmentList qzApplnAttachmentList){
+		String chkValue = qzApplnAttachmentList.getChkValue();
+		//工薪类
+		Map<String, String> map = new HashMap<String, String>();
+		if(qzApplnAttachmentList.getBussType().equals("1")){
+			if((Integer.parseInt(chkValue)&1) != 0){
+				map.put("1", Constant.ATTACH_LIST1);
+			}
+			if((Integer.parseInt(chkValue)&2) != 0){
+				map.put("2", Constant.ATTACH_LIST2);
+			}
+			if((Integer.parseInt(chkValue)&4) != 0){
+				map.put("4", Constant.ATTACH_LIST3);
+			}
+			if((Integer.parseInt(chkValue)&8) != 0){
+				map.put("8", Constant.ATTACH_LIST4);
+			}
+			if((Integer.parseInt(chkValue)&16) != 0){
+				map.put("16", Constant.ATTACH_LIST5);
+			}
+			if((Integer.parseInt(chkValue)&32) != 0){
+				map.put("32", Constant.ATTACH_LIST6);
+			}
+			if((Integer.parseInt(chkValue)&64) != 0){
+				map.put("64", Constant.ATTACH_LIST7);
+			}
+			if((Integer.parseInt(chkValue)&128) != 0){
+				map.put("128", Constant.ATTACH_LIST8);
+			}
+			if((Integer.parseInt(chkValue)&256) != 0){
+				map.put("256", Constant.ATTACH_LIST9);
+			}
+			if((Integer.parseInt(chkValue)&512) != 0){
+				map.put("512", Constant.ATTACH_LIST10);
+			}
+			if((Integer.parseInt(chkValue)&1024) != 0){
+				map.put("1024", Constant.ATTACH_LIST11);
+			}
+			if((Integer.parseInt(chkValue)&2048) != 0){
+				map.put("2048", Constant.ATTACH_LIST12);
+			}
+			if((Integer.parseInt(chkValue)&4096) != 0){
+				map.put("4096", Constant.ATTACH_LIST13);
+			}
+			if((Integer.parseInt(chkValue)&8192) != 0){
+				map.put("8192", Constant.ATTACH_LIST14);
+			}
+		}
+		if(qzApplnAttachmentList.getBussType().equals("2")){
+			if((Integer.parseInt(chkValue)&1) != 0){
+				map.put("1", Constant.ATTACH_LIST15);
+			}
+			if((Integer.parseInt(chkValue)&2) != 0){
+				map.put("2", Constant.ATTACH_LIST2);
+			}
+			if((Integer.parseInt(chkValue)&4) != 0){
+				map.put("4", Constant.ATTACH_LIST3);
+			}
+			if((Integer.parseInt(chkValue)&8) != 0){
+				map.put("8", Constant.ATTACH_LIST4);
+			}
+			if((Integer.parseInt(chkValue)&16) != 0){
+				map.put("16", Constant.ATTACH_LIST5);
+			}
+			if((Integer.parseInt(chkValue)&32) != 0){
+				map.put("32", Constant.ATTACH_LIST6);
+			}
+			if((Integer.parseInt(chkValue)&64) != 0){
+				map.put("64", Constant.ATTACH_LIST7);
+			}
+			if((Integer.parseInt(chkValue)&128) != 0){
+				map.put("128", Constant.ATTACH_LIST16);
+			}
+			if((Integer.parseInt(chkValue)&256) != 0){
+				map.put("256", Constant.ATTACH_LIST17);
+			}
+			if((Integer.parseInt(chkValue)&512) != 0){
+				map.put("512", Constant.ATTACH_LIST18);
+			}
+			if((Integer.parseInt(chkValue)&1024) != 0){
+				map.put("1024", Constant.ATTACH_LIST19);
+			}
+			if((Integer.parseInt(chkValue)&2048) != 0){
+				map.put("2048", Constant.ATTACH_LIST20);
+			}
+			if((Integer.parseInt(chkValue)&4096) != 0){
+				map.put("4096", Constant.ATTACH_LIST21);
+			}
+			if((Integer.parseInt(chkValue)&8192) != 0){
+				map.put("8192", Constant.ATTACH_LIST22);
+			}
+			if((Integer.parseInt(chkValue)&16384) != 0){
+				map.put("16384", Constant.ATTACH_LIST22);
+			}
+			if((Integer.parseInt(chkValue)&32768) != 0){
+				map.put("32768", Constant.ATTACH_LIST22);
+			}
+			if((Integer.parseInt(chkValue)&65536) != 0){
+				map.put("65536", Constant.ATTACH_LIST22);
+			}
+			if((Integer.parseInt(chkValue)&131072) != 0){
+				map.put("131072", Constant.ATTACH_LIST22);
+			}
+			if((Integer.parseInt(chkValue)&262144) != 0){
+				map.put("262144", Constant.ATTACH_LIST22);
+			}
+		}
+		//先删除之前调查内容
+		String sql = "delete from qz_appln_dcnr where customer_id='"+qzApplnAttachmentList.getCustomerId()+"'";
+		if(qzApplnAttachmentList.getApplicationId()==null){
+			sql+=" and application_id is null";
+		}else{
+			sql+=" and application_id ="+qzApplnAttachmentList.getApplicationId();
+		}
+		commonDao.queryBySql(sql, null);
+		//新增调查内容
+		for(Map.Entry<String, String> entry: map.entrySet()){
+			QzApplnDcnr dcnr = new QzApplnDcnr();
+			dcnr.setApplicationId(qzApplnAttachmentList.getApplicationId());
+			dcnr.setReportId(entry.getKey());
+			dcnr.setReportName(entry.getValue());
+			dcnr.setCustomerId(qzApplnAttachmentList.getCustomerId());
+			commonDao.insertObject(dcnr);
+		}
 	}
 }

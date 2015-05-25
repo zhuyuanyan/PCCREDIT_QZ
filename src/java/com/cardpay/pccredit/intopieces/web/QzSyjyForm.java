@@ -14,10 +14,11 @@ public class QzSyjyForm extends BaseForm{
 	private static final long serialVersionUID = 5996843132228198449L;
 	
 	private String customerId;
+	private String applicationId;
 	private String jkrxm;
 	private String sqje;
 	private String sqqx;
-	private String sqrq;
+	private Date sqrq;
 	private String sqll;
 	private String dbfs;
 	private String jkrys;
@@ -55,10 +56,11 @@ public class QzSyjyForm extends BaseForm{
 	public void setSqqx(String sqqx) {
 		this.sqqx = sqqx;
 	}
-	public String getSqrq() {
+
+	public Date getSqrq() {
 		return sqrq;
 	}
-	public void setSqrq(String sqrq) {
+	public void setSqrq(Date sqrq) {
 		this.sqrq = sqrq;
 	}
 	public String getSqll() {
@@ -138,6 +140,12 @@ public class QzSyjyForm extends BaseForm{
 	}
 	public void setRq1(Date rq1) {
 		this.rq1 = rq1;
+	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 
 }

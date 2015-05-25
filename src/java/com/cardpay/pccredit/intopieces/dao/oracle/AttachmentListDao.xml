@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.AttachmentListDao" >
+    <resultMap id="ResultMapAttachmentList" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList">
+        <result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+		<result property="bussType" column="BUSS_TYPE" />
+		<result property="chkValue" column="CHK_VALUE" />
+		<result property="clientName" column="CLIENT_NAME" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="shopName" column="SHOP_NAME" />
+		<result property="shopId" column="SHOP_ID" />
+		<result property="user_1" column="USER_1" />
+		<result property="user_2" column="USER_2" />
+		<result property="user_3" column="USER_3" />
+		<result property="user_4" column="USER_4" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+	</resultMap>
+	
+	
+	<select id="findAttachmentList" resultMap="ResultMapAttachmentList">
+		 select * 
+		 from qz_appln_attachment_list   
+		 where 1=1
+	 	<if test="customerId != null and customerId != '' ">
+			AND CUSTOMER_ID=#{customerId}
+		</if>
+		<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if> 
+	</select>
+	
+</mapper>

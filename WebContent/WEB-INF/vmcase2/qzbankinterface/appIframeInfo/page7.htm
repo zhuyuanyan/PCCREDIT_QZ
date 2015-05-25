@@ -3,7 +3,8 @@
 	
 </style>
 <body>
-<form>
+<form id="id_module_form">
+<div class="forms" id="formsId">
 <!--*************************************************************内部审查意见表*************************************************************-->
 	<div class="box">
 		<div name="content">
@@ -16,76 +17,86 @@
 					<col width="35%">
 				</colgroup>
 				<tr>
-					<td class="table-label">内部审查日期：</td>
+					<td class="table-label">内部审查日期：<font color="#ff0000">*</font></td>
 					<td colspan="3"><input type="text" name="checkDate" onmouseover="_calendar()"/></td>			
 				</tr>
 				<tr>
-					<td class="table-label">客户名称：</td>
+					<td class="table-label">客户名称：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="clientName"/></td>
 					<td class="table-label">店铺/企业名称：</td>
 					<td><input type="text" name="shopName"/></td>			
 				</tr>
 				<tr>
-					<td class="table-label">申请金额：</td>
+					<td class="table-label">申请金额：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="applyAmount"/></td>
-					<td class="table-label">申请期限：</td>
+					<td class="table-label">申请期限：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="applyDeadline"/></td>			
 				</tr>
 				<tr>
 					<td class="tableTitle" colspan="4">客户经理建议</td>				
 				</tr>
 				<tr>
-					<td class="table-label">建议结论：</td>
+					<td class="table-label">建议结论：<font color="#ff0000">*</font></td>
 					<td colspan="3"><textarea name="sugContent"></textarea></td>			
 				</tr>
 				<tr>
-					<td class="table-label">建议金额：</td>
+					<td class="table-label">建议金额：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="sugAmount"/></td>
-					<td class="table-label">建议期限：</td>
+					<td class="table-label">建议期限：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="sugDeadline"/></td>			
 				</tr>
 				<tr>
-					<td class="table-label">建议利率：</td>
+					<td class="table-label">建议利率：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="sugRates"/></td>
-					<td class="table-label">担保方式：</td>
+					<td class="table-label">担保方式：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="sugGuntType"/></td>			
 				</tr>
-				<tr>
-					<td class="tableTitle" colspan="4">内部审查人员意见</td>				
-				</tr>
-				<tr>
-					<td class="table-label">须核实的问题：</td>
-					<td colspan="3"><textarea name="needCheckContent"></textarea></td>			
-				</tr>
-				<tr>
-					<td class="table-label">问题核实情况：</td>
-					<td colspan="3"><textarea name="checkCondition"></textarea></td>			
-				</tr>
-				<tr>
-					<td class="table-label">内部审查建议：</td>
-					<td colspan="3"><textarea name="checkSug"></textarea></td>			
-				</tr>
-				<tr>
-					<td class="table-label">核查人员签字</td>
-					<td><input type="text" name=""/></td>
-					<td class="table-label">客户资料是否完整：</td>
-					<td>
-						<label><input type="radio" name="isComplete"/>是</label>
-						<label><input type="radio" name="isComplete"/>否</label>
-					</td>		
-				</tr>
+		
 			</table>			
 		</div>
 	</div>
+	</div>
 </form>	
 <div class="controlbtn">
-	<a class="btn_g" href="#" title="提交">提交</a>
-	<a class="btn_gr" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
+	<a class="btn_gr" id="id_back_button" title="返回">返回</a>
 </div>
-	<script type="text/javascript" src="jquery-1.js"></script>
-	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">			
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	
+	#set ($formName = "'#id_module_form'")
+	#parse ("qzbankinterface/appIframeInfo/page7_validation.js")
+	
+	$(document).ready(function() {	
+		//保存
+		$("#id_save_button").click(function() {
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+				var url = "${contextPath}/intopieces/intopiecesapprove/insert_page7.json?customerId=${customerId}";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href = "${contextPath}/intopieces/intopiecesapprove/page7.page?customerId=${customerId}";
+						}
+						else{
+							topWin.Dialog.message("保存失败！");
+					    }
+					}
+				});
+			}
+		});
 		
+		$("#id_back_button").click(function() {
+			var url = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+            parent.location.href = url;
+		})
+		
+	});
 	</script>	
 </body>
 </html>

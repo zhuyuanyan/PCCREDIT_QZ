@@ -14,6 +14,7 @@ public class QzApplnDbrxx extends BusinessModel {
 
 	private static final long serialVersionUID = 1L;
 	
+	private String customerId;
 	private String applicationId;
 	private String name;
 	private String sex;
@@ -36,6 +37,13 @@ public class QzApplnDbrxx extends BusinessModel {
 	private String homePhone;
 	private String homeAddr;
 	private String homeType;
+	
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
 	public String getApplicationId() {
 		return applicationId;
 	}

@@ -13,7 +13,9 @@ import com.wicresoft.jrad.base.database.model.BusinessModel;
 public class QzApplnYwsqb extends BusinessModel {
 
 	private static final long serialVersionUID = 1L;
+	private String customerId;
 	private String applicationId;
+	private String orgName;//记录orgname 方便显示
 	private String orgId;
 	private Date applyTime;
 	private String name;
@@ -65,6 +67,7 @@ public class QzApplnYwsqb extends BusinessModel {
 	private String monthOtherIncome;
 	private String otherIncomeSrc;
 	private String borrowHistory;
+	private String haveGunt;
 	private String thing_1;
 	private String thing_2;
 	private String thing_3;
@@ -88,13 +91,27 @@ public class QzApplnYwsqb extends BusinessModel {
 	private String infoType;
 	private String infoTypeOther;
 	private String commet;
+	private String managerName;//记录managerName 方便显示
 	private String managerId;
 	private Date managerTime;
+	
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
 	public String getApplicationId() {
 		return applicationId;
 	}
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
+	}
+	public String getOrgName() {
+		return orgName;
+	}
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
 	public String getOrgId() {
 		return orgId;
@@ -402,6 +419,12 @@ public class QzApplnYwsqb extends BusinessModel {
 	public void setBorrowHistory(String borrowHistory) {
 		this.borrowHistory = borrowHistory;
 	}
+	public String getHaveGunt() {
+		return haveGunt;
+	}
+	public void setHaveGunt(String haveGunt) {
+		this.haveGunt = haveGunt;
+	}
 	public String getThing_1() {
 		return thing_1;
 	}
@@ -540,6 +563,12 @@ public class QzApplnYwsqb extends BusinessModel {
 	public void setCommet(String commet) {
 		this.commet = commet;
 	}
+	public String getManagerName() {
+		return managerName;
+	}
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
+	}
 	public String getManagerId() {
 		return managerId;
 	}
@@ -552,4 +581,5 @@ public class QzApplnYwsqb extends BusinessModel {
 	public void setManagerTime(Date managerTime) {
 		this.managerTime = managerTime;
 	}
+	
 }

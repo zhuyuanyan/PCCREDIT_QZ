@@ -1674,4 +1674,35 @@
 	</dictionary>
 	
 	<!-- ESB 数据字典 -->
+	
+	<!-- 2015-05-19 新需求数据字典 -->
+	<dictionary name="ADDRESS_TYPE_NEW" title="地址类型">
+		<item name="1" title="自置" />
+		<item name="2" title="按揭" />
+		<item name="3" title="亲属楼宇" />
+		<item name="4" title="租用" />
+		<item name="5" title="其他" />
+	</dictionary>
+	
+	<dictionary name="BUSS_TYPE_NEW" title="组织形式">
+		<item name="1" title="个体户" />
+		<item name="2" title="企业" />
+		<item name="3" title="其他" />
+	</dictionary>
+	
+	<dictionary name="INFO_TYPE" title="信息渠道">
+		<item name="1" title="宣传单" />
+		<item name="2" title="电话" />
+		<item name="3" title="朋友/家人" />
+		<item name="4" title="农商行客户" />
+		<item name="5" title="报纸/杂志" />
+		<item name="6" title="广播/电视" />
+		<item name="7" title="流动广告" />
+		<item name="8" title="其他" />
+	</dictionary>
+	
+	<dictionary name="PROFIT_TYPE" title="组织形式">
+		<item name="1" title="毛利润" />
+		<item name="2" title="净利润" />
+	</dictionary>
 </dictionaries>

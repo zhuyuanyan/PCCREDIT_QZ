@@ -1,6 +1,6 @@
 package com.cardpay.pccredit.intopieces.web;
 
-
+import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
+import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
+import com.cardpay.pccredit.QZBankInterface.web.IESBForCircleForm;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
@@ -30,15 +32,27 @@ import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
-import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
-import com.cardpay.pccredit.intopieces.model.QzSdhjyd;
-import com.cardpay.pccredit.intopieces.model.QzShouxin;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
+import com.cardpay.pccredit.intopieces.model.QzApplnDbrxx;
+import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxDkjl;
+import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxFc;
+import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxJdc;
+import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
+import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
+import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbJkjl;
+import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZygys;
+import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZykh;
+import com.cardpay.pccredit.intopieces.service.AttachmentListService;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
+import com.cardpay.pccredit.intopieces.service.DbrxxService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.NbscyjbService;
+import com.cardpay.pccredit.intopieces.service.YwsqbService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -53,7 +67,6 @@ import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
-import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -64,6 +77,7 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -113,6 +127,18 @@ public class IntoPiecesApproveControl extends BaseController {
 	@Autowired
 	private ECIFService eCIFService;
 	
+	@Autowired
+	private YwsqbService ywsqbService;
+	
+	@Autowired
+	private DbrxxService dbrxxService;
+	
+	@Autowired
+	private AttachmentListService attachmentListService;
+	
+	@Autowired
+	private NbscyjbService nbscyjbService;
+	
 	/**
 	 * 申请页面
 	 * 
@@ -128,11 +154,18 @@ public class IntoPiecesApproveControl extends BaseController {
 		filter.setUserId(user.getId());
 		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforWithEcifByFilter(filter);
 		for(int i=0;i<result.getItems().size();i++){
-				Boolean processBoolean = customerInforservice.ifProcess(result.getItems().get(i).getId());
-				if(processBoolean){
-					result.getItems().get(i).setProcessId(Constant.APP_STATE_1);
+				CustomerApplicationInfo info = customerInforservice.ifProcess(result.getItems().get(i).getId());
+				//目前存在申请件
+				if(info!=null){
+					if(info.getStatus().equals(Constant.APPROVED_INTOPICES)){
+						result.getItems().get(i).setProcessId(Constant.APP_STATE_4);
+					}else{
+						result.getItems().get(i).setProcessId(Constant.APP_STATE_1);
+					}
+					//目前不存在申请件（初审退回）
 				}else if(result.getItems().get(i).getProcessId()==null){
 					result.getItems().get(i).setProcessId(Constant.APP_STATE_2);
+					//没申请件
 				}else{
 					result.getItems().get(i).setProcessId(Constant.APP_STATE_3);
 				}
@@ -178,23 +211,15 @@ public class IntoPiecesApproveControl extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				String customerId = request.getParameter("id");
-				//先判断是否已有流程
-				Boolean processBoolean = customerInforservice.ifProcess(customerId);
-				if(processBoolean){
-					returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
-					returnMap.put(RECORD_ID, customerId);
-				}
-				else{
-					//设置流程开始
-					saveApply(customerId);
-					
-					//查找customerId对应当前申请中的贷款，并更新其状态为申请中
-					IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
-					circleService.updateCustomerInforCircle_APPLY(ecif.getClientNo());
-					
-					returnMap.put(RECORD_ID, customerId);
-					returnMap.addGlobalMessage(CREATE_SUCCESS);
-				}
+				//设置流程开始
+				saveApply(customerId);
+				
+				//查找customerId对应当前申请中的贷款，并更新其状态为申请中
+				IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+				circleService.updateCustomerInforCircle_APPLY(ecif.getClientNo());
+				
+				returnMap.put(RECORD_ID, customerId);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
 				returnMap.put(JRadConstants.SUCCESS, false);
@@ -221,6 +246,7 @@ public class IntoPiecesApproveControl extends BaseController {
 		if(customerApplicationInfo.getApplyQuota()!=null){
 			customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
 		}
+		customerApplicationInfo.setCreatedTime(new Date());
 		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
 		//查找默认产品
 		ProductFilter filter = new ProductFilter();
@@ -285,6 +311,9 @@ public class IntoPiecesApproveControl extends BaseController {
 			wfStatusResult.setExamineResult(control.getCurrentStatus());
 			commonDao.insertObject(wfStatusResult);
 		}
+		
+		//对之前无appId的表添加id(尤其是调查内容记录表添加appId)
+		intoPiecesService.addAppId(customer_id,customerApplicationInfo.getId());
 	}
 	
 	//iframe
@@ -301,12 +330,146 @@ public class IntoPiecesApproveControl extends BaseController {
 		return mv;
 	}
 	
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String type = RequestHelper.getStringValue(request, "type");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("type", type);
+		}
+		return mv;
+	}
+	
 	//page1
 	@ResponseBody
 	@RequestMapping(value = "page1.page")
 	public AbstractModelAndView page1(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1", request);
+		
 		String customerInforId = RequestHelper.getStringValue(request, ID);
+		//查找page1信息
+		QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerInforId, null);
+		JRadModelAndView mv = null;
+		if(qzApplnYwsqb != null){
+			mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1_change", request);
+			List<QzApplnYwsqbZygys> zygys_ls = ywsqbService.findYwsqbZygys(qzApplnYwsqb.getId());
+			List<QzApplnYwsqbZykh> zykh_ls = ywsqbService.findYwsqbZykh(qzApplnYwsqb.getId());
+			List<QzApplnYwsqbJkjl> jkjl_ls = ywsqbService.findYwsqbJkjl(qzApplnYwsqb.getId());
+			mv.addObject("qzApplnYwsqb", qzApplnYwsqb);
+			mv.addObject("zygys_ls", zygys_ls);
+			mv.addObject("zykh_ls", zykh_ls);
+			mv.addObject("jkjl_ls", jkjl_ls);
+		}
+		else{
+			mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1", request);
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			mv.addObject("orgName",user.getOrganization().getName());
+			mv.addObject("orgId",user.getOrganization().getId());
+			String externalId = user.getLogin();//工号
+			mv.addObject("externalId",externalId);
+			mv.addObject("userName",user.getDisplayName());
+			
+			
+			if (StringUtils.isNotEmpty(customerInforId)) {
+				CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+				mv.addObject("customerInfor", customerInfor);
+				mv.addObject("customerId", customerInfor.getId());
+			}
+			//查找开户信息 自动填充
+			ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(customerInforId).getClientNo());
+			mv.addObject("ecif", ecif);
+		}
+		
+		return mv;
+	}
+	
+	//insert_page1
+	@ResponseBody
+	@RequestMapping(value = "insert_page1.json")
+	public JRadReturnMap insert_page1(@ModelAttribute QzApplnYwsqbForm qzApplnYwsqbForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("customerId");
+				QzApplnYwsqb qzApplnYwsqb = qzApplnYwsqbForm.createModel(QzApplnYwsqb.class);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				qzApplnYwsqb.setCreatedBy(user.getId());
+				qzApplnYwsqb.setCreatedTime(new Date());
+				//未填申请时 关联客户id
+				qzApplnYwsqb.setCustomerId(customerId);
+				ywsqbService.insert_page1(qzApplnYwsqb, request);
+				//returnMap.put(RECORD_ID, id);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+		
+	//page1
+	@ResponseBody
+	@RequestMapping(value = "page1_change.page")
+	public AbstractModelAndView page1_change(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1_change", request);
+		String customerId = request.getParameter("customerId");
+		//查找page1信息
+		QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
+		List<QzApplnYwsqbZygys> zygys_ls = ywsqbService.findYwsqbZygys(qzApplnYwsqb.getId());
+		List<QzApplnYwsqbZykh> zykh_ls = ywsqbService.findYwsqbZykh(qzApplnYwsqb.getId());
+		List<QzApplnYwsqbJkjl> jkjl_ls = ywsqbService.findYwsqbJkjl(qzApplnYwsqb.getId());
+		mv.addObject("qzApplnYwsqb", qzApplnYwsqb);
+		mv.addObject("zygys_ls", zygys_ls);
+		mv.addObject("zykh_ls", zykh_ls);
+		mv.addObject("jkjl_ls", jkjl_ls);
+		return mv;
+	}
+		
+	//update_page1
+	@ResponseBody
+	@RequestMapping(value = "update_page1.json")
+	public JRadReturnMap update_page1(@ModelAttribute QzApplnYwsqbForm qzApplnYwsqbForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String ywsqbId = request.getParameter("id");
+				QzApplnYwsqb qzApplnYwsqb = qzApplnYwsqbForm.createModel(QzApplnYwsqb.class);
+				ywsqbService.dealWithNullValue(qzApplnYwsqb);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				//未填申请时 关联客户id
+				qzApplnYwsqb.setId(ywsqbId);
+				ywsqbService.update_page1(qzApplnYwsqb, request);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
+	//page4_list
+	@ResponseBody
+	@RequestMapping(value = "page4_list.page")
+	public AbstractModelAndView page4_list(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page4_list", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		List<QzApplnDbrxx> dbrxx_ls = dbrxxService.findDbrxx(customerInforId, null);
+		mv.addObject("dbrxx_ls", dbrxx_ls);
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
 			mv.addObject("customerInfor", customerInfor);
@@ -320,7 +483,7 @@ public class IntoPiecesApproveControl extends BaseController {
 	@RequestMapping(value = "page4.page")
 	public AbstractModelAndView page4(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page4", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String customerInforId = RequestHelper.getStringValue(request, "customerId");
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
 			mv.addObject("customerInfor", customerInfor);
@@ -328,93 +491,286 @@ public class IntoPiecesApproveControl extends BaseController {
 		}
 		return mv;
 	}
-	
-	//page4_list
+		
+	//insert_page4
 	@ResponseBody
-	@RequestMapping(value = "page4_list.page")
-	public AbstractModelAndView page4_list(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page4_list", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
+	@RequestMapping(value = "insert_page4.json")
+	public JRadReturnMap insert_page4(@ModelAttribute QzApplnDbrxxForm qzApplnDbrxxForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("customerId");
+				QzApplnDbrxx qzApplnDbrxx = qzApplnDbrxxForm.createModel(QzApplnDbrxx.class);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				qzApplnDbrxx.setCreatedBy(user.getId());
+				qzApplnDbrxx.setCreatedTime(new Date());
+				//未填申请时 关联客户id
+				qzApplnDbrxx.setCustomerId(customerId);
+				dbrxxService.insert_page4(qzApplnDbrxx, request);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 		}
+		return returnMap;
+	}
+		
+	//update_page4
+	@ResponseBody
+	@RequestMapping(value = "update_page4.page")
+	public AbstractModelAndView update_page4(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page4_change", request);
+		String id = RequestHelper.getStringValue(request, ID);
+		//查找page4信息
+		QzApplnDbrxx qzApplnDbrxx = dbrxxService.findDbrxxById(id);
+		List<QzApplnDbrxxDkjl> dkjl_ls = dbrxxService.findDbrxxDkjl(qzApplnDbrxx.getId());
+		List<QzApplnDbrxxFc> fc_ls = dbrxxService.findDbrxxFc(qzApplnDbrxx.getId());
+		List<QzApplnDbrxxJdc> jdc_ls = dbrxxService.findDbrxxJdc(qzApplnDbrxx.getId());
+		mv.addObject("qzApplnDbrxx", qzApplnDbrxx);
+		mv.addObject("dkjl_ls", dkjl_ls);
+		mv.addObject("fc_ls", fc_ls);
+		mv.addObject("jdc_ls", jdc_ls);
 		return mv;
+	}
+		
+	//update_page4
+	@ResponseBody
+	@RequestMapping(value = "update_page4.json")
+	public JRadReturnMap update_page4(@ModelAttribute QzApplnDbrxxForm qzApplnDbrxxForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String dbrxxId = request.getParameter("id");
+				QzApplnDbrxx qzApplnDbrxx = qzApplnDbrxxForm.createModel(QzApplnDbrxx.class);
+				dbrxxService.dealWithNullValue(qzApplnDbrxx);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				//未填申请时 关联客户id
+				qzApplnDbrxx.setId(dbrxxId);
+				dbrxxService.update_page4(qzApplnDbrxx, request);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
 	}
 	
 	//page5
 	@ResponseBody
 	@RequestMapping(value = "page5.page")
 	public AbstractModelAndView page5(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page5", request);
+		JRadModelAndView mv = null;
 		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String type = RequestHelper.getStringValue(request, "type");
+		if(appId==null){
+			appId="";
 		}
+		if(type==null){
+			type="";
+		}
+		//查找page5信息
+		QzApplnAttachmentList qzApplnAttachmentList = attachmentListService.findAttachmentList(customerInforId, null);
+		if(qzApplnAttachmentList == null){
+			mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page5", request);
+			if (StringUtils.isNotEmpty(customerInforId)) {
+				CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+				mv.addObject("customerInfor", customerInfor);
+				mv.addObject("appId", appId);
+				mv.addObject("type", type);
+				mv.addObject("customerId", customerInfor.getId());
+			}
+			
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String externalId = user.getLogin();//工号
+			mv.addObject("externalId",externalId);
+			mv.addObject("userName",user.getDisplayName());
+		}
+		else{
+			mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page5_change", request);
+			mv.addObject("qzApplnAttachmentList", qzApplnAttachmentList);
+		}
+		
 		return mv;
 	}
 	
+	//insert_page5
+	@ResponseBody
+	@RequestMapping(value = "insert_page5.json")
+	public JRadReturnMap insert_page5(@ModelAttribute QzApplnAttachmentListForm qzApplnAttachmentListForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("customerId");
+				QzApplnAttachmentList qzApplnAttachmentList = qzApplnAttachmentListForm.createModel(QzApplnAttachmentList.class);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				qzApplnAttachmentList.setCreatedBy(user.getId());
+				qzApplnAttachmentList.setCreatedTime(new Date());
+				//未填申请时 关联客户id
+				qzApplnAttachmentList.setCustomerId(customerId);
+				attachmentListService.insert_page5(qzApplnAttachmentList, request);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
+	//update_page5
+	@ResponseBody
+	@RequestMapping(value = "update_page5.json")
+	public JRadReturnMap update_page5(@ModelAttribute QzApplnAttachmentListForm qzApplnAttachmentListForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String id = request.getParameter("id");
+				String customerId = request.getParameter("customerId");
+				QzApplnAttachmentList qzApplnAttachmentList = qzApplnAttachmentListForm.createModel(QzApplnAttachmentList.class);
+				//未填申请时 关联客户id
+				qzApplnAttachmentList.setId(id);
+				qzApplnAttachmentList.setCustomerId(customerId);
+				attachmentListService.update_page5(qzApplnAttachmentList, request);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+		
 	//page7
 	@ResponseBody
 	@RequestMapping(value = "page7.page")
 	public AbstractModelAndView page7(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7", request);
+		JRadModelAndView mv = null;
 		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String type = RequestHelper.getStringValue(request, "type");
+		if(appId==null){
+			appId="";
 		}
+		if(type==null){
+			type="";
+		}
+		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjb(customerInforId, null);
+		if(qzApplnNbscyjb == null){
+			 mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7", request);
+			
+			if (StringUtils.isNotEmpty(customerInforId)) {
+				CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+				mv.addObject("customerInfor", customerInfor);
+				mv.addObject("customerId", customerInfor.getId());
+				mv.addObject("appId", appId);
+				mv.addObject("type", type);
+			}
+		}
+		else{
+			mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_change", request);
+			mv.addObject("qzApplnNbscyjb", qzApplnNbscyjb);
+		}
+		
 		return mv;
 	}
 	
+	//insert_page7
+	@ResponseBody
+	@RequestMapping(value = "insert_page7.json")
+	public JRadReturnMap insert_page5(@ModelAttribute QzApplnNbscyjbForm qzApplnNbscyjbForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("customerId");
+				QzApplnNbscyjb qzApplnNbscyjb = qzApplnNbscyjbForm.createModel(QzApplnNbscyjb.class);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				qzApplnNbscyjb.setCreatedBy(user.getId());
+				qzApplnNbscyjb.setCreatedTime(new Date());
+				//未填申请时 关联客户id
+				qzApplnNbscyjb.setCustomerId(customerId);
+				nbscyjbService.insert_page7(qzApplnNbscyjb, request);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+		
+	//update_page7
+	@ResponseBody
+	@RequestMapping(value = "update_page7.json")
+	public JRadReturnMap update_page7(@ModelAttribute QzApplnNbscyjbForm qzApplnNbscyjbForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String id = request.getParameter("id");
+				QzApplnNbscyjb qzApplnNbscyjb = qzApplnNbscyjbForm.createModel(QzApplnNbscyjb.class);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				qzApplnNbscyjb.setId(id);
+				nbscyjbService.update_page7(qzApplnNbscyjb, request);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+		
 	//page8
 	@ResponseBody
 	@RequestMapping(value = "page8.page")
 	public AbstractModelAndView page8(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8", request);
 		String customerId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerId)) {
-			QzSdhjyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
-			mv.addObject("customerId", customerId);
-			mv.addObject("result", qzSdhjyd);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String type = RequestHelper.getStringValue(request, "type");
+		//作为审批后修改标志
+		if(appId==null){
+			appId="";
 		}
-		return mv;
-	}
-	
-	//page10
-	@ResponseBody
-	@RequestMapping(value = "page10.page")
-	public AbstractModelAndView page10(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page10", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
+		//作为审批后只读标志
+		if(type==null){
+			type="";
 		}
-		return mv;
-	}
-	
-	//page11
-	@ResponseBody
-	@RequestMapping(value = "page11.page")
-	public AbstractModelAndView page11(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page11", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
+		QzApplnJyd qzSdhjyd = new QzApplnJyd();
+		if (StringUtils.isNotEmpty(appId)) {
+			qzSdhjyd = intoPiecesService.getSdhjydFormAfter(appId);
+		}else{
+			qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
 		}
+		mv.addObject("customerId", customerId);
+		mv.addObject("appId", appId);
+		mv.addObject("type", type);
+		mv.addObject("result", qzSdhjyd);
 		return mv;
 	}
 	
 	/**
-	 * 审贷会决议单保存
+	 * 审贷会决议单保存(申请前)
 	 * @param customerinfoForm
 	 * @param request
 	 * @return
@@ -427,10 +783,16 @@ public class IntoPiecesApproveControl extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				String customerId = RequestHelper.getStringValue(request, ID);
-				QzSdhjyd qzSdhjyd = qzSdhjydForm.createModel(QzSdhjyd.class);
+				String appId = RequestHelper.getStringValue(request, "appId");
+				QzApplnJyd qzSdhjyd = qzSdhjydForm.createModel(QzApplnJyd.class);
 				qzSdhjyd.setCustomerId(customerId);
 				qzSdhjyd.setCreatedTime(new Date());
-				intoPiecesService.insertSdhjydForm(qzSdhjyd,customerId);
+				qzSdhjyd.setApplicationId(appId);
+				if(StringUtils.isNotEmpty(appId)){
+					intoPiecesService.insertSdhjydFormAfter(qzSdhjyd);
+				}else{
+					intoPiecesService.insertSdhjydForm(qzSdhjyd,customerId);
+				}
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);

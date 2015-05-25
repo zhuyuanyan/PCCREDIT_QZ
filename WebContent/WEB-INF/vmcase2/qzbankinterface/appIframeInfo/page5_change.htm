@@ -1,0 +1,759 @@
+#parse ("common/iframe_page_header3.htm")
+<style type="text/css">
+	
+</style>
+<script type="text/javascript">
+	var chkValue = 0;
+</script>
+<body>
+<form id="id_module_form">
+<div class="forms" id="formsId">
+<!--*************************************************************待决策资料清单*************************************************************-->
+	<div class="box">
+		<div name="content">
+			<table class="myTable">
+				<caption>待决策资料清单</caption>
+				<tr>
+					<td>借贷类型</td>
+					<td>
+						<select name="bussType" id="jdlx" onchange="lxSelect()">
+							<option value="1" #if($!qzApplnAttachmentList.bussType=='1') selected #end>工薪类</option>
+							<option value="2" #if($!qzApplnAttachmentList.bussType=='2') selected #end>经营类</option>
+						</select>
+						<input type="hidden" id="chkValue" name="chkValue" value="$!qzApplnAttachmentList.chkValue">
+						<script type="text/javascript">
+							chkValue = parseInt($qzApplnAttachmentList.chkValue)
+						</script>
+					</td>
+				</tr>
+			</table>	
+		</div><!--/content-->
+	<!--*************************************************************工薪类*************************************************************-->
+		<div name="content" id="gxl" #if($!qzApplnAttachmentList.bussType=='2') style="display:none;" #end >
+			<table class="myTable">
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="tableTitle" colspan="4">工薪类</td>				
+				</tr>
+				<tr>
+					<td class="table-label">借款人姓名：</td>
+					<td><input type="text" id="clientName" name="clientName" value="$!qzApplnAttachmentList.clientName"/></td>
+					<td class="table-label">身份证号码：</td>
+					<td><input type="text" id="globalId" name="globalId" value="$!qzApplnAttachmentList.globalId"/></td>			
+				</tr>
+			</table>
+			<table class="myTable" style="text-align:center;">
+				<colgroup>
+					<col width="10%">
+					<col width="30%">
+					<col width="10%">
+					<col width="10%">
+					<col width="30%">
+					<col width="10%">
+				</colgroup>	
+				<tr>
+					<td class="tableTitle" colspan="6">资料清单</td>				
+				</tr>		
+				<tr>
+					<td><b>编号</b></td>	
+					<td><b>项目名称</b></td>	
+					<td><b></b></td>	
+					<td><b>编号</b></td>	
+					<td><b>项目名称</b></td>	
+					<td><b></b></td>					
+				</tr>
+				<tr>
+					<td class="tableTitle" colspan="6">第一部分  业务信息</td>				
+				</tr>						
+				<tr>
+					<td>1</td>	
+					<td>贷款申请表</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&1) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="1" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="1"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="1"/>
+						#end
+						</td>						
+					<td>2</td>	
+					<td>调查报告</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&2) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="2" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="2"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="2"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>3</td>	
+					<td>征信查询授权书</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&4) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="4" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="4"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="4"/>
+						#end
+						</td>						
+					<td>4</td>	
+					<td>工作底稿</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&8) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="8" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="8"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="8"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>5</td>	
+					<td>信用报告及联网核查</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&16) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="16" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="16"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="16"/>
+						#end
+						</td>						
+					<td>6</td>	
+					<td>贷审小组决议表</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&32) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="32" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="32"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="32"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>7</td>	
+					<td>规范操作承诺书</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&64) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="64" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="64"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="64"/>
+						#end
+						</td>						
+					<td></td>	
+					<td></td>	
+					<td></td>				
+				</tr>
+				<tr>
+					<td class="tableTitle" colspan="6">第二部分  客户资料</td>				
+				</tr>					
+								
+				<tr>
+					<td>1</td>	
+					<td>收入证明文件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&128) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="128" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="128"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="128"/>
+						#end
+						</td>						
+					<td>2</td>	
+					<td>借款人资产文件、住址证明</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&256) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="256" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="256"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="256"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>3</td>	
+					<td>借款人及共同借款人身份证复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&512) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="512" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="512"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="512"/>
+						#end
+						</td>						
+					<td>4</td>	
+					<td>借款人及共同借款人婚姻状况证明</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&1024) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="1024" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="1024"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="1024"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>5</td>	
+					<td>担保人及配偶身份证明复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&2048) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="2048" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="2048"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="2048"/>
+						#end
+						</td>						
+					<td>6</td>	
+					<td>担保人及配偶婚姻状况说明</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&4096) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="4096" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="4096"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="4096"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>7</td>	
+					<td>担保人收入证明</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&8192) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="8192" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="8192"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="getSum(1);" value="8192"/>
+						#end
+						</td>						
+					<td></td>	
+					<td></td>	
+					<td></td>				
+				</tr>
+			</table>
+		</div>
+	<!--*************************************************************经营类*************************************************************-->
+		<div name="content" id="jyl" #if($!qzApplnAttachmentList.bussType=='1') style="display:none;" #end >
+			<table class="myTable">
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="10%">
+					<col width="40%">
+				</colgroup>
+				<tr>
+					<td class="tableTitle" colspan="4">经营类</td>				
+				</tr>
+				<tr>
+					<td class="table-label">公司名称：</td>
+					<td><input type="text" id="shopName" name="shopName" value="$!qzApplnAttachmentList.shopName"/></td>
+					<td class="table-label">营业执照号：</td>
+					<td><input type="text" id="shopId" name="shopId" value="$!qzApplnAttachmentList.shopId"/></td>			
+					
+				</tr>
+			</table>
+			<table class="myTable" style="text-align:center;">
+				<colgroup>
+					<col width="10%">
+					<col width="30%">
+					<col width="10%">
+					<col width="10%">
+					<col width="30%">
+					<col width="10%">
+				</colgroup>	
+				<tr>
+					<td class="tableTitle" colspan="6">资料清单</td>				
+				</tr>		
+				<tr>
+					<td><b>编号</b></td>	
+					<td><b>项目名称</b></td>	
+					<td><b></b></td>	
+					<td><b>编号</b></td>	
+					<td><b>项目名称</b></td>	
+					<td><b></b></td>					
+				</tr>
+				<tr>
+					<td class="tableTitle" colspan="6">第一部分  业务资料</td>				
+				</tr>						
+				<tr>
+					<td>1</td>	
+					<td>申请表</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&1) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="1" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="1"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="1"/>
+						#end
+						</td>						
+					<td>2</td>	
+					<td>调查报告</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&2) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="2" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="2"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="2"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>3</td>	
+					<td>征信查询授权书</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&4) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="4" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="4"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="4"/>
+						#end
+						</td>						
+					<td>4</td>	
+					<td>工作底稿</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&8) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="8" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="8"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="8"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>5</td>	
+					<td>信用报告及联网核查</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&16) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="16" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="16"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="16"/>
+						#end
+						</td>						
+					<td>6</td>	
+					<td>贷审小组决议表</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&32) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="32" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="32"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="32"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>7</td>	
+					<td>规范操作承诺书</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&64) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="64" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="64"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="64"/>
+						#end
+						</td>						
+					<td></td>	
+					<td></td>	
+					<td></td>				
+				</tr>
+				<tr>
+					<td class="tableTitle" colspan="6">第二部分  客户资料</td>				
+				</tr>			
+				<tr>
+					<td>1</td>	
+					<td>营业执照（副本）复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&128) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="128" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="128"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="128"/>
+						#end
+						</td>						
+					<td>2</td>	
+					<td>税务登记证（副本）复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&256) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="256" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="256"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="256"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>3</td>	
+					<td>组织机构代码证（副本）复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&512) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="512" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="512"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="512"/>
+						#end
+						</td>						
+					<td>4</td>	
+					<td>贷款卡及年检报告复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&1024) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="1024" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="1024"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="1024"/>
+						#end</td>				
+				</tr>				
+				<tr>
+					<td>5</td>	
+					<td>公司章程（包括验资报告复印件）</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&524288) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288"/>
+						#end
+						</td>						
+					<td>6</td>	
+					<td>股东会或董事会决议原件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&4096) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="4096" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="4096"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="4096"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>7</td>	
+					<td>法定代表人身份证明文件复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&8192) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="8192" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="8192"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="8192"/>
+						#end
+						</td>						
+					<td>8</td>	
+					<td>股东身份证明复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&16384) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="16384" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="16384"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="16384"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>9</td>	
+					<td>担保人身份证明复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&32768) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="32768" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="32768"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="32768"/>
+						#end
+						</td>						
+					<td>10</td>	
+					<td>担保人贷款卡复印件</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&65536) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="65536" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="65536"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="65536"/>
+						#end
+						</td>				
+				</tr>				
+				<tr>
+					<td>11</td>	
+					<td>担保人收入证明</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&131072) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="131072" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="131072"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="131072"/>
+						#end
+						</td>						
+					<td>12</td>	
+					<td>信用等级证复印件（如有）</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&262144) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="262144" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="262144"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="262144"/>
+						#end
+						</td>				
+				</tr>
+			</table>
+		</div>
+		
+		<table class="myTable">
+			<colgroup>
+				<col width="10%">
+				<col width="40%">
+				<col width="10%">
+				<col width="40%">
+			</colgroup>
+			<tr>
+				<td class="table-label">主办客户经理：</td>
+				<td><input type="text" value="$!qzApplnAttachmentList.user_1" disabled/>
+					<input type="hidden" name="user_1" value="$!qzApplnAttachmentList.user_1"/></td>
+				<td class="table-label">行政岗：<font color="#ff0000">*</font></td>
+				<td><input type="text" name="user_2" value="$!qzApplnAttachmentList.user_2"/></td>			
+			</tr>
+			<tr>
+				<td class="table-label">协助调查人员：<font color="#ff0000">*</font></td>
+				<td><input type="text" name="user_3" value="$!qzApplnAttachmentList.user_3"/></td>
+				<td class="table-label">贷审会成员：<font color="#ff0000">*</font></td>
+				<td><input type="text" name="user_4" value="$!qzApplnAttachmentList.user_4"/></td>			
+			</tr>
+		</table>
+	</div>
+	</div>
+</form>	
+<div class="controlbtn">
+	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
+	<a class="btn_gr" href="#" onclick="javascript:history.go(-1);" title="返回">返回</a>
+</div>
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript">			
+		function lxSelect(){
+			if($("#jdlx option:selected").text()=="工薪类"){
+				$("#gxl").show();
+				$("#jyl").hide();
+				$("#shopName").val("");
+				$("#shopId").val("");
+				$("input[type=checkbox][name=checkbox2]:checked").attr("checked",false);
+				getSum(1);
+			}
+			if($("#jdlx option:selected").text()=="经营类"){
+				$("#gxl").hide();
+				$("#jyl").show();
+				$("#clientName").val("");
+				$("#globalId").val("");
+				$("input[type=checkbox][name=checkbox1]:checked").attr("checked",false);
+				getSum(2);
+			}
+		}
+		
+		function getSum(type){
+			var sum = 0;
+			$("input[type=checkbox][name=checkbox"+type+"]:checked").each(function(index){ 
+				sum += parseInt(this.value)
+			});
+			$("#chkValue").val(sum);
+		}
+		
+		var layout=new FormsLayout("formsId");	
+		window.top.currentWindow.setLayout(layout);
+		
+		#set ($formName = "'#id_module_form'")
+		#parse ("qzbankinterface/appIframeInfo/page5_validation.js")
+		
+		$(document).ready(function() {	
+			//保存
+			$("#id_save_button").click(function() {
+				if ($($formName).valid()) {
+					var formjson = $($formName).serialize();
+					var url = "${contextPath}/intopieces/intopiecesapprove/update_page5.json?id=${qzApplnAttachmentList.id}&customerId=${qzApplnAttachmentList.customerId}";
+					$.ajax({
+						url : url,
+						type : "get",
+						data : formjson,
+						success : function(data) {
+							if (data.success) {
+								topWin.Dialog.message("保存成功！");
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page5.page?customerId=${qzApplnAttachmentList.customerId}";
+							}
+							else{
+								topWin.Dialog.message("保存失败！");
+						    }
+						}
+					});
+				}
+			});
+			
+		});
+		
+	</script>	
+</body>
+</html>
+

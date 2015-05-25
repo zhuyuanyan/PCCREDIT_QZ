@@ -6,9 +6,9 @@
 .button:hover{background:url(../../images/xm_appln/icon_button_hover.png) repeat-x;}
 h1{font-size:20px;font-weight:normal;color:#313439;line-height:40px;border-bottom:2px solid #1c6bae;margin-bottom:15px;margin:0 15px;}
 /*表单*/
-form{padding-top:67px;margin:0 17px 0 15px;padding-bottom:0;height:375px;height:345px\0;width:99.5%;padding-right:0.5%;overflow-y:auto;overflow-x:hidden}
+form{padding-top:67px;padding-bottom:15px;margin:0 17px 0 15px;max-height:350px;width:99.5%;padding-right:0.5%;overflow-y:auto;overflow-x:hidden}
 
-.box{border:1px solid #547586;width:100%;margin-bottom:2px;}
+.box{border:1px solid #547586;width:98%;margin-bottom:2px;}
 .box table{width:100%;}
 
 .box .title{background:#ebebeb;font-weight:bold;}
@@ -32,6 +32,7 @@ form{padding-top:67px;margin:0 17px 0 15px;padding-bottom:0;height:375px;height:
 .selectTag{display:block}
 
 .display{display:none;}
+.display_show{display:;}
 
 /*日历*/
 .box .date{border-collapse:collapse;width:280px;}
