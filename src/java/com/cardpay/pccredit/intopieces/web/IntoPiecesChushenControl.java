@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.dao.comdao.CustomerInforCommDao;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -33,6 +35,7 @@ import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
+import com.wicresoft.util.web.RequestHelper;
 
 @Controller
 @RequestMapping("/intopieces/intopiecesrecieve/*")
@@ -163,5 +166,22 @@ public class IntoPiecesChushenControl extends BaseController {
 			e.printStackTrace();
 		}
 		return returnMap;
+	}
+	
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("operate", Constant.status_chushen);
+		}
+		return mv;
 	}
 }

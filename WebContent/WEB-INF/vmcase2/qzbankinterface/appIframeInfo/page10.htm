@@ -1,9 +1,33 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
-	form{height:420px;position:absolute;right:0;width:98%;margin-right:0;top:70px;height:410px;height:380px\0;}
-	.box{border:none;}
-	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
-</style>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<style type="text/css">
+		.dialog2{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
+		.dialog2 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
+		.dialog2 .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog2 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
+		.dialog2 .dialog-box .top span:hover{background:url(${contextPath}/images/xm_appln/box_delete_hov.png);}
+		.dialog2 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog2 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog2 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/xm_appln/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog2 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
+		.dialog2 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog2 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
+		.dialog3{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
+		.dialog3 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
+		.dialog3 .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog3 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
+		.dialog3.dialog-box .top span:hover{background:url(${contextPath}/images/xm_appln/box_delete_hov.png);}
+		.dialog3 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog3 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog3 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/xm_appln/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog3 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
+		.dialog3 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog3 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
+	</style>
+</head>
 <body>
 <div class="fixed">
 	<h1>审贷会审议纪要</h1>
@@ -88,38 +112,157 @@
 			</table>			
 		</div>
 	</div>
-</form>
-<div class="controlbtn">
-#if($!readType!="readType")
-	<a class="btn_g" id="id_save_button" title="提交">提交</a>
-#end
-	<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
-</div>
+	 <div class="dialog2">
+			<form id="checkForm1" class="dialog-box" action="${contextPath}/intopieces/intopiecesshouxin/returnAppln.json">
+				<input type="hidden" name="appId" id="appId" value="${appId}" />
+				<div class="top">
+					退件 <span onclick="$('.dialog2').hide();"></span>
+				</div>
+				<div class="content">
+					<p>
+						退件原因:<font color="red">*</font>
+					<textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re1_button" type="button" class="btn btn-submit" value="确定" /> <input
+						 type="button" class="btn btn-submit" value="关闭" onclick="$('.dialog2').hide();"/>
+				</div>
+			</form>
+		</div>
+	<div class="dialog3">
+			<form id="checkForm2" class="dialog-box">
+				<input type="hidden" name="appId1" id="appId1" value="${appId}" />
+				<div class="top">
+					拒件 <span onclick="$('.dialog3').hide();"></span>
+				</div>
+				<div class="content">
+					<p>
+						拒件原因:<font color="red">*</font>
+					<textarea name="remark" clos="300px" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re2_button" type="button" class="btn btn-submit" value="确定" /> <input
+						 type="button" class="btn btn-submit" value="关闭" onclick="$('.dialog3').hide();"/>
+				</div>
+			</form>
+		</div>
+	<div class="controlbtn">
+	#if($!type=="modify")
+		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+	#end
+		#if($!operate=="授信审批"||$!operate=="中心复核")
+		<a id="id_in2_button" class="btn_g" title="审批通过">审批通过</a>
+        <a id="id_return_button" class="btn_g" title="退件">退件</a>
+        <a id="id_reject_button" class="btn_g" title="拒件">拒件</a>
+        #end
+    #if($!type=="modify")
+        <a id="id_return_to_cu_button" class="btn_g" href="javascript:void(0);"  title="补充上会">补充上会</a>
+    #end
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	</div>
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">		
 	#set ($formName = "'#id_module_form'")
+	#parse ("qzbankinterface/appIframeInfo/page10_validation.js")
 	$(document).ready(function() {
-		if("${readType}"=="readType"){
+		if("${type}"=="readonly"){
 			$("input[type='text']").attr("disabled",true);
 			$("input[type='radio']").attr("disabled",true);
 			$("input[type='checkbox']").attr("disabled",true);
 			$("select").attr("disabled",true);
 			$("textarea").attr("disabled",true);
-		}
+		};
 		
 		$("#id_save_button").click(function() {
+			if ($($formName).valid()) {
 			var formjson = $($formName).serialize();
    	          $.post("${contextPath}/intopieces/intopiecesshouxin/syjy_save.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {
    	            if (data.success) {
    	            	Dialog.message("保存成功!");
    	            }
 	          });
-		})
-	})
+			}
+		});
 		function checkJKTJ(obj){
 			$('.jktj').val('');
 			$('.jktj').attr('disabled','disabled');
 			$(obj).parent().find('.jktj').removeAttr('disabled')
-		}
+		};
+	//通过
+	$("#id_in2_button").click(function() {
+            Dialog.confirm("确定提交吗？", "提示",
+            	    function() {
+		                $.post("${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}", {},
+		   		            function(data, textStatus, jqXhr) {
+		   		                if (data.success) {
+		   		                	var url ="${contextPath}${returnUrl}";
+		   		                    parent.location.href=url;
+		   		                } else {
+		   		                }
+		   		            });
+	                });
+	});
+	//退件
+	$("#id_re1_button").click(function() {
+            $("#appId").val("${appId}");
+            Dialog.confirm("确定提交吗？", "提示",
+            	    function() {
+		                $('.dialog2').hide();
+		    			#set ($formName = "'#checkForm1'")
+		    			var formjson = $($formName).serialize();
+		    			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+		    	            if (data.success) {
+		    	            	Dialog.message("退件成功!");	
+		    	            	var url = "${contextPath}${returnUrl}";
+		    	            	parent.location.href = url;
+		    	            }
+		    	          });
+            });
+	});
+	//拒件
+	$("#id_re2_button").click(function() {
+		Dialog.confirm("确定提交吗？", "提示",
+			    function() {
+					$('.dialog3').hide();
+					$("#appId1").val("${appId}");
+					#set ($formName = "'#checkForm2'")
+					var formjson = $($formName).serialize();
+					 $.get("${contextPath}/intopieces/intopiecesshouxin/rejectAppln.json", formjson, function(data, textStatus, jqXhr) {
+			            if (data.success) {
+			            	Dialog.message("拒件成功!");	
+			            	var url = "${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
+			                window.location.href = url;
+			            }
+			          });
+		});
+	});
+	//补充上会
+	$("#id_return_to_cu_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+				    function() {
+						$.post("${contextPath}/intopieces/intopiecesshouxin/return_to_cu.json?id=${appId}", {},
+					            function(data, textStatus, jqXhr) {
+					                if (data.success) {
+					                	var url ="${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
+					                    parent.location.href=url;
+					                } else {
+					                }
+					            });
+			});
+	});
+	
+	$('.dialog2').hide();
+	$("#id_return_button").click(function() {
+		$('.dialog2').show();
+  	});
+	$('.dialog3').hide();
+	$("#id_reject_button").click(function() {
+		$('.dialog3').show();
+  });
+	})
 	</script>	
 </body>
 </html>

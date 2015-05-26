@@ -53,6 +53,9 @@ import com.cardpay.pccredit.intopieces.model.QzApplnDbrxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
 import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
+import com.cardpay.pccredit.intopieces.model.QzApplnJydBzdb;
+import com.cardpay.pccredit.intopieces.model.QzApplnJydDydb;
+import com.cardpay.pccredit.intopieces.model.QzApplnJydGtjkr;
 import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.QzApplnProcessResult;
 import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
@@ -1307,13 +1310,59 @@ public class IntoPiecesService {
 	/**
 	 * 保存审贷会决议单form(申请前)
 	 */
-	public void insertSdhjydForm(QzApplnJyd qzSdhjyd,String customerId){
-		String sql="select * from qz_appln_jyd where customer_id='"+customerId+"' and application_id is null";
+	public void insertSdhjydForm(QzApplnJyd qzSdhjyd, HttpServletRequest request){
+		String sql="select * from qz_appln_jyd where customer_id='"+qzSdhjyd.getCustomerId()+"' and application_id is null";
 		List<QzApplnJyd> qz = commonDao.queryBySql(QzApplnJyd.class,sql, null);
 		if(qz.size()>0){
 			commonDao.deleteObject(QzApplnJyd.class, qz.get(0).getId());
+			commonDao.queryBySql("delete from qz_appln_jyd_gtjkr where jyd_id='"+qz.get(0).getId()+"'", null);
+			commonDao.queryBySql("delete from qz_appln_jyd_bzdb where jyd_id='"+qz.get(0).getId()+"'", null);
+			commonDao.queryBySql("delete from qz_appln_jyd_dydb where jyd_id='"+qz.get(0).getId()+"'", null);
 		}
 			commonDao.insertObject(qzSdhjyd);
+			String jyd_id = qzSdhjyd.getId();
+			String[] gtjkrxm = request.getParameterValues("gtjkrxm");
+			String[] gtjkrhm = request.getParameterValues("gtjkrhm");
+			String[] bzdbxm = request.getParameterValues("bzdbxm");
+			String[] bzdbhm = request.getParameterValues("bzdbhm");
+			String[] dyr = request.getParameterValues("dyr");
+			String[] dywmc = request.getParameterValues("dywmc");
+			String[] sl = request.getParameterValues("sl");
+			String[] djhm = request.getParameterValues("djhm");
+			String[] kdyjz = request.getParameterValues("kdyjz");
+			//新增共同借款人
+			if(gtjkrxm!=null){
+				for(int i=0;i<gtjkrxm.length;i++){
+					QzApplnJydGtjkr gtjkr = new QzApplnJydGtjkr();
+					gtjkr.setName(gtjkrxm[i]);
+					gtjkr.setCardId(gtjkrhm[i]);
+					gtjkr.setJydId(jyd_id);
+					commonDao.insertObject(gtjkr);
+				}
+			}
+			//新增保证担保
+			if(bzdbxm!=null){
+				for(int i=0;i<bzdbxm.length;i++){
+					QzApplnJydBzdb bzdb = new QzApplnJydBzdb();
+					bzdb.setName(bzdbxm[i]);
+					bzdb.setCardId(bzdbhm[i]);
+					bzdb.setJydId(jyd_id);
+					commonDao.insertObject(bzdb);
+				}
+			}
+			//新增抵押担保
+			if(dyr!=null){
+				for(int i=0;i<dyr.length;i++){
+					QzApplnJydDydb dydb = new QzApplnJydDydb();
+					dydb.setUserName(dyr[i]);
+					dydb.setGoodsName(dywmc[i]);
+					dydb.setGoodsCount(sl[i]);
+					dydb.setCard(djhm[i]);
+					dydb.setGoodsValues(kdyjz[i]);
+					dydb.setJydId(jyd_id);
+					commonDao.insertObject(dydb);
+				}
+			}
 	}
 	
 	/**
@@ -1339,6 +1388,40 @@ public class IntoPiecesService {
 		}
 			return null;
 	}
+	/**
+	 * 获取共同借款人list
+	 */
+	public List<QzApplnJydGtjkr> getJkrList(String jydId){
+		String sql="select * from qz_appln_jyd_gtjkr where jyd_id='"+jydId+"'";
+		List<QzApplnJydGtjkr> qz = commonDao.queryBySql(QzApplnJydGtjkr.class,sql, null);
+		if(qz.size()>0){
+			return qz;
+		}
+			return null;
+	}
+	/**
+	 * 获取保证担保list
+	 */
+	public List<QzApplnJydBzdb> getBzdbList(String jydId){
+		String sql="select * from qz_appln_jyd_bzdb where jyd_id='"+jydId+"'";
+		List<QzApplnJydBzdb> qz = commonDao.queryBySql(QzApplnJydBzdb.class,sql, null);
+		if(qz.size()>0){
+			return qz;
+		}
+			return null;
+	}
+	/**
+	 * 获取抵押担保list
+	 */
+	public List<QzApplnJydDydb> getDydbList(String jydId){
+		String sql="select * from qz_appln_jyd_dydb where jyd_id='"+jydId+"'";
+		List<QzApplnJydDydb> qz = commonDao.queryBySql(QzApplnJydDydb.class,sql, null);
+		if(qz.size()>0){
+			return qz;
+		}
+			return null;
+	}
+	
 	
 	/**
 	 * 保存审贷会决议单form(申请后)
@@ -1630,6 +1713,25 @@ public class IntoPiecesService {
 			dcnr.setReportName(entry.getValue());
 			dcnr.setCustomerId(qzApplnAttachmentList.getCustomerId());
 			commonDao.insertObject(dcnr);
+		}
+	}
+	
+	public String getReturnUrl(String operate){
+		if(operate==null){
+			return null;
+		}
+		if(operate.equals(Constant.status_chushen)){
+			return "/intopieces/intopiecesrecieve/chushen.page";
+		}else if(operate.equals(Constant.status_xingzheng1)){
+			return "/intopieces/intopiecesxingzheng1/xingzhengbegin.page";
+		}else if(operate.equals(Constant.status_shouxin)){
+			return "/intopieces/intopiecesshouxin/shouxin.page";
+		}else if(operate.equals(Constant.status_zhongxin)){
+			return "/intopieces/intopieceszhongxin/zhongxin.page";
+		}else if(operate.equals(Constant.status_xinshen)){
+			return "/intopieces/intopiecesxindai/xindai.page";
+		}else{
+			return "/intopieces/intopiecesxingzheng2/xingzhengend.page";
 		}
 	}
 }
