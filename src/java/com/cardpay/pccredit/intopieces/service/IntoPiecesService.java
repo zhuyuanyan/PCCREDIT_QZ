@@ -954,11 +954,6 @@ public class IntoPiecesService {
 		//更新客户信息--退回
 		infor.setProcessId(Constant.APPROVE_EDIT_1);
 		commonDao.updateObject(infor);
-		
-		//重置ecif状态
-		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(infor.getId()).getClientNo());
-		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_APPLY_FAILURE);
-		commonDao.updateObject(ecif);
 	}
 	
 /* 初审节点拒件 */
@@ -988,10 +983,6 @@ public class IntoPiecesService {
 		//插入流程log表
 		insertProcessLog(filter.getApplicationId(),Constant.APPLN_TYPE_3,request,request.getParameter("jjyy"),process);
 		
-		//重置ecif状态
-		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(infor.getId()).getClientNo());
-		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_APPLY_FAILURE);
-		commonDao.updateObject(ecif);
 	}
 	/**
 	 * 根据进件id获取调查内容附件记录
@@ -1255,10 +1246,6 @@ public class IntoPiecesService {
 		//插入流程log表
 		insertProcessLog(applicationId,Constant.APPLN_TYPE_3,request,request.getParameter("remark"),process);
 		
-		//重置ecif状态
-		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(applicationInfo.getCustomerId()).getClientNo());
-		ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_APPLY_FAILURE);
-		commonDao.updateObject(ecif);
 	}
 	
 	/*
@@ -1553,12 +1540,24 @@ public class IntoPiecesService {
 		}
 		//添加附件appId
 		QzApplnAttachmentList qzApplnAttachmentList = attachmentListService.findAttachmentList(customerId, null);
-		qzApplnAttachmentList.setApplicationId(applicationId);
-		commonDao.updateObject(qzApplnAttachmentList);
+		if(qzApplnAttachmentList != null){
+			qzApplnAttachmentList.setApplicationId(applicationId);
+			commonDao.updateObject(qzApplnAttachmentList);
+		}
+		
 		//添加内部审查appId
 		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjb(customerId, null);
-		qzApplnNbscyjb.setApplicationId(applicationId);
-		commonDao.updateObject(qzApplnNbscyjb);
+		if(qzApplnNbscyjb != null){
+			qzApplnNbscyjb.setApplicationId(applicationId);
+			commonDao.updateObject(qzApplnNbscyjb);
+		}
+		
+		//添加circle表appId
+		Circle circle = circleService.findCircle(customerId,null);
+		if(circle != null){
+			circle.setApplicationId(applicationId);
+			commonDao.updateObject(circle);
+		}
 		
 		//添加调查内容appId
 		String sql1= "select * from qz_appln_dcnr where customer_id='"+customerId+"' and application_id is null" ;

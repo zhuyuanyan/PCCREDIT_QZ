@@ -17,4 +17,7 @@ public interface CircleDao {
 
 	Circle findCircleByClientNo(@Param("clientNo") String clientNo);
 
+	Circle findCircle(@Param("customerId")String customerId,@Param("applicationId")String applicationId);
+	Circle findCircleByAppId(@Param("applicationId")String applicationId);
+
 }

@@ -24,9 +24,11 @@
 				</tr>
 				<tr>
 					<td class="table-label">客户名称：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="clientName" value="$!qzApplnNbscyjb.clientName" readonly/></td>
+					<td><input type="text" value="$!customerInfo.chineseName" readonly/>
+						<input type="hidden" name="clientName" value="$!customerInfo.chineseName"/></td>
 					<td class="table-label">店铺/企业名称：</td>
-					<td><input type="text" name="shopName" value="$!qzApplnNbscyjb.shopName" readonly/></td>			
+					<td><input type="text" value="$!qzApplnJyxx.shopName" readonly/>
+						<input type="hidden" name="shopName" value="$!qzApplnJyxx.bussName"/></td>	
 				</tr>
 				<tr>
 					<td class="table-label">申请金额：<font color="#ff0000">*</font></td>
@@ -51,7 +53,7 @@
 					<td class="table-label">建议利率：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="sugRates" value="$!qzApplnNbscyjb.sugRates" readonly/></td>
 					<td class="table-label">担保方式：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="sugGuntType" value="$!qzApplnNbscyjb.sugGuntType" readonly/></td>			
+					<td><select name="sugGuntType" readonly/>#dict("ASSURE_MAIN", $!qzApplnNbscyjb.sugGuntType)</select></td>	
 				</tr>
 				<tr>
 					<td class="tableTitle" colspan="4">内部审查人员意见</td>				

@@ -31,11 +31,14 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.JyxxService;
 import com.cardpay.pccredit.intopieces.service.NbscyjbService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -63,13 +66,9 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	private CustomerInforService customerInforService;
 	
 	@Autowired
-	private CustomerInforService customerInforservice;
-	
-	@Autowired
 	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
-	
 	@Autowired
 	private CircleService circleService;
 	@Autowired
@@ -77,6 +76,9 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	
 	@Autowired
 	private NbscyjbService nbscyjbService;
+	@Autowired
+	private JyxxService jyxxService;
+	
 	/**
 	 * 行政岗初进件页面
 	 * 
@@ -223,6 +225,10 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 		mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_for_approve", request);
 		mv.addObject("qzApplnNbscyjb", qzApplnNbscyjb);
 		mv.addObject("type", type);
+		CustomerInfor customerInfo = customerInforService.findCustomerInforById(intoPiecesService.findCustomerApplicationInfoByApplicationId(appId).getCustomerId());
+		mv.addObject("customerInfo", customerInfo);
+		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInfo.getId(), null);
+		mv.addObject("qzApplnJyxx", qzApplnJyxx);
 		return mv;
 	}
 	
@@ -234,7 +240,7 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 		String customerInforId = RequestHelper.getStringValue(request, ID);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			CustomerInfor customerInfor = customerInforService.findCustomerInforById(customerInforId);
 			mv.addObject("customerInfor", customerInfor);
 			mv.addObject("customerId", customerInfor.getId());
 			mv.addObject("appId", appId);

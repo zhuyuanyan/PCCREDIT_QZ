@@ -1,11 +1,6 @@
 #parse ("common/iframe_page_header.htm")
 #parse ("common/macro.htm")
 <body>
-  <div class="content_main">
-    <div class="contentinner">
-      <div class="place">
-        <div class="title">循环</div>
-      </div>
       <form id="id_module_form">
         <div class="forms" id="formsId">
           <table class="rule" bordercolor="#CCCCCC" border="1">
@@ -298,13 +293,11 @@
             </tr>
 		  </table>
         </div>
+      </form>
       <div class="submit">
          <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
          <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
       </div>
-      </form>
-    </div>
-  </div>
   <script type="text/javascript">
     //新开户json信息
   	var ecif; 
@@ -335,6 +328,7 @@
 	
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
+	
 	#set ($formName = "'#id_module_form'")
 	
 	#parse ("qzbankinterface/iesbforcircle_validation.js")
@@ -383,12 +377,23 @@
 				else{
 					if ($($formName).valid()) {
 						var formjson = $($formName).serialize();
-			   	          $.post("${modulePath}/insert.json", formjson, function(data, textStatus, jqXhr) {
-			   	            if (data.success) {
-			   	            	Dialog.message("保存成功!");
-			   	            	window.location.href= contextPath+"/intopieces/intopiecesapprove/approve.page" ;
-			   	            }
-			   	          });
+			   	          
+			   	       	var url = "${modulePath}/insert.json?customerId=${customerId}";
+			   	       	
+			   	       	$.ajax({
+							url : url,
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("保存成功！");
+									window.location.reload(true);
+								}
+								else{
+									topWin.Dialog.message("保存失败！");
+							    }
+							}
+						});
 					}
 				}
 			}
