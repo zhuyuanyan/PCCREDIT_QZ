@@ -1,8 +1,6 @@
 #parse ("common/iframe_page_header3.htm")
 <style type="text/css">
-	form{height:420px;position:absolute;right:0;width:98%;margin-right:0;height:410px;height:380px\0;}
-	.box{border:none;}
-	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
+
 </style>
 <body>
 <form id="id_module_form">
@@ -41,7 +39,7 @@
 				</tr>
 				<tr>
 					<td class="table-label">建议结论：<font color="#ff0000">*</font></td>
-					<td colspan="3"><textarea name="sugContent" readonly>$!qzApplnNbscyjb.sugContent</textarea></td>			
+					<td colspan="3"><textarea name="sugContent" disabled>$!qzApplnNbscyjb.sugContent</textarea></td>			
 				</tr>
 				<tr>
 					<td class="table-label">建议金额：<font color="#ff0000">*</font></td>
@@ -88,6 +86,7 @@
 #if($!type!="readonly")
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
 #end
+ <a class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 </div>
 	<script type="text/javascript">			
 	var layout=new FormsLayout("formsId");	
