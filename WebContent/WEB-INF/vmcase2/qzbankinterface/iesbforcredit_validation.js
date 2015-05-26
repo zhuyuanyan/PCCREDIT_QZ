@@ -1,6 +1,6 @@
 var validator = $($formName).validate({
 	rules:
-    { 
+    { 	
 		creditLimit:{required:true},
 		term:{required:true},
 		startDate:{required:true},
@@ -22,7 +22,7 @@ var validator = $($formName).validate({
 		openAcctDate:{required:true}
      },
 messages:
-    {
+    {	
 		creditLimit:{required:"授信额度不能为空"},
 		term:{required:"期限不能为空"},
 		startDate:{required:"贷款起始日期不能为空"},
