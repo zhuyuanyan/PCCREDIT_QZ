@@ -103,11 +103,16 @@ public class IESBForCircleController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_display", request);
 		
 		String customerId = request.getParameter(ID);
+		String appId = request.getParameter("appId");
+		String operate = request.getParameter("operate");
 		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
 		mv.addObject("ecif",ecif);
 				
-		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		Circle circle = circleService.findCircleByAppId(appId);
 		mv.addObject("circle",circle);
+		mv.addObject("operate",operate);
+		mv.addObject("appId",appId);
+		mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate));
 		return mv;
 	}
 	
@@ -123,6 +128,8 @@ public class IESBForCircleController extends BaseController{
 		JRadModelAndView mv = null;
 		
 		String customerId = request.getParameter(ID);
+		String appId = request.getParameter("appId");
+		String operate = request.getParameter("operate");
 		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
 		JSONObject json = new JSONObject();
 		json = JSONObject.fromObject(ecif);
@@ -136,13 +143,14 @@ public class IESBForCircleController extends BaseController{
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String orgId = user.getOrganization().getId();//机构ID
 			String parentOrgId = user.getOrganization().getParentId();//机构ID
-			if(parentOrgId.equals("000000")){//替换为泉州总行id
+//			if(parentOrgId.equals("000000")){//替换为泉州总行id
 				parentOrgId = Constant.QZ_ORG_ROOT_ID;
-			}
+//			}
 			String externalId = user.getLogin();//工号
 			mv.addObject("orgId",orgId);
 			mv.addObject("parentOrgId",parentOrgId);
 			mv.addObject("externalId",externalId);
+			
 			
 		}
 		else{
@@ -152,6 +160,9 @@ public class IESBForCircleController extends BaseController{
 		
 		mv.addObject("customerId",customerId);
 		mv.addObject("ecif",json);
+		mv.addObject("operate",operate);
+		mv.addObject("appId",appId);
+		mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate));
 		
 		return mv;
 	}

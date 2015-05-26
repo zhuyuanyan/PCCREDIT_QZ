@@ -221,7 +221,7 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 		String appId = request.getParameter("appId");
 		String type = request.getParameter("type");
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_change", request);
-		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjb(null, appId);
+		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjbByAppId(appId);
 		mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_for_approve", request);
 		mv.addObject("qzApplnNbscyjb", qzApplnNbscyjb);
 		mv.addObject("type", type);

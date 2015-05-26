@@ -34,6 +34,7 @@ import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
+import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -112,6 +113,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView createUpload(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
 		String appId = request.getParameter("appId");
+		String type = request.getParameter("type");
 		List<QzDcnrUploadForm>  result =intoPiecesService.getUploadList(appId);
 		for(int i=0;i<result.size();i++){
 			if(result.get(i).getHetongId()==null){
@@ -124,6 +126,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_xingzhengend_upload", request);
 		mv.addObject("result", result);
 		mv.addObject("appId",appId);
+		mv.addObject("type",type);
 		return mv;
 	}
 	
@@ -170,6 +173,13 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			String appId = request.getParameter("id");
+			//是否上传合同单
+			Boolean ifAddHt = intoPiecesService.getDcnrList(appId);
+			if(!ifAddHt){
+				returnMap.put(JRadConstants.MESSAGE, "请先上传\"合同扫描件\"");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
 			CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(appId);
 			request.setAttribute("serialNumber", process.getSerialNumber());
 			request.setAttribute("applicationId", process.getApplicationId());

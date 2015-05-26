@@ -252,12 +252,6 @@
 	</div>
 	<div class="controlbtn">
 	#if($!type=="readonly")
-		#if($!operate=="初审")
-			<a id="id_appln_button" class="btn_g" title="审批">审批</a>
-		#else
-		<a id="id_in1_button" class="btn_g" title="审批通过">审批通过</a>
-        <a id="id_return1_button" class="btn_g" title="退件">退件</a>
-		#end
 		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 	#else
 		<a class="btn_g" id="id_save_button" title="提交">保存</a>
@@ -377,7 +371,7 @@
 									if (data.success) {
 										topWin.Dialog.message("保存成功!");	
 						            	var url = "${contextPath}${returnUrl}";
-						                parent.location.href = url;
+						            	topWin.location.href = url;
 									}
 									else{
 										topWin.Dialog.message("保存失败！");
