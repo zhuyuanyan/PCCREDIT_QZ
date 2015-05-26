@@ -5,12 +5,8 @@
 <body>
   <div class="content_main">
     <div class="contentinner">
-       <div class="place">
-       <div class="title">上传合同扫描单</div>
-      </div>
-          
+         #if($!type=="modify") 
       <div class="inquiry">
-       <div class="search_tag">上传合同扫描单</div>
         <div class="search">
           <form id="myForm" action="${contextPath}/intopieces/intopiecesxingzheng2/saveYxzl.json" enctype="multipart/form-data" method="post">
           <ul>
@@ -30,13 +26,13 @@
                 <span>备注:<input type="text" name="remark" style="width:300px;"></textarea></span>
               </li>
               <li class="search_button">
-                <input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng2/create_upload.page?id=${appId}');"/>
+                <input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng2/create_upload.page?appId=${appId}');"/>
               </li>
           </ul> 
                 
           </form>
         </div>
-  
+ 	 #end
       <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
@@ -95,7 +91,6 @@
   <div class="pagebar">
         <div class="controlbtn">
           <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
-          <a href="javascript:history.back();" class="btn_g">返回</a>
         </div>
         <div class="clear"></div>
         	

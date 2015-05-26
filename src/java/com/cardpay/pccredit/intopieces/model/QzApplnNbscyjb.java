@@ -31,6 +31,8 @@ public class QzApplnNbscyjb extends BusinessModel {
 	private Date checkSignDate;
 	private String isComplete;
 	
+	private String hcryqz;
+	
 	public String getCustomerId() {
 		return customerId;
 	}
@@ -132,6 +134,12 @@ public class QzApplnNbscyjb extends BusinessModel {
 	}
 	public void setIsComplete(String isComplete) {
 		this.isComplete = isComplete;
+	}
+	public String getHcryqz() {
+		return hcryqz;
+	}
+	public void setHcryqz(String hcryqz) {
+		this.hcryqz = hcryqz;
 	}
 
 }
