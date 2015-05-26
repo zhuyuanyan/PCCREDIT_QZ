@@ -27,7 +27,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>个人信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -149,7 +149,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>营业信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -201,7 +201,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>贷款申请</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -242,7 +242,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>财务信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -290,7 +290,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>业务信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -298,8 +298,8 @@
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
 						主要供应商
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zygys')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zygys')"/>
+						<a class="add" onclick="addTd('zygys')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zygys')"><img src="${contextPath}/images/del.png"/></a>
 						<input type="hidden" value="$zygys_ls.size()" id="zygys_cnt" name="zygys_cnt">
 					</td>		
 				</tr>
@@ -319,9 +319,9 @@
 			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="zykh">
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
-						主要客户
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zykh')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zykh')"/>
+						主要客户						
+						<a class="add" onclick="addTd('zykh')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zykh')"><img src="${contextPath}/images/del.png"/></a>
 						<input type="hidden" value="$zykh_ls.size()" id="zykh_cnt" name="zykh_cnt">
 					</td>		
 				</tr>
@@ -345,7 +345,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>借款记录</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>	
 		<div name="content" class="display_show">	
@@ -356,8 +356,8 @@
 						<label><input type="radio" name="borrowHistory" value="1" onclick="$('#buttons').show();$('#jkjl .input').removeAttr('disabled')" #if($!qzApplnYwsqb.borrowHistory=='1') checked #end/>有</label>
 						<label><input type="radio" name="borrowHistory" value="0" onclick="$('#buttons').hide();$('#jkjl .input').val('');$('#jkjl .input').attr('disabled','disabled')" #if($!qzApplnYwsqb.borrowHistory=='0') checked #end/>无</label>
 						<span #if($!qzApplnYwsqb.borrowHistory=='0') class="display" #end id="buttons">
-							<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('jkjl')" />
-							<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('jkjl')" />
+							<a class="add" onclick="addTd('jkjl')"><img src="${contextPath}/images/add.png"/></a>
+							<a class="del" onclick="removeTd('jkjl')"><img src="${contextPath}/images/del.png"/></a>
 							<input type="hidden" value="$jkjl_ls.size()" id="jkjl_cnt" name="jkjl_cnt">
 						</span>
 					</td>		
@@ -426,7 +426,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>其他信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -481,7 +481,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>声明</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -509,7 +509,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>信息渠道</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
