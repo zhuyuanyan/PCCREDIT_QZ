@@ -97,6 +97,7 @@ public class Constant {
 	public static String status_xingzheng2="中心终审";
 	public static String jyd_id="00001";//决议单默认ID
 	public static String htd_id="00002";//合同单默认ID
+	public static String status_buchong="补充上会";
 	
 	/*审批结果*/
 	public static String APPLN_TYPE_1="审批通过";

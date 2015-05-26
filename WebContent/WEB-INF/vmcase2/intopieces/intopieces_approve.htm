@@ -154,14 +154,20 @@
 				if(rowId!=null){
 					Dialog.confirm("确定提交申请吗？", "提示",
 		                function() {
-							$.post("${modulePath}/save_apply.page", {id:rowId},
-				            function(data, textStatus, jqXhr) {
-				                if (data.success) {
-				                    window.location.reload(true);
-				                } else {
-				                    //Dialog.message(data.message);
-				                }
-				            });
+							var url = "${modulePath}/save_apply.json?id="+rowId;
+			   	        	$.ajax({
+								url : url,
+								type : "get",
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("保存成功！");
+										window.location.reload(true);
+									}
+									else{
+										topWin.Dialog.message("保存失败！");
+								    }
+								}
+							});
 		                });
 				}
 			}else{
