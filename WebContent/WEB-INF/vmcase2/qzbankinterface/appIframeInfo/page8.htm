@@ -270,7 +270,6 @@
 		$(document).ready(function() {
 			if("${type}"=="readonly"){
 				$("input[type='text']").attr("disabled",true);
-				$("input[type='radio']").attr("disabled",true);
 				$("input[type='checkbox']").attr("disabled",true);
 				$("select").attr("disabled",true);
 			}
@@ -298,6 +297,7 @@
 				var url = "${contextPath}/intopieces/intopiecesapprove/approve.page";
                 parent.location.href = url;
 			});
+			
 			//通过
 			$("#id_in1_button").click(function() {
 	                Dialog.confirm("确定提交吗？", "提示",
@@ -317,8 +317,8 @@
 	                $("#appId").val("${appId}");
 	                Dialog.confirm("确定提交吗？", "提示",
 	                	    function() {
-				                $('.dialog').hide();
-				    			#set ($formName = "'#checkForm'")
+				                $('.dialog1').hide();
+				    			#set ($formName = "'#checkForm1'")
 				    			var formjson = $($formName).serialize();
 				    			
 				    			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
@@ -338,16 +338,8 @@
 			
 			//初审需要三性检测
 			$('.dialog').hide();
-			$("#id_apply_button").click(function() {
-				if ($(".checkbox :checked").length != 1) {
-					Dialog.message("请选择一条记录!");
-					return;
-				}
-				var id = null;
-				$("input[name='checkbox']:checked").each(function() {
-					id = $(this).val().split("@")[0];
-				});
-				$("#applicationId").val(id);
+			$("#id_appln_button").click(function() {
+				$("#applicationId").val("${appId}");
 				$('.dialog').show();
 	      });
 			
@@ -361,7 +353,7 @@
 						 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 				            if (data.success) {
 				            	Dialog.message("保存成功!");	
-				            	var url = "${contextPath}/intopieces/intopiecesrecieve/chushen.page";
+				            	var url = "${contextPath}${returnUrl}";
 				                window.location.href = url;
 				            }
 				          });
