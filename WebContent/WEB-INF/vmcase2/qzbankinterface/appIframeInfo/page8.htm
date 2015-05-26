@@ -1,7 +1,34 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<style type="text/css">
+		.dialog{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
+		.dialog .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
+		.dialog .dialog-box .top span:hover{background:url(${contextPath}/images/xm_appln/box_delete_hov.png);}
+		.dialog .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/xm_appln/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
+		.dialog .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
+		.dialog1{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog1 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
+		.dialog1 .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog1 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
+		.dialog1 .dialog-box .top span:hover{background:url(${contextPath}/images/xm_appln/box_delete_hov.png);}
+		.dialog1 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog1 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog1 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/xm_appln/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog1 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
+		.dialog1 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog1 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
 	
-</style>
+	</style>
+</head>
 <body>
 <!--*************************************************************审贷会决议单*************************************************************-->
 <form id="id_module_form">
@@ -20,95 +47,226 @@
 					<col width="10%">
 				</colgroup>
 				<tr>
-					<td class="table-label">审议日期</td>
-					<td colspan="8"><input type="text" name="syrq" onmouseover="_calendar()"/></td>			
+					<td class="table-label">审议日期:<font color="#ff0000">*</font></td>
+					<td colspan="8"><input type="text" name="syrq" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.syrq)"/></td>			
 				</tr>
 				<tr>
-					<td class="table-label">办理机构</td>
-					<td colspan="2"><input type="text" name="bljg" value="$!result.bljg"/></td>
-					<td class="table-label">主办客户经理</td>
-					<td><input type="text" name="zbkhjl" value="$!result.zbkhjl"/></td>	
-					<td class="table-label">客户名称</td>
-					<td colspan="3"><input type="text" name="khmc" value="$!result.khmc"/></td>		
+					<td class="table-label">办理机构:<font color="#ff0000">*</font></td>
+					<td colspan="2"><input type="text" name="bljg" value="$!orgName" readonly/></td>
+					<td class="table-label">主办客户经理:<font color="#ff0000">*</font></td>
+					<td><input type="text" name="zbkhjl" value="$!userName" readonly/></td>	
+					<td class="table-label">客户名称:<font color="#ff0000">*</font></td>
+					<td colspan="3"><input type="text" name="khmc" value="$!ecif.clientName" readonly/></td>		
 				</tr>				
 				<tr>
-					<td class="table-label">审议事项</td>
-					<td colspan="2"><input type="text" name="sysx" value="$!result.sysx"/></td>
-					<td class="table-label">产品名称</td>
-					<td><input type="text" name="cpmc" value="$!result.cpmc"/></td>	
-					<td class="table-label">证件号码</td>
-					<td colspan="3"><input type="text" name="zjhm" value="$!result.zjhm"/></td>		
+					<td class="table-label">审议事项:<font color="#ff0000">*</font></td>
+					<td colspan="2"><input type="text" name="sysx" value="贷款申请" readonly/></td>
+					<td class="table-label">产品名称:<font color="#ff0000">*</font></td>
+					<td><select name="cpmc">#dict("ProductName",$!result.cpmc)</select></td>	
+					<td class="table-label">证件号码:<font color="#ff0000">*</font></td>
+					<td colspan="3"><input type="text" name="zjhm" value="$!ecif.globalId" readonly/></td>		
 				</tr>			
 				<tr>
-					<td class="table-label">建议金额</td>
-					<td colspan="2"><input type="text" name="jyje" value="$!result.jyje"/></td>
-					<td class="table-label">建议期限</td>
-					<td><input type="text" name="jyqx" value="$!result.jyqx"/></td>	
-					<td class="table-label" colspan="2">建议利率（年）</td>
-					<td colspan="2"><input type="text" name="jyll" value="$!result.jyll"/></td>		
+					<td class="table-label">建议金额:<font color="#ff0000">*</font></td>
+					<td colspan="2"><input type="text" name="jyje" value="$!qzApplnNbscyjb.sugAmount" readonly/></td>
+					<td class="table-label">建议期限:<font color="#ff0000">*</font></td>
+					<td><input type="text" name="jyqx" value="$!qzApplnNbscyjb.sugDeadline" readonly/></td>	
+					<td class="table-label" colspan="2">建议利率（年）:<font color="#ff0000">*</font></td>
+					<td colspan="2"><input type="text" name="jyll" value="$!qzApplnNbscyjb.sugRates" readonly/></td>		
 				</tr>			
 				<tr>
-					<td class="table-label">授信用途</td>
+					<td class="table-label">授信用途:<font color="#ff0000">*</font></td>
 					<td colspan="4"><input type="text" name="sxyt" value="$!result.sxyt"/></td>
-					<td class="table-label" colspan="2">还款方式</td>
+					<td class="table-label" colspan="2">还款方式:<font color="#ff0000">*</font></td>
 					<td colspan="2"><input type="text" name="hkfs" value="$!result.hkfs"/></td>		
 				</tr>		
 				<tr>
-					<td class="table-label" rowspan="8">建议担保方式</td>
-					<td class="table-label" rowspan="3">共同借款人</td>					
-					<td class="table-label" colspan="3" style="text-align:center;">姓名</td>					
-					<td class="table-label" colspan="4" style="text-align:center;">证件号码</td>	
+					<td class="table-label" rowspan="3">建议担保方式</td>					
+					<td class="table-label" colspan="8">
+						<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="gtjkr">
+							<tr>
+								<td class="tableTitle" colspan="2" style="text-align:left;">
+									共同借款人
+									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('gtjkr')"/>
+									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('gtjkr')"/>
+								</td>		
+							</tr>
+							<tr>
+								<td><b>姓名</b></td>	
+								<td><b>证件号码</b></td>		
+							</tr>
+							#if(!$gtjkrs)
+							<tr>
+								<td><input type="text" name="gtjkrxm"/></td>	
+								<td><input type="text" name="gtjkrhm"/></td>		
+							</tr>
+							#else
+								#foreach ($result in $gtjkrs)
+								<tr>
+									<td><input type="text" name="gtjkrxm" value="$!result.name"/></td>	
+									<td><input type="text" name="gtjkrhm" value="$!result.cardId"/></td>		
+								</tr>
+								#end
+							#end
+						</table>
+					</td>	
 				</tr>						
 				<tr>			
-					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm1" value="$!result.gtjkrxm1"/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm1" value="$!result.gtjkrhm1"/></td>	
+					<td class="table-label" colspan="8">
+						<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="bzdb">
+							<tr>
+								<td class="tableTitle" colspan="2" style="text-align:left;">
+									保证担保
+									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('bzdb')"/>
+									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('bzdb')"/>
+								</td>		
+							</tr>
+							#if(!$bzdbs)
+							<tr>
+								<td><b>姓名</b></td>	
+								<td><b>证件号码</b></td>		
+							</tr>
+							<tr>
+								<td><input type="text" name="bzdbxm"/></td>	
+								<td><input type="text" name="bzdbhm"/></td>		
+							</tr>
+							#else
+								#foreach ($result in $bzdbs)
+								<tr>
+									<td><input type="text" name="bzdbxm" value="$!result.name"/></td>	
+									<td><input type="text" name="bzdbhm" value="$!result.cardId"/></td>		
+								</tr>
+								#end
+							#end
+						</table>
+					</td>	
 				</tr>					
 				<tr>			
-					<td colspan="3" style="text-align:center;"><input type="text" name="gtjkrxm2" value="$!result.gtjkrxm2"/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="gtjkrhm2" value="$!result.gtjkrhm2"/></td>	
-				</tr>		
-				<tr>
-					<td class="table-label" rowspan="2">保证担保</td>					
-					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm1" value="$!result.bzdbxm1"/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm1" value="$!result.bzdbhm1"/></td>	
-				</tr>					
-				<tr>			
-					<td colspan="3" style="text-align:center;"><input type="text" name="bzdbxm2" value="$!result.bzdbxm2"/></td>					
-					<td colspan="4" style="text-align:center;"><input type="text" name="bzdbhm2" value="$!result.bzdbhm2"/></td>	
-				</tr>		
-				<tr>
-					<td class="table-label" rowspan="3">抵押担保</td>					
-					<td class="table-label" style="text-align:center;">抵押人</td>					
-					<td class="table-label" colspan="2" style="text-align:center;">抵押物名称</td>					
-					<td class="table-label" style="text-align:center;">数量</td>	
-					<td class="table-label" colspan="2" style="text-align:center;">权证或单据号码</td>					
-					<td class="table-label" style="text-align:center;">可抵押价值</td>	
-				</tr>		
-				<tr>				
-					<td style="text-align:center;"><input type="text" name="dyr1" value="$!result.dyr1"/></td>					
-					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc1" value="$!result.dywmc1"/></td>					
-					<td style="text-align:center;"><input type="text" name="sl1" value="$!result.sl1"/></td>	
-					<td colspan="2" style="text-align:center;"><input type="text" name="djhm1" value="$!result.djhm1"/></td>					
-					<td style="text-align:center;"><input type="text" name="kdyjz1" value="$!result.kdyjz1"/></td>	
-				</tr>			
-				<tr>				
-					<td style="text-align:center;"><input type="text" name="dyr2" value="$!result.dyr2"/></td>					
-					<td colspan="2" style="text-align:center;"><input type="text" name="dywmc2" value="$!result.dywmc2"/></td>					
-					<td style="text-align:center;"><input type="text" name="sl2" value="$!result.sl2"/></td>	
-					<td colspan="2" style="text-align:center;"><input type="text" name="djhm2" value="$!result.djhm2"/></td>					
-					<td style="text-align:center;"><input type="text" name="kdyjz2" value="$!result.kdyjz2"/></td>	
+					<td class="table-label" colspan="8">
+						<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="dydb">
+							<tr>
+								<td class="tableTitle" colspan="5" style="text-align:left;">
+									抵押担保
+									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('dydb')"/>
+									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('dydb')"/>
+								</td>		
+							</tr>
+							<tr>
+								<td><b>抵押人</b></td>	
+								<td><b>抵押物名称</b></td>		
+								<td><b>数量</b></td>	
+								<td><b>权证或单据号码</b></td>	
+								<td><b>可抵押价值</b></td>	
+							</tr>
+							#if(!$dydbs)
+							<tr>
+								<td><input type="text" name="dyr"/></td>	
+								<td><input type="text" name="dywmc"/></td>	
+								<td><input type="text" name="sl"/></td>	
+								<td><input type="text" name="djhm"/></td>	
+								<td><input type="text" name="kdyjz"/></td>		
+							</tr>
+							#else
+								#foreach ($result in $dydbs)
+								<tr>
+									<td><input type="text" name="dyr" value="$!result.userName"/></td>	
+								<td><input type="text" name="dywmc" value="$!result.goodsName"/></td>
+								<td><input type="text" name="sl" value="$!result.goodsCount"/></td>
+								<td><input type="text" name="djhm" value="$!result.card"/></td>
+								<td><input type="text" name="kdyjz" value="$!result.goodsValues"/></td>	
+								</tr>
+								#end
+							#end
+						</table>
+					</td>	
 				</tr>	
-				
 			</table>			
 		</div>
 	</div>
+</form>	
+ <div class="dialog">
+					<form id="checkForm" class="dialog-box" action="${contextPath}/intopieces/intopiecesrecieve/checkDo.json">
+						<input type="hidden" name="applicationId" id="applicationId" value="" />
+						<div class="top">
+							三性检测 <span onclick="$('.dialog').hide();"></span>
+						</div>
+						<div class="content">
+							<p>
+								材料正确性:<font color="red">*</font> <label><input
+									type="radio" name="reality" value="1" checked />通过</label> <label><input
+									type="radio" name="reality" value="2" />不通过</label>
+							</p>
+							<p>
+								材料完整性:<font color="red">*</font> <label><input
+									type="radio" name="complete" value="1" checked />通过</label> <label><input
+									type="radio" name="complete" value="2" />不通过</label>
+							</p>
+							<p>
+								材料合规性:<font color="red">*</font> <label><input
+									type="radio" name="standard" value="1" checked />通过</label> <label><input
+									type="radio" name="standard" value="2" />不通过</label>
+							</p>
+							<p>
+								是&nbsp;否&nbsp;拒&nbsp;件:&nbsp; <label><input
+									type="radio" name="reject" value="1" onclick="$('#jjyy').removeAttr('readonly')" />是</label>&nbsp;&nbsp;&nbsp; <label><input
+									type="radio" name="reject" value="2" onclick="$('#jjyy').attr('readonly','readonly')" checked />否</label>
+							</p>
+							<p>
+								拒&nbsp;件&nbsp;原&nbsp;因:&nbsp;
+									<textarea id="jjyy" name="jjyy" rows="2" style="width:200px;" readonly></textarea>
+							</p>
+							
+						</div>
+						<div class="bottom">
+							<input id="id_in_button" type="button" class="btn btn-submit" value="通过" /> <input
+								id="id_out_button" type="button" class="btn btn-submit" value="退回" /><input
+								id="id_reject_button" type="button" class="btn btn-submit" value="拒件" /><input
+								 type="button" class="btn btn-submit" value="关闭" onclick="$('.dialog').hide();"/>
+						</div>
+					</form>
+				</div>
+
+	<div class="dialog1">
+		<form id="checkForm1" class="dialog-box"
+			action="${contextPath}/intopieces/intopiecesxingzheng1/returnAppln.json">
+			<input type="hidden" name="appId" id="appId" />
+			<div class="top">
+				退件 <span onclick="$('.dialog1').hide();"></span>
+			</div>
+			<div class="content">
+				<p>
+					退件原因:<font color="red">*</font>
+					<textarea name="remark" clos="300px" rows="2" style="width: 300px;"></textarea>
+				</p>
+			</div>
+			<div class="bottom">
+				<input id="id_re1_button" type="button" class="btn btn-submit"
+					value="确定" /> <input type="button" class="btn btn-submit"
+					value="关闭" onclick="$('.dialog1').hide();" />
+			</div>
+		</form>
+	</div>
 	<div class="controlbtn">
+	#if($!type=="readonly")
+		#if($!operate=="初审")
+			<a id="id_appln_button" class="btn_g" title="审批">审批</a>
+		#else
+		<a id="id_in1_button" class="btn_g" title="审批通过">审批通过</a>
+        <a id="id_return1_button" class="btn_g" title="退件">退件</a>
+		#end
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#else
 		<a class="btn_g" id="id_save_button" title="提交">提交</a>
 		<a class="btn_gr" id="id_back_button" title="返回">返回</a>
+	#end
 	</div>
-</form>	
+	
 	<script type="text/javascript">		
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
 		#set ($formName = "'#id_module_form'")
+		#parse ("qzbankinterface/appIframeInfo/page8_validation.js")
+		
 		$(document).ready(function() {
 			if("${type}"=="readonly"){
 				$("input[type='text']").attr("disabled",true);
@@ -117,23 +275,143 @@
 				$("select").attr("disabled",true);
 			}
 			$("#id_save_button").click(function() {
-				var formjson = $($formName).serialize();
-	   	          $.post("${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {
-	   	            if (data.success) {
-	   	            	Dialog.message("保存成功!");
-	   	            }
-   	          });
+				if ($($formName).valid()) {
+					var formjson = $($formName).serialize();
+		   	        var url = "${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}";
+		   	        	$.ajax({
+							url : url,
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("保存成功！");
+									window.location.href ="${contextPath}/intopieces/intopiecesapprove/page8.page?id=${customerId}&appId=${appId}";
+								}
+								else{
+									topWin.Dialog.message("保存失败！");
+							    }
+							}
+						});
+				}
 			});
 			$("#id_back_button").click(function() {
 				var url = "${contextPath}/intopieces/intopiecesapprove/approve.page";
                 parent.location.href = url;
-			})
+			});
+			//通过
+			$("#id_in1_button").click(function() {
+	                Dialog.confirm("确定提交吗？", "提示",
+	                	    function() {
+				                $.post("${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}", {},
+				   		            function(data, textStatus, jqXhr) {
+				   		                if (data.success) {
+				   		                	var url ="${contextPath}${returnUrl}";
+				   		                    parent.location.href=url;
+				   		                } else {
+				   		                }
+				   		            });
+			                });
+			});
+			//退件
+			$("#id_re1_button").click(function() {
+	                $("#appId").val("${appId}");
+	                Dialog.confirm("确定提交吗？", "提示",
+	                	    function() {
+				                $('.dialog').hide();
+				    			#set ($formName = "'#checkForm'")
+				    			var formjson = $($formName).serialize();
+				    			
+				    			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+				    	            if (data.success) {
+				    	            	Dialog.message("退件成功!");	
+				    	            	var url = "${contextPath}${returnUrl}";
+				    	            	parent.location.href = url;
+				    	            }
+				    	          });
+	                });
+			});
+			$('.dialog1').hide();
+			$("#id_return1_button").click(function() {
+				$('.dialog1').show();
+	      	});
+			
+			
+			//初审需要三性检测
+			$('.dialog').hide();
+			$("#id_apply_button").click(function() {
+				if ($(".checkbox :checked").length != 1) {
+					Dialog.message("请选择一条记录!");
+					return;
+				}
+				var id = null;
+				$("input[name='checkbox']:checked").each(function() {
+					id = $(this).val().split("@")[0];
+				});
+				$("#applicationId").val(id);
+				$('.dialog').show();
+	      });
+			
+			//通过
+			$("#id_in_button").click(function() {
+				Dialog.confirm("确定提交吗？", "提示",
+	                function() {
+						$('.dialog').hide();
+						#set ($formName = "'#checkForm'")
+						var formjson = $($formName).serialize();
+						 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+				            if (data.success) {
+				            	Dialog.message("保存成功!");	
+				            	var url = "${contextPath}/intopieces/intopiecesrecieve/chushen.page";
+				                window.location.href = url;
+				            }
+				          });
+	                });
+			});
+			//退回
+			$("#id_out_button").click(function() {
+				Dialog.confirm("确定提交吗？", "提示",
+	                function() {
+						$('.dialog').hide();
+						#set ($formName = "'#checkForm'")
+						var formjson = $($formName).serialize();
+						 $.get("${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json", formjson, function(data, textStatus, jqXhr) {
+				            if (data.success) {
+				            	Dialog.message("保存成功!");	
+				            	window.location.reload(true);
+				            }
+				          });
+				});
+			});
+			
+			//拒件
+			$("#id_reject_button").click(function() {
+				var remark = $("#jjyy").val();
+				if(remark==""){
+					Dialog.message("请输入拒件原因!");	
+					return;
+				}
+				Dialog.confirm("确定提交吗？", "提示",
+		                function() {
+						$('.dialog').hide();
+						#set ($formName = "'#checkForm'")
+						var formjson = $($formName).serialize();
+						 $.get("${contextPath}/intopieces/intopiecesrecieve/reject.json", formjson, function(data, textStatus, jqXhr) {
+				            if (data.success) {
+				            	Dialog.message("保存成功!");	
+				            	window.location.reload(true);
+				            }
+				          });
+				});
+			});
+			
+			
 		})
 		function checkJKTJ(obj){
 			$('.jktj').val('');
 			$('.jktj').attr('disabled','disabled');
 			$(obj).parent().find('.jktj').removeAttr('disabled')
 		}
+		
 	</script>	
 </body>
 </html>

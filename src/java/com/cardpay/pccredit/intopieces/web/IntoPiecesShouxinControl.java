@@ -2,10 +2,12 @@ package com.cardpay.pccredit.intopieces.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +30,7 @@ import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFForm;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
@@ -36,6 +39,9 @@ import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
+import com.cardpay.pccredit.intopieces.model.QzApplnJydBzdb;
+import com.cardpay.pccredit.intopieces.model.QzApplnJydDydb;
+import com.cardpay.pccredit.intopieces.model.QzApplnJydGtjkr;
 import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
@@ -118,11 +124,30 @@ public class IntoPiecesShouxinControl extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page8_for_approve", request);
 		String customerId = RequestHelper.getStringValue(request, ID);
 		String appId = RequestHelper.getStringValue(request, "appId");
+		String type = RequestHelper.getStringValue(request, "type");
+		String operate = RequestHelper.getStringValue(request, "operate");
+		QzApplnJyd qzSdhjyd = new QzApplnJyd();
+		List<QzApplnJydGtjkr> gtjkrs = new ArrayList<QzApplnJydGtjkr>();
+		List<QzApplnJydBzdb> bzdbs = new ArrayList<QzApplnJydBzdb>();
+		List<QzApplnJydDydb> dydbs = new ArrayList<QzApplnJydDydb>();
 		if (StringUtils.isNotEmpty(customerId)) {
-			QzApplnJyd qzSdhjyd = intoPiecesService.getSdhjydFormAfter(appId);
+			qzSdhjyd = intoPiecesService.getSdhjydFormAfter(appId);
+			if(qzSdhjyd!=null){
+				//获取共同借款人list
+				gtjkrs = intoPiecesService.getJkrList(qzSdhjyd.getId());
+				//获取保证担保list
+				bzdbs = intoPiecesService.getBzdbList(qzSdhjyd.getId());
+				//获取抵押担保list
+				dydbs = intoPiecesService.getDydbList(qzSdhjyd.getId());
+			}
 			mv.addObject("customerId", customerId);
 			mv.addObject("appId", appId);
 			mv.addObject("result", qzSdhjyd);
+			mv.addObject("gtjkrs", gtjkrs);
+			mv.addObject("bzdbs", bzdbs);
+			mv.addObject("dydbs", dydbs);
+			mv.addObject("type", type);
+			mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate) );
 		}
 		return mv;
 	}
@@ -171,11 +196,16 @@ public class IntoPiecesShouxinControl extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page10", request);
 		String customerId = RequestHelper.getStringValue(request, ID);
 		String appId = RequestHelper.getStringValue(request, "appId");
+		String type = RequestHelper.getStringValue(request, "type");
+		String operate = RequestHelper.getStringValue(request, "operate");
 		if (StringUtils.isNotEmpty(customerId)) {
 			QzApplnSdhjy qzSyjy = intoPiecesService.getSyjyForm(appId);
 			mv.addObject("customerId", customerId);
 			mv.addObject("appId", appId);
 			mv.addObject("result", qzSyjy);
+			mv.addObject("type", type);
+			mv.addObject("operate", operate);
+			mv.addObject("returnUrl", intoPiecesService.getReturnUrl(operate));
 		}
 		return mv;
 	}
@@ -432,5 +462,22 @@ public class IntoPiecesShouxinControl extends BaseController {
 			e.printStackTrace();
 		}
 		return returnMap;
+	}
+	
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("operate", Constant.status_shouxin);
+		}
+		return mv;
 	}
 }
