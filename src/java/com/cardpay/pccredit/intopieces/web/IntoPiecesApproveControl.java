@@ -220,7 +220,7 @@ public class IntoPiecesApproveControl extends BaseController {
 				//添加业务申请表appId
 				QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
 				if(qzApplnYwsqb==null){
-					returnMap.put(JRadConstants.MESSAGE, "请先填写\"业务申请表\"");
+					returnMap.put(JRadConstants.MESSAGE, "请先填写\"贷款申请表\"");
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;
 				}
@@ -247,10 +247,15 @@ public class IntoPiecesApproveControl extends BaseController {
 					return returnMap;
 				}
 				
-				//添加circle表appId
 				Circle circle = circleService.findCircle(customerId,null);
 				if(circle == null){
 					returnMap.put(JRadConstants.MESSAGE, "请先填写\"贷款信息\"");
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				QzApplnJyd jyd = intoPiecesService.getSdhjydForm(customerId);
+				if(jyd==null){
+					returnMap.put(JRadConstants.MESSAGE, "请先填写\"审贷会决议单\"");
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;
 				}
