@@ -872,4 +872,21 @@ public class IntoPiecesApproveControl extends BaseController {
 		return returnMap;
 	}
 	
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("operate", Constant.status_shenqing);
+		}
+		return mv;
+	}
+	
 }
