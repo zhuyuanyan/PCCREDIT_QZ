@@ -1,44 +1,44 @@
 #parse ("common/iframe_page_header.htm")
-<script type="text/javascript">
-</script>
+#parse ("common/customerInfor.htm")
 <body>
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">开户查询</div>
+        <div class="title">客户查询</div>
       </div>
-      <div class="inquiry">
-       <div class="search_tag">开户查询</div>
+ <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-          <form id="queryForm" action="${contextPath}/intopieces/ecif/browse.page">
-          <ul>
+          <form id="submitForm" action="${contextPath}/customer/ecif/browse.page">
+            <ul>
               <li>
-                <span>客户名称：<input type="text" id="clientName" name="clientName" value="$!result.filter.clientName" /></span>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
               </li>
-               <li>
-                <span>证件号码：<input type="text" id="globalId" name="globalId" value="$!result.filter.globalId" /></span>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
+              
               <li class="search_button">
-                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
               </li>
-          </ul>
+            </ul>
           </form>
         </div>
-        <div id="topDiv" class="inquiry_list inquiry_top">
+               <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
               <col width="5%" />
+              <col width="10%" />
               <col width="15%" />
-              <col width="15%"/>
-              <col width="20%"/>
-              <col width="15%"/>
-              <col width="15%"/>
-              <col />
+              <col width="25%" />
+              <col width="25%" />
+              <col width="25%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
-              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">中文姓名</th>
+              <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">客户号</th>
               <th nowrap="nowrap">状态</th>
@@ -49,31 +49,21 @@
           <table>
             <colgroup>
               <col width="5%" />
+              <col width="10%" />
               <col width="15%" />
-              <col width="15%"/>
-              <col width="20%"/>
-              <col width="15%"/>
-              <col />
+              <col width="25%" />
+              <col width="25%" />
+              <col width="25%" />
             </colgroup>
-            #foreach ($obj in $result.items)
+            #foreach ($customer in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!{obj.clientNo}_$!{obj.userId}"/></td>
-              <td nowrap="nowrap">$!obj.clientName</td>
-              <td nowrap="nowrap">$!obj.globalId</td>
-              <td nowrap="nowrap">$!obj.clientNo</td>
-              <td nowrap="nowrap">
-              #if($!obj.status=="0")
-              	未填表  未申请
-              #elseif($!obj.status=="1")
-              	已填表  未申请
-              #elseif($!obj.status=="2")
-              	已申请
-              #elseif($!obj.status=="3")
-              	申请成功
-              #elseif($!obj.status=="4")
-              	申请失败
-              #end
-              </td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id@$!customer.processId@$!customer.status"
+                  /></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">#dictVal("CERT_TYPE",$!customer.cardType)</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.clientNo</td>
+              <td nowrap="nowrap">$!customer.processId</td>
             </tr>
             #end
           </table>
@@ -81,8 +71,8 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("create")<a class="btn_g" id="id_create_button" href="javascript:void(0);" title="开户">开户</a>#end
-          #btnpriv("display")<a class="btn_g" id="id_display_button" href="javascript:void(0);" title="查看">查看</a>#end
+        	<a class="btn_g" id="id_kaihu_button" href="javascript:void(0);" title="新增客户">新增客户</a>
+            <a class="btn_g" id="id_displaykaihu_button" href="javascript:void(0);" title="查看客户信息">查看客户信息</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -95,13 +85,25 @@
 	window.top.currentWindow.setLayout(layout);
 
 	$(document).ready(function() {
-		var opsObj = new Object();
-		opsObj.formObj = $("#submitForm");
-		opsObj.createUrl = "${modulePath}/create.page";
-		opsObj.displayUrl = "${modulePath}/display.page";
-		prepareOperations(opsObj);
+		//开户
+		$("#id_kaihu_button").click(function() {
+			var url="${contextPath}/customer/ecif/create.page";
+			window.location.href = url;
+	    });
 		
+		//查看开户信息
+		$("#id_displaykaihu_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId().split("@")[0];
+				if(rowId!=null){
+					var url="${contextPath}/customer/ecif/display.page?id="+rowId;
+					window.location.href = url;
+				}
+			}else{
+				Dialog.message("请选择一条记录!");
+			}
+	    });
 	});
-	
 </script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
 #parse ("common/iframe_page_footer.htm")

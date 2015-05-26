@@ -99,7 +99,6 @@ public class ECIF extends BusinessModel{
 */
 	
 	private String clientNo;//客户号
-	private String status;//状态 0 未贷款 1 自助 2 传统
 	private String customerId;
     
 	public String getGlobalType() {
@@ -405,12 +404,6 @@ public class ECIF extends BusinessModel{
 	}
 	public void setCity_3(String city_3) {
 		this.city_3 = city_3;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	public String getCustomerId() {
 		return customerId;
