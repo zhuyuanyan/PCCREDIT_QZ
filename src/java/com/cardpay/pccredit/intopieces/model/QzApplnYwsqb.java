@@ -40,16 +40,17 @@ public class QzApplnYwsqb extends BusinessModel {
 	private String phone_1;
 	private String phone_2;
 	private String homePhone;
-	private String bussName;
-	private String bussScope;
-	private String bussStartYear;
-	private String bussAddrType;
-	private String bussAddrTypeOther;
-	private String bussAddr;
-	private String bussPhone;
-	private String bussEmployeeNum;
-	private String bussType;
-	private String bussTypeOther;
+	//经营信息放到jyxx表中 绑定到customerId 跟appId无关
+//	private String bussName;
+//	private String bussScope;
+//	private String bussStartYear;
+//	private String bussAddrType;
+//	private String bussAddrTypeOther;
+//	private String bussAddr;
+//	private String bussPhone;
+//	private String bussEmployeeNum;
+//	private String bussType;
+//	private String bussTypeOther;
 	private String applyAmount;
 	private String applyDeadline;
 	private String applyUse;
@@ -256,66 +257,6 @@ public class QzApplnYwsqb extends BusinessModel {
 	}
 	public void setHomePhone(String homePhone) {
 		this.homePhone = homePhone;
-	}
-	public String getBussName() {
-		return bussName;
-	}
-	public void setBussName(String bussName) {
-		this.bussName = bussName;
-	}
-	public String getBussScope() {
-		return bussScope;
-	}
-	public void setBussScope(String bussScope) {
-		this.bussScope = bussScope;
-	}
-	public String getBussStartYear() {
-		return bussStartYear;
-	}
-	public void setBussStartYear(String bussStartYear) {
-		this.bussStartYear = bussStartYear;
-	}
-	public String getBussAddrType() {
-		return bussAddrType;
-	}
-	public void setBussAddrType(String bussAddrType) {
-		this.bussAddrType = bussAddrType;
-	}
-	public String getBussAddrTypeOther() {
-		return bussAddrTypeOther;
-	}
-	public void setBussAddrTypeOther(String bussAddrTypeOther) {
-		this.bussAddrTypeOther = bussAddrTypeOther;
-	}
-	public String getBussAddr() {
-		return bussAddr;
-	}
-	public void setBussAddr(String bussAddr) {
-		this.bussAddr = bussAddr;
-	}
-	public String getBussPhone() {
-		return bussPhone;
-	}
-	public void setBussPhone(String bussPhone) {
-		this.bussPhone = bussPhone;
-	}
-	public String getBussEmployeeNum() {
-		return bussEmployeeNum;
-	}
-	public void setBussEmployeeNum(String bussEmployeeNum) {
-		this.bussEmployeeNum = bussEmployeeNum;
-	}
-	public String getBussType() {
-		return bussType;
-	}
-	public void setBussType(String bussType) {
-		this.bussType = bussType;
-	}
-	public String getBussTypeOther() {
-		return bussTypeOther;
-	}
-	public void setBussTypeOther(String bussTypeOther) {
-		this.bussTypeOther = bussTypeOther;
 	}
 	public String getApplyAmount() {
 		return applyAmount;

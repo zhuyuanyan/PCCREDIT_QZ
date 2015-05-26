@@ -32,9 +32,15 @@
 	 	<if test="customerId != null and customerId != '' ">
 			AND CUSTOMER_ID=#{customerId}
 		</if>
-		<if test="applicationId != null and applicationId != '' ">
+		AND APPLICATION_ID is null
+	</select>
+	<select id="findNbscyjbByAppId" resultMap="ResultMap">
+		 select * 
+		 from qz_appln_nbscyjb   
+		 where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
 			AND APPLICATION_ID=#{applicationId}
-		</if> 
+		</if>
 	</select>
 	<select id="findNbscyjbById" resultMap="ResultMap">
 		 select * 

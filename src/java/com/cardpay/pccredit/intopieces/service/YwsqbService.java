@@ -35,6 +35,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
+import com.cardpay.pccredit.intopieces.dao.JyxxDao;
 import com.cardpay.pccredit.intopieces.dao.YwsqbDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
@@ -53,6 +54,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnProcessResult;
 import com.cardpay.pccredit.intopieces.model.QzApplnSxjc;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
@@ -111,10 +113,23 @@ public class YwsqbService {
 	@Autowired
 	private YwsqbDao ywsqbDao;
 	
+	@Autowired
+	private JyxxDao jyxxDao;
+	
 	//保存业务申请表
-	public void insert_page1(QzApplnYwsqb qzApplnYwsqb, HttpServletRequest request) throws Exception{
+	public void insert_page1(QzApplnYwsqb qzApplnYwsqb, QzApplnJyxx qzApplnJyxx,HttpServletRequest request) throws Exception{
 		commonDao.insertObject(qzApplnYwsqb);
 		String ywsqbId = qzApplnYwsqb.getId();
+		
+		//添加经营信息
+		QzApplnJyxx tmp = jyxxDao.findJyxx(qzApplnYwsqb.getCustomerId(), null);
+		if(tmp == null){
+			commonDao.insertObject(qzApplnJyxx);
+		}
+		else{
+			qzApplnJyxx.setId(tmp.getId());
+			commonDao.updateObject(qzApplnJyxx);
+		}
 		
 		//获取动态新增的页面元素
 		//主要供应商
@@ -161,10 +176,20 @@ public class YwsqbService {
 		}
 	}
 	
-	public void update_page1(QzApplnYwsqb qzApplnYwsqb,HttpServletRequest request) throws Exception {
+	public void update_page1(QzApplnYwsqb qzApplnYwsqb,QzApplnJyxx qzApplnJyxx,HttpServletRequest request) throws Exception {
 		commonDao.updateObject(qzApplnYwsqb);
 		String ywsqbId = qzApplnYwsqb.getId();
 		
+		//添加经营信息
+		QzApplnJyxx tmp = jyxxDao.findJyxx(qzApplnYwsqb.getCustomerId(), null);
+		if(tmp == null){
+			commonDao.insertObject(qzApplnJyxx);
+		}
+		else{
+			qzApplnJyxx.setId(tmp.getId());
+			commonDao.updateObject(qzApplnJyxx);
+		}
+				
 		//获取动态新增的页面元素
 		//主要供应商
 		this.deleteYwsqbZygys(ywsqbId);
@@ -216,6 +241,10 @@ public class YwsqbService {
 	//查找page1 ywsqb信息
 	public QzApplnYwsqb findYwsqb(String customerId,String applicationId){
 		return ywsqbDao.findYwsqb(customerId, applicationId);
+	}
+	
+	public QzApplnYwsqb findYwsqbByAppId(String applicationId){
+		return ywsqbDao.findYwsqbByAppId(applicationId);
 	}
 	
 	//查找page1 zygys信息
@@ -276,14 +305,7 @@ public class YwsqbService {
 		if(!qzApplnYwsqb.getAddressType().equals("5")){
 			qzApplnYwsqb.setAddressTypeOther("");
 		}
-		//实际经营地址
-		if(!qzApplnYwsqb.getBussAddrType().equals("5")){
-			qzApplnYwsqb.setBussAddrTypeOther("");
-		}
-		//组织形式
-		if(!qzApplnYwsqb.getBussType().equals("3")){
-			qzApplnYwsqb.setBussTypeOther("");
-		}
+		
 		//抵押物品
 		if(!qzApplnYwsqb.getHaveGunt().equals("1")){
 			qzApplnYwsqb.setThing_1("");
@@ -312,6 +334,17 @@ public class YwsqbService {
 		//信息渠道
 		if(!qzApplnYwsqb.getInfoType().equals("8")){
 			qzApplnYwsqb.setInfoTypeOther("");
+		}
+	}
+	
+	public void dealWithNullValueJyxx(QzApplnJyxx qzApplnJyxx){
+		//实际经营地址
+		if(!qzApplnJyxx.getBussAddrType().equals("5")){
+			qzApplnJyxx.setBussAddrTypeOther("");
+		}
+		//组织形式
+		if(!qzApplnJyxx.getBussType().equals("3")){
+			qzApplnJyxx.setBussTypeOther("");
 		}
 	}
 }

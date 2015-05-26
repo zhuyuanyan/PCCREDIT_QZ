@@ -125,6 +125,27 @@
 	    <result property="globalId" column="GLOBAL_ID" />
 	</resultMap>
 	
+	<select id="findCircle" resultMap="ResultMap">
+		select *
+		from 
+			QZ_IESB_FOR_CIRCLE
+			where 1=1
+	 	<if test="customerId != null and customerId != '' ">
+			AND CUSTOMER_ID=#{customerId}
+		</if>
+		AND APPLICATION_ID is null
+	</select>
+	
+	<select id="findCircleByAppId" resultMap="ResultMap">
+		select *
+		from 
+			QZ_IESB_FOR_CIRCLE
+			where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if>
+	</select>
+	
 	<select id="findCircleByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
 	    resultMap="ResultMap2">
 		select 
@@ -169,4 +190,15 @@
 		from QZ_IESB_FOR_CIRCLE
 		where client_no  = #{clientNo}
 	</select>
+	
+	<select id="findCircleByCustomerId" resultMap="ResultMap">
+		select 
+		*
+		from QZ_IESB_FOR_CIRCLE
+		where 1=1
+		<if test="customerId != null and customerId != '' ">
+			AND CUSTOMER_ID=#{customerId}
+		</if>
+	</select>
+	
 </mapper> 

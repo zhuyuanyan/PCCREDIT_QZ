@@ -53,7 +53,6 @@ public class CreditService {
 			commonDao.insertObject(credit);
 			
 			ECIF ecif = ecifService.findEcifByClientNo(credit.getClientNo());
-			ecif.setStatus("");
 			commonDao.updateObject(ecif);
 		}
 		

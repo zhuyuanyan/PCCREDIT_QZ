@@ -1,7 +1,8 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
-	
-</style>
+<script type="text/javascript">
+var now = new Date();
+var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate();
+</script>
 <body>
 <form id="id_module_form">
 <div class="forms" id="formsId">
@@ -291,7 +292,7 @@
 </form>	
 <div class="controlbtn">
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
-	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	<a href="javascript:history.back();" class="btn_gr">返回</a>
 </div>
 	<script type="text/javascript">			
 		var layout=new FormsLayout("formsId");	
@@ -321,11 +322,6 @@
 						}
 					});
 				}
-			});
-			
-			//返回
-			$("#id_back_button").click(function() {
-				window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
 			});
 			
 		});

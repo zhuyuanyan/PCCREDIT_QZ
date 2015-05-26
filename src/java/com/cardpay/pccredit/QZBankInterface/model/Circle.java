@@ -135,7 +135,8 @@ public class Circle extends BusinessModel{
 	private String acctNo1;//收息收款账号
 	private String acctNo2;//放款账号
 	
-	private String status;//状态码  标记客户对应的该笔贷款是否结清,同步更新ecif的status字段
+	private String customerId;
+	private String applicationId;
 	
 	public String getContractNo() {
 		return contractNo;
@@ -732,10 +733,16 @@ public class Circle extends BusinessModel{
 	public void setAcctNo2(String acctNo2) {
 		this.acctNo2 = acctNo2;
 	}
-	public String getStatus() {
-		return status;
+	public String getCustomerId() {
+		return customerId;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 }

@@ -1,7 +1,8 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
-	
-</style>
+<script type="text/javascript">
+var now = new Date();
+var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate();
+</script>
 <body>
 <form id="id_module_form">
 <div class="forms" id="formsId">
@@ -192,7 +193,10 @@
 					<td><input type="text" class="input" name="loanType_1" /></td>	
 					<td><input type="text" class="input" name="amount_1" /></td>					
 					<td><input type="text" class="input" name="deadline_1" /></td>	
-					<td><input type="text" class="input" name="loanDate_1" onmouseover="_calendar()"/></td>	
+					
+					<script>
+						document.write('<td><input type="text" class="input" value="'+timestr+'"name="loanDate_1" onmouseover="_calendar()"/></td>');
+					</script>
 					<td><input type="text" class="input" name="purpose_1" /></td>					
 					<td><input type="text" class="input" name="remainAmount_1" /></td>	
 					<td><input type="text" class="input" name="guntForOther_1" /></td>	
@@ -264,7 +268,9 @@
 				<tr>
 					<td><input type="text" class="input" name="cardNo_1" /></td>	
 					<td><input type="text" class="input" name="price_1" /></td>	
-					<td><input type="text" class="input" name="buyDate_1" onmouseover="_calendar()"/></td>				
+					<script>
+						document.write('<td><input type="text" class="input" value="'+timestr+'"name="buyDate_1" onmouseover="_calendar()"/></td>');
+					</script>
 					<td>
 						<select name="haveCopy_1_1">
 							<option value="1">有</option>
@@ -285,7 +291,7 @@
 </form>	
 <div class="controlbtn">
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
-	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	<a href="javascript:history.back();" class="btn_gr">返回</a>
 </div>
 	<script type="text/javascript">			
 		var layout=new FormsLayout("formsId");	
@@ -294,6 +300,8 @@
 		#set ($formName = "'#id_module_form'")
 		#parse ("qzbankinterface/appIframeInfo/page4_validation.js")
 		
+		
+
 		$(document).ready(function() {	
 			//保存
 			$("#id_save_button").click(function() {
@@ -315,11 +323,6 @@
 						}
 					});
 				}
-			});
-			
-			//返回
-			$("#id_back_button").click(function() {
-				window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
 			});
 			
 		});

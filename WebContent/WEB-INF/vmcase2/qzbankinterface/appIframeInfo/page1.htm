@@ -1,4 +1,8 @@
 #parse ("common/iframe_page_header3.htm")
+<script type="text/javascript">
+var now = new Date();
+var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate();
+</script>
 <body>
 <form id="id_module_form">
 <div class="forms" id="formsId">
@@ -165,35 +169,35 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">经营名称：</td>
-					<td><input type="text" name="bussName"/></td>	
+					<td><input type="text" name="bussName" value="$!qzApplnJyxx.bussName" /></td>	
 					<td class="table-label">经营范围：</td>					
-					<td><input type="text" name="bussScope"/></td>		
+					<td><input type="text" name="bussScope" value="$!qzApplnJyxx.bussScope" /></td>		
 				</tr>	
 				<tr>
 					<td class="table-label">开业时间：</td>
-					<td><input type="text" name="bussStartYear"/>年</td>	
+					<td><input type="text" name="bussStartYear" value="$!qzApplnJyxx.bussStartYear" />年</td>	
 					<td class="table-label">实际经营地址：</td>					
 					<td>
 						(<select id="bussAddrType" name="bussAddrType" onchange="setSelect(this,'qtsjjydz')" style="width:80px">
-							#dict("ADDRESS_TYPE_NEW", "")
+							#dict("ADDRESS_TYPE_NEW", "$!qzApplnJyxx.bussAddrType")
 						</select>
-						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" disabled/>)：			
-						<input type="text" name="bussAddr"/>
+						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" value="$!qzApplnJyxx.bussAddrTypeOther" #if($!qzApplnJyxx.bussAddrType!='5') disabled #end/>)：			
+						<input type="text" name="bussAddr" value="$!qzApplnJyxx.bussAddr" />
 					</td>		
 				</tr>
 				<tr>
 					<td class="table-label">营业地址电话：</td>
-					<td><input type="text" name="bussPhone"/></td>	
+					<td><input type="text" name="bussPhone" value="$!qzApplnJyxx.bussPhone" /></td>	
 					<td class="table-label">雇员人数：</td>					
-					<td><input type="text" name="bussEmployeeNum"/>人</td>		
+					<td><input type="text" name="bussEmployeeNum" value="$!qzApplnJyxx.bussEmployeeNum" />人</td>		
 				</tr>	
 				<tr>
 					<td class="table-label">组织形式：</td>
 					<td colspan="3">
 						<select id="bussType" name="bussType" onchange="setSelect(this,'qtzzxs')">
-							#dict("BUSS_TYPE_NEW", "")
+							#dict("BUSS_TYPE_NEW", "$!qzApplnJyxx.bussType")
 						</select>
-						<input type="text" name="bussTypeOther" id="qtzzxs" disabled/>	
+						<input type="text" name="bussTypeOther" id="qtzzxs" value="$!qzApplnJyxx.bussTypeOther" #if($!qzApplnJyxx.bussType!='3') disabled #end/>	
 					</td>			
 				</tr>
 			</table>
@@ -375,7 +379,9 @@
 					<td><input type="text" class="input" name="bankOrOtherType_jkjl_1" disabled/></td>	
 					<td><input type="text" class="input" name="purpose_jkjl_1" disabled/></td>					
 					<td><input type="text" class="input" name="totalAmount_jkjl_1" disabled/></td>	
-					<td><input type="text" class="input" name="loanDate_jkjl_1" value="" onmouseover="_calendar()" disabled/></td>	
+					<script>
+						document.write('<td><input type="text" class="input" name="loanDate_jkjl_1" value="'+timestr+'" onmouseover="_calendar()" disabled/></td>');
+					</script>
 					<td><input type="text" class="input" name="deadline_jkjl_1" disabled/></td>					
 					<td><input type="text" class="input" name="rates_jkjl_1" disabled/></td>	
 					<td><input type="text" class="input" name="repayType_jkjl_1" disabled/></td>	
@@ -607,7 +613,7 @@
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1_change.page?customerId=${customerId}";
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?customerId=${customerId}";
 							}
 							else{
 								topWin.Dialog.message("保存失败！");

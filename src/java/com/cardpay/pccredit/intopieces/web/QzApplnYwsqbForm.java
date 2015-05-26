@@ -6,6 +6,7 @@ package com.cardpay.pccredit.intopieces.web;
 
 import java.util.Date;
 
+import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
 import com.wicresoft.jrad.base.database.model.BaseModel;
 import com.wicresoft.jrad.base.web.form.BaseForm;
@@ -573,6 +574,21 @@ public class QzApplnYwsqbForm extends BaseForm{
 	}
 	public void setManagerTime(Date managerTime) {
 		this.managerTime = managerTime;
+	}
+	public QzApplnJyxx createModelJyxx() {
+		// TODO Auto-generated method stub
+		QzApplnJyxx obj = new QzApplnJyxx();
+		obj.setBussName(this.getBussName());
+		obj.setBussScope(this.getBussScope());
+		obj.setBussStartYear(this.getBussStartYear());
+		obj.setBussAddrType(this.getBussAddrType());
+		obj.setBussAddr(this.getBussAddr());
+		obj.setBussAddrTypeOther(this.getBussAddrTypeOther());
+		obj.setBussPhone(this.getBussPhone());
+		obj.setBussEmployeeNum(this.getBussEmployeeNum());
+		obj.setBussType(this.getBussType());
+		obj.setBussTypeOther(this.getBussTypeOther());
+		return obj;
 	}
 	
 }

@@ -162,35 +162,35 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">经营名称：</td>
-					<td><input type="text" name="bussName" value="$!qzApplnYwsqb.bussName" /></td>	
+					<td><input type="text" name="bussName" value="$!qzApplnJyxx.bussName" /></td>	
 					<td class="table-label">经营范围：</td>					
-					<td><input type="text" name="bussScope" value="$!qzApplnYwsqb.bussScope" /></td>		
+					<td><input type="text" name="bussScope" value="$!qzApplnJyxx.bussScope" /></td>		
 				</tr>	
 				<tr>
 					<td class="table-label">开业时间：</td>
-					<td><input type="text" name="bussStartYear" value="$!qzApplnYwsqb.bussStartYear" />年</td>	
+					<td><input type="text" name="bussStartYear" value="$!qzApplnJyxx.bussStartYear" />年</td>	
 					<td class="table-label">实际经营地址：</td>					
 					<td>
 						(<select id="bussAddrType" name="bussAddrType" onchange="setSelect(this,'qtsjjydz')" style="width:80px">
-							#dict("ADDRESS_TYPE_NEW", "$!qzApplnYwsqb.bussAddrType")
+							#dict("ADDRESS_TYPE_NEW", "$!qzApplnJyxx.bussAddrType")
 						</select>
-						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" value="$!qzApplnYwsqb.bussAddrTypeOther" #if($!qzApplnYwsqb.bussAddrType!='5') disabled #end/>)：			
-						<input type="text" name="bussAddr" value="$!qzApplnYwsqb.bussAddr" />
+						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" value="$!qzApplnJyxx.bussAddrTypeOther" #if($!qzApplnJyxx.bussAddrType!='5') disabled #end/>)：			
+						<input type="text" name="bussAddr" value="$!qzApplnJyxx.bussAddr" />
 					</td>		
 				</tr>
 				<tr>
 					<td class="table-label">营业地址电话：</td>
-					<td><input type="text" name="bussPhone" value="$!qzApplnYwsqb.bussPhone" /></td>	
+					<td><input type="text" name="bussPhone" value="$!qzApplnJyxx.bussPhone" /></td>	
 					<td class="table-label">雇员人数：</td>					
-					<td><input type="text" name="bussEmployeeNum" value="$!qzApplnYwsqb.bussEmployeeNum" />人</td>		
+					<td><input type="text" name="bussEmployeeNum" value="$!qzApplnJyxx.bussEmployeeNum" />人</td>		
 				</tr>	
 				<tr>
 					<td class="table-label">组织形式：</td>
 					<td colspan="3">
 						<select id="bussType" name="bussType" onchange="setSelect(this,'qtzzxs')">
-							#dict("BUSS_TYPE_NEW", "$!qzApplnYwsqb.bussType")
+							#dict("BUSS_TYPE_NEW", "$!qzApplnJyxx.bussType")
 						</select>
-						<input type="text" name="bussTypeOther" id="qtzzxs" value="$!qzApplnYwsqb.bussTypeOther" #if($!qzApplnYwsqb.bussType!='3') disabled #end/>	
+						<input type="text" name="bussTypeOther" id="qtzzxs" value="$!qzApplnJyxx.bussTypeOther" #if($!qzApplnJyxx.bussType!='3') disabled #end/>	
 					</td>			
 				</tr>
 			</table>
@@ -625,7 +625,7 @@
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1_change.page?customerId=${qzApplnYwsqb.customerId}";
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?customerId=${qzApplnYwsqb.customerId}";
 							}
 							else{
 								topWin.Dialog.message("保存失败！");
