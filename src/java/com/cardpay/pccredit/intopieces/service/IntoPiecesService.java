@@ -1541,8 +1541,10 @@ public class IntoPiecesService {
 	public void addAppId(String customerId,String applicationId){
 		//添加业务申请表appId
 		QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
-		qzApplnYwsqb.setApplicationId(applicationId);
-		commonDao.updateObject(qzApplnYwsqb);
+		if(qzApplnYwsqb!=null){
+			qzApplnYwsqb.setApplicationId(applicationId);
+			commonDao.updateObject(qzApplnYwsqb);
+		}
 		//添加担保人appId
 		List<QzApplnDbrxx> dbrxx_ls = dbrxxService.findDbrxx(customerId, null);
 		for(QzApplnDbrxx obj : dbrxx_ls){
@@ -1730,6 +1732,8 @@ public class IntoPiecesService {
 			return "/intopieces/intopieceszhongxin/zhongxin.page";
 		}else if(operate.equals(Constant.status_xinshen)){
 			return "/intopieces/intopiecesxindai/xindai.page";
+		}else if(operate.equals(Constant.status_shenqing)){
+			return "/intopieces/intopiecesapprove/add_information.page";
 		}else{
 			return "/intopieces/intopiecesxingzheng2/xingzhengend.page";
 		}
