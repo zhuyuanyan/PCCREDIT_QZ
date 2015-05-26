@@ -86,8 +86,10 @@
 							<tr>
 								<td class="tableTitle" colspan="2" style="text-align:left;">
 									共同借款人
+									#if($!type!="readonly")
 									<a class="add" onclick="addTd('gtjkr')"><img src="${contextPath}/images/add.png"/></a>
 									<a class="del" onclick="removeTd('gtjkr')"><img src="${contextPath}/images/del.png"/></a>
+									#end
 								</td>		
 							</tr>
 							<tr>
@@ -116,8 +118,10 @@
 							<tr>
 								<td class="tableTitle" colspan="2" style="text-align:left;">
 									保证担保
+									#if($!type!="readonly")
 									<a class="add" onclick="addTd('bzdb')"><img src="${contextPath}/images/add.png"/></a>
 									<a class="del" onclick="removeTd('bzdb')"><img src="${contextPath}/images/del.png"/></a>
+									#end
 								</td>		
 							</tr>
 							#if(!$bzdbs)
@@ -146,8 +150,10 @@
 							<tr>
 								<td class="tableTitle" colspan="5" style="text-align:left;">
 									抵押担保
+									#if($!type!="readonly")
 									<a class="add" onclick="addTd('dydb')"><img src="${contextPath}/images/add.png"/></a>
 									<a class="del" onclick="removeTd('dydb')"><img src="${contextPath}/images/del.png"/></a>
+									#end
 								</td>		
 							</tr>
 							<tr>
@@ -254,7 +260,7 @@
 		#end
 		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 	#else
-		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+		<a class="btn_g" id="id_save_button" title="提交">保存</a>
 		<a class="btn_gr" id="id_back_button" title="返回">返回</a>
 	#end
 	</div>
@@ -300,15 +306,22 @@
 			$("#id_in1_button").click(function() {
 	                Dialog.confirm("确定提交吗？", "提示",
 	                	    function() {
-				                $.post("${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}", {},
-				   		            function(data, textStatus, jqXhr) {
-				   		                if (data.success) {
-				   		                	var url ="${contextPath}${returnUrl}";
-				   		                    parent.location.href=url;
-				   		                } else {
-				   		                }
-				   		            });
+				                var url = "${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}";
+				   	        	$.ajax({
+									url : url,
+									type : "get",
+									success : function(data) {
+										if (data.success) {
+											topWin.Dialog.message("保存成功！");
+											parent.location.href ="${contextPath}${returnUrl}";
+										}
+										else{
+											topWin.Dialog.message("保存失败！");
+									    }
+									}
+								});
 			                });
+	                
 			});
 			//退件
 			$("#id_re1_button").click(function() {
@@ -318,16 +331,24 @@
 				                $('.dialog1').hide();
 				    			#set ($formName = "'#checkForm1'")
 				    			var formjson = $($formName).serialize();
-				    			
-				    			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-				    	            if (data.success) {
-				    	            	Dialog.message("退件成功!");	
-				    	            	var url = "${contextPath}${returnUrl}";
-				    	            	parent.location.href = url;
-				    	            }
+			    				 $.ajax({
+										url : $($formName).attr("action"),
+										type : "get",
+										data : formjson,
+										success : function(data) {
+											if (data.success) {
+												topWin.Dialog.message("保存成功!");	
+								            	var url = "${contextPath}${returnUrl}";
+								                parent.location.href = url;
+											}
+											else{
+												topWin.Dialog.message("保存失败！");
+										    }
+										}
+									}); 
 				    	          });
 	                });
-			});
+			
 			$('.dialog1').hide();
 			$("#id_return1_button").click(function() {
 				$('.dialog1').show();
@@ -348,13 +369,22 @@
 						$('.dialog').hide();
 						#set ($formName = "'#checkForm'")
 						var formjson = $($formName).serialize();
-						 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-				            if (data.success) {
-				            	Dialog.message("保存成功!");	
-				            	var url = "${contextPath}${returnUrl}";
-				                window.location.href = url;
-				            }
-				          });
+						 var url = $($formName).attr("action");
+			   	        	$.ajax({
+								url : url,
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("保存成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("保存失败！");
+								    }
+								}
+							}); 
 	                });
 			});
 			//退回
@@ -364,12 +394,21 @@
 						$('.dialog').hide();
 						#set ($formName = "'#checkForm'")
 						var formjson = $($formName).serialize();
-						 $.get("${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json", formjson, function(data, textStatus, jqXhr) {
-				            if (data.success) {
-				            	Dialog.message("保存成功!");	
-				            	window.location.reload(true);
-				            }
-				          });
+							 $.ajax({
+									url : "${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json",
+									type : "get",
+									data : formjson,
+									success : function(data) {
+										if (data.success) {
+											topWin.Dialog.message("保存成功!");	
+							            	var url = "${contextPath}${returnUrl}";
+							                parent.location.href = url;
+										}
+										else{
+											topWin.Dialog.message("保存失败！");
+									    }
+									}
+							}); 
 				});
 			});
 			
@@ -385,12 +424,21 @@
 						$('.dialog').hide();
 						#set ($formName = "'#checkForm'")
 						var formjson = $($formName).serialize();
-						 $.get("${contextPath}/intopieces/intopiecesrecieve/reject.json", formjson, function(data, textStatus, jqXhr) {
-				            if (data.success) {
-				            	Dialog.message("保存成功!");	
-				            	window.location.reload(true);
-				            }
-				          });
+						 $.ajax({
+								url : "${contextPath}/intopieces/intopiecesrecieve/reject.json",
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("保存成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("保存失败！");
+								    }
+								}
+						}); 
 				});
 			});
 			

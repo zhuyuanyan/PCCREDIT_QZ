@@ -548,8 +548,12 @@
 	</div>
 </form>	
 <div class="controlbtn">
+	#if($!type=="readonly")
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#else
 		<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
 		<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	#end
 	</div>
 	<script type="text/javascript">			
 		function setSelect(obj,id){//其他证件类型、其他教育水平等

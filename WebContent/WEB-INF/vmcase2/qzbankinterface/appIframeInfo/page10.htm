@@ -192,14 +192,20 @@
 	$("#id_in2_button").click(function() {
             Dialog.confirm("确定提交吗？", "提示",
             	    function() {
-		                $.post("${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}", {},
-		   		            function(data, textStatus, jqXhr) {
-		   		                if (data.success) {
-		   		                	var url ="${contextPath}${returnUrl}";
-		   		                    parent.location.href=url;
-		   		                } else {
-		   		                }
-		   		            });
+		                $.ajax({
+							url : "${contextPath}/intopieces/intopiecesshouxin/pass.json?id=${appId}",
+							type : "get",
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("审批成功!");	
+					            	var url = "${contextPath}${returnUrl}";
+					                parent.location.href = url;
+								}
+								else{
+									topWin.Dialog.message("审批失败！");
+							    }
+							}
+					}); 
 	                });
 	});
 	//退件
@@ -210,44 +216,67 @@
 		                $('.dialog2').hide();
 		    			#set ($formName = "'#checkForm1'")
 		    			var formjson = $($formName).serialize();
-		    			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-		    	            if (data.success) {
-		    	            	Dialog.message("退件成功!");	
-		    	            	var url = "${contextPath}${returnUrl}";
-		    	            	parent.location.href = url;
-		    	            }
-		    	          });
+		    			 $.ajax({
+								url : $($formName).attr("action"),
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("退件成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("退件失败！");
+								    }
+								}
+						}); 
             });
 	});
 	//拒件
 	$("#id_re2_button").click(function() {
 		Dialog.confirm("确定提交吗？", "提示",
-			    function() {
-					$('.dialog3').hide();
-					$("#appId1").val("${appId}");
-					#set ($formName = "'#checkForm2'")
-					var formjson = $($formName).serialize();
-					 $.get("${contextPath}/intopieces/intopiecesshouxin/rejectAppln.json", formjson, function(data, textStatus, jqXhr) {
-			            if (data.success) {
-			            	Dialog.message("拒件成功!");	
-			            	var url = "${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
-			                window.location.href = url;
-			            }
-			          });
+		    function() {
+				$('.dialog3').hide();
+				$("#appId1").val("${appId}");
+				#set ($formName = "'#checkForm2'")
+				var formjson = $($formName).serialize();
+				 $.ajax({
+						url : "${contextPath}/intopieces/intopiecesshouxin/rejectAppln.json",
+						type : "get",
+						data : formjson,
+						success : function(data) {
+							if (data.success) {
+								topWin.Dialog.message("拒件成功!");	
+				            	var url = "${contextPath}${returnUrl}";
+				                parent.location.href = url;
+							}
+							else{
+								topWin.Dialog.message("拒件失败！");
+						    }
+						}
+				}); 
 		});
 	});
 	//补充上会
 	$("#id_return_to_cu_button").click(function() {
 			Dialog.confirm("确定提交吗？", "提示",
 				    function() {
-						$.post("${contextPath}/intopieces/intopiecesshouxin/return_to_cu.json?id=${appId}", {},
-					            function(data, textStatus, jqXhr) {
-					                if (data.success) {
-					                	var url ="${contextPath}/intopieces/intopiecesshouxin/shouxin.page";
-					                    parent.location.href=url;
-					                } else {
-					                }
-					            });
+						 $.ajax({
+								url : "${contextPath}/intopieces/intopiecesshouxin/return_to_cu.json?id=${appId}",
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("补充上会成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("补充上会！");
+								    }
+								}
+						}); 
 			});
 	});
 	

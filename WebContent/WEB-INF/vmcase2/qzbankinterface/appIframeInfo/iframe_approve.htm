@@ -12,7 +12,7 @@
 		<h1>添加客户信息</h1>
 	</div>
 	<ul class="Tabs">
-	#if($!operate=='申请')
+	#if($!operate=='补充上会')
 		<li class="active" onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page1.page?id=${customerId}&appId=${appId}&type=readonly&operate=${operate}')" style="margin-left:0;">业务申请表</li>
 		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page4_list.page?id=${customerId}&appId=${appId}&type=readonly&operate=${operate}')" style="margin-left:0;">担保人信息表</li>
 		<li onclick="selectTab('tabContent0',this);$('#contentFrame').attr('src','${contextPath}/intopieces/intopiecesapprove/page5.page?id=${customerId}&appId=${appId}&type=modify&operate=${operate}')" style="margin-left:0;">待决策资料清单</li>
@@ -74,7 +74,7 @@
 	<div class="TabContent" id="Content1">
 		<!--*************************************行内评分项*****************************************-->
 		<div class="tabContent selectTab" id="tabContent0">			
-			<iframe frameborder="0" id="contentFrame" width="100%;" src="${contextPath}/intopieces/intopiecesapprove/page1.page" marginheight="0" marginwidth="0" height="440px" style="height:410px\0;"></iframe>
+			<iframe frameborder="0" id="contentFrame" width="100%;" src="${contextPath}/intopieces/intopiecesapprove/page1.page?id=${customerId}&appId=${appId}&type=readonly&operate=${operate}')" marginheight="0" marginwidth="0" height="440px" style="height:410px\0;"></iframe>
 		</div>
 	</div>
 	<script type="text/javascript">			
