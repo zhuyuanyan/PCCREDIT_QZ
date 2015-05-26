@@ -1,13 +1,12 @@
 #parse ("common/iframe_page_header3.htm")
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
-	<script type="text/javascript" src="jquery-1.js"></script>
 
 </head>
 <body>
 <!--*************************************************************审贷会决议单*************************************************************-->
-<form id="id_module_form" style="height:480px;position:absolute;max-height:420px;">
-	<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+<form id="id_module_form">
+	<div class="form-bd" id="formsId">
 		<div name="content">
 			<table class="myTable">
 				<caption>审贷会决议单</caption>
@@ -234,7 +233,7 @@
 		</div>
 	</div>
 </form>	
-	<div class="controlbtn" style="position:absolute;top:500px;">
+	<div class="controlbtn">
 	#if($!type=='modify')
 		<a class="btn_g" id="id_save_button" title="提交">保存</a>
 		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
