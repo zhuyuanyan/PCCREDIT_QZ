@@ -1732,7 +1732,7 @@ public class IntoPiecesService {
 			return "/intopieces/intopieceszhongxin/zhongxin.page";
 		}else if(operate.equals(Constant.status_xinshen)){
 			return "/intopieces/intopiecesxindai/xindai.page";
-		}else if(operate.equals(Constant.status_shenqing)){
+		}else if(operate.equals(Constant.status_buchong)){
 			return "/intopieces/intopiecesapprove/add_information.page";
 		}else{
 			return "/intopieces/intopiecesxingzheng2/xingzhengend.page";

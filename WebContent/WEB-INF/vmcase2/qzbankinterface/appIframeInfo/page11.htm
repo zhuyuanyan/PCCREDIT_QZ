@@ -1,20 +1,19 @@
 #parse ("common/iframe_page_header3.htm")
 <style type="text/css">
-	form{height:420px;position:absolute;right:0;width:98.5%;margin-right:0;height:410px;height:380px\0;}
-	.box{border:none;}
-	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
 </style>
 <body>
 <form id="id_module_form" >
 <!--*************************************************************合同签订台账*************************************************************-->
 	<div class="box">
 		<div name="content">
-			<table class="myTable" style="width:98%;margin:5px auto;text-align:center;" id="htqdtz">
+			<table class="myTable"  id="htqdtz">
 				<tr>
 					<td class="tableTitle" colspan="8" style="text-align:left;">
 						合同签订台账
+						#if($!type=="modify")
 						<a class="add" onclick="addTd('htqdtz')"><img src="${contextPath}/images/add.png"/></a>
 						<a class="del" onclick="removeTd('htqdtz')"><img src="${contextPath}/images/del.png"/></a>
+						#end
 					</td>		
 				</tr>
 				<tr>
@@ -45,7 +44,7 @@
 </form>	
 	<div class="controlbtn">
 	#if($!type=="modify")
-		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+		<a class="btn_g" id="id_save_button" title="保存">保存</a>
 	#end
 	<a id="id_in_button" class="btn_g" title="审批通过">审批通过</a>
 	<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
@@ -78,14 +77,20 @@
                 			}else{
                 				url="${contextPath}/intopieces/intopiecesxindai/save_apply.json";
                 			}
-			                $.post(url+"?id=${appId}", {},
-			    		            function(data, textStatus, jqXhr) {
-			    		                if (data.success) {
-			    		                	var url ="${contextPath}${returnUrl}";
-				   		                    parent.location.href=url;
-			    		                } else {
-			    		                }
-			    		            });
+			                $.ajax({
+								url : url+"?id=${appId}",
+								type : "get",
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("审批成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("审批失败！");
+								    }
+								}
+						}); 
                 		});
 		});
 	})

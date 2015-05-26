@@ -30,7 +30,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>个人信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -152,7 +152,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>营业信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -204,7 +204,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>贷款申请</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -245,7 +245,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>财务信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -293,16 +293,16 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>业务信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
 			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="zygys">
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
-						主要供应商
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zygys')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zygys')"/>
+						主要供应商						
+						<a class="add" onclick="addTd('zygys')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zygys')"><img src="${contextPath}/images/del.png"/></a>
 						<input type="hidden" value="1" id="zygys_cnt" name="zygys_cnt">
 					</td>		
 				</tr>
@@ -321,8 +321,8 @@
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
 						主要客户
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zykh')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zykh')"/>
+						<a class="add" onclick="addTd('zykh')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zykh')"><img src="${contextPath}/images/del.png"/></a>
 						<input type="hidden" value="1" id="zykh_cnt" name="zykh_cnt">
 					</td>		
 				</tr>
@@ -344,7 +344,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>借款记录</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>	
 		<div name="content" class="display_show">	
@@ -355,8 +355,8 @@
 						<label><input type="radio" name="borrowHistory" value="1" onclick="$('#buttons').show();$('#jkjl .input').removeAttr('disabled')"/>有</label>
 						<label><input type="radio" name="borrowHistory" value="0" onclick="$('#buttons').hide();$('#jkjl .input').val('');$('#jkjl .input').attr('disabled','disabled')" checked/>无</label>
 						<span class="display" id="buttons">
-							<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('jkjl')" />
-							<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('jkjl')" />
+							<a class="add" onclick="addTd('jkjl')"><img src="${contextPath}/images/add.png"/></a>
+							<a class="del" onclick="removeTd('jkjl')"><img src="${contextPath}/images/del.png"/></a>
 							<input type="hidden" value="1" id="jkjl_cnt" name="jkjl_cnt">
 						</span>
 					</td>		
@@ -423,7 +423,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>其他信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -468,7 +468,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>声明</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -496,7 +496,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>信息渠道</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -548,8 +548,12 @@
 	</div>
 </form>	
 <div class="controlbtn">
+	#if($!type=="readonly")
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#else
 		<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
 		<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	#end
 	</div>
 	<script type="text/javascript">			
 		function setSelect(obj,id){//其他证件类型、其他教育水平等

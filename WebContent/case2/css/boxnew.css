@@ -74,4 +74,4 @@ a.btn_g:hover{background: url(../images/icon_button_hover.png) repeat-x;}
 a.btn_gr {padding: 0px 16px;height: 24px;line-height: 24px;margin: 5px 10px 5px 0;background: url(../images/btn_2_n.png) repeat-x;color: #515151;border: 1px solid #b3b3b3;cursor: pointer;float: left;text-shadow: 1px 1px 1px #fff;}
 a.btn_gr:hover{background: url(../images/btn_2_h.png) repeat-x;}
 
-.add img,.del img{width:16px;height:16px;vertical-align:text-bottom;}
+.add img,.del img{width:16px;height:16px;vertical-align:middle;}
