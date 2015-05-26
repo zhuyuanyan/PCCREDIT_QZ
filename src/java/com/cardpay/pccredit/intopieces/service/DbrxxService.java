@@ -128,6 +128,10 @@ public class DbrxxService {
 		return dbrxxDao.findDbrxx(customerId, applicationId);
 	}
 
+	public List<QzApplnDbrxx> findDbrxxByAppId(String applicationId) {
+		return dbrxxDao.findDbrxxByAppId(applicationId);
+	}
+	
 	public void insert_page4(QzApplnDbrxx qzApplnDbrxx,HttpServletRequest request) throws Exception {
 		commonDao.insertObject(qzApplnDbrxx);
 		String dbrxxId = qzApplnDbrxx.getId();

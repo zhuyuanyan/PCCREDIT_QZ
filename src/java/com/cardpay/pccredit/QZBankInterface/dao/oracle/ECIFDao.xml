@@ -58,7 +58,6 @@
 		<result property="createdTime" column="CREATE_TIME" />
 		<result property="userId" column="USER_ID" />
 		<result property="clientNo" column="CLIENT_NO" />
-		<result property="status" column="STATUS" />
 		<result property="customerId" column="CUSTOMER_ID" />
 	</resultMap>
 	
@@ -129,13 +128,6 @@
 		where client_no  = #{clientNo}
 	</select>
 	
-	<select id="findAllECIFByStatus" resultMap="ResultMap">
-		select 
-		*
-		from QZ_IESB_FOR_ECIF
-		where 
-		STATUS = #{status}
-	</select>
 	<select id="findEcifByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
 	    resultMap="ResultMap">
 	    
@@ -190,8 +182,7 @@
 			    bci.CHINESE_NAME as chineseName,
 			    ecif.CLIENT_NO as clientNo,
 			    ecif.GLOBAL_ID as cardId,
-			    ecif.GLOBAL_TYPE as cardType,
-				ecif.STATUS as status
+			    ecif.GLOBAL_TYPE as cardType
 			 from BASIC_CUSTOMER_INFORMATION bci
 			 left join QZ_IESB_FOR_ECIF ecif
 			 on bci.ID = ecif.CUSTOMER_ID

@@ -37,6 +37,7 @@ import com.cardpay.pccredit.intopieces.dao.AttachmentListDao;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.DbrxxDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
+import com.cardpay.pccredit.intopieces.dao.JyxxDao;
 import com.cardpay.pccredit.intopieces.dao.NbscyjbDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
@@ -60,6 +61,7 @@ import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxDkjl;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxFc;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxJdc;
 import com.cardpay.pccredit.intopieces.model.QzApplnDcnr;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.QzApplnProcessResult;
 import com.cardpay.pccredit.intopieces.model.QzApplnSxjc;
@@ -88,7 +90,7 @@ import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.util.spring.Beans;
 
 @Service
-public class NbscyjbService {
+public class JyxxService {
 
 	// TODO 路径使用相对路径，首先获得应用所在路径，之后建立上传文件目录，图片类型使用IMG，文件使用DOC
 
@@ -122,29 +124,25 @@ public class NbscyjbService {
 	private WfStatusResultDao wfStatusResultDao;
 	
 	@Autowired
-	private NbscyjbDao nbscyjbDao;
+	private JyxxDao jyxxDao;
 	
-	/* 查询附件列表 */
+	/* 查询经营信息 */
 	/*
 	 * TODO 1.添加注释 2.SQL写进DAO层
 	 */
-	public QzApplnNbscyjb findNbscyjb(String customerId,String applicationId) {
-		return nbscyjbDao.findNbscyjb(customerId, applicationId);
+	public QzApplnJyxx findJyxx(String customerId,String applicationId) {
+		return jyxxDao.findJyxx(customerId, applicationId);
 	}
 
-	public QzApplnNbscyjb findNbscyjbByAppId(String applicationId) {
-		return nbscyjbDao.findNbscyjbByAppId(applicationId);
-	}
-	
-	public void insert_page7(QzApplnNbscyjb qzApplnNbscyjb,HttpServletRequest request){
-		commonDao.insertObject(qzApplnNbscyjb);
+	public void insert_Jyxx(QzApplnJyxx qzApplnJyxx,HttpServletRequest request){
+		commonDao.insertObject(qzApplnJyxx);
 	}
 
-	public void update_page7(QzApplnNbscyjb qzApplnNbscyjb,HttpServletRequest request){
-		commonDao.updateObject(qzApplnNbscyjb);
+	public void update_Jyxx(QzApplnJyxx qzApplnJyxx,HttpServletRequest request){
+		commonDao.updateObject(qzApplnJyxx);
 	}
 
-	public QzApplnNbscyjb findNbscyjbById(String id) {
-		return nbscyjbDao.findNbscyjbById(id);
+	public QzApplnJyxx findJyxxById(String id) {
+		return jyxxDao.findJyxxById(id);
 	}
 }

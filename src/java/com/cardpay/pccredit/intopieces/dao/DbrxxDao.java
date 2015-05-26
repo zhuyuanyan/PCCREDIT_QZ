@@ -13,6 +13,7 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface DbrxxDao {
 	public List<QzApplnDbrxx> findDbrxx(@Param("customerId")String customerId,@Param("applicationId")String applicationId);
+	public List<QzApplnDbrxx> findDbrxxByAppId(@Param("applicationId")String applicationId);
 	public QzApplnDbrxx findDbrxxById(@Param("id")String id);
 	public List<QzApplnDbrxxDkjl> findDbrxxDkjl(@Param("dbrxxId")String dbrxxId);
 	public List<QzApplnDbrxxFc> findDbrxxFc(@Param("dbrxxId")String dbrxxId);

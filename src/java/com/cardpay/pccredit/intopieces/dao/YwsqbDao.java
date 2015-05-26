@@ -13,6 +13,7 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface YwsqbDao {
 	public QzApplnYwsqb findYwsqb(@Param("customerId")String customerId,@Param("applicationId")String applicationId);
+	public QzApplnYwsqb findYwsqbByAppId(@Param("applicationId")String applicationId);
 	public List<QzApplnYwsqbZygys> findYwsqbZygys(@Param("ywsqbId")String ywsqbId);
 	public List<QzApplnYwsqbZykh> findYwsqbZykh(@Param("ywsqbId")String ywsqbId);
 	public List<QzApplnYwsqbJkjl> findYwsqbJkjl(@Param("ywsqbId")String ywsqbId);

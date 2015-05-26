@@ -52,9 +52,6 @@ public class CircleService {
 		circle.setCreatedTime(new Date());
 		commonDao.insertObject(circle);
 		
-		ECIF ecif = ecifService.findEcifByClientNo(circle.getClientNo());
-		ecif.setStatus(Constant.STATUS_NOAPPLY);
-		commonDao.updateObject(ecif);
 	}
 
     /**
@@ -64,17 +61,6 @@ public class CircleService {
      */
     public void updateCustomerInforCircle(Circle circle) {
     	commonDao.updateObject(circle);
-	}
-    
-    /**
-     * 更新数据-申请
-     * @param circle
-     * @return
-     */
-    public void updateCustomerInforCircle_APPLY(String clientNo) {
-    	ECIF ecif = ecifService.findEcifByClientNo(clientNo);
-		ecif.setStatus(Constant.STATUS_APPLY);
-		commonDao.updateObject(ecif);
 	}
     
     //对接并存db
@@ -112,10 +98,6 @@ public class CircleService {
 			commonDao.insertObject(acct_Info1);
 			commonDao.insertObject(acct_Info2);
 			commonDao.insertObject(fee_Acct_Info);
-			
-			ECIF ecif = ecifService.findEcifByClientNo(circle.getClientNo());
-			ecif.setStatus(Constant.STATUS_APPLY_SUCCESS);
-			commonDao.updateObject(ecif);
 			return true;
 		}
 		else{
@@ -138,5 +120,14 @@ public class CircleService {
 	//按客户号查询circle
 	public Circle findCircleByClientNo(String clientNo) {
 		return circleDao.findCircleByClientNo(clientNo);
+	}
+	
+	//查找circle
+	public Circle findCircle(String customerId,String applicationId) {
+		return circleDao.findCircle(customerId,applicationId);
+	}
+	
+	public Circle findCircleByAppId(String applicationId) {
+		return circleDao.findCircleByAppId(applicationId);
 	}
 }

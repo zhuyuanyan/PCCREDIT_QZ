@@ -36,9 +36,11 @@
 				</tr>
 				<tr>
 					<td class="table-label">借款人姓名：</td>
-					<td><input type="text" id="clientName" name="clientName"/></td>
+					<td><input type="text" value="$!customerInfo.chineseName" disabled/>
+						<input type="hidden" name="clientName" value="$!customerInfo.chineseName"/></td>
 					<td class="table-label">身份证号码：</td>
-					<td><input type="text" id="globalId" name="globalId" /></td>			
+					<td><input type="text" value="$!customerInfo.cardId" disabled/>
+						<input type="hidden" name="globalId" value="$!customerInfo.cardId"/></td>			
 				</tr>
 			</table>
 			<table class="myTable" style="text-align:center;">
@@ -148,7 +150,8 @@
 				</tr>
 				<tr>
 					<td class="table-label">公司名称：</td>
-					<td><input type="text" id="shopName" name="shopName"/></td>
+					<td><input type="text" value="$!qzApplnJyxx.bussName" disabled/>
+						<input type="hidden" name="shopName" value="$!qzApplnJyxx.bussName" /></td>
 					<td class="table-label">营业执照号：</td>
 					<td><input type="text" id="shopId" name="shopId"/></td>			
 					
@@ -274,15 +277,15 @@
 				<td class="table-label">主办客户经理：</td>
 				<td><input type="text" value="$!externalId" disabled/>
 					<input type="hidden" name="user_1" value="$!externalId"/></td>
-				<td class="table-label">行政岗：<font color="#ff0000">*</font></td>
-				<td><input type="text" name="user_2"/></td>			
+				<!--  <td class="table-label">行政岗：<font color="#ff0000">*</font></td>
+				<td><input type="text" name="user_2"/></td>			-->
 			</tr>
-			<tr>
+			<!--  <tr>
 				<td class="table-label">协助调查人员：<font color="#ff0000">*</font></td>
 				<td><input type="text" name="user_3"/></td>
 				<td class="table-label">贷审会成员：<font color="#ff0000">*</font></td>
 				<td><input type="text" name="user_4"/></td>			
-			</tr>
+			</tr>-->
 		</table>
 	</div>
 	</div>
@@ -298,16 +301,12 @@
 			if($("#jdlx option:selected").text()=="工薪类"){
 				$("#gxl").show();
 				$("#jyl").hide();
-				$("#shopName").val();
-				$("#shopId").val();
 				$("input[type=checkbox][name=checkbox2]:checked").attr("checked",false);
 				getSum(1);
 			}
 			if($("#jdlx option:selected").text()=="经营类"){
 				$("#gxl").hide();
 				$("#jyl").show();
-				$("#clientName").val();
-				$("#globalId").val();
 				$("input[type=checkbox][name=checkbox1]:checked").attr("checked",false);
 				getSum(2);
 			}
@@ -340,7 +339,7 @@
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page5.page?customerId=${customerId}";
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page5.page?id=${customerId}";
 							}
 							else{
 								topWin.Dialog.message("保存失败！");
