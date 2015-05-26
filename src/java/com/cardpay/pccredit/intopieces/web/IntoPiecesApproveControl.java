@@ -208,7 +208,7 @@ public class IntoPiecesApproveControl extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "save_apply.page")
+	@RequestMapping(value = "save_apply.json")
 	public JRadReturnMap save_apply(@ModelAttribute CustomerInforFilter customerInforFilter, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
@@ -884,7 +884,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("customerInfor", customerInfor);
 			mv.addObject("customerId", customerInfor.getId());
 			mv.addObject("appId", appId);
-			mv.addObject("operate", Constant.status_shenqing);
+			mv.addObject("operate", Constant.status_buchong);
 		}
 		return mv;
 	}

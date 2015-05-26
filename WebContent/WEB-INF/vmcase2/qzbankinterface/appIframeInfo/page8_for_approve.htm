@@ -62,8 +62,7 @@
 							<tr>
 								<td class="tableTitle" colspan="2" style="text-align:left;">
 									共同借款人
-									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('gtjkr')"/>
-									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('gtjkr')"/>
+							
 								</td>		
 							</tr>
 							<tr>
@@ -92,8 +91,7 @@
 							<tr>
 								<td class="tableTitle" colspan="2" style="text-align:left;">
 									保证担保
-									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('bzdb')"/>
-									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('bzdb')"/>
+							
 								</td>		
 							</tr>
 							#if(!$bzdbs)
@@ -122,8 +120,7 @@
 							<tr>
 								<td class="tableTitle" colspan="5" style="text-align:left;">
 									抵押担保
-									<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('dydb')"/>
-									<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('dydb')"/>
+							
 								</td>		
 							</tr>
 							<tr>
@@ -239,7 +236,7 @@
 </form>	
 	<div class="controlbtn" style="position:absolute;top:500px;">
 	#if($!type=='modify')
-		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+		<a class="btn_g" id="id_save_button" title="提交">保存</a>
 		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 	#else
 		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
