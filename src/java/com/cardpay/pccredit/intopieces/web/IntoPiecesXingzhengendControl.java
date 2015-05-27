@@ -173,13 +173,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			String appId = request.getParameter("id");
-			//是否上传合同单
-			Boolean ifAddHt = intoPiecesService.getDcnrList(appId);
-			if(!ifAddHt){
-				returnMap.put(JRadConstants.MESSAGE, "请先上传\"合同扫描件\"");
-				returnMap.put(JRadConstants.SUCCESS, false);
-				return returnMap;
-			}
+
 			CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(appId);
 			request.setAttribute("serialNumber", process.getSerialNumber());
 			request.setAttribute("applicationId", process.getApplicationId());
