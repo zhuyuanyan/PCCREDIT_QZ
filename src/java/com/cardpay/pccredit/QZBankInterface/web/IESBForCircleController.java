@@ -136,7 +136,11 @@ public class IESBForCircleController extends BaseController{
 		
 		//Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
 		Circle circle = null;
-		circle = circleService.findCircle(customerId, null);
+		if(appId!=null){
+			circle = circleService.findCircleByAppId(appId);
+		}else{
+			circle = circleService.findCircle(customerId, null);
+		}
 		if(circle == null){
 			mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);
 			//查找登录用户信息
