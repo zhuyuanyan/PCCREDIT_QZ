@@ -3,8 +3,8 @@ var validator = $($formName).validate({
     { 
 		//acctNo1:{required:true},
 		//acctNo2:{required:true},
-		//contractNo:{required:true},
-		//cardNo:{required:true},
+		contractNo:{required:true},
+		cardNo:{required:true},
 		
 		contractAmt:{required:true},
 		startDate:{required:true},
@@ -43,8 +43,8 @@ messages:
     {
 		//acctNo1:{required:"收息收款账号不能为空"},
 		//acctNo2:{required:"放款账号不能为空"},
-		//contractNo:{required:"合同号不能为空"},
-		//cardNo:{required:"卡号不能为空"},
+		contractNo:{required:"合同号不能为空"},
+		cardNo:{required:"卡号不能为空"},
 	
 		contractAmt:{required:"合同金额不能为空"},
 		startDate:{required:"贷款起始日期不能为空"},

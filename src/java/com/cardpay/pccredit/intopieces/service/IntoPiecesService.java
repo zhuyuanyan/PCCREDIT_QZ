@@ -954,6 +954,18 @@ public class IntoPiecesService {
 		//更新客户信息--退回
 		infor.setProcessId(Constant.APPROVE_EDIT_1);
 		commonDao.updateObject(infor);
+		
+		//将所有相关表记录删除appId
+		commonDao.queryBySql("update qz_appln_ywsqb set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_dbrxx set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_attachment_list set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_nbscyjb set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_iesb_for_circle set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_dcnr set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_jyd set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_nbscyjb set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+				
+		
 	}
 	
 /* 初审节点拒件 */
@@ -1736,5 +1748,13 @@ public class IntoPiecesService {
 		}else{
 			return "/intopieces/intopiecesxingzheng2/xingzhengend.page";
 		}
+	}
+	
+	public Boolean getDcnrList(String appId){
+		List<QzApplnDcnr> dcnrs = commonDao.queryBySql(QzApplnDcnr.class, "select * from qz_appln_dcnr where report_id= '"+Constant.htd_id+"' and application_id='"+appId+"'", null);
+		if(dcnrs.size()>0){
+			return true;
+		}
+		return false;
 	}
 }

@@ -149,14 +149,6 @@
 	#if($!type=="modify")
 		<a class="btn_g" id="id_save_button" title="提交">提交</a>
 	#end
-		#if($!operate=="授信审批"||$!operate=="中心复核")
-		<a id="id_in2_button" class="btn_g" title="审批通过">审批通过</a>
-        <a id="id_return_button" class="btn_g" title="退件">退件</a>
-        <a id="id_reject_button" class="btn_g" title="拒件">拒件</a>
-        #end
-    #if($!type=="modify")
-        <a id="id_return_to_cu_button" class="btn_g" href="javascript:void(0);"  title="补充上会">补充上会</a>
-    #end
 		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 	</div>
 	<script type="text/javascript" src="jquery-1.js"></script>
