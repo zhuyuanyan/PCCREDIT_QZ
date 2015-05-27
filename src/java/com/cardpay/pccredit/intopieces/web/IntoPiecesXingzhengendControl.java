@@ -180,6 +180,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 				returnMap.put(JRadConstants.SUCCESS, false);
 				return returnMap;
 			}
+			
 			CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(appId);
 			request.setAttribute("serialNumber", process.getSerialNumber());
 			request.setAttribute("applicationId", process.getApplicationId());
