@@ -19,7 +19,11 @@
               	<td><input type="hidden" id="clientNo" name="clientNo"/></td>
               	<td></td>
             </tr>
+            #if($!operate!="填写合同信息")
             <tr style="display: none;">
+            #else
+            <tr>
+            #end
             	<td><label>收息收款账号:</label><font color="#ff0000">*</font></td>
               	<td><input type="text" name="acctNo1"/></td>
               	<td><label>放款账号:</label><font color="#ff0000">*</font></td>
@@ -297,7 +301,11 @@
 			  <td><label>费用金额:</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="feeAmount"/></td>
             </tr>
-			<tr>
+			#if($!operate!="填写合同信息")
+            <tr style="display: none;">
+            #else
+            <tr>
+            #end
               <td><label>费用账号:</label><font color="#ff0000">*</font></td>
               <td colspan="3"><input type="text" name="feeAcctNo"/></td>
             </tr>
@@ -309,7 +317,7 @@
          #if($!operate=="填写合同信息")
          <a class="btn_g" id="id_zx_in_button">审批通过</a>
          #else
-         <a id="id_apply_button" class="btn_g" >申请贷款</a>
+		 
          #end
          <a class="btn_gr" onclick="javascript:history.back();">返回</a>
       </div>
@@ -358,6 +366,11 @@
 		
 		//保存按钮
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
 			if($("#selectClientNo").val() == 0){
 				alert("请先选择对应客户!")
 			}else{
@@ -388,6 +401,7 @@
 				
 				var leng = $("#cardIde").length;
 				if(leng > 0){
+					submitFlag = 0;
 					return;
 				}
 				else{
@@ -407,8 +421,11 @@
 								else{
 									topWin.Dialog.message("保存失败！");
 							    }
+								submitFlag = 0;
 							}
 						});
+					}else{
+						submitFlag = 0;
 					}
 				}
 			}
@@ -532,6 +549,11 @@
 		$("#guaranteeModeDetail option").each(function(){ //遍历全部option
 			guaranteeModeDetail_array2.push($(this));
 	    });
+		
+		//返回
+		$("#id_back_button").click(function() {
+			window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+		});
 		
 		//提交进件
 		$("#id_apply_button").click(function() {

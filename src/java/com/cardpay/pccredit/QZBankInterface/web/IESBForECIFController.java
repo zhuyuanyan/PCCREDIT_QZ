@@ -166,17 +166,10 @@ public class IESBForECIFController extends BaseController{
 				info.setNationality("NTC00000000156");
 				info.setSex(ecif.getSex().equals("01") ? "Male" : "Female");
 				info.setCardId(ecif.getGlobalId());
-				if(info.getId() == null || info.getId().equals("")){
-					customerInforservice.insertCustomerInfor(info);
-				}
-				else{
-					customerInforservice.updateCustomerInfor(info);
-				}
 				
 				ecif.setCreatedBy(user.getId());
 				ecif.setUserId(user.getId());
-				ecif.setCustomerId(info.getId());;//设置关联basic_customer_information
-				ecifService.insertCustomerInfor(ecif);
+				ecifService.insertCustomerInfor(ecif,info);
 				
 //				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);

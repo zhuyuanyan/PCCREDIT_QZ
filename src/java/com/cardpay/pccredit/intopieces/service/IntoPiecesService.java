@@ -133,7 +133,7 @@ public class IntoPiecesService {
 	 */
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
-		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
+		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilterWF(filter);
 		List<IntoPieces> intoPieces = queryResult.getItems();
 		for(IntoPieces pieces : intoPieces){
 			if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
@@ -922,8 +922,7 @@ public class IntoPiecesService {
 		request.setAttribute("objection", "false");
 		//查找审批金额
 		CustomerApplicationInfo appInfo = this.findCustomerApplicationInfoByApplicationId(process.getApplicationId());
-		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
-		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		Circle circle = circleService.findCircleByAppId(process.getApplicationId());
 		
 		request.setAttribute("examineAmount", circle.getContractAmt());
 		customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
@@ -956,14 +955,14 @@ public class IntoPiecesService {
 		commonDao.updateObject(infor);
 		
 		//将所有相关表记录删除appId
-		commonDao.queryBySql("update qz_appln_ywsqb set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
-		commonDao.queryBySql("update qz_appln_dbrxx set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
-		commonDao.queryBySql("update qz_appln_attachment_list set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
-		commonDao.queryBySql("update qz_appln_nbscyjb set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
-		commonDao.queryBySql("update qz_iesb_for_circle set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
-		commonDao.queryBySql("update qz_appln_dcnr set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
-		commonDao.queryBySql("update qz_appln_jyd set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
-		commonDao.queryBySql("update qz_appln_nbscyjb set application_id='' where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_ywsqb set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_dbrxx set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_attachment_list set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_nbscyjb set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_iesb_for_circle set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_dcnr set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_jyd set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
+		commonDao.queryBySql("update qz_appln_nbscyjb set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
 				
 		
 	}

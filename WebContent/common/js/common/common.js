@@ -6,6 +6,8 @@ topWin = (function(p,c){
 	return c;
 })(window.parent,window);
 
+var submitFlag = 0;
+
 _post = $.post;
 _get = $.get;
 _flag = new Object;

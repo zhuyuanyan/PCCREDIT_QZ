@@ -18,7 +18,8 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">内部审查日期：<font color="#ff0000">*</font></td>
-					<td colspan="3"><input type="text" name="checkDate" value="$date.format('yyyy-MM-dd', $!qzApplnNbscyjb.checkDate)" onmouseover="_calendar() " readonly/></td>			
+					<td colspan="3">
+					<input type="text" name="checkDate" value="$date.format('yyyy-MM-dd', $!qzApplnNbscyjb.checkDate)" onmouseover="_calendar() " readonly/></td>			
 				</tr>
 				<tr>
 					<td class="table-label">客户名称：<font color="#ff0000">*</font></td>
@@ -105,6 +106,11 @@
 		}
 		//保存
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
 				var url = "${contextPath}/intopieces/intopiecesapprove/update_page7.json?id=${qzApplnNbscyjb.id}";
@@ -119,8 +125,11 @@
 						else{
 							topWin.Dialog.message("保存失败！");
 					    }
+						submitFlag = 0;
 					}
 				});
+			}else{
+				submitFlag = 0;
 			}
 		});
 		

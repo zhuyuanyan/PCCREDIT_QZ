@@ -220,17 +220,17 @@ public class IntoPiecesApproveControl extends BaseController {
 				//添加业务申请表appId
 				QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
 				if(qzApplnYwsqb==null){
-					returnMap.put(JRadConstants.MESSAGE, "请先填写\"贷款申请表\"");
+					returnMap.put(JRadConstants.MESSAGE, "请先填写\"业务申请表\"");
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;
 				}
 				//添加担保人appId
-				List<QzApplnDbrxx> dbrxx_ls = dbrxxService.findDbrxx(customerId, null);
+				/*List<QzApplnDbrxx> dbrxx_ls = dbrxxService.findDbrxx(customerId, null);
 				if(dbrxx_ls == null || dbrxx_ls.size() == 0){
 					returnMap.put(JRadConstants.MESSAGE, "请先填写\"担保人信息表\"");
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;
-				}
+				}*/
 				//添加附件appId
 				QzApplnAttachmentList qzApplnAttachmentList = attachmentListService.findAttachmentList(customerId, null);
 				if(qzApplnAttachmentList == null){
@@ -247,15 +247,16 @@ public class IntoPiecesApproveControl extends BaseController {
 					return returnMap;
 				}
 				
-				Circle circle = circleService.findCircle(customerId,null);
-				if(circle == null){
-					returnMap.put(JRadConstants.MESSAGE, "请先填写\"贷款信息\"");
-					returnMap.put(JRadConstants.SUCCESS, false);
-					return returnMap;
-				}
 				QzApplnJyd jyd = intoPiecesService.getSdhjydForm(customerId);
 				if(jyd==null){
 					returnMap.put(JRadConstants.MESSAGE, "请先填写\"审贷会决议单\"");
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				
+				Circle circle = circleService.findCircle(customerId,null);
+				if(circle == null){
+					returnMap.put(JRadConstants.MESSAGE, "请先填写\"贷款信息\"");
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;
 				}
@@ -475,7 +476,9 @@ public class IntoPiecesApproveControl extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				String ywsqbId = request.getParameter("id");
+				String customerId = request.getParameter("customerId");
 				QzApplnYwsqb qzApplnYwsqb = qzApplnYwsqbForm.createModel(QzApplnYwsqb.class);
+				qzApplnYwsqb.setCustomerId(customerId);
 				ywsqbService.dealWithNullValue(qzApplnYwsqb);
 				QzApplnJyxx qzApplnJyxx = qzApplnYwsqbForm.createModelJyxx();
 				ywsqbService.dealWithNullValueJyxx(qzApplnJyxx);

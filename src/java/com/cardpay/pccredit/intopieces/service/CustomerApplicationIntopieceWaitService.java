@@ -186,6 +186,7 @@ public class CustomerApplicationIntopieceWaitService {
 
 	
 	// 查询需要团队初审的进件信息
+	//全部显示
 	public QueryResult<CustomerApplicationIntopieceWaitForm> recieveIntopieceWaitForm(CustomerApplicationProcessFilter filter) {
 		List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.IntopieceWaitForm(filter);
 		int size = customerApplicationIntopieceWaitDao.CountIntopieceWaitForm(filter);
@@ -193,6 +194,16 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
+	
+	//手动搜件
+	public QueryResult<CustomerApplicationIntopieceWaitForm> recieveIntopieceWaitFormM(CustomerApplicationProcessFilter filter) {
+		List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.IntopieceWaitFormM(filter);
+		int size = customerApplicationIntopieceWaitDao.CountIntopieceWaitFormM(filter);
+		QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
+		return qs;
+
+	}
+	
 	// 查询需要团队初审拒件的进件
 	public QueryResult<CustomerApplicationIntopieceWaitForm> IntopieceChushenRejectForm() {
 		List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.IntopieceChushenRejectForm();

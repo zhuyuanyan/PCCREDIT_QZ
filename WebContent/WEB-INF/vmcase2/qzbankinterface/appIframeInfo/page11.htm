@@ -59,12 +59,19 @@
 			$("textarea").attr("disabled",true);
 		};
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
 			var formjson = $($formName).serialize();
    	          $.post("${contextPath}/intopieces/intopiecesxingzheng2/tz_save.json?id=${appId}", formjson, function(data, textStatus, jqXhr) {
    	            if (data.success) {
    	            	Dialog.message("保存成功!");
    	            }
+   	         	submitFlag = 0;
 	          });
+   	          
 		});
 		//通过
 		$("#id_in_button").click(function() {

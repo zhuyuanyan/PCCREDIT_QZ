@@ -70,19 +70,37 @@ public class CircleService {
 		//收息收款账号
 		CompositeData req1 = iesbForCore.createCoreRequest(circle.getAcctNo1());
 		CompositeData resp1 = client.sendMess(req1);
+		if(resp1 == null){
+			return false;
+		}
 		Circle_ACCT_INFO acct_Info1 = iesbForCore.parseCoreResponse(resp1,"03");
+		if(acct_Info1 == null){
+			return false;
+		}
 		acct_Info1.setCircleId(circle.getId());
 		acct_info_ls.add(acct_Info1);
 		//放款账号
 		CompositeData req2 = iesbForCore.createCoreRequest(circle.getAcctNo2());
 		CompositeData resp2 = client.sendMess(req2);
+		if(resp2 == null){
+			return false;
+		}
 		Circle_ACCT_INFO acct_Info2 = iesbForCore.parseCoreResponse(resp2,"01");
+		if(acct_Info2 == null){
+			return false;
+		}
 		acct_Info2.setCircleId(circle.getId());
 		acct_info_ls.add(acct_Info2);
 		//费用账号
 		CompositeData req3 = iesbForCore.createCoreRequest(circle.getFeeAcctNo());
 		CompositeData resp3 = client.sendMess(req3);
+		if(resp3 == null){
+			return false;
+		}
 		Circle_ACCT_INFO fee_Acct_Info = iesbForCore.parseCoreResponse(resp3,"07");
+		if(fee_Acct_Info == null){
+			return false;
+		}
 		fee_Acct_Info.setCircleId(circle.getId());
 		acct_info_ls.add(fee_Acct_Info);
 		
@@ -90,6 +108,9 @@ public class CircleService {
 		CompositeData req = iesbForCircleCredit.createCircleCreditRequest(circle,acct_info_ls);
 		//发送
 		CompositeData resp = client.sendMess(req);
+		if(resp == null){
+			return false;
+		}
 		//解析，存db
 		boolean res = iesbForCircleCredit.parseEcifResponse(resp);
 		
