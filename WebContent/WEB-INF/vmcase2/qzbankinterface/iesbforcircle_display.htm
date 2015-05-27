@@ -587,7 +587,7 @@
 			    			#set ($formName = "'#checkForm1'")
 			    			var formjson = $($formName).serialize();
 		    				 $.ajax({
-									url : "{contextPath}/intopieces/intopiecesxingzheng1/returnAppln.json",
+									url : "${contextPath}/intopieces/intopiecesxingzheng1/returnAppln.json",
 									type : "get",
 									data : formjson,
 									success : function(data) {

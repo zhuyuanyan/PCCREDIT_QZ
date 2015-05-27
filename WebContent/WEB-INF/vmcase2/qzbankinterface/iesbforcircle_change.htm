@@ -312,7 +312,7 @@
          <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
          #if($!operate=="填写合同信息")
          <input type="button" value="审批通过" class="current" id="id_zx_in_button"/>
-         #else
+         #elseif($!operate!="补充上会")
          <input id="id_apply_button" type="button" value="申请贷款" class="current" />
          #end
          <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
@@ -559,7 +559,7 @@
 		$("#id_zx_in_button").click(function() {
                 Dialog.confirm("确定提交吗？", "提示",
                 	    function() {
-               				url="${contextPath}/intopieces/intopiecesxingzheng2/save_apply.json?id=${appId}";
+               				url="${contextPath}/intopieces/intopiecesxindai/save_apply.json?id=${appId}";
 			                $.ajax({
 								url : url,
 								type : "get",
