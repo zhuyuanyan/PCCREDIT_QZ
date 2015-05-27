@@ -153,13 +153,13 @@
 				</tr>	
 				<tr>
 					<td class="table-label" rowspan="12">授信决策情况</td>					
-					<td class="table-label">金额（元）</td>					
+					<td class="table-label">金额（万元）</td>					
 					<td colspan="3"><input type="text" name="je" value="$!result.je"/></td>					
-					<td class="table-label">利率（年）</td>	
+					<td class="table-label">年利率（%）</td>	
 					<td colspan="3"><input type="text" name="ll" value="$!result.ll"/></td>	
 				</tr>	
 				<tr>				
-					<td class="table-label">期限（月）</td>					
+					<td class="table-label">还款期限（月）</td>					
 					<td colspan="3"><input type="text" name="qx" value="$!result.qx"/></td>					
 					<td class="table-label">还款方式</td>	
 					<td colspan="3"><input type="text" name="hkfs1" value="$!result.hkfs1"/></td>	
@@ -253,11 +253,17 @@
 				$("textarea").attr("disabled",true);
 			}
 			$("#id_save_button").click(function() {
+				if(submitFlag == 1){
+					alert("请勿重复提交!")
+					return;
+				}
+				submitFlag = 1;
 				var formjson = $($formName).serialize();
 	   	          $.post("${contextPath}/intopieces/intopiecesshouxin/page8insert.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
 	   	            }
+	   	         submitFlag = 0;
    	          });
 			})
 		})

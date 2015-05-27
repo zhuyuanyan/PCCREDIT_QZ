@@ -48,6 +48,17 @@
 		.dialog2 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
 		.dialog2 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
 		.dialog2 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		.dialog4{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog4 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog4 .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog4 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog4 .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog4 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog4 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog4 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(${contextPath}/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog4 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog4 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog4 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
 	</style>
 </head>
 <body>
@@ -69,13 +80,21 @@
               	<td><input type="hidden" id="clientNo" name="clientNo"/></td>
               	<td></td>
             </tr>
+            #if($!operate!='中心终审')
             <tr style="display: none;">
+            #else
+            <tr>
+            #end
             	<td><label>收息收款账号:</label><font color="#ff0000">*</font></td>
               	<td><input type="text" name="acctNo1" value="$!circle.acctNo1" disabled /></td>
               	<td><label>放款账号:</label><font color="#ff0000">*</font></td>
               	<td><input type="text" name="acctNo2" value="$!circle.acctNo2" disabled /></td>
             </tr>
+            #if($!operate!='中心终审')
             <tr style="display: none;">
+            #else
+            <tr>
+			#end
               <td><label>合同号:</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="contractNo" value="$!circle.contractNo" disabled /></td>
               <td><label>卡号:</label><font color="#ff0000">*</font></td>
@@ -345,7 +364,11 @@
 			  <td><label>费用金额:</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="feeAmount" value="$!circle.feeAmount" disabled /></td>
             </tr>
-			<tr>
+			#if($!operate!='中心终审')
+            <tr style="display: none;">
+            #else
+            <tr>
+			#end
               <td><label>费用账号:</label><font color="#ff0000">*</font></td>
               <td colspan="3"><input type="text" name="feeAcctNo" value="$!circle.feeAcctNo" disabled /></td>
             </tr>
@@ -446,6 +469,25 @@
 				</div>
 			</form>
 		</div>
+		
+		<div class="dialog4">
+			<form id="checkForm4" class="dialog-box" style="height:200px;" action="${contextPath}/intopieces/intopiecesxingzheng2/returnAppln.json">
+				<input type="hidden" name="appId" id="appId" value="$!appId" />
+				<div class="top">
+					退件 <span onclick="$('.dialog4').hide();"></span>
+				</div>
+				<div class="content" style="height:100px;padding-top:15px;">
+					<p>
+						退件原因:<font color="red">*</font>
+						<textarea name="remark" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re4_button" type="button" class="btn btn-submit" value="确定" /> 
+					<input type="button" class="btn" value="关闭" onclick="$('.dialog4').hide();"/>
+				</div>
+			</form>
+		</div>
       <div class="submit controlbtn">
 	      #if($!operate=="初审")
 	      	<a id="id_chushen_button" class="btn_g" >审批</a>
@@ -461,6 +503,7 @@
 	        #end
 	    #elseif($!operate=="中心终审")
 	      	<a id="id_zx_in_button" class="btn_g" >审批通过</a>
+	      	<a id="id_return4_button" class="btn_g" >退件</a>
 		  #end
 	      	<a class="btn_gr" onclick="parent.location.href = '${contextPath}${returnUrl}'" >返回</a>
       </div>
@@ -711,6 +754,11 @@
 		
 		//通过
 		$("#id_zx_in_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
                 Dialog.confirm("确定提交吗？", "提示",
                 	    function() {
                				url="${contextPath}/intopieces/intopiecesxingzheng2/save_apply.json?id=${appId}";
@@ -726,11 +774,39 @@
 									else{
 										topWin.Dialog.message("审批失败！");
 								    }
+									submitFlag = 0;
 								}
 						}); 
                 		});
 		});
-
+		
+		$("#id_return4_button").click(function() {
+			$('.dialog4').show();
+	  	});
+		//退回
+		$("#id_re4_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+                function() {
+					$('.dialog4').hide();
+					#set ($formName = "'#checkForm4'")
+					var formjson = $($formName).serialize();
+					 $.ajax({
+							url : "${contextPath}/intopieces/intopiecesxingzheng2/returnAppln.json",
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("保存成功!");	
+					            	var url = "${contextPath}${returnUrl}";
+					                parent.location.href = url;
+								}
+								else{
+									topWin.Dialog.message("保存失败！");
+							    }
+							}
+					}); 
+			});
+		});
   });
   	
     </script>

@@ -180,9 +180,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
 			//查找审批金额
-			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
-			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
-			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			Circle circle = circleService.findCircleByAppId(appId);
 			
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			
@@ -190,13 +188,16 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			boolean rtn = circleService.updateCustomerInforCircle_ESB(circle);
 			if(rtn){
 				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+				returnMap.put(JRadConstants.SUCCESS, true);
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			}
 			else{
+				returnMap.put(JRadConstants.SUCCESS, false);
 				returnMap.addGlobalMessage("保存失败");
 			}
 			
 		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
 			returnMap.addGlobalMessage("保存失败");
 			e.printStackTrace();
 		}
@@ -266,6 +267,21 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			mv.addObject("operate", Constant.status_xingzheng2);
 		}
 		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "returnAppln.json")
+	public JRadReturnMap returnAppln(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			intoPiecesService.returnAppln(appId, request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
 	}
 	
 }

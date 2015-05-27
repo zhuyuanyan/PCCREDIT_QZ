@@ -615,9 +615,14 @@
 			}
 			//保存
 			$("#id_save_button").click(function() {
+				if(submitFlag == 1){
+					alert("请勿重复提交!")
+					return;
+				}
+				submitFlag = 1;
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
-					var url = "${contextPath}/intopieces/intopiecesapprove/update_page1.json?id=${qzApplnYwsqb.id}";
+					var url = "${contextPath}/intopieces/intopiecesapprove/update_page1.json?id=${qzApplnYwsqb.id}&customerId=${qzApplnYwsqb.customerId}";
 					$.ajax({
 						url : url,
 						type : "get",
@@ -625,13 +630,16 @@
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?customerId=${qzApplnYwsqb.customerId}";
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?id=${qzApplnYwsqb.customerId}";
 							}
 							else{
 								topWin.Dialog.message("保存失败！");
 						    }
+							submitFlag = 0;
 						}
 					});
+				}else{
+					submitFlag = 0;
 				}
 			});
 			
