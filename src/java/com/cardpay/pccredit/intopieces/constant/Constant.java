@@ -34,8 +34,11 @@ public class Constant {
 	/* 成功进件*/
 	public static String SUCCESS_INTOPICES = "success";
 	
-	/* 申请未通过*/
+	/* 退件*/
 	public static String NOPASS_INTOPICES = "nopass";
+	
+	/* 退件到申请状态*/
+	public static String RETURN_INTOPICES = "returnedToFist";
 	
 	
 	/*以下是上传状态*/

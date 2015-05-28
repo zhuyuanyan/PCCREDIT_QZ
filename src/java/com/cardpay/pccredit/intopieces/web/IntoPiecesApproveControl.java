@@ -165,14 +165,14 @@ public class IntoPiecesApproveControl extends BaseController {
 					if(info.getStatus().equals(Constant.APPROVED_INTOPICES)){
 						result.getItems().get(i).setProcessId(Constant.APP_STATE_4);
 					}else{
-						result.getItems().get(i).setProcessId(Constant.APP_STATE_1);
+						if(!info.getStatus().equals(Constant.RETURN_INTOPICES)){
+							result.getItems().get(i).setProcessId(Constant.APP_STATE_1);
+						}else{
+							result.getItems().get(i).setProcessId(Constant.APP_STATE_3);
+						}
 					}
-					//目前不存在申请件（初审退回）
-				}else if(result.getItems().get(i).getProcessId()==null){
-					result.getItems().get(i).setProcessId(Constant.APP_STATE_2);
-					//没申请件
 				}else{
-					result.getItems().get(i).setProcessId(Constant.APP_STATE_3);
+					result.getItems().get(i).setProcessId(Constant.APP_STATE_2);
 				}
 			}
 		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
@@ -283,83 +283,92 @@ public class IntoPiecesApproveControl extends BaseController {
 	 * @param customer_id
 	 */
 	public void saveApply(String customer_id){
-		//设置申请
-		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
-		//customerApplicationInfo.setStatus(status);
-		customerApplicationInfo.setId(IDGenerator.generateID());
+		//先判断是否为初审退件的客户，如果是，只需改变状态不需再次新增申请件
+		CustomerApplicationInfo info = intoPiecesService.ifReturnToApprove(customer_id);
+		String appId = "";
+		if(info!=null){
+			info.setStatus(Constant.APPROVE_INTOPICES);
+			commonDao.updateObject(info);
+			appId = info.getId();
+		}else{
+			//设置申请
+			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+			//customerApplicationInfo.setStatus(status);
+			customerApplicationInfo.setId(IDGenerator.generateID());
 			customerApplicationInfo.setApplyQuota("0");//设置额度
-		customerApplicationInfo.setCustomerId(customer_id);
-		if(customerApplicationInfo.getApplyQuota()!=null){
-			customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
-		}
-		customerApplicationInfo.setCreatedTime(new Date());
-		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
-		//查找默认产品
-		ProductFilter filter = new ProductFilter();
-		filter.setDefault_type(Constant.DEFAULT_TYPE);
-		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
-		customerApplicationInfo.setProductId(productAttribute.getId());
-				
-		commonDao.insertObject(customerApplicationInfo);
-		
-		
-		//添加申请件流程
-		WfProcessInfo wf=new WfProcessInfo();
-		wf.setProcessType(WfProcessInfoType.process_type);
-		wf.setVersion("1");
-		commonDao.insertObject(wf);
-		List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productAttribute.getId());
-		boolean startBool=false;
-		boolean endBool=false;
-		//节点id和WfStatusInfo id的映射
-		Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
-		for(NodeAudit nodeAudit:list){
-			if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-				startBool=true;
+			customerApplicationInfo.setCustomerId(customer_id);
+			if(customerApplicationInfo.getApplyQuota()!=null){
+				customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
 			}
+			customerApplicationInfo.setCreatedTime(new Date());
+			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+			//查找默认产品
+			ProductFilter filter = new ProductFilter();
+			filter.setDefault_type(Constant.DEFAULT_TYPE);
+			ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
+			customerApplicationInfo.setProductId(productAttribute.getId());
 			
-			if(startBool&&!endBool){
-				WfStatusInfo wfStatusInfo=new WfStatusInfo();
-				wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
-				wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
-				wfStatusInfo.setRelationedProcess(wf.getId());
-				wfStatusInfo.setStatusName(nodeAudit.getNodeName());
-				wfStatusInfo.setStatusCode(nodeAudit.getId());
-				commonDao.insertObject(wfStatusInfo);
-				
-				nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
-				
+			commonDao.insertObject(customerApplicationInfo);
+			
+			
+			//添加申请件流程
+			WfProcessInfo wf=new WfProcessInfo();
+			wf.setProcessType(WfProcessInfoType.process_type);
+			wf.setVersion("1");
+			commonDao.insertObject(wf);
+			List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productAttribute.getId());
+			boolean startBool=false;
+			boolean endBool=false;
+			//节点id和WfStatusInfo id的映射
+			Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
+			for(NodeAudit nodeAudit:list){
 				if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-					//添加初始审核
-					CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
-					String serialNumber = processService.start(wf.getId());
-					customerApplicationProcess.setSerialNumber(serialNumber);
-					customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
-					customerApplicationProcess.setApplicationId(customerApplicationInfo.getId());
-					commonDao.insertObject(customerApplicationProcess);
+					startBool=true;
+				}
+				
+				if(startBool&&!endBool){
+					WfStatusInfo wfStatusInfo=new WfStatusInfo();
+					wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
+					wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
+					wfStatusInfo.setRelationedProcess(wf.getId());
+					wfStatusInfo.setStatusName(nodeAudit.getNodeName());
+					wfStatusInfo.setStatusCode(nodeAudit.getId());
+					commonDao.insertObject(wfStatusInfo);
 					
-					CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, customerApplicationInfo.getId());
-					applicationInfo.setSerialNumber(serialNumber);
-					commonDao.updateObject(applicationInfo);
+					nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
+					
+					if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+						//添加初始审核
+						CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
+						String serialNumber = processService.start(wf.getId());
+						customerApplicationProcess.setSerialNumber(serialNumber);
+						customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
+						customerApplicationProcess.setApplicationId(customerApplicationInfo.getId());
+						commonDao.insertObject(customerApplicationProcess);
+						
+						CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, customerApplicationInfo.getId());
+						applicationInfo.setSerialNumber(serialNumber);
+						commonDao.updateObject(applicationInfo);
+					}
+				}
+				
+				if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
+					endBool=true;
 				}
 			}
-			
-			if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
-				endBool=true;
+			//节点关系
+			List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productAttribute.getId());
+			for(NodeControl control : nodeControls){
+				WfStatusResult wfStatusResult = new WfStatusResult();
+				wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
+				wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
+				wfStatusResult.setExamineResult(control.getCurrentStatus());
+				commonDao.insertObject(wfStatusResult);
 			}
+			appId = customerApplicationInfo.getId();
 		}
-		//节点关系
-		List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productAttribute.getId());
-		for(NodeControl control : nodeControls){
-			WfStatusResult wfStatusResult = new WfStatusResult();
-			wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
-			wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
-			wfStatusResult.setExamineResult(control.getCurrentStatus());
-			commonDao.insertObject(wfStatusResult);
-		}
-		
 		//对之前无appId的表添加id(尤其是调查内容记录表添加appId)
-		intoPiecesService.addAppId(customer_id,customerApplicationInfo.getId());
+		intoPiecesService.addAppId(customer_id,appId);
 	}
 	
 	//iframe
