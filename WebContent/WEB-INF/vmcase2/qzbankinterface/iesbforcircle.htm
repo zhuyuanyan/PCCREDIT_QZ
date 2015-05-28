@@ -1,9 +1,11 @@
-#parse ("common/iframe_page_header.htm")
-#parse ("common/macro.htm")
+#parse ("common/iframe_page_header3.htm")
+<style type="text/css">
+ input[type=text]{width:158px;}
+</style>
 <body>
       <form id="id_module_form">
         <div class="forms" id="formsId">
-          <table class="rule" bordercolor="#CCCCCC" border="1">
+          <table class="rule myTable" bordercolor="#CCCCCC" border="1">
           <caption>客户贷款信息</caption>
             <colgroup>
               <col width="10%" />
@@ -17,7 +19,11 @@
               	<td><input type="hidden" id="clientNo" name="clientNo"/></td>
               	<td></td>
             </tr>
+            #if($!operate!="填写合同信息")
             <tr style="display: none;">
+            #else
+            <tr>
+            #end
             	<td><label>收息收款账号:</label><font color="#ff0000">*</font></td>
               	<td><input type="text" name="acctNo1"/></td>
               	<td><label>放款账号:</label><font color="#ff0000">*</font></td>
@@ -123,11 +129,11 @@
 			<tr>
               <td><label>涉农贷款类型:</label></td>
               <td>
-	              1:<select id="agriLoanKind_1" name="agriLoanKind_1" style="width:29%;margin:2px;" onchange="change_agriLoanKind_1(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_1", '')</select>
-	              2:<select id="agriLoanKind_2" name="agriLoanKind_2" style="width:29%;margin:2px;" onchange="change_agriLoanKind_2(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_2", '')</select>
-	              3:<select id="agriLoanKind_3" name="agriLoanKind_3" style="width:29%;margin:2px;" onchange="change_agriLoanKind_3(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_3", '')</select>
-	              4:<select id="agriLoanKind_4" name="agriLoanKind_4" style="width:29%;margin:2px;" onchange="change_agriLoanKind_4(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_4", '')</select>
-	              5:<select id="agriLoanKind_5" name="agriLoanKind_5" style="width:29%;margin:2px;">#dict("AGRICULTURE_TYPE_LEVEL_5", '')</select>
+	              1:<select id="agriLoanKind_1" name="agriLoanKind_1" style="width:28%;margin:2px;" onchange="change_agriLoanKind_1(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_1", '')</select>
+	              2:<select id="agriLoanKind_2" name="agriLoanKind_2" style="width:28%;margin:2px;" onchange="change_agriLoanKind_2(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_2", '')</select>
+	              3:<select id="agriLoanKind_3" name="agriLoanKind_3" style="width:28%;margin:2px;" onchange="change_agriLoanKind_3(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_3", '')</select>
+	              4:<select id="agriLoanKind_4" name="agriLoanKind_4" style="width:28%;margin:2px;" onchange="change_agriLoanKind_4(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_4", '')</select>
+	              5:<select id="agriLoanKind_5" name="agriLoanKind_5" style="width:28%;margin:2px;">#dict("AGRICULTURE_TYPE_LEVEL_5", '')</select>
               </td>
 			  <td><label>个人经营性贷款类型:</label></td>
               <td><select name="personLoanKind">#dict("ENSURE_PROJECT_LOAN", "")</select></td>
@@ -152,11 +158,11 @@
 			<tr>
               <td><label>贷款归属1:</label></td>
               <td>
-              	1:<select id="loanBelong1_1" name="loanBelong1_1" style="width:29%;margin:2px;" onchange="change_loanBelong1_1(this.value);">#dict("LOAN_BELONG1_LEVEL_1", "")</select>
-              	2:<select id="loanBelong1_2" name="loanBelong1_2" style="width:29%;margin:2px;" onchange="change_loanBelong1_2(this.value);">#dict("LOAN_BELONG1_LEVEL_2", "")</select>
-              	3:<select id="loanBelong1_3" name="loanBelong1_3" style="width:29%;margin:2px;" onchange="change_loanBelong1_3(this.value);">#dict("LOAN_BELONG1_LEVEL_3", "")</select>
-              	4:<select id="loanBelong1_4" name="loanBelong1_4" style="width:29%;margin:2px;" onchange="change_loanBelong1_4(this.value);">#dict("LOAN_BELONG1_LEVEL_4", "")</select>
-              	5:<select id="loanBelong1_5" name="loanBelong1_5" style="width:29%;margin:2px;">#dict("LOAN_BELONG1_LEVEL_5", "")</select>
+              	1:<select id="loanBelong1_1" name="loanBelong1_1" style="width:28%;margin:2px;" onchange="change_loanBelong1_1(this.value);">#dict("LOAN_BELONG1_LEVEL_1", "")</select>
+              	2:<select id="loanBelong1_2" name="loanBelong1_2" style="width:28%;margin:2px;" onchange="change_loanBelong1_2(this.value);">#dict("LOAN_BELONG1_LEVEL_2", "")</select>
+              	3:<select id="loanBelong1_3" name="loanBelong1_3" style="width:28%;margin:2px;" onchange="change_loanBelong1_3(this.value);">#dict("LOAN_BELONG1_LEVEL_3", "")</select>
+              	4:<select id="loanBelong1_4" name="loanBelong1_4" style="width:28%;margin:2px;" onchange="change_loanBelong1_4(this.value);">#dict("LOAN_BELONG1_LEVEL_4", "")</select>
+              	5:<select id="loanBelong1_5" name="loanBelong1_5" style="width:28%;margin:2px;">#dict("LOAN_BELONG1_LEVEL_5", "")</select>
               </td>
 			  <td><label>贷款归属2:</label></td>
               <td><select name="loanBelong2">#dict("LOAN_BELONG2", "")</select></td>
@@ -174,7 +180,7 @@
               <td><select name="chiCustManager">#dict("IS_MAIN_MANAGER", "")</select></td>
             </tr>
 		  </table>
-		  <table class="rule" bordercolor="#cccccc" border="1">
+		  <table class="rule myTable" bordercolor="#cccccc" border="1">
           <caption>客户信息</caption>
             <colgroup>
               <col width="10%" />
@@ -221,9 +227,9 @@
             <tr>
               <td><label>户籍所在地:</label></td>
               <td>
-             		1:<select id="regPermResidence_1" name="regPermResidence_1" style="width:29%;margin:2px;" onchange="change_regPermResidence_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", "")</select>
-             		2:<select id="regPermResidence_2" name="regPermResidence_2" style="width:29%;margin:2px;" onchange="change_regPermResidence_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", "")</select>
-             		3:<select id="regPermResidence_3" name="regPermResidence_3" style="width:29%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", "")</select>
+             		1:<select id="regPermResidence_1" name="regPermResidence_1" style="width:28%;margin:2px;" onchange="change_regPermResidence_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", "")</select>
+             		2:<select id="regPermResidence_2" name="regPermResidence_2" style="width:28%;margin:2px;" onchange="change_regPermResidence_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", "")</select>
+             		3:<select id="regPermResidence_3" name="regPermResidence_3" style="width:28%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", "")</select>
               </td>
 			  <td><label>地址:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="address" name="address"/></td>
@@ -281,7 +287,7 @@
               <td colspan="3"><input type="text" id="openAcctDate" name="openAcctDate" onmouseover="_calendar()"/></td>
             </tr>
 		  </table>
-		  <table class="rule" bordercolor="#cccccc" border="1">
+		  <table class="rule myTable" bordercolor="#cccccc" border="1">
           <caption>费用信息</caption>
             <colgroup>
               <col width="10%" />
@@ -295,22 +301,27 @@
 			  <td><label>费用金额:</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="feeAmount"/></td>
             </tr>
-			<tr>
+			#if($!operate!="填写合同信息")
+            <tr style="display: none;">
+            #else
+            <tr>
+            #end
               <td><label>费用账号:</label><font color="#ff0000">*</font></td>
               <td colspan="3"><input type="text" name="feeAcctNo"/></td>
             </tr>
 		  </table>
         </div>
       </form>
-      <div class="submit">
-         <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+      <div class="submit controlbtn">
+         <a id="id_save_button" class="btn_g" >保存</a>
          #if($!operate=="填写合同信息")
-         <input type="button" value="审批通过" class="current" id="id_zx_in_button"/>
+         <a class="btn_g" id="id_zx_in_button">审批通过</a>
          #else
-         <input id="id_apply_button" type="button" value="申请贷款" class="current" />
+		 
          #end
-         <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
+         <a class="btn_gr" onclick="javascript:history.back();">返回</a>
       </div>
+      
   <script type="text/javascript">
     //新开户json信息
   	var ecif; 
@@ -355,6 +366,11 @@
 		
 		//保存按钮
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
 			if($("#selectClientNo").val() == 0){
 				alert("请先选择对应客户!")
 			}else{
@@ -385,6 +401,7 @@
 				
 				var leng = $("#cardIde").length;
 				if(leng > 0){
+					submitFlag = 0;
 					return;
 				}
 				else{
@@ -404,8 +421,11 @@
 								else{
 									topWin.Dialog.message("保存失败！");
 							    }
+								submitFlag = 0;
 							}
 						});
+					}else{
+						submitFlag = 0;
 					}
 				}
 			}
@@ -529,6 +549,11 @@
 		$("#guaranteeModeDetail option").each(function(){ //遍历全部option
 			guaranteeModeDetail_array2.push($(this));
 	    });
+		
+		//返回
+		$("#id_back_button").click(function() {
+			window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+		});
 		
 		//提交进件
 		$("#id_apply_button").click(function() {

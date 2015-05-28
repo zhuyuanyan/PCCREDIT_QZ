@@ -102,7 +102,7 @@ public class IntoPiecesShouxinControl extends BaseController {
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
 		filter.setNodeName(Constant.status_shouxin);
-		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitFormM(filter);
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView(
@@ -260,9 +260,7 @@ public class IntoPiecesShouxinControl extends BaseController {
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
 			//查找审批金额
-			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
-			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
-			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			Circle circle = circleService.findCircleByAppId(appId);
 			
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);

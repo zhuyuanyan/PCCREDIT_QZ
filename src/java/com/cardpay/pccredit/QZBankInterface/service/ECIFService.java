@@ -15,6 +15,7 @@ import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.filter.AmountAdjustmentFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.web.AmountAdjustmentForm;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.product.model.ProductAttribute;
@@ -42,12 +43,16 @@ public class ECIFService {
 	@Autowired
 	private Client client;
 	
+	@Autowired
+	private CustomerInforService customerInforservice;
+	
 	/**
 	 * 插入数据
 	 * @param customerinfo
 	 * @return
 	 */
-	public void insertCustomerInfor(ECIF ecif) {
+	public void insertCustomerInfor(ECIF ecif,CustomerInfor info) {
+		
 		//组包
 		CompositeData req = iesbForECIF.createEcifRequest(ecif);
 		//发送
@@ -55,11 +60,19 @@ public class ECIFService {
 		//解析，存db
 		String clientNo = iesbForECIF.parseEcifResponse(resp);
 		if(clientNo != null && !clientNo.equals("")){
+			if(info.getId() == null || info.getId().equals("")){
+    			customerInforservice.insertCustomerInfor(info);
+    		}
+    		else{
+    			customerInforservice.updateCustomerInfor(info);
+    		}
+    		ecif.setCustomerId(info.getId());;//设置关联basic_customer_information
+    		
 			//将客户证件号码对应的客户号存入数据库中
-			String id = IDGenerator.generateID();
-			ecif.setId(id);
 			ecif.setCreatedTime(new Date());
             ecif.setClientNo(clientNo);
+            String id = IDGenerator.generateID();
+            ecif.setId(id);
             commonDao.insertObject(ecif);
 		}
 	}

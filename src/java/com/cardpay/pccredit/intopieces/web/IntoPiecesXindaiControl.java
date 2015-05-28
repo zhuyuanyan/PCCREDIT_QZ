@@ -171,9 +171,7 @@ public class IntoPiecesXindaiControl extends BaseController {
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
 			//查找审批金额
-			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
-			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
-			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			Circle circle = circleService.findCircleByAppId(appId);
 			
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);

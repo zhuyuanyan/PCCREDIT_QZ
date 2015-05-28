@@ -108,7 +108,12 @@ public class IESBForCircleController extends BaseController{
 		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
 		mv.addObject("ecif",ecif);
 				
-		Circle circle = circleService.findCircleByAppId(appId);
+		Circle circle = null;
+		if(appId != null && !appId.equals("")){
+			circle = circleService.findCircleByAppId(appId);
+		}else{
+			circle = circleService.findCircle(customerId,null);
+		}
 		mv.addObject("circle",circle);
 		mv.addObject("operate",operate);
 		mv.addObject("appId",appId);
@@ -136,10 +141,10 @@ public class IESBForCircleController extends BaseController{
 		
 		//Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
 		Circle circle = null;
-		if(appId!=null){
+		if(appId != null && !appId.equals("")){
 			circle = circleService.findCircleByAppId(appId);
 		}else{
-			circle = circleService.findCircle(customerId, null);
+			circle = circleService.findCircle(customerId,null);
 		}
 		if(circle == null){
 			mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);

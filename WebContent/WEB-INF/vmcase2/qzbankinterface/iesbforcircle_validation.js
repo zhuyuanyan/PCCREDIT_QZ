@@ -1,8 +1,8 @@
 var validator = $($formName).validate({
 	rules:
     { 
-		//acctNo1:{required:true},
-		//acctNo2:{required:true},
+		acctNo1:{required:true},
+		acctNo2:{required:true},
 		contractNo:{required:true},
 		cardNo:{required:true},
 		
@@ -41,8 +41,8 @@ var validator = $($formName).validate({
      },
 messages:
     {
-		//acctNo1:{required:"收息收款账号不能为空"},
-		//acctNo2:{required:"放款账号不能为空"},
+		acctNo1:{required:"收息收款账号不能为空"},
+		acctNo2:{required:"放款账号不能为空"},
 		contractNo:{required:"合同号不能为空"},
 		cardNo:{required:"卡号不能为空"},
 	

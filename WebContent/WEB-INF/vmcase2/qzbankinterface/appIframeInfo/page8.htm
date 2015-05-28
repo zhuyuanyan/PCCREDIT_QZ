@@ -271,6 +271,11 @@
 				$("select").attr("disabled",true);
 			}
 			$("#id_save_button").click(function() {
+				if(submitFlag == 1){
+					alert("请勿重复提交!")
+					return;
+				}
+				submitFlag = 1;
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
 		   	        var url = "${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}";
@@ -286,8 +291,11 @@
 								else{
 									topWin.Dialog.message("保存失败！");
 							    }
+								submitFlag = 0;
 							}
 						});
+				}else{
+					submitFlag = 0;
 				}
 			});
 			$("#id_back_button").click(function() {
