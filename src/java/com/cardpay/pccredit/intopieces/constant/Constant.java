@@ -34,9 +34,14 @@ public class Constant {
 	/* 成功进件*/
 	public static String SUCCESS_INTOPICES = "success";
 	
-	/* 申请未通过*/
+	/* 退件*/
 	public static String NOPASS_INTOPICES = "nopass";
 	
+	/* 退件到申请状态*/
+	public static String RETURN_INTOPICES = "returnedToFist";
+	
+	/* 申请已通过*/
+	public static String APPROVED_INTOPICES = "approved";
 	
 	/*以下是上传状态*/
 	public static String INITIAL_INTOPICES="initial";
@@ -47,8 +52,6 @@ public class Constant {
 	
 	
 	
-	/* 申请已通过*/
-	public static String APPROVED_INTOPICES = "approved";
 	
 	/*联系人*/
 	public static String CONTACTID = "contactId";

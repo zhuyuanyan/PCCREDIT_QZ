@@ -98,21 +98,23 @@
 		</menu>
 		
 		<menu id="100000" name="report" title="报表统计" url="" img="images/icon_sys.gif" operations="">
-			<menu id="100010" name="cardmanagerdimension" title="客户经理“灵活金”发卡情况统计" url="/report/cardmanagerdimension/browse.page" img="" operations="browse"/>
-			<menu id="100020" name="cardorgdimension" title="支行“灵活金”发卡情况统计" url="/report/cardorgdimension/browse.page" img="" operations="browse"/>
-			<menu id="100030" name="acctmanagerdimension" title="客户经理“灵活金”透支情况统计" url="/report/acctmanagerdimension/browse.page" img="" operations="browse"/>
-			<menu id="100040" name="acctorgdimension" title="支行“灵活金”透支情况统计" url="/report/acctorgdimension/browse.page" img="" operations="browse"/>
+		    <menu id="100001" name="jfreestatus" title="客户经理进件状态报表" url="/report/cardmanagerdimension/report.page" img="" operations="browse"/>
+		    <menu id="100002" name="jfreeapprove" title="进件流程报表" url="/report/cardmanagerdimension/reportTip.page" img="" operations="browse"/>
+			<menu id="100010" name="cardmanagerdimension" title="客户经理“创世贷”发卡情况统计" url="/report/cardmanagerdimension/browse.page" img="" operations="browse"/>
+			<menu id="100020" name="cardorgdimension" title="支行“创世贷”发卡情况统计" url="/report/cardorgdimension/browse.page" img="" operations="browse"/>
+			<menu id="100030" name="acctmanagerdimension" title="客户经理“创世贷”透支情况统计" url="/report/acctmanagerdimension/browse.page" img="" operations="browse"/>
+			<menu id="100040" name="acctorgdimension" title="支行“创世贷”透支情况统计" url="/report/acctorgdimension/browse.page" img="" operations="browse"/>
 			<menu id="100041" name="intelligentcustomerreport" title="客户信息智能报表" url="/report/intelligentcustomerreport/browse.page" img="" operations="create|change|delete|display|browse"/>
 			<menu id="100042" name="intelligentaccountreport" title="客户账户智能报表" url="/report/intelligentaccountreport/browse.page" img="" operations="create|change|delete|display|browse"/>
 			<menu id="100043" name="postloanmanagementdata" title="贷后管理数据" url="/report/postloanmanagementdata/browse.page" img="" operations="create|change|delete|display|browse"/>
-			<menu id="100050" name="creditpaymentmanagerdim" title="客户经理“灵活金”用信还款情况统计" url="/report/creditpaymentmanagerdim/browse.page" img="" operations="browse"/>
+			<menu id="100050" name="creditpaymentmanagerdim" title="客户经理“创世贷”用信还款情况统计" url="/report/creditpaymentmanagerdim/browse.page" img="" operations="browse"/>
 			<menu id="100060" name="creditpaymentorgdim" title="支行“灵活金”用信还款情况统计 " url="/report/creditpaymentorgdim/browse.page" img="" operations="browse"/>
-			<menu id="100070" name="cardbusinessmana" title="“灵活金”/信用卡业务流程监测报表（客户经理/微贷经理维度） " url="/report/cardbusinessmana/browse.page" img="" operations="browse"/>
-			<menu id="100080" name="cardbusinessbank" title="“灵活金”/普通信用卡业务流程监测报表（一级支行/二级支行维度） " url="/report/cardbusinessbank/browse.page" img="" operations="browse"/>
-			<menu id="100090" name="cardqualitymana" title="（退回）“灵活金”业务/普通信用卡进件质量监测报表统计 （客户经理/微贷经理维度）" url="/report/cardqualitymana/browse.page" img="" operations="browse"/>
-			<menu id="100100" name="cardqualitybank" title="（退回）“灵活金”/普通信用卡业务进件质量监测报表统计（一级支行/二级支行维度） " url="/report/cardqualitybank/browse.page" img="" operations="browse"/>
-			<menu id="100110" name="cardqualityrejectmana" title="（拒绝）“灵活金”业务/普通信用卡进件质量监测报表统计 （客户经理/微贷经理维度）" url="/report/cardqualityrejectmana/browse.page" img="" operations="browse"/>
-			<menu id="100120" name="cardqualityrejectbank" title="（拒绝）“灵活金”/普通信用卡业务进件质量监测报表统计（一级支行/二级支行维度） " url="/report/cardqualityrejectbank/browse.page" img="" operations="browse"/>
+			<menu id="100070" name="cardbusinessmana" title="“创世贷”/信用卡业务流程监测报表（客户经理/微贷经理维度） " url="/report/cardbusinessmana/browse.page" img="" operations="browse"/>
+			<menu id="100080" name="cardbusinessbank" title="“创世贷”/普通信用卡业务流程监测报表（一级支行/二级支行维度） " url="/report/cardbusinessbank/browse.page" img="" operations="browse"/>
+			<menu id="100090" name="cardqualitymana" title="（退回）“创世贷”业务/普通信用卡进件质量监测报表统计 （客户经理/微贷经理维度）" url="/report/cardqualitymana/browse.page" img="" operations="browse"/>
+			<menu id="100100" name="cardqualitybank" title="（退回）“灵创世贷”/普通信用卡业务进件质量监测报表统计（一级支行/二级支行维度） " url="/report/cardqualitybank/browse.page" img="" operations="browse"/>
+			<menu id="100110" name="cardqualityrejectmana" title="（拒绝）“创世贷”业务/普通信用卡进件质量监测报表统计 （客户经理/微贷经理维度）" url="/report/cardqualityrejectmana/browse.page" img="" operations="browse"/>
+			<menu id="100120" name="cardqualityrejectbank" title="（拒绝）“创世贷”/普通信用卡业务进件质量监测报表统计（一级支行/二级支行维度） " url="/report/cardqualityrejectbank/browse.page" img="" operations="browse"/>
 		    <menu id="100130" name="workQuality" title="辅助岗位人员工作质量检测报告 " url="/report/workQuality/browse.page" img="" operations="browse"/>
 			<menu id="100113" name="reviewriskcontrol" title="评审岗位人员风控状况统计 " url="/report/reviewriskcontrol/browse.page" img="" operations="browse"/>
 		</menu>

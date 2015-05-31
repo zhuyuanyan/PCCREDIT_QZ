@@ -946,10 +946,10 @@ public class IntoPiecesService {
 		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, filter.getApplicationId());
 		//获取客户信息
 		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
-		//删除申请表信息
-		commonDao.deleteObject(CustomerApplicationInfo.class, filter.getApplicationId());
-		//删除流程表信息
-		commonDao.queryBySql("delete from customer_application_process where application_id='"+filter.getApplicationId()+"'", null);
+//		commonDao.deleteObject(CustomerApplicationInfo.class, filter.getApplicationId());
+		//更新状态为--退件到申请状态
+		applicationInfo.setStatus(Constant.RETURN_INTOPICES);
+		commonDao.updateObject(applicationInfo);
 		//更新客户信息--退回
 		infor.setProcessId(Constant.APPROVE_EDIT_1);
 		commonDao.updateObject(infor);
@@ -1179,7 +1179,6 @@ public class IntoPiecesService {
 	public void returnAppln(String applicationId,HttpServletRequest request) throws Exception{
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String loginId = user.getId();
-		
 		//通过申请表ID获取流程表
 		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(applicationId);
 		//插入流程log表
@@ -1187,6 +1186,7 @@ public class IntoPiecesService {
 		
 		//通过流程表的当前节点获取上一节点
 		NodeControl nodeControl = customerApplicationProcessService.getLastStatus(process.getNextNodeId());
+		
 		//更新业务流程表
 		process.setNextNodeId(nodeControl.getCurrentNode());
 		process.setAuditUser(loginId);
@@ -1755,5 +1755,37 @@ public class IntoPiecesService {
 			return true;
 		}
 		return false;
+	}
+	
+	public CustomerApplicationInfo ifReturnToApprove(String customerId){
+		String sql = "select * from customer_application_info where customer_id='"+customerId+"' and status='"+Constant.RETURN_INTOPICES+"'";
+		List<CustomerApplicationInfo> list = commonDao.queryBySql(CustomerApplicationInfo.class, sql, null);
+		if(list.size()>0){
+			return list.get(0);
+		}	else{
+			return null;
+		}
+	}
+	
+	/**
+	 * 获取某客户经理进件状态数量（统计）
+	 * @return
+	 */
+	public String getStatusCount(String status,String userId){
+		String sql = "select count(*) as count from customer_application_info a,basic_customer_information b where  a.customer_id=b.id and status='"+ status+"' and b.user_id='"+userId+"'";
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+		return list.get(0).get("COUNT").toString();
+	}
+	
+	/**
+	 * 获取进件节点数量（统计）
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getTipCount(){
+		String sql = "SELECT count(*) as count,N.NODE_NAME as NAME	FROM	CUSTOMER_APPLICATION_INFO b,BASIC_CUSTOMER_INFORMATION U,CUSTOMER_APPLICATION_PROCESS A,";
+		sql+=" NODE_AUDIT N,NODE_AUDIT_USER p WHERE U.ID = b.CUSTOMER_ID and a.APPLICATION_ID=b.ID AND N.ID=A.NEXT_NODE_ID";
+		sql+=" and A.NEXT_NODE_ID=p.NODE_ID 	and b.status='audit' GROUP BY N.NODE_NAME";
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+		return list;
 	}
 }
