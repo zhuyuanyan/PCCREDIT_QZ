@@ -40,6 +40,8 @@ public class Constant {
 	/* 退件到申请状态*/
 	public static String RETURN_INTOPICES = "returnedToFist";
 	
+	/* 申请已通过*/
+	public static String APPROVED_INTOPICES = "approved";
 	
 	/*以下是上传状态*/
 	public static String INITIAL_INTOPICES="initial";
@@ -50,8 +52,6 @@ public class Constant {
 	
 	
 	
-	/* 申请已通过*/
-	public static String APPROVED_INTOPICES = "approved";
 	
 	/*联系人*/
 	public static String CONTACTID = "contactId";

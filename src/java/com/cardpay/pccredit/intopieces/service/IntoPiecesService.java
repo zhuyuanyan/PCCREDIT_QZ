@@ -1766,4 +1766,26 @@ public class IntoPiecesService {
 			return null;
 		}
 	}
+	
+	/**
+	 * 获取某客户经理进件状态数量（统计）
+	 * @return
+	 */
+	public String getStatusCount(String status,String userId){
+		String sql = "select count(*) as count from customer_application_info a,basic_customer_information b where  a.customer_id=b.id and status='"+ status+"' and b.user_id='"+userId+"'";
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+		return list.get(0).get("COUNT").toString();
+	}
+	
+	/**
+	 * 获取进件节点数量（统计）
+	 * @return
+	 */
+	public List<HashMap<String, Object>> getTipCount(){
+		String sql = "SELECT count(*) as count,N.NODE_NAME as NAME	FROM	CUSTOMER_APPLICATION_INFO b,BASIC_CUSTOMER_INFORMATION U,CUSTOMER_APPLICATION_PROCESS A,";
+		sql+=" NODE_AUDIT N,NODE_AUDIT_USER p WHERE U.ID = b.CUSTOMER_ID and a.APPLICATION_ID=b.ID AND N.ID=A.NEXT_NODE_ID";
+		sql+=" and A.NEXT_NODE_ID=p.NODE_ID 	and b.status='audit' GROUP BY N.NODE_NAME";
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+		return list;
+	}
 }
