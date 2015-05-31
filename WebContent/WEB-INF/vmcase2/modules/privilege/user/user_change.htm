@@ -63,7 +63,11 @@
 							<td><label for="phone">#mi18n("phone"):</label></td>
 							<td><input type="text" id="phone" name="phone"
 								value="$!person.phone" /></td>
-							<td colspan="3""></td>
+							<td></td>
+							<td colspan="2">
+							<input type="checkBox" id="businessType" name="businessType"
+								#if($!person.businessType=="on") checked #end/>
+							业务机构编制</td>
 						</tr>
 						<tr>
 							<td>#mi18n("description"):</td>
