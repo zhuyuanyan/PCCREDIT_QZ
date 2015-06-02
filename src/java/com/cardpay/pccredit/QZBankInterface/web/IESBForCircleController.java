@@ -139,7 +139,8 @@ public class IESBForCircleController extends BaseController{
 		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
 		JSONObject json = new JSONObject();
 		json = JSONObject.fromObject(ecif);
-		
+		//获取决议单信息
+		QzApplnJyd jyd = intoPiecesService.getJydByCustomerId(customerId, appId);
 		//Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
 		
 		Circle circle = null;
@@ -175,6 +176,7 @@ public class IESBForCircleController extends BaseController{
 		mv.addObject("ecif",json);
 		mv.addObject("operate",operate);
 		mv.addObject("appId",appId);
+		mv.addObject("jyd",jyd);
 		mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate));
 		
 		return mv;
