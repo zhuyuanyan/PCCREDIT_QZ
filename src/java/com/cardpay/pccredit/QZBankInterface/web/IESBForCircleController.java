@@ -27,6 +27,7 @@ import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
@@ -140,6 +141,7 @@ public class IESBForCircleController extends BaseController{
 		json = JSONObject.fromObject(ecif);
 		
 		//Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		
 		Circle circle = null;
 		if(appId != null && !appId.equals("")){
 			circle = circleService.findCircleByAppId(appId);
@@ -159,7 +161,9 @@ public class IESBForCircleController extends BaseController{
 			mv.addObject("orgId",orgId);
 			mv.addObject("parentOrgId",parentOrgId);
 			mv.addObject("externalId",externalId);
-			
+
+			QzApplnJyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
+			mv.addObject("qzSdhjyd",qzSdhjyd);
 			
 		}
 		else{
