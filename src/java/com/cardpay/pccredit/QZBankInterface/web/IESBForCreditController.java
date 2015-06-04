@@ -61,7 +61,7 @@ public class IESBForCreditController extends BaseController{
 	public AbstractModelAndView create(HttpServletRequest request) {  
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcredit", request);
 		//查找新开户
-		List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
+		List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus(null);
 		mv.addObject("ECIF_ls",ls);
 		JSONArray json = new JSONArray();
 		json = JSONArray.fromObject(ls);

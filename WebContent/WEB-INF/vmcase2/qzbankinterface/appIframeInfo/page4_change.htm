@@ -1,7 +1,8 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
-	
-</style>
+<script type="text/javascript">
+var now = new Date();
+var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate();
+</script>
 <body>
 <form id="id_module_form">
 <div class="forms" id="formsId">
@@ -80,7 +81,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>工作情况（必填）</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -121,7 +122,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>家庭情况（必填）</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -164,7 +165,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>贷款记录</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -209,7 +210,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>资产情况（可选项）</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -291,7 +292,7 @@
 </form>	
 <div class="controlbtn">
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
-	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	<a href="javascript:history.back();" class="btn_gr">返回</a>
 </div>
 	<script type="text/javascript">			
 		var layout=new FormsLayout("formsId");	
@@ -303,6 +304,11 @@
 		$(document).ready(function() {	
 			//保存
 			$("#id_save_button").click(function() {
+				if(submitFlag == 1){
+					alert("请勿重复提交!")
+					return;
+				}
+				submitFlag = 1;
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
 					var url = "${contextPath}/intopieces/intopiecesapprove/update_page4.json?id=${qzApplnDbrxx.id}";
@@ -318,14 +324,12 @@
 							else{
 								topWin.Dialog.message("保存失败！");
 						    }
+							submitFlag = 0;
 						}
 					});
+				}else{
+					submitFlag = 0;
 				}
-			});
-			
-			//返回
-			$("#id_back_button").click(function() {
-				window.parent.location.href = "${contextPath}/intopieces/intopiecesapprove/approve.page";
 			});
 			
 		});

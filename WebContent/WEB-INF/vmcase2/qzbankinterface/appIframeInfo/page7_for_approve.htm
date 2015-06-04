@@ -1,13 +1,8 @@
 #parse ("common/iframe_page_header3.htm")
 <style type="text/css">
-	form{height:420px;position:absolute;right:0;width:98%;margin-right:0;top:70px;height:410px;height:380px\0;}
-	.box{border:none;}
-	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
+
 </style>
 <body>
-<div class="fixed">
-	<h1>内部审查意见表</h1>
-</div>
 <form id="id_module_form">
 <div class="forms" id="formsId">
 <!--*************************************************************内部审查意见表*************************************************************-->
@@ -23,38 +18,41 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">内部审查日期：<font color="#ff0000">*</font></td>
-					<td colspan="3"><input type="text" name="checkDate" value="$date.format('yyyy-MM-dd', $!qzApplnNbscyjb.checkDate)" onmouseover="_calendar()"/></td>			
+					<td colspan="3">
+					<input type="text" name="checkDate" value="$date.format('yyyy-MM-dd', $!qzApplnNbscyjb.checkDate)" onmouseover="_calendar() " readonly/></td>			
 				</tr>
 				<tr>
 					<td class="table-label">客户名称：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="clientName" value="$!qzApplnNbscyjb.clientName"/></td>
+					<td><input type="text" value="$!customerInfo.chineseName" readonly/>
+						<input type="hidden" name="clientName" value="$!customerInfo.chineseName"/></td>
 					<td class="table-label">店铺/企业名称：</td>
-					<td><input type="text" name="shopName" value="$!qzApplnNbscyjb.shopName"/></td>			
+					<td><input type="text" value="$!qzApplnJyxx.shopName" readonly/>
+						<input type="hidden" name="shopName" value="$!qzApplnJyxx.bussName"/></td>	
 				</tr>
 				<tr>
 					<td class="table-label">申请金额：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="applyAmount" value="$!qzApplnNbscyjb.applyAmount"/></td>
+					<td><input type="text" name="applyAmount" value="$!qzApplnNbscyjb.applyAmount" readonly/></td>
 					<td class="table-label">申请期限：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="applyDeadline" value="$!qzApplnNbscyjb.applyDeadline"/></td>			
+					<td><input type="text" name="applyDeadline" value="$!qzApplnNbscyjb.applyDeadline" readonly/></td>			
 				</tr>
 				<tr>
 					<td class="tableTitle" colspan="4">客户经理建议</td>				
 				</tr>
 				<tr>
 					<td class="table-label">建议结论：<font color="#ff0000">*</font></td>
-					<td colspan="3"><textarea name="sugContent">$!qzApplnNbscyjb.sugContent</textarea></td>			
+					<td colspan="3"><textarea name="sugContent" disabled>$!qzApplnNbscyjb.sugContent</textarea></td>			
 				</tr>
 				<tr>
 					<td class="table-label">建议金额：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="sugAmount" value="$!qzApplnNbscyjb.sugAmount"/></td>
+					<td><input type="text" name="sugAmount" value="$!qzApplnNbscyjb.sugAmount" readonly/></td>
 					<td class="table-label">建议期限：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="sugDeadline" value="$!qzApplnNbscyjb.sugDeadline"/></td>			
+					<td><input type="text" name="sugDeadline" value="$!qzApplnNbscyjb.sugDeadline" readonly/></td>			
 				</tr>
 				<tr>
 					<td class="table-label">建议利率：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="sugRates" value="$!qzApplnNbscyjb.sugRates"/></td>
+					<td><input type="text" name="sugRates" value="$!qzApplnNbscyjb.sugRates" readonly/></td>
 					<td class="table-label">担保方式：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="sugGuntType" value="$!qzApplnNbscyjb.sugGuntType"/></td>			
+					<td><select name="sugGuntType" readonly/>#dict("ASSURE_MAIN", $!qzApplnNbscyjb.sugGuntType)</select></td>	
 				</tr>
 				<tr>
 					<td class="tableTitle" colspan="4">内部审查人员意见</td>				
@@ -73,7 +71,7 @@
 				</tr>
 				<tr>
 					<td class="table-label">核查人员签字</td>
-					<td><input type="text" name=""/></td>
+					<td><input type="text" name="hcryqz" value="$!qzApplnNbscyjb.hcryqz"/></td>
 					<td class="table-label">客户资料是否完整：</td>
 					<td>
 						<label><input type="radio" value="1" name="isComplete" #if($!qzApplnNbscyjb.isComplete=='1') checked #end/>是</label>
@@ -86,8 +84,10 @@
 	</div>
 </form>	
 <div class="controlbtn">
+#if($!type!="readonly")
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
-	<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
+#end
+ <a class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 </div>
 	<script type="text/javascript">			
 	var layout=new FormsLayout("formsId");	
@@ -97,8 +97,20 @@
 	#parse ("qzbankinterface/appIframeInfo/page7_validation.js")
 	
 	$(document).ready(function() {	
+		if("${type}"=="readonly"){
+			$("input[type='text']").attr("disabled",true);
+			$("input[type='radio']").attr("disabled",true);
+			$("input[type='checkbox']").attr("disabled",true);
+			$("select").attr("disabled",true);
+			$("textarea").attr("disabled",true);
+		}
 		//保存
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
 				var url = "${contextPath}/intopieces/intopiecesapprove/update_page7.json?id=${qzApplnNbscyjb.id}";
@@ -113,8 +125,11 @@
 						else{
 							topWin.Dialog.message("保存失败！");
 					    }
+						submitFlag = 0;
 					}
 				});
+			}else{
+				submitFlag = 0;
 			}
 		});
 		

@@ -34,9 +34,14 @@ public class Constant {
 	/* 成功进件*/
 	public static String SUCCESS_INTOPICES = "success";
 	
-	/* 申请未通过*/
+	/* 退件*/
 	public static String NOPASS_INTOPICES = "nopass";
 	
+	/* 退件到申请状态*/
+	public static String RETURN_INTOPICES = "returnedToFist";
+	
+	/* 申请已通过*/
+	public static String APPROVED_INTOPICES = "approved";
 	
 	/*以下是上传状态*/
 	public static String INITIAL_INTOPICES="initial";
@@ -47,8 +52,6 @@ public class Constant {
 	
 	
 	
-	/* 申请已通过*/
-	public static String APPROVED_INTOPICES = "approved";
 	
 	/*联系人*/
 	public static String CONTACTID = "contactId";
@@ -90,13 +93,14 @@ public class Constant {
 	/*进件状态*/
 	public static String status_shenqing="申请";
 	public static String status_chushen="初审";
-	public static String status_xingzheng1="行政岗-初";
-	public static String status_shouxin="授信审批岗";
-	public static String status_zhongxin="团队管理岗复核";
-	public static String status_xinshen="行政岗-终";
-	public static String status_xingzheng2="团队管理岗最终复核";
+	public static String status_xingzheng1="内部审查";
+	public static String status_shouxin="授信审批";
+	public static String status_zhongxin="中心复核";
+	public static String status_xinshen="填写合同信息";
+	public static String status_xingzheng2="中心终审";
 	public static String jyd_id="00001";//决议单默认ID
 	public static String htd_id="00002";//合同单默认ID
+	public static String status_buchong="补充上会";
 	
 	/*审批结果*/
 	public static String APPLN_TYPE_1="审批通过";

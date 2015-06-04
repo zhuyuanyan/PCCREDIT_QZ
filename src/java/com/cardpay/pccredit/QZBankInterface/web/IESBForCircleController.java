@@ -102,18 +102,22 @@ public class IESBForCircleController extends BaseController{
 	public AbstractModelAndView display(HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_display", request);
 		
-		//查找新开户
-		/*List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_CIRCLE);
-		mv.addObject("ECIF_ls",ls);
-		JSONArray json = new JSONArray();
-		json = JSONArray.fromObject(ls);
-		mv.addObject("ECIF_ls_json",json.toString());*/
 		String customerId = request.getParameter(ID);
+		String appId = request.getParameter("appId");
+		String operate = request.getParameter("operate");
 		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
 		mv.addObject("ecif",ecif);
 				
-		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		Circle circle = null;
+		if(appId != null && !appId.equals("")){
+			circle = circleService.findCircleByAppId(appId);
+		}else{
+			circle = circleService.findCircle(customerId,null);
+		}
 		mv.addObject("circle",circle);
+		mv.addObject("operate",operate);
+		mv.addObject("appId",appId);
+		mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate));
 		return mv;
 	}
 	
@@ -124,55 +128,51 @@ public class IESBForCircleController extends BaseController{
 	 * @return
 	*/
 	@ResponseBody
-	@RequestMapping(value = "create.page")
+	@RequestMapping(value = "create_or_change.page")
 	public AbstractModelAndView create(HttpServletRequest request) { 
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);
+		JRadModelAndView mv = null;
 		
-		//查找新开户
-		/*List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
-		mv.addObject("ECIF_ls",ls);
-		JSONArray json = new JSONArray();
-		json = JSONArray.fromObject(ls);
-		mv.addObject("ECIF_ls_json",json.toString());*/
 		String customerId = request.getParameter(ID);
+		String appId = request.getParameter("appId");
+		String operate = request.getParameter("operate");
 		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
 		JSONObject json = new JSONObject();
 		json = JSONObject.fromObject(ecif);
-		mv.addObject("ecif",json);
 		
-		//查找登录用户信息
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String orgId = user.getOrganization().getId();//机构ID
-		String parentOrgId = user.getOrganization().getParentId();//机构ID
-		if(parentOrgId.equals("000000")){//替换为泉州总行id
-			parentOrgId = Constant.QZ_ORG_ROOT_ID;
+		//Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+		Circle circle = null;
+		if(appId != null && !appId.equals("")){
+			circle = circleService.findCircleByAppId(appId);
+		}else{
+			circle = circleService.findCircle(customerId,null);
 		}
-		String externalId = user.getLogin();//工号
-		mv.addObject("orgId",orgId);
-		mv.addObject("parentOrgId",parentOrgId);
-		mv.addObject("externalId",externalId);
-		return mv;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "change.page")
-	public AbstractModelAndView change(HttpServletRequest request) { 
-		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_change", request);
+		if(circle == null){
+			mv = new JRadModelAndView("/qzbankinterface/iesbforcircle", request);
+			//查找登录用户信息
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String orgId = user.getOrganization().getId();//机构ID
+			String parentOrgId = user.getOrganization().getParentId();//机构ID
+//			if(parentOrgId.equals("000000")){//替换为泉州总行id
+				parentOrgId = Constant.QZ_ORG_ROOT_ID;
+//			}
+			String externalId = user.getLogin();//工号
+			mv.addObject("orgId",orgId);
+			mv.addObject("parentOrgId",parentOrgId);
+			mv.addObject("externalId",externalId);
+			
+			
+		}
+		else{
+			mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_change", request);
+			mv.addObject("circle",circle);
+		}
 		
-		//查找新开户
-		/*List<IESBForECIFReturnMap> ls = eCIFService.findAllECIFByStatus2(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
-		mv.addObject("ECIF_ls",ls);
-		JSONArray json = new JSONArray();
-		json = JSONArray.fromObject(ls);
-		mv.addObject("ECIF_ls_json",json.toString());*/
-		String customerId = request.getParameter(ID);
-		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
-		JSONObject json = new JSONObject();
-		json = JSONObject.fromObject(ecif);
+		mv.addObject("customerId",customerId);
 		mv.addObject("ecif",json);
+		mv.addObject("operate",operate);
+		mv.addObject("appId",appId);
+		mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate));
 		
-		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
-		mv.addObject("circle",circle);
 		return mv;
 	}
 	
@@ -248,8 +248,9 @@ public class IESBForCircleController extends BaseController{
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				circle.setCreatedBy(user.getId());
 				circle.setUserId(user.getId());
+				circle.setCustomerId(request.getParameter("customerId"));
 				circleService.insertCustomerInforCircle(circle);
-//				returnMap.put(RECORD_ID, id);
+				
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
@@ -338,6 +339,7 @@ public class IESBForCircleController extends BaseController{
 				circle.setCreatedBy(user.getId());
 				circle.setUserId(user.getId());
 				circle.setId(circleId);
+				circle.setCustomerId(request.getParameter("customerId"));
 				circleService.updateCustomerInforCircle(circle);
 //				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);

@@ -1,4 +1,8 @@
 #parse ("common/iframe_page_header3.htm")
+<script type="text/javascript">
+var now = new Date();
+var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate();
+</script>
 <body>
 <form id="id_module_form">
 <div class="forms" id="formsId">
@@ -30,7 +34,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>个人信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -152,7 +156,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>营业信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -165,35 +169,35 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">经营名称：</td>
-					<td><input type="text" name="bussName"/></td>	
+					<td><input type="text" name="bussName" value="$!qzApplnJyxx.bussName" /></td>	
 					<td class="table-label">经营范围：</td>					
-					<td><input type="text" name="bussScope"/></td>		
+					<td><input type="text" name="bussScope" value="$!qzApplnJyxx.bussScope" /></td>		
 				</tr>	
 				<tr>
 					<td class="table-label">开业时间：</td>
-					<td><input type="text" name="bussStartYear"/>年</td>	
+					<td><input type="text" name="bussStartYear" value="$!qzApplnJyxx.bussStartYear" />年</td>	
 					<td class="table-label">实际经营地址：</td>					
 					<td>
 						(<select id="bussAddrType" name="bussAddrType" onchange="setSelect(this,'qtsjjydz')" style="width:80px">
-							#dict("ADDRESS_TYPE_NEW", "")
+							#dict("ADDRESS_TYPE_NEW", "$!qzApplnJyxx.bussAddrType")
 						</select>
-						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" disabled/>)：			
-						<input type="text" name="bussAddr"/>
+						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" value="$!qzApplnJyxx.bussAddrTypeOther" #if($!qzApplnJyxx.bussAddrType!='5') disabled #end/>)：			
+						<input type="text" name="bussAddr" value="$!qzApplnJyxx.bussAddr" />
 					</td>		
 				</tr>
 				<tr>
 					<td class="table-label">营业地址电话：</td>
-					<td><input type="text" name="bussPhone"/></td>	
+					<td><input type="text" name="bussPhone" value="$!qzApplnJyxx.bussPhone" /></td>	
 					<td class="table-label">雇员人数：</td>					
-					<td><input type="text" name="bussEmployeeNum"/>人</td>		
+					<td><input type="text" name="bussEmployeeNum" value="$!qzApplnJyxx.bussEmployeeNum" />人</td>		
 				</tr>	
 				<tr>
 					<td class="table-label">组织形式：</td>
 					<td colspan="3">
 						<select id="bussType" name="bussType" onchange="setSelect(this,'qtzzxs')">
-							#dict("BUSS_TYPE_NEW", "")
+							#dict("BUSS_TYPE_NEW", "$!qzApplnJyxx.bussType")
 						</select>
-						<input type="text" name="bussTypeOther" id="qtzzxs" disabled/>	
+						<input type="text" name="bussTypeOther" id="qtzzxs" value="$!qzApplnJyxx.bussTypeOther" #if($!qzApplnJyxx.bussType!='3') disabled #end/>	
 					</td>			
 				</tr>
 			</table>
@@ -204,7 +208,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>贷款申请</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -245,7 +249,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>财务信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -293,16 +297,16 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>业务信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
 			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="zygys">
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
-						主要供应商
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zygys')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zygys')"/>
+						主要供应商						
+						<a class="add" onclick="addTd('zygys')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zygys')"><img src="${contextPath}/images/del.png"/></a>
 						<input type="hidden" value="1" id="zygys_cnt" name="zygys_cnt">
 					</td>		
 				</tr>
@@ -321,8 +325,8 @@
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
 						主要客户
-						<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('zykh')"/>
-						<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('zykh')"/>
+						<a class="add" onclick="addTd('zykh')"><img src="${contextPath}/images/add.png"/></a>
+						<a class="del" onclick="removeTd('zykh')"><img src="${contextPath}/images/del.png"/></a>
 						<input type="hidden" value="1" id="zykh_cnt" name="zykh_cnt">
 					</td>		
 				</tr>
@@ -344,7 +348,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>借款记录</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>	
 		<div name="content" class="display_show">	
@@ -355,8 +359,8 @@
 						<label><input type="radio" name="borrowHistory" value="1" onclick="$('#buttons').show();$('#jkjl .input').removeAttr('disabled')"/>有</label>
 						<label><input type="radio" name="borrowHistory" value="0" onclick="$('#buttons').hide();$('#jkjl .input').val('');$('#jkjl .input').attr('disabled','disabled')" checked/>无</label>
 						<span class="display" id="buttons">
-							<input type="button" value="+" style="width:20px;height:20px;" onclick="addTd('jkjl')" />
-							<input type="button" value="-" style="width:20px;height:20px;" onclick="removeTd('jkjl')" />
+							<a class="add" onclick="addTd('jkjl')"><img src="${contextPath}/images/add.png"/></a>
+							<a class="del" onclick="removeTd('jkjl')"><img src="${contextPath}/images/del.png"/></a>
 							<input type="hidden" value="1" id="jkjl_cnt" name="jkjl_cnt">
 						</span>
 					</td>		
@@ -375,7 +379,9 @@
 					<td><input type="text" class="input" name="bankOrOtherType_jkjl_1" disabled/></td>	
 					<td><input type="text" class="input" name="purpose_jkjl_1" disabled/></td>					
 					<td><input type="text" class="input" name="totalAmount_jkjl_1" disabled/></td>	
-					<td><input type="text" class="input" name="loanDate_jkjl_1" value="" onmouseover="_calendar()" disabled/></td>	
+					<script>
+						document.write('<td><input type="text" class="input" name="loanDate_jkjl_1" value="'+timestr+'" onmouseover="_calendar()" disabled/></td>');
+					</script>
 					<td><input type="text" class="input" name="deadline_jkjl_1" disabled/></td>					
 					<td><input type="text" class="input" name="rates_jkjl_1" disabled/></td>	
 					<td><input type="text" class="input" name="repayType_jkjl_1" disabled/></td>	
@@ -423,7 +429,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>其他信息</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -468,7 +474,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>声明</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -496,7 +502,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>信息渠道</td>
-				<td><img src="${contextPath}/images/max.gif"/></td>
+				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="display_show">
@@ -548,8 +554,12 @@
 	</div>
 </form>	
 <div class="controlbtn">
+	#if($!type=="readonly")
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#else
 		<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
 		<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	#end
 	</div>
 	<script type="text/javascript">			
 		function setSelect(obj,id){//其他证件类型、其他教育水平等
@@ -593,6 +603,11 @@
 		$(document).ready(function() {	
 			//保存
 			$("#id_save_button").click(function() {
+				if(submitFlag == 1){
+					alert("请勿重复提交!")
+					return;
+				}
+				submitFlag = 1;
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
 					var url = "${contextPath}/intopieces/intopiecesapprove/insert_page1.json?customerId=${customerId}";
@@ -603,13 +618,16 @@
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1_change.page?customerId=${customerId}";
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?id=${customerId}";
 							}
 							else{
 								topWin.Dialog.message("保存失败！");
 						    }
+							submitFlag = 0;
 						}
 					});
+				}else{
+					submitFlag = 0;
 				}
 			});
 			

@@ -25,6 +25,7 @@ import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
@@ -33,6 +34,7 @@ import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
+import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -110,7 +112,8 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	@RequestMapping(value = "create_upload.page")
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView createUpload(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
-		String appId = request.getParameter(ID);
+		String appId = request.getParameter("appId");
+		String type = request.getParameter("type");
 		List<QzDcnrUploadForm>  result =intoPiecesService.getUploadList(appId);
 		for(int i=0;i<result.size();i++){
 			if(result.get(i).getHetongId()==null){
@@ -123,6 +126,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_xingzhengend_upload", request);
 		mv.addObject("result", result);
 		mv.addObject("appId",appId);
+		mv.addObject("type",type);
 		return mv;
 	}
 	
@@ -169,15 +173,14 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			String appId = request.getParameter("id");
+
 			CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(appId);
 			request.setAttribute("serialNumber", process.getSerialNumber());
 			request.setAttribute("applicationId", process.getApplicationId());
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
 			//查找审批金额
-			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
-			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
-			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			Circle circle = circleService.findCircleByAppId(appId);
 			
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			
@@ -185,13 +188,16 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			boolean rtn = circleService.updateCustomerInforCircle_ESB(circle);
 			if(rtn){
 				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+				returnMap.put(JRadConstants.SUCCESS, true);
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			}
 			else{
+				returnMap.put(JRadConstants.SUCCESS, false);
 				returnMap.addGlobalMessage("保存失败");
 			}
 			
 		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
 			returnMap.addGlobalMessage("保存失败");
 			e.printStackTrace();
 		}
@@ -207,11 +213,15 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	@RequestMapping(value = "create_tz_form.page")
 	public AbstractModelAndView createSyjyForm(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page11", request);
-		String appId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String type = RequestHelper.getStringValue(request, "type");
+		String operate = RequestHelper.getStringValue(request, "operate");
 		if (StringUtils.isNotEmpty(appId)) {
 			List<QzApplnHtqdtz> qzTz = intoPiecesService.getTzList(appId);
 			mv.addObject("appId", appId);
 			mv.addObject("list", qzTz);
+			mv.addObject("type", type);
+			mv.addObject("returnUrl", intoPiecesService.getReturnUrl(operate));
 		}
 		return mv;
 	}
@@ -242,4 +252,36 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		}
 		return returnMap;
 	}
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("operate", Constant.status_xingzheng2);
+		}
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "returnAppln.json")
+	public JRadReturnMap returnAppln(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			intoPiecesService.returnAppln(appId, request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+	
 }

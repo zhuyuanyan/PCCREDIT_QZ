@@ -1,0 +1,36 @@
+var validator = $($formName).validate({
+	rules:
+    { 
+		jkrys:{required:true},
+		jkrls:{required:true},
+		sfwz:{required:true},
+		zzjyjg:{required:true},
+		hswt:{required:true},
+		hsqk:{required:true},
+		dscyqz:{required:true},
+		rq:{required:true},
+		zbkhjlqz:{required:true},
+		xzdcryqz:{required:true},
+		rq1:{required:true}
+     },
+messages:
+    {
+	jkrys:{required:"借款人优势不能为空"},
+	jkrls:{required:"借款人劣势不能为空"},
+	sfwz:{required:"资料不能为空"},
+	zzjyjg:{required:"决议结果不能为空"},
+	hswt:{required:"核实问题不能为空"},
+	hsqk:{required:"核实情况不能为空"},
+	dscyqz:{required:"贷审成员不能为空"},
+	rq:{required:"日期不能为空"},
+	zbkhjlqz:{required:"客户经理不能为空"},
+	xzdcryqz:{required:"调查人员不能为空"},
+	rq1:{required:"日期不能为空"}
+   },
+	errorPlacement : function(error, element) {
+		element.after(error);
+		if(layout){
+			layout.resizeLayout();
+		}
+	}
+});

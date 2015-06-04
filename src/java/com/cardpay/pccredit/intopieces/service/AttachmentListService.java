@@ -133,6 +133,10 @@ public class AttachmentListService {
 		return attachmentListDao.findAttachmentList(customerId, applicationId);
 	}
 
+	public QzApplnAttachmentList findAttachmentListByAppId(String applicationId) {
+		return attachmentListDao.findAttachmentListByAppId(applicationId);
+	}
+	
 	public void insert_page5(QzApplnAttachmentList QzApplnAttachmentList,HttpServletRequest request){
 		//保存清单至调查内容表
 		intoPiecesService.addAttachList(QzApplnAttachmentList);

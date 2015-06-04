@@ -22,9 +22,11 @@
 				</tr>
 				<tr>
 					<td class="table-label">客户名称：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="clientName" value="$!qzApplnNbscyjb.clientName"/></td>
+					<td><input type="text" value="$!customerInfo.chineseName" disabled/>
+						<input type="hidden" name="clientName" value="$!customerInfo.chineseName"/></td>
 					<td class="table-label">店铺/企业名称：</td>
-					<td><input type="text" name="shopName" value="$!qzApplnNbscyjb.shopName"/></td>			
+					<td><input type="text" value="$!qzApplnJyxx.shopName"/>
+						<input type="hidden" name="shopName" value="$!qzApplnJyxx.bussName"/></td>			
 				</tr>
 				<tr>
 					<td class="table-label">申请金额：<font color="#ff0000">*</font></td>
@@ -49,7 +51,7 @@
 					<td class="table-label">建议利率：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="sugRates" value="$!qzApplnNbscyjb.sugRates"/></td>
 					<td class="table-label">担保方式：<font color="#ff0000">*</font></td>
-					<td><input type="text" name="sugGuntType" value="$!qzApplnNbscyjb.sugGuntType"/></td>			
+					<td><select name="sugGuntType"/>#dict("ASSURE_MAIN", $!qzApplnNbscyjb.sugGuntType)</select></td>			
 				</tr>
 				
 			</table>			
@@ -58,8 +60,12 @@
 	</div>
 </form>	
 <div class="controlbtn">
+#if($!type=="readonly")
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	#else
 	<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
 	<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+	#end
 </div>
 	<script type="text/javascript">			
 	var layout=new FormsLayout("formsId");	
@@ -69,8 +75,20 @@
 	#parse ("qzbankinterface/appIframeInfo/page7_validation.js")
 	
 	$(document).ready(function() {	
+		if("${type}"=="readonly"){
+			$("input[type='text']").attr("disabled",true);
+			$("input[type='radio']").attr("disabled",true);
+			$("input[type='checkbox']").attr("disabled",true);
+			$("select").attr("disabled",true);
+			$("textarea").attr("disabled",true);
+		}
 		//保存
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
 				var url = "${contextPath}/intopieces/intopiecesapprove/update_page7.json?id=${qzApplnNbscyjb.id}";
@@ -81,13 +99,16 @@
 					success : function(data) {
 						if (data.success) {
 							topWin.Dialog.message("保存成功！");
-							window.location.href = "${contextPath}/intopieces/intopiecesapprove/page7.page?customerId=${qzApplnNbscyjb.customerId}";
+							window.location.href = "${contextPath}/intopieces/intopiecesapprove/page7.page?id=${qzApplnNbscyjb.customerId}";
 						}
 						else{
 							topWin.Dialog.message("保存失败！");
 					    }
+						submitFlag = 0;
 					}
 				});
+			}else{
+				submitFlag = 0;
 			}
 		});
 		

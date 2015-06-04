@@ -31,11 +31,14 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.JyxxService;
 import com.cardpay.pccredit.intopieces.service.NbscyjbService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -63,13 +66,9 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	private CustomerInforService customerInforService;
 	
 	@Autowired
-	private CustomerInforService customerInforservice;
-	
-	@Autowired
 	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
-	
 	@Autowired
 	private CircleService circleService;
 	@Autowired
@@ -77,6 +76,9 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	
 	@Autowired
 	private NbscyjbService nbscyjbService;
+	@Autowired
+	private JyxxService jyxxService;
+	
 	/**
 	 * 行政岗初进件页面
 	 * 
@@ -111,12 +113,9 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "create_upload.page")
 	public AbstractModelAndView createUpload(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
-		String appId = request.getParameter(ID);
+		String appId = request.getParameter("appId");
 		//是否只读标记
 		String type = request.getParameter("type");
-		if(type==null){
-			type="";
-		}
 		List<QzDcnrUploadForm>  result =intoPiecesService.getUploadList(appId);
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_xingzhengbegin_upload", request);
 		mv.addObject("result", result);
@@ -174,9 +173,7 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
 			//查找审批金额
-			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
-			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
-			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			Circle circle = circleService.findCircleByAppId(appId);
 			
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
@@ -219,12 +216,34 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "in_applove.page")
 	public AbstractModelAndView inApplove(HttpServletRequest request) {
-		String appId = request.getParameter(ID);
+		String appId = request.getParameter("appId");
+		String type = request.getParameter("type");
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_change", request);
-		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjb(null, appId);
+		QzApplnNbscyjb qzApplnNbscyjb = nbscyjbService.findNbscyjbByAppId(appId);
 		mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page7_for_approve", request);
 		mv.addObject("qzApplnNbscyjb", qzApplnNbscyjb);
-		
+		mv.addObject("type", type);
+		CustomerInfor customerInfo = customerInforService.findCustomerInforById(intoPiecesService.findCustomerApplicationInfoByApplicationId(appId).getCustomerId());
+		mv.addObject("customerInfo", customerInfo);
+		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInfo.getId(), null);
+		mv.addObject("qzApplnJyxx", qzApplnJyxx);
+		return mv;
+	}
+	
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforService.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("operate", Constant.status_xingzheng1);
+		}
 		return mv;
 	}
 

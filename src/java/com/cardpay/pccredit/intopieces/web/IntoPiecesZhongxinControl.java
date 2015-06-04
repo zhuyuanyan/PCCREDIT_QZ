@@ -18,6 +18,7 @@ import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForCircleForm;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
@@ -113,9 +114,7 @@ public class IntoPiecesZhongxinControl extends BaseController {
 			request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 			request.setAttribute("objection", "false");
 			//查找审批金额
-			CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(appId);
-			IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
-			Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
+			Circle circle = circleService.findCircleByAppId(appId);
 			
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
@@ -264,6 +263,22 @@ public class IntoPiecesZhongxinControl extends BaseController {
 			QzApplnJyd qzSdhjyd = intoPiecesService.getSdhjydFormAfter(appId);
 			mv.addObject("result", qzSdhjyd);
 			mv.addObject("readType", "readType");
+		}
+		return mv;
+	}
+	//iframe_approve(申请后)
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve.page")
+	public AbstractModelAndView iframeApprove(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("operate", Constant.status_zhongxin);
 		}
 		return mv;
 	}

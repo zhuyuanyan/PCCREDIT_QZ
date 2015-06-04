@@ -5,24 +5,11 @@
 <body>
   <div class="content_main">
     <div class="contentinner">
-       <div class="place">
-       <div class="title">上传合同扫描单</div>
-      </div>
-          
+         #if($!type=="modify") 
       <div class="inquiry">
-       <div class="search_tag">上传合同扫描单</div>
         <div class="search">
           <form id="myForm" action="${contextPath}/intopieces/intopiecesxingzheng2/saveYxzl.json" enctype="multipart/form-data" method="post">
           <ul>
-          	  <li>
-                <span>合同号:<input class="rinpsty"  type="text" name="hetongId"/></span>
-              </li>
-              <li>
-                <span>经办人:<input class="rinpsty"  type="text" name="userName"/></span>
-              </li>
-              <li>
-                <span>卡号:<input class="rinpsty"  type="text" name="cardId"/></span>
-              </li>
               <li>
                 <span>合同扫描件:<input type="file" name="file" id="file" /><input type="hidden" name="appId" value="${appId}"/></span>
               </li>
@@ -30,21 +17,18 @@
                 <span>备注:<input type="text" name="remark" style="width:300px;"></textarea></span>
               </li>
               <li class="search_button">
-                <input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng2/create_upload.page?id=${appId}');"/>
+                <input type="button" value="提交" class="search_button_inquiry" title="提交" style="height: 26px; line-height: 24px;" onclick="mySave('${contextPath}/intopieces/intopiecesxingzheng2/create_upload.page?appId=${appId}');"/>
               </li>
           </ul> 
                 
           </form>
         </div>
-  
+ 	 #end
       <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
               <col width="5%">
               <col width="15%">
-              <col width="20%">
-              <col width="10%">
-              <col width="10%">
               <col width="20%">
               <col width="20%">
             </colgroup>
@@ -52,21 +36,16 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">调查内容</th>
               <th nowrap="nowrap">备注</th>
-              <th nowrap="nowrap">合同号</th>
-              <th nowrap="nowrap">经办人</th>
-              <th nowrap="nowrap">卡号</th>
               <th nowrap="nowrap">查看图片</th>
             </tr>
             </table>
             </div>
-      <div id="downDiv" class="inquiry_list inquiry_down">
+      <div style="height:340px;height:310px\9;overflow-y:auto;overflow-x:hidden">
+      	<div id="downDiv" class="inquiry_list inquiry_down" >
           <table>
           	<colgroup>
              <col width="5%">
               <col width="15%">
-              <col width="20%">
-              <col width="10%">
-              <col width="10%">
               <col width="20%">
               <col width="20%">
             </colgroup>
@@ -82,20 +61,18 @@
              <td></td>
             #else
             <td>$video.remark</td>
-            <td>$video.hetongId</td>
-            <td>$video.userName</td>
-            <td>$video.cardId</td>
             <td><a href="javascript:void(0)" onclick="viewOidPicture('${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=true')"><img src="${contextPath}/customer/basiccustomerinforUpdate/viewPicture.page?id=$video.uploadId&flag=false"/></a></td>
             #end
             </tr>
             #end
           </table>
       </div>
+      
+      </div>
   
   <div class="pagebar">
         <div class="controlbtn">
           <a class="btn_g"  onclick="downLoadVideo('${contextPath}/customer/basiccustomerinforUpdate/downLoadYxzl.json')"  title="下载">下载</a>
-          <a href="javascript:history.back();" class="btn_g">返回</a>
         </div>
         <div class="clear"></div>
         	

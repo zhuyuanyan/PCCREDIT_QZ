@@ -14,4 +14,5 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface AttachmentListDao {
 	public QzApplnAttachmentList findAttachmentList(@Param("customerId")String customerId,@Param("applicationId")String applicationId);
+	public QzApplnAttachmentList findAttachmentListByAppId(@Param("applicationId")String applicationId);
 }

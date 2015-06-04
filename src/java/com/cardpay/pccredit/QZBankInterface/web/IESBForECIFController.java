@@ -15,10 +15,12 @@ import com.cardpay.pccredit.QZBankInterface.filter.EcifFilter;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -42,14 +44,14 @@ import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
  * 程序的简单说明 
  */
 @Controller
-@RequestMapping("/intopieces/ecif/*")
-@JRadModule("intopieces.ecif")
+@RequestMapping("/customer/ecif/*")
+@JRadModule("customer.ecif")
 public class IESBForECIFController extends BaseController{
 	@Autowired
 	private ECIFService ecifService;
 	
 	@Autowired
-	private CustomerInforService customerInforService;
+	private CustomerInforService customerInforservice;
 	/**
 	 * 浏览页面
 	 * 
@@ -60,18 +62,31 @@ public class IESBForECIFController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView browse(@ModelAttribute EcifFilter filter,
-			HttpServletRequest request) {
+	public AbstractModelAndView browse(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String userId = user.getId();
-		filter.setUserId(userId);
-		QueryResult<ECIF> result = ecifService.findEcifByFilter(filter);
-		JRadPagedQueryResult<ECIF> pagedResult = new JRadPagedQueryResult<ECIF>(
-				filter, result);
-
-		JRadModelAndView mv = new JRadModelAndView(
-				"/qzbankinterface/iesbforecif_browse", request);
+        IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		filter.setUserId(user.getId());
+		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforWithEcifByFilter(filter);
+		for(int i=0;i<result.getItems().size();i++){
+				CustomerApplicationInfo info = customerInforservice.ifProcess(result.getItems().get(i).getId());
+				//目前存在申请件
+				if(info!=null){
+					if(info.getStatus().equals(Constant.APPROVED_INTOPICES)){
+						result.getItems().get(i).setProcessId(Constant.APP_STATE_4);
+					}else{
+						result.getItems().get(i).setProcessId(Constant.APP_STATE_1);
+					}
+					//目前不存在申请件（初审退回）
+				}else if(result.getItems().get(i).getProcessId()==null){
+					result.getItems().get(i).setProcessId(Constant.APP_STATE_2);
+					//没申请件
+				}else{
+					result.getItems().get(i).setProcessId(Constant.APP_STATE_3);
+				}
+			}
+		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforecif_browse",
+                                                    request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
@@ -141,7 +156,7 @@ public class IESBForECIFController extends BaseController{
 				
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				//写入数据到basic_customer_information表
-				CustomerInfor info = customerInforService.findCustomerInforByCardId(ecif.getGlobalId());
+				CustomerInfor info = customerInforservice.findCustomerInforByCardId(ecif.getGlobalId());
 				if(info == null){
 					info = new CustomerInfor();
 				}
@@ -151,18 +166,10 @@ public class IESBForECIFController extends BaseController{
 				info.setNationality("NTC00000000156");
 				info.setSex(ecif.getSex().equals("01") ? "Male" : "Female");
 				info.setCardId(ecif.getGlobalId());
-				if(info.getId() == null || info.getId().equals("")){
-					customerInforService.insertCustomerInfor(info);
-				}
-				else{
-					customerInforService.updateCustomerInfor(info);
-				}
 				
 				ecif.setCreatedBy(user.getId());
 				ecif.setUserId(user.getId());
-				ecif.setStatus(com.cardpay.pccredit.QZBankInterface.constant.Constant.STATUS_NONE);
-				ecif.setCustomerId(info.getId());;//设置关联basic_customer_information
-				ecifService.insertCustomerInfor(ecif);
+				ecifService.insertCustomerInfor(ecif,info);
 				
 //				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);

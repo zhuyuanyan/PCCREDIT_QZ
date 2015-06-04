@@ -1,14 +1,72 @@
-#parse ("common/iframe_page_header.htm")
-#parse ("common/macro.htm")
+#parse ("common/iframe_page_header3.htm")
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<style type="text/css">
+ 		input[type=text]{width:158px;}
+		.dialog{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		.dialog1{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog1 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog1 .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog1 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog1 .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog1 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog1 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog1 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(${contextPath}/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog1 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog1 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog1 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		.dialog3{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog3 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog3 .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog3 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog3 .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog3 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog3 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog3 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(${contextPath}/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog3 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog3 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog3 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		.dialog2{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog2 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog2 .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog2 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog2 .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog2 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog2 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog2 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(${contextPath}/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog2 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog2 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog2 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		.dialog4{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;background:rgba(229,229,229,0.5);display:none;}
+		.dialog4 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog4 .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog4 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog4 .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog4 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog4 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog4 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(${contextPath}/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog4 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog4 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog4 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+	</style>
+</head>
 <body>
   <div class="content_main">
     <div class="contentinner">
-      <div class="place">
-        <div class="title">循环</div>
-      </div>
       <form id="id_module_form">
         <div class="forms" id="formsId">
-          <table class="rule" bordercolor="#CCCCCC" border="1">
+          <table class="rule myTable" bordercolor="#CCCCCC" border="1">
           <caption>客户贷款信息</caption>
             <colgroup>
               <col width="10%" />
@@ -22,13 +80,21 @@
               	<td><input type="hidden" id="clientNo" name="clientNo"/></td>
               	<td></td>
             </tr>
+            #if($!operate!='中心终审')
             <tr style="display: none;">
+            #else
+            <tr>
+            #end
             	<td><label>收息收款账号:</label><font color="#ff0000">*</font></td>
               	<td><input type="text" name="acctNo1" value="$!circle.acctNo1" disabled /></td>
               	<td><label>放款账号:</label><font color="#ff0000">*</font></td>
               	<td><input type="text" name="acctNo2" value="$!circle.acctNo2" disabled /></td>
             </tr>
+            #if($!operate!='中心终审')
             <tr style="display: none;">
+            #else
+            <tr>
+			#end
               <td><label>合同号:</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="contractNo" value="$!circle.contractNo" disabled /></td>
               <td><label>卡号:</label><font color="#ff0000">*</font></td>
@@ -46,7 +112,7 @@
               <td><label>外币时需要换算:</label></td>
               <td><input type="text" id="exchangeRate" name="exchangeRate" value="$!circle.exchangeRate" disabled /></td>
             </tr>
-            <tr>
+            <tr style="display: none;">
 			  <td><label>授信起始日期:</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="startDate" onmouseover="_calendar()" value="$date.format('yyyy-MM-dd', $!circle.startDate)" disabled /></td>
 			  <td><label>授信结束日期:</label><font color="#ff0000">*</font></td>
@@ -120,11 +186,11 @@
 			<tr>
               <td><label>涉农贷款类型:</label></td>
               <td>
-	              1:<select disabled id="agriLoanKind_1" name="agriLoanKind_1" style="width:29%;margin:2px;" onchange="change_agriLoanKind_1(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_1", $!circle.agriLoanKind_1)</select>
-	              2:<select disabled id="agriLoanKind_2" name="agriLoanKind_2" style="width:29%;margin:2px;" onchange="change_agriLoanKind_2(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_2", $!circle.agriLoanKind_2)</select>
-	              3:<select disabled id="agriLoanKind_3" name="agriLoanKind_3" style="width:29%;margin:2px;" onchange="change_agriLoanKind_3(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_3", $!circle.agriLoanKind_3)</select>
-	              4:<select disabled id="agriLoanKind_4" name="agriLoanKind_4" style="width:29%;margin:2px;" onchange="change_agriLoanKind_4(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_4", $!circle.agriLoanKind_4)</select>
-	              5:<select disabled id="agriLoanKind_5" name="agriLoanKind_5" style="width:29%;margin:2px;">#dict("AGRICULTURE_TYPE_LEVEL_5", $!circle.agriLoanKind_5)</select>
+	              1:<select disabled id="agriLoanKind_1" name="agriLoanKind_1" style="width:28%;margin:2px;" onchange="change_agriLoanKind_1(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_1", $!circle.agriLoanKind_1)</select>
+	              2:<select disabled id="agriLoanKind_2" name="agriLoanKind_2" style="width:28%;margin:2px;" onchange="change_agriLoanKind_2(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_2", $!circle.agriLoanKind_2)</select>
+	              3:<select disabled id="agriLoanKind_3" name="agriLoanKind_3" style="width:28%;margin:2px;" onchange="change_agriLoanKind_3(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_3", $!circle.agriLoanKind_3)</select>
+	              4:<select disabled id="agriLoanKind_4" name="agriLoanKind_4" style="width:28%;margin:2px;" onchange="change_agriLoanKind_4(this.value);">#dict("AGRICULTURE_TYPE_LEVEL_4", $!circle.agriLoanKind_4)</select>
+	              5:<select disabled id="agriLoanKind_5" name="agriLoanKind_5" style="width:28%;margin:2px;">#dict("AGRICULTURE_TYPE_LEVEL_5", $!circle.agriLoanKind_5)</select>
               </td>
 			  <td><label>个人经营性贷款类型:</label></td>
               <td><select name="personLoanKind" disabled >#dict("ENSURE_PROJECT_LOAN", $!circle.personLoanKind)</select></td>
@@ -149,11 +215,11 @@
 			<tr>
               <td><label>贷款归属1:</label></td>
               <td>
-              	1:<select disabled id="loanBelong1_1" name="loanBelong1_1" style="width:29%;margin:2px;" onchange="change_loanBelong1_1(this.value);">#dict("LOAN_BELONG1_LEVEL_1", $!circle.loanBelong1_1)</select>
-              	2:<select disabled id="loanBelong1_2" name="loanBelong1_2" style="width:29%;margin:2px;" onchange="change_loanBelong1_2(this.value);">#dict("LOAN_BELONG1_LEVEL_2", $!circle.loanBelong1_2)</select>
-              	3:<select disabled id="loanBelong1_3" name="loanBelong1_3" style="width:29%;margin:2px;" onchange="change_loanBelong1_3(this.value);">#dict("LOAN_BELONG1_LEVEL_3", $!circle.loanBelong1_3)</select>
-              	4:<select disabled id="loanBelong1_4" name="loanBelong1_4" style="width:29%;margin:2px;" onchange="change_loanBelong1_4(this.value);">#dict("LOAN_BELONG1_LEVEL_4", $!circle.loanBelong1_4)</select>
-              	5:<select disabled id="loanBelong1_5" name="loanBelong1_5" style="width:29%;margin:2px;">#dict("LOAN_BELONG1_LEVEL_5", $!circle.loanBelong1_5)</select>
+              	1:<select disabled id="loanBelong1_1" name="loanBelong1_1" style="width:28%;margin:2px;" onchange="change_loanBelong1_1(this.value);">#dict("LOAN_BELONG1_LEVEL_1", $!circle.loanBelong1_1)</select>
+              	2:<select disabled id="loanBelong1_2" name="loanBelong1_2" style="width:28%;margin:2px;" onchange="change_loanBelong1_2(this.value);">#dict("LOAN_BELONG1_LEVEL_2", $!circle.loanBelong1_2)</select>
+              	3:<select disabled id="loanBelong1_3" name="loanBelong1_3" style="width:28%;margin:2px;" onchange="change_loanBelong1_3(this.value);">#dict("LOAN_BELONG1_LEVEL_3", $!circle.loanBelong1_3)</select>
+              	4:<select disabled id="loanBelong1_4" name="loanBelong1_4" style="width:28%;margin:2px;" onchange="change_loanBelong1_4(this.value);">#dict("LOAN_BELONG1_LEVEL_4", $!circle.loanBelong1_4)</select>
+              	5:<select disabled id="loanBelong1_5" name="loanBelong1_5" style="width:28%;margin:2px;">#dict("LOAN_BELONG1_LEVEL_5", $!circle.loanBelong1_5)</select>
               </td>
 			  <td><label>贷款归属2:</label></td>
               <td><select name="loanBelong2" disabled >#dict("LOAN_BELONG2", $!circle.loanBelong2)</select></td>
@@ -171,7 +237,7 @@
               <td><select name="chiCustManager" disabled >#dict("IS_MAIN_MANAGER", $!circle.chiCustManager)</select></td>
             </tr>
 		  </table>
-		  <table class="rule" bordercolor="#cccccc" border="1">
+		  <table class="rule myTable" bordercolor="#cccccc" border="1">
           <caption>客户信息</caption>
             <colgroup>
               <col width="10%" />
@@ -218,9 +284,9 @@
             <tr>
               <td><label>户籍所在地:</label></td>
               <td>
-             		1:<select disabled id="regPermResidence_1" name="regPermResidence_1" style="width:29%;margin:2px;" onchange="change_regPermResidence_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", $!circle.regPermResidence_1)</select>
-             		2:<select disabled id="regPermResidence_2" name="regPermResidence_2" style="width:29%;margin:2px;" onchange="change_regPermResidence_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", $!circle.regPermResidence_2)</select>
-             		3:<select disabled id="regPermResidence_3" name="regPermResidence_3" style="width:29%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", $!circle.regPermResidence_3)</select>
+             		1:<select disabled id="regPermResidence_1" name="regPermResidence_1" style="width:28%;margin:2px;" onchange="change_regPermResidence_1(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_1", $!circle.regPermResidence_1)</select>
+             		2:<select disabled id="regPermResidence_2" name="regPermResidence_2" style="width:28%;margin:2px;" onchange="change_regPermResidence_2(this.value);">#dict("INDIV_BRT_PLACE_LEVEL_2", $!circle.regPermResidence_2)</select>
+             		3:<select disabled id="regPermResidence_3" name="regPermResidence_3" style="width:28%;margin:2px;">#dict("INDIV_BRT_PLACE_LEVEL_3", $!circle.regPermResidence_3)</select>
               </td>
 			  <td><label>地址:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="address" name="address" value="$!circle.address" disabled /></td>
@@ -284,7 +350,7 @@
               <td colspan="3"><input type="text" id="openAcctDate" name="openAcctDate" value="$!date.format('yyyy-MM-dd', $!circle.openAcctDate)" disabled onmouseover="_calendar()"/></td>
             </tr>
 		  </table>
-		  <table class="rule" bordercolor="#cccccc" border="1">
+		  <table class="rule myTable" bordercolor="#cccccc" border="1">
           <caption>费用信息</caption>
             <colgroup>
               <col width="10%" />
@@ -298,22 +364,449 @@
 			  <td><label>费用金额:</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="feeAmount" value="$!circle.feeAmount" disabled /></td>
             </tr>
-			<tr>
+			#if($!operate!='中心终审')
+            <tr style="display: none;">
+            #else
+            <tr>
+			#end
               <td><label>费用账号:</label><font color="#ff0000">*</font></td>
               <td colspan="3"><input type="text" name="feeAcctNo" value="$!circle.feeAcctNo" disabled /></td>
             </tr>
 		  </table>
         </div>
-      <div class="submit">
-        <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
-      </div>
       </form>
+ <div class="dialog">
+	<form id="checkForm" class="dialog-box" style="height:230px;" action="${contextPath}/intopieces/intopiecesrecieve/checkDo.json">
+		<input type="hidden" name="applicationId"  value="$!appId" />
+		<div class="top">
+			三性检测 <span onclick="$('.dialog').hide();"></span>
+		</div>
+		<div class="content">
+			<p>
+				材料正确性:<font color="red">*</font> <label><input
+					type="radio" name="reality" value="1" checked />通过</label> <label><input
+					type="radio" name="reality" value="2" />不通过</label>
+			</p>
+			<p>
+				材料完整性:<font color="red">*</font> <label><input
+					type="radio" name="complete" value="1" checked />通过</label> <label><input
+					type="radio" name="complete" value="2" />不通过</label>
+			</p>
+			<p>
+				材料合规性:<font color="red">*</font> <label><input
+					type="radio" name="standard" value="1" checked />通过</label> <label><input
+					type="radio" name="standard" value="2" />不通过</label>
+			</p>
+			<p>
+				是&nbsp;否&nbsp;拒&nbsp;件:&nbsp; <label><input
+					type="radio" name="reject" value="1" onclick="$('#jjyy').removeAttr('readonly')" />是</label>&nbsp;&nbsp;&nbsp; <label><input
+					type="radio" name="reject" value="2" onclick="$('#jjyy').attr('readonly','readonly')" checked />否</label>
+			</p>
+			<p>
+				拒&nbsp;件&nbsp;原&nbsp;因:&nbsp;
+					<textarea id="jjyy" name="jjyy" rows="2" style="width:200px;" readonly></textarea>
+			</p>
+		</div>
+		<div class="bottom">
+			<input id="id_in_button" type="button" class="btn btn-submit" value="通过" /> 
+			<input id="id_out_button" type="button" class="btn btn-submit" value="退回" />
+			<input id="id_reject_button" type="button" class="btn btn-submit" value="拒件" />
+			<input type="button" class="btn" value="关闭" onclick="$('.dialog').hide();"/>
+		</div>
+	</form>
+</div>
+<div class="dialog1">
+		<form id="checkForm1" class="dialog-box" style="height:200px;">
+			<input type="hidden" name="appId" id="appId" value="$!appId"/>
+			<div class="top">
+				退件 <span onclick="$('.dialog1').hide();"></span>
+			</div>
+			<div class="content" style="height:100px;padding-top:15px;">
+				<p>
+					退件原因:<font color="red">*</font>
+					<textarea name="remark" rows="2" style="width: 300px;"></textarea>
+				</p>
+			</div>
+			<div class="bottom">
+				<input id="id_re1_button" type="button" class="btn btn-submit" value="确定" /> 
+				<input type="button" class="btn" value="关闭" onclick="$('.dialog1').hide();" />
+			</div>
+		</form>
+	</div>
+		<div class="dialog2">
+			<form id="checkForm2" class="dialog-box" style="height:200px;" >
+				<input type="hidden" name="appId1" value="${appId}" />
+				<div class="top">
+					拒件 <span onclick="$('.dialog2').hide();"></span>
+				</div>
+				<div class="content" style="height:100px;padding-top:15px;">
+					<p>
+						拒件原因:<font color="red">*</font>
+						<textarea name="remark" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re2_button" type="button" class="btn btn-submit" value="确定" /> 
+					<input type="button" class="btn" value="关闭" onclick="$('.dialog2').hide();"/>
+				</div>
+			</form>
+		</div>
+			 <div class="dialog3">
+			<form id="checkForm3" class="dialog-box" style="height:200px;" action="${contextPath}/intopieces/intopiecesshouxin/returnAppln.json">
+				<input type="hidden" name="appId" id="appId" value="$!appId" />
+				<div class="top">
+					退件 <span onclick="$('.dialog3').hide();"></span>
+				</div>
+				<div class="content" style="height:100px;padding-top:15px;">
+					<p>
+						退件原因:<font color="red">*</font>
+						<textarea name="remark" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re3_button" type="button" class="btn btn-submit" value="确定" /> 
+					<input type="button" class="btn" value="关闭" onclick="$('.dialog3').hide();"/>
+				</div>
+			</form>
+		</div>
+		
+		<div class="dialog4">
+			<form id="checkForm4" class="dialog-box" style="height:200px;" action="${contextPath}/intopieces/intopiecesxingzheng2/returnAppln.json">
+				<input type="hidden" name="appId" id="appId" value="$!appId" />
+				<div class="top">
+					退件 <span onclick="$('.dialog4').hide();"></span>
+				</div>
+				<div class="content" style="height:100px;padding-top:15px;">
+					<p>
+						退件原因:<font color="red">*</font>
+						<textarea name="remark" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re4_button" type="button" class="btn btn-submit" value="确定" /> 
+					<input type="button" class="btn" value="关闭" onclick="$('.dialog4').hide();"/>
+				</div>
+			</form>
+		</div>
+      <div class="submit controlbtn">
+	      #if($!operate=="初审")
+	      	<a id="id_chushen_button" class="btn_g" >审批</a>
+		  #elseif($!operate=="内部审查")
+	      	<a id="id_in1_button" class="btn_g" >审批通过</a>
+	      	<a id="id_return1_button" class="btn_g" >退件</a>
+       	#elseif($!operate=="授信审批"||$!operate=="中心复核")
+	      	<a id="id_in2_button" class="btn_g" >审批通过</a>
+	      	<a id="id_return_button" class="btn_g" >退件</a>
+	      	<a id="id_s_reject_button" class="btn_g" >拒件</a>
+	        #if($!operate=="授信审批")
+	      	<a id="id_return_to_cu_button" class="btn_g" >补充上会</a>
+	        #end
+	    #elseif($!operate=="中心终审")
+	      	<a id="id_zx_in_button" class="btn_g" >审批通过</a>
+	      	<a id="id_return4_button" class="btn_g" >退件</a>
+		  #end
+	      	<a class="btn_gr" onclick="parent.location.href = '${contextPath}${returnUrl}'" >返回</a>
+      </div>
     </div>
   </div>
   <script type="text/javascript">
   $(document).ready(function() {	
 	  var layout=new FormsLayout("formsId");	
 	  window.top.currentWindow.setLayout(layout);
+	  
+	  
+	  
+	/*初审操作*/
+		$('.dialog').hide();
+		$("#id_chushen_button").click(function() {
+			$('.dialog').show();
+    });
+		//通过
+		$("#id_in_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+                function() {
+					$('.dialog').hide();
+					#set ($formName = "'#checkForm'")
+					var formjson = $($formName).serialize();
+					 var url = $($formName).attr("action");
+		   	        	$.ajax({
+							url : url,
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("保存成功!");	
+					            	var url = "${contextPath}${returnUrl}";
+					                parent.location.href = url;
+								}
+								else{
+									topWin.Dialog.message("保存失败！");
+							    }
+							}
+						}); 
+                });
+		});
+		//退回
+		$("#id_out_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+                function() {
+					$('.dialog').hide();
+					#set ($formName = "'#checkForm'")
+					var formjson = $($formName).serialize();
+						 $.ajax({
+								url : "${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json",
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("保存成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("保存失败！");
+								    }
+								}
+						}); 
+			});
+		});
+		
+		//拒件
+		$("#id_reject_button").click(function() {
+			var remark = $("#jjyy").val();
+			if(remark==""){
+				Dialog.message("请输入拒件原因!");	
+				return;
+			}
+			Dialog.confirm("确定提交吗？", "提示",
+	                function() {
+					$('.dialog').hide();
+					#set ($formName = "'#checkForm'")
+					var formjson = $($formName).serialize();
+					 $.ajax({
+							url : "${contextPath}/intopieces/intopiecesrecieve/reject.json",
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("保存成功!");	
+					            	var url = "${contextPath}${returnUrl}";
+					                parent.location.href = url;
+								}
+								else{
+									topWin.Dialog.message("保存失败！");
+							    }
+							}
+					}); 
+			});
+		});
+		
+		/*内部审批操作*/
+		//通过
+		$("#id_in1_button").click(function() {
+           Dialog.confirm("确定提交吗？", "提示",
+           	    function() {
+	              	var url = "${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}";
+	 	        	$.ajax({
+					url : url,
+					type : "get",
+					success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+						parent.location.href ="${contextPath}${returnUrl}";
+					}
+					else{
+						topWin.Dialog.message("保存失败！");
+				    }
+				}
+			});
+          });
+                
+		});
+		//退件
+		$("#id_re1_button").click(function() {
+                Dialog.confirm("确定提交吗？", "提示",
+                	    function() {
+			                $('.dialog1').hide();
+			    			#set ($formName = "'#checkForm1'")
+			    			var formjson = $($formName).serialize();
+		    				 $.ajax({
+									url : "${contextPath}/intopieces/intopiecesxingzheng1/returnAppln.json",
+									type : "get",
+									data : formjson,
+									success : function(data) {
+										if (data.success) {
+											topWin.Dialog.message("保存成功!");	
+							            	var url = "${contextPath}${returnUrl}";
+							                parent.location.href = url;
+										}
+										else{
+											topWin.Dialog.message("保存失败！");
+									    }
+									}
+								}); 
+			    	          });
+                });
+		
+		$('.dialog1').hide();
+		$("#id_return1_button").click(function() {
+			$('.dialog1').show();
+      	});
+		
+		/**********授信审批、中心复核操作**************/
+		//通过
+		$("#id_in2_button").click(function() {
+	            Dialog.confirm("确定提交吗？", "提示",
+	            	    function() {
+			                $.ajax({
+								url : "${contextPath}/intopieces/intopiecesshouxin/pass.json?id=${appId}",
+								type : "get",
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("审批成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("审批失败！");
+								    }
+								}
+							}); 
+		                });
+		});
+		//退回
+		$("#id_re3_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+                function() {
+					$('.dialog3').hide();
+					#set ($formName = "'#checkForm3'")
+					var formjson = $($formName).serialize();
+						 $.ajax({
+								url : "${contextPath}/intopieces/intopiecesshouxin/returnAppln.json",
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("保存成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("保存失败！");
+								    }
+								}
+						}); 
+			});
+		});
+		//拒件
+		$("#id_re2_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+			    function() {
+					$('.dialog2').hide();
+					#set ($formName = "'#checkForm2'")
+					var formjson = $($formName).serialize();
+					 $.ajax({
+							url : "${contextPath}/intopieces/intopiecesshouxin/rejectAppln.json",
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("拒件成功!");	
+					            	var url = "${contextPath}${returnUrl}";
+					                parent.location.href = url;
+								}
+								else{
+									topWin.Dialog.message("拒件失败！");
+							    }
+							}
+					}); 
+			});
+		});
+		
+		$("#id_return_button").click(function() {
+			$('.dialog3').show();
+	  	});
+		$('.dialog2').hide();
+		$("#id_s_reject_button").click(function() {
+			$('.dialog2').show();
+	  });
+		//补充上会
+		$("#id_return_to_cu_button").click(function() {
+				Dialog.confirm("确定提交吗？", "提示",
+					    function() {
+							 $.ajax({
+									url : "${contextPath}/intopieces/intopiecesshouxin/return_to_cu.json?id=${appId}",
+									type : "get",
+									data : formjson,
+									success : function(data) {
+										if (data.success) {
+											topWin.Dialog.message("补充上会成功!");	
+							            	var url = "${contextPath}${returnUrl}";
+							                parent.location.href = url;
+										}
+										else{
+											topWin.Dialog.message("补充上会！");
+									    }
+									}
+							}); 
+				});
+		});
+		
+		//通过
+		$("#id_zx_in_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+                Dialog.confirm("确定提交吗？", "提示",
+                	    function() {
+               				url="${contextPath}/intopieces/intopiecesxingzheng2/save_apply.json?id=${appId}";
+			                $.ajax({
+								url : url,
+								type : "get",
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("审批成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("审批失败！");
+								    }
+									submitFlag = 0;
+								}
+						}); 
+                		});
+		});
+		
+		$("#id_return4_button").click(function() {
+			$('.dialog4').show();
+	  	});
+		//退回
+		$("#id_re4_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+                function() {
+					$('.dialog4').hide();
+					#set ($formName = "'#checkForm4'")
+					var formjson = $($formName).serialize();
+					 $.ajax({
+							url : "${contextPath}/intopieces/intopiecesxingzheng2/returnAppln.json",
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("保存成功!");	
+					            	var url = "${contextPath}${returnUrl}";
+					                parent.location.href = url;
+								}
+								else{
+									topWin.Dialog.message("保存失败！");
+							    }
+							}
+					}); 
+			});
+		});
   });
   	
     </script>

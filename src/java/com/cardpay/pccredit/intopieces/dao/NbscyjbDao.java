@@ -15,6 +15,6 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface NbscyjbDao {
 	public QzApplnNbscyjb findNbscyjb(@Param("customerId")String customerId,@Param("applicationId")String applicationId);
-
+	public QzApplnNbscyjb findNbscyjbByAppId(@Param("applicationId")String applicationId);
 	public QzApplnNbscyjb findNbscyjbById(@Param("id")String id);
 }

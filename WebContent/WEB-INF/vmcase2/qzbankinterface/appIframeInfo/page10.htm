@@ -1,13 +1,33 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
-	form{height:420px;position:absolute;right:0;width:98%;margin-right:0;top:70px;height:410px;height:380px\0;}
-	.box{border:none;}
-	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
-</style>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<style type="text/css">
+		.dialog2{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
+		.dialog2 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog2 .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog2 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog2 .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog2 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog2 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog2 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog2 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog2 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog2 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		.dialog3{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
+		.dialog3 .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:100px;padding:3px;}
+		.dialog3 .dialog-box .top{height:35px;background:url(${contextPath}/images/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog3 .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/box_delete_nor.png);float:right;}
+		.dialog3 .dialog-box .top span:hover{background:url(${contextPath}/images/box_delete_hov.png);}
+		.dialog3 .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog3 .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog3 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog3 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
+		.dialog3 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog3 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+	</style>
+</head>
 <body>
-<div class="fixed">
-	<h1>审贷会审议纪要</h1>
-</div>
 <!--*************************************************************审贷会审议纪要*************************************************************-->
 <form id="id_module_form">
 	<div class="box">
@@ -39,87 +59,236 @@
 					<td><input type="text" name="dbfs" value="$!result.dbfs" readonly/></td>
 				</tr>			
 				<tr>
-					<td class="table-label">借款人优势</td>
+					<td class="table-label">借款人优势<font color="#ff0000">*</font></td>
 					<td>
 						<textarea  name="jkrys">$!result.jkrys</textarea>
 			
 					</td>
-					<td class="table-label">借款人劣势</td>
+					<td class="table-label">借款人劣势<font color="#ff0000">*</font></td>
 					<td colspan="4">
 						<textarea  name="jkrls">$!result.jkrls</textarea>
 					</td>
 				</tr>			
 				<tr>					
 					<td colspan="2">
-						借款人资料是否完整：
+						借款人资料是否完整：<font color="#ff0000">*</font>
 						<label><input type="radio" name="sfwz" value="1" #if($!result.sfwz=='1') checked #end/>是</label>
 						<label><input type="radio" name="sfwz" value="2" #if($!result.sfwz=='2') checked #end/>否</label>
 					</td>
 					<td colspan="4">
-						是否形成最终决议结果：
+						是否形成最终决议结果：<font color="#ff0000">*</font>
 						<label><input type="radio" name="zzjyjg" value="1" #if($!result.zzjyjg=='1') checked #end/>是</label>
 						<label><input type="radio" name="zzjyjg" value="2" #if($!result.zzjyjg=='2') checked #end/>否</label>
 					</td>
 				</tr>	
 				<tr>					
-					<td class="table-label">首次上会须核实问题:</td>
+					<td class="table-label">首次上会须核实问题:<font color="#ff0000">*</font></td>
 					<td>
 						<textarea  name="hswt">$!result.hswt</textarea>
 					</td>
-					<td class="table-label">核实情况：</td>
+					<td class="table-label">核实情况：<font color="#ff0000">*</font></td>
 					<td colspan="4">
 						<textarea  name="hsqk">$!result.hsqk</textarea>
 					</td>
 				</tr>	
 				<tr>
-					<td class="table-label">贷审成员</td>
+					<td class="table-label">贷审成员<font color="#ff0000">*</font></td>
 					<td><input type="text" name="dscyqz" value="$!result.dscyqz"/></td>
-					<td class="table-label">日期</td>
+					<td class="table-label">日期<font color="#ff0000">*</font></td>
 					<td colspan="3"><input type="text" name="rq" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.rq)"/></td>	
 				</tr>		
 				<tr>
-					<td class="table-label">主办客户经理</td>
+					<td class="table-label">主办客户经理<font color="#ff0000">*</font></td>
 					<td><input type="text" name="zbkhjlqz" value="$!result.zbkhjlqz"/></td>
-					<td class="table-label">协助调查人员</td>
+					<td class="table-label">协助调查人员<font color="#ff0000">*</font></td>
 					<td><input type="text" name="xzdcryqz" value="$!result.xzdcryqz"/></td>
-					<td class="table-label">日期</td>
+					<td class="table-label">日期<font color="#ff0000">*</font></td>
 					<td><input type="text" name="rq1" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.rq1)"/></td>	
 				</tr>	
 			</table>			
 		</div>
 	</div>
 </form>
-<div class="controlbtn">
-#if($!readType!="readType")
-	<a class="btn_g" id="id_save_button" title="提交">提交</a>
-#end
-	<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
-</div>
+	 <div class="dialog2">
+			<form id="checkForm1" class="dialog-box" style="height:200px;" action="${contextPath}/intopieces/intopiecesshouxin/returnAppln.json">
+				<input type="hidden" name="appId" id="appId" value="${appId}" />
+				<div class="top">
+					退件 <span onclick="$('.dialog2').hide();"></span>
+				</div>
+				<div class="content" style="height:100px;padding-top:15px;">
+					<p>
+						退件原因:<font color="red">*</font>
+						<textarea name="remark" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re1_button" type="button" class="btn btn-submit" value="确定" /> 
+					<input type="button" class="btn" value="关闭" onclick="$('.dialog2').hide();"/>
+				</div>
+			</form>
+		</div>
+	<div class="dialog3">
+			<form id="checkForm2" class="dialog-box" style="height:200px;" >
+				<input type="hidden" name="appId1" id="appId1" value="${appId}" />
+				<div class="top">
+					拒件 <span onclick="$('.dialog3').hide();"></span>
+				</div>
+				<div class="content" style="height:100px;padding-top:15px;">
+					<p>
+						拒件原因:<font color="red">*</font>
+						<textarea name="remark" rows="2" style="width:300px;"></textarea>
+					</p>
+				</div>
+				<div class="bottom">
+					<input id="id_re2_button" type="button" class="btn btn-submit" value="确定" /> 
+					<input type="button" class="btn" value="关闭" onclick="$('.dialog3').hide();"/>
+				</div>
+			</form>
+		</div>
+	<div class="controlbtn">
+	#if($!type=="modify")
+		<a class="btn_g" id="id_save_button" title="提交">提交</a>
+	#end
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+	</div>
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript">		
 	#set ($formName = "'#id_module_form'")
+	#parse ("qzbankinterface/appIframeInfo/page10_validation.js")
 	$(document).ready(function() {
-		if("${readType}"=="readType"){
+		if("${type}"=="readonly"){
 			$("input[type='text']").attr("disabled",true);
 			$("input[type='radio']").attr("disabled",true);
 			$("input[type='checkbox']").attr("disabled",true);
 			$("select").attr("disabled",true);
 			$("textarea").attr("disabled",true);
-		}
+		};
 		
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
 			var formjson = $($formName).serialize();
    	          $.post("${contextPath}/intopieces/intopiecesshouxin/syjy_save.json?id=${customerId}&appId=${appId}", formjson, function(data, textStatus, jqXhr) {
    	            if (data.success) {
    	            	Dialog.message("保存成功!");
    	            }
+   	         	submitFlag = 0;
 	          });
-		})
-	})
+			}else{
+				submitFlag = 0;
+			}
+		});
 		function checkJKTJ(obj){
 			$('.jktj').val('');
 			$('.jktj').attr('disabled','disabled');
 			$(obj).parent().find('.jktj').removeAttr('disabled')
-		}
+		};
+	//通过
+	$("#id_in2_button").click(function() {
+            Dialog.confirm("确定提交吗？", "提示",
+            	    function() {
+		                $.ajax({
+							url : "${contextPath}/intopieces/intopiecesshouxin/pass.json?id=${appId}",
+							type : "get",
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message("审批成功!");	
+					            	var url = "${contextPath}${returnUrl}";
+					                parent.location.href = url;
+								}
+								else{
+									topWin.Dialog.message("审批失败！");
+							    }
+							}
+					}); 
+	                });
+	});
+	//退件
+	$("#id_re1_button").click(function() {
+            $("#appId").val("${appId}");
+            Dialog.confirm("确定提交吗？", "提示",
+            	    function() {
+		                $('.dialog2').hide();
+		    			#set ($formName = "'#checkForm1'")
+		    			var formjson = $($formName).serialize();
+		    			 $.ajax({
+								url : $($formName).attr("action"),
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("退件成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("退件失败！");
+								    }
+								}
+						}); 
+            });
+	});
+	//拒件
+	$("#id_re2_button").click(function() {
+		Dialog.confirm("确定提交吗？", "提示",
+		    function() {
+				$('.dialog3').hide();
+				$("#appId1").val("${appId}");
+				#set ($formName = "'#checkForm2'")
+				var formjson = $($formName).serialize();
+				 $.ajax({
+						url : "${contextPath}/intopieces/intopiecesshouxin/rejectAppln.json",
+						type : "get",
+						data : formjson,
+						success : function(data) {
+							if (data.success) {
+								topWin.Dialog.message("拒件成功!");	
+				            	var url = "${contextPath}${returnUrl}";
+				                parent.location.href = url;
+							}
+							else{
+								topWin.Dialog.message("拒件失败！");
+						    }
+						}
+				}); 
+		});
+	});
+	//补充上会
+	$("#id_return_to_cu_button").click(function() {
+			Dialog.confirm("确定提交吗？", "提示",
+				    function() {
+						 $.ajax({
+								url : "${contextPath}/intopieces/intopiecesshouxin/return_to_cu.json?id=${appId}",
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("补充上会成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("补充上会！");
+								    }
+								}
+						}); 
+			});
+	});
+	
+	$('.dialog2').hide();
+	$("#id_return_button").click(function() {
+		$('.dialog2').show();
+  	});
+	$('.dialog3').hide();
+	$("#id_reject_button").click(function() {
+		$('.dialog3').show();
+  });
+	})
 	</script>	
 </body>
 </html>

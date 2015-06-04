@@ -1,23 +1,19 @@
 #parse ("common/iframe_page_header3.htm")
 <style type="text/css">
-	form{height:420px;position:absolute;right:0;width:98%;margin-right:0;top:70px;height:410px;height:380px\0;}
-	.box{border:none;}
-	.controlbtn{position:absolute;left:15px;top:490px;top:460px\0;}
 </style>
 <body>
-<div class="fixed">
-	<h1>合同签订台账</h1>
-</div>
 <form id="id_module_form" >
 <!--*************************************************************合同签订台账*************************************************************-->
 	<div class="box">
 		<div name="content">
-			<table class="myTable" style="width:98%;margin:5px auto;text-align:center;" id="htqdtz">
+			<table class="myTable"  id="htqdtz">
 				<tr>
 					<td class="tableTitle" colspan="8" style="text-align:left;">
 						合同签订台账
+						#if($!type=="modify")
 						<a class="add" onclick="addTd('htqdtz')"><img src="${contextPath}/images/add.png"/></a>
 						<a class="del" onclick="removeTd('htqdtz')"><img src="${contextPath}/images/del.png"/></a>
+						#end
 					</td>		
 				</tr>
 				<tr>
@@ -47,26 +43,69 @@
 	</div>
 </form>	
 	<div class="controlbtn">
-		<a class="btn_g" id="id_save_button" title="提交">提交</a>
-		<a class="btn_gr" onclick="javascript:history.back(-1);" title="返回">返回</a>
+	#if($!type=="modify")
+		<a class="btn_g" id="id_save_button" title="保存">保存</a>
+	#end
+	<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 	</div>
 	<script type="text/javascript">		
 	#set ($formName = "'#id_module_form'")
 	$(document).ready(function() {
+		if("${type}"=="readonly"){
+			$("input[type='text']").attr("disabled",true);
+			$("input[type='radio']").attr("disabled",true);
+			$("input[type='checkbox']").attr("disabled",true);
+			$("select").attr("disabled",true);
+			$("textarea").attr("disabled",true);
+		};
 		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
 			var formjson = $($formName).serialize();
    	          $.post("${contextPath}/intopieces/intopiecesxingzheng2/tz_save.json?id=${appId}", formjson, function(data, textStatus, jqXhr) {
    	            if (data.success) {
    	            	Dialog.message("保存成功!");
    	            }
+   	         	submitFlag = 0;
 	          });
-		})
+   	          
+		});
+		//通过
+		$("#id_in_button").click(function() {
+                Dialog.confirm("确定提交吗？", "提示",
+                	    function() {
+                			var url = "";
+                			if("${type}"=="readonly"){
+                				url = "${contextPath}/intopieces/intopiecesxingzheng2/save_apply.json";
+                			}else{
+                				url="${contextPath}/intopieces/intopiecesxindai/save_apply.json";
+                			}
+			                $.ajax({
+								url : url+"?id=${appId}",
+								type : "get",
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message("审批成功!");	
+						            	var url = "${contextPath}${returnUrl}";
+						                parent.location.href = url;
+									}
+									else{
+										topWin.Dialog.message("审批失败！");
+								    }
+								}
+						}); 
+                		});
+		});
 	})
 		function checkJKTJ(obj){
 			$('.jktj').val('');
 			$('.jktj').attr('disabled','disabled');
 			$(obj).parent().find('.jktj').removeAttr('disabled')
 		}
+	
 	</script>	
 </body>
 </html>

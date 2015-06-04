@@ -51,7 +51,7 @@ function addTd(table){	//表格添加行
 								"<td><input type='text' class='input' name='bankOrOtherType_jkjl_"+cnt+"'/></td>" + 
 								"<td><input type='text' class='input' name='purpose_jkjl_"+cnt+"'/></td>" + 
 								"<td><input type='text' class='input' name='totalAmount_jkjl_"+cnt+"'/></td>" + 
-								"<td><input type='text' class='input' name='loanDate_jkjl_"+cnt+"' onmouseover='_calendar()'/></td>" + 
+								"<td><input type='text' class='input' name='loanDate_jkjl_"+cnt+"' value='"+timestr+"' onmouseover='_calendar()'/></td>" + 
 								"<td><input type='text' class='input' name='deadline_jkjl_"+cnt+"'/></td>" + 
 								"<td><input type='text' class='input' name='rates_jkjl_"+cnt+"'/></td>" + 
 								"<td><input type='text' class='input' name='repayType_jkjl_"+cnt+"'/></td>" + 
@@ -63,7 +63,7 @@ function addTd(table){	//表格添加行
 								"<td><input type='text' class='input' name='loanType_"+cnt+"' /></td>	" +
 								"<td><input type='text' class='input' name='amount_"+cnt+"' /></td>" +					
 								"<td><input type='text' class='input' name='deadline_"+cnt+"' /></td>" +	
-								"<td><input type='text' class='input' name='loanDate_"+cnt+"' onmouseover='_calendar()'/></td>	" +
+								"<td><input type='text' class='input' name='loanDate_"+cnt+"' value='"+timestr+"' onmouseover='_calendar()'/></td>	" +
 								"<td><input type='text' class='input' name='purpose_"+cnt+"' /></td>" +					
 								"<td><input type='text' class='input' name='remainAmount_"+cnt+"' /></td>" +	
 								"<td><input type='text' class='input' name='guntForOther_"+cnt+"' /></td>" +	
@@ -95,7 +95,7 @@ function addTd(table){	//表格添加行
 		$("#"+table).append("<tr>" + 
 								"<td><input type='text' class='input' name='cardNo_"+cnt+"' /></td>	" +
 								"<td><input type='text' class='input' name='price_"+cnt+"' /></td>	" +
-								"<td><input type='text' class='input' name='buyDate_"+cnt+"' onmouseover='_calendar()'/></td>	" +			
+								"<td><input type='text' class='input' value='"+timestr+"' name='buyDate_"+cnt+"' onmouseover='_calendar()'/></td>	" +			
 								"<td>" +
 									"<select name='haveCopy_1_"+cnt+"'>" +
 										"<option value='1'>有</option>" +
@@ -120,6 +120,27 @@ function addTd(table){	//表格添加行
 								"<td><input type='text' class='input' name='zbkhjl'/></td>" + 
 								"<td><input type='text' class='input' name='jbr'/></td>" + 
 								"<td><input type='text' class='input' name='bz'/></td>" + 
+							"</tr>");      
+	}
+	if(table=="gtjkr"){//共同借款人
+		$("#"+table).append("<tr>" + 
+								"<td><input type='text' name='gtjkrxm'/></td>" +  
+								"<td><input type='text' name='gtjkrhm'/></td>" +  
+							"</tr>");      
+	}
+	if(table=="bzdb"){//保证担保
+		$("#"+table).append("<tr>" + 
+								"<td><input type='text' name='bzdbxm'/></td>" +  
+								"<td><input type='text' name='bzdbhm'/></td>" +  
+							"</tr>");      
+	}
+	if(table=="dydb"){//抵押担保
+		$("#"+table).append("<tr>" + 
+								"<td><input type='text' name='dyr'/></td>" +  
+								"<td><input type='text' name='dywmc'/></td>" +  
+								"<td><input type='text' name='sl'/></td>" +  
+								"<td><input type='text' name='djhm'/></td>" +  
+								"<td><input type='text' name='kdyjz'/></td>" +  
 							"</tr>");      
 	}
 	

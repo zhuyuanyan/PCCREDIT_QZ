@@ -123,9 +123,15 @@
 	 	<if test="customerId != null and customerId != '' ">
 			AND CUSTOMER_ID=#{customerId}
 		</if>
+		AND APPLICATION_ID is null
+	</select>
+	<select id="findYwsqbByAppId" resultMap="ResultMapYwsqb">
+		 select * 
+		 from qz_appln_ywsqb   
+		 where 1=1
 		<if test="applicationId != null and applicationId != '' ">
 			AND APPLICATION_ID=#{applicationId}
-		</if> 
+		</if>
 	</select>
 	<select id="findYwsqbZygys" resultMap="ResultMapYwsqbZygys">
 		select * 

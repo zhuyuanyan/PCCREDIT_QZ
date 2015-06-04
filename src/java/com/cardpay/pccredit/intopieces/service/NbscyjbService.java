@@ -132,6 +132,10 @@ public class NbscyjbService {
 		return nbscyjbDao.findNbscyjb(customerId, applicationId);
 	}
 
+	public QzApplnNbscyjb findNbscyjbByAppId(String applicationId) {
+		return nbscyjbDao.findNbscyjbByAppId(applicationId);
+	}
+	
 	public void insert_page7(QzApplnNbscyjb qzApplnNbscyjb,HttpServletRequest request){
 		commonDao.insertObject(qzApplnNbscyjb);
 	}

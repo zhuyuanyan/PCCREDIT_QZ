@@ -48,9 +48,14 @@ public interface CustomerApplicationIntopieceWaitDao {
 	
 	public List<CustomerApplicationIntopieceWaitForm> findNotEqualsActualAndFinalAmount();
 	
-	// 获取相应状态的进件
+	// 获取相应状态的进件-手动搜件
+	public List<CustomerApplicationIntopieceWaitForm> IntopieceWaitFormM(CustomerApplicationProcessFilter filter);
+	// 获取相应状态的进件count-手动搜件
+	public int CountIntopieceWaitFormM(CustomerApplicationProcessFilter filter);
+		
+	// 获取相应状态的进件-全部显示
 	public List<CustomerApplicationIntopieceWaitForm> IntopieceWaitForm(CustomerApplicationProcessFilter filter);
-	// 获取相应状态的进件count
+	// 获取相应状态的进件count-全部显示
 	public int CountIntopieceWaitForm(CustomerApplicationProcessFilter filter);
 	
 	// 获取初审拒件的进件
