@@ -113,6 +113,7 @@ public class Constant {
 	public static String APPROVE_EDIT_3="4";//授信岗补充上会--退回客户经理
 	
 	/*待决策资料清单列表*/
+	public static String ATTACH_LIST0="合同扫描件";
 	public static String ATTACH_LIST1="贷款申请表";
 	public static String ATTACH_LIST2="调查报告";
 	public static String ATTACH_LIST3="征信查询授权书";
@@ -140,13 +141,4 @@ public class Constant {
 	public static String ATTACH_LIST25="担保人贷款卡复印件";
 	public static String ATTACH_LIST26="担保人收入证明";
 	public static String ATTACH_LIST27="信用等级证复印件（如有）";
-
-	//影像平台
-	public static String SunIASUrl = "http://168.168.241.10:8001/SunIAS/SunIASRequestServlet.do?AppID=App1001&UID=admin1&PWD=123456&";
-	/*url=url+"UserID=0902&";
-	url=url+"UserName=苏晓丽&";
-	url=url+"OrgID=9350501013&";
-	url=url+"OrgName=泉州银行东海支行&";
-	url=url+"right=1111&";
-	url=url+"info1=QKJY:0000004738439009";*/
 }
