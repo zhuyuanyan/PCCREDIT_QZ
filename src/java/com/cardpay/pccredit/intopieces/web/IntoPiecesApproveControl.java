@@ -9,7 +9,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.jboss.resteasy.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -83,6 +87,7 @@ import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.jrad.modules.privilege.model.User;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -706,6 +711,8 @@ public class IntoPiecesApproveControl extends BaseController {
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				qzApplnAttachmentList.setCreatedBy(user.getId());
 				qzApplnAttachmentList.setCreatedTime(new Date());
+				qzApplnAttachmentList.setDocid(DateHelper.getDateFormat(qzApplnAttachmentList.getCreatedTime(), "yyyyMMddHHmmss"));
+				qzApplnAttachmentList.setUploadValue("0");
 				//未填申请时 关联客户id
 				qzApplnAttachmentList.setCustomerId(customerId);
 				attachmentListService.insert_page5(qzApplnAttachmentList, request);
@@ -1026,4 +1033,102 @@ public class IntoPiecesApproveControl extends BaseController {
 		return mv;
 	}
 	
+	//影像
+	@ResponseBody
+	@RequestMapping(value = "sunds_ocx.page")
+	public AbstractModelAndView sunds_ocx(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/sunds_ocx", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "sunds_ocx_display.page")
+	public AbstractModelAndView sunds_ocx_display(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/sunds_ocx_display", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "getPage5UploadValue.json")
+	public JRadReturnMap getPage5UploadValue(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			String docID = request.getParameter("docID");
+			
+			//更新客户信息状态
+			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
+			String uploadValue = attachmentList.getUploadValue();
+			attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
+			returnMap.put("uploadFlag", Integer.parseInt(uploadValue)&Integer.parseInt(docID.substring(14, docID.length())));
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put(JRadConstants.SUCCESS, true);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			returnMap.put(JRadConstants.SUCCESS, false);
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+		
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "WDScan.page")
+	public AbstractModelAndView WDScan(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/WDScan", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "WDView.page")
+	public AbstractModelAndView WDView(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/WDView", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "insert_sunds.json")
+	public JRadReturnMap insert_sunds(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			String docID = request.getParameter("docID");
+			
+			//更新客户信息状态
+			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
+			String uploadValue = attachmentList.getUploadValue();
+			attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
+			commonDao.updateObject(attachmentList);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put(JRadConstants.SUCCESS, true);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			returnMap.put(JRadConstants.SUCCESS, false);
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
 }
