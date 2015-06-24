@@ -61,6 +61,7 @@ import com.cardpay.pccredit.intopieces.model.QzApplnProcessResult;
 import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
 import com.cardpay.pccredit.intopieces.model.QzApplnSxjc;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
+import com.cardpay.pccredit.intopieces.model.QzAppln_Za_Ywsqb_R;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
@@ -72,6 +73,7 @@ import com.cardpay.workflow.dao.WfStatusResultDao;
 import com.cardpay.workflow.models.WfProcessRecord;
 import com.cardpay.workflow.models.WfStatusQueueRecord;
 import com.wicresoft.jrad.base.auth.IUser;
+import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
@@ -126,7 +128,8 @@ public class IntoPiecesService {
 	private AttachmentListService attachmentListService;
 	@Autowired
 	private NbscyjbService nbscyjbService;
-	
+	@Autowired
+	private ZA_YWSQB_R_Service za_ywsqb_r_service;
 	/* 查询进价信息 */
 	/*
 	 * TODO 1.添加注释 2.SQL写进DAO层
@@ -134,6 +137,29 @@ public class IntoPiecesService {
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
 		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilterWF(filter);
+		List<IntoPieces> intoPieces = queryResult.getItems();
+		for(IntoPieces pieces : intoPieces){
+			if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
+				pieces.setNodeName("未提交申请");
+			} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
+				String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
+				if(StringUtils.isNotEmpty(nodeName)){
+					pieces.setNodeName(nodeName);
+				} else {
+					pieces.setNodeName("不在审批中");
+				}
+			} else if(pieces.getStatus().equals(Constant.RETURN_INTOPICES)){
+				pieces.setNodeName("退回");
+			} else {
+				pieces.setNodeName("审批结束");
+			}
+		}
+		return queryResult;
+	}
+	
+	//中心岗查询所有进件
+	public QueryResult<IntoPieces> findintoPiecesAllByFilter(IntoPiecesFilter filter) {
+		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesAllByFilter(filter);
 		List<IntoPieces> intoPieces = queryResult.getItems();
 		for(IntoPieces pieces : intoPieces){
 			if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
@@ -957,6 +983,7 @@ public class IntoPiecesService {
 		commonDao.updateObject(infor);
 		
 		//将所有相关表记录删除appId
+		commonDao.queryBySql("update qz_appln_za_ywsqb_r set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
 		commonDao.queryBySql("update qz_appln_ywsqb set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
 		commonDao.queryBySql("update qz_appln_dbrxx set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
 		commonDao.queryBySql("update qz_appln_attachment_list set application_id=null where application_id='"+filter.getApplicationId()+"'", null);
@@ -1434,6 +1461,13 @@ public class IntoPiecesService {
 			commonDao.deleteObject(QzApplnJyd.class, qz.get(0).getId());
 		}
 			commonDao.insertObject(qzSdhjyd);
+			
+		//将决策金额和利率以及期限填入circle
+		Circle circle = circleService.findCircleByAppId(qzSdhjyd.getApplicationId());
+		circle.setContractAmt(qzSdhjyd.getJe());
+		circle.setActIntRate(qzSdhjyd.getLl());
+		circle.setTerm(qzSdhjyd.getQx());
+		commonDao.updateObject(circle);
 	}
 	
 	/**
@@ -1540,6 +1574,13 @@ public class IntoPiecesService {
 	 * 对客户信息表中没有appId的表添加appid
 	 */
 	public void addAppId(String customerId,String applicationId){
+		//添加产品类型appId
+		QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerId);
+		if(qzappln_za_ywsqb_r!=null){
+			qzappln_za_ywsqb_r.setApplicationId(applicationId);
+			commonDao.updateObject(qzappln_za_ywsqb_r);
+		}
+		
 		//添加业务申请表appId
 		QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
 		if(qzApplnYwsqb!=null){

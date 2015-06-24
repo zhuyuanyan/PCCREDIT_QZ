@@ -115,6 +115,9 @@ public class IESBForCircleController extends BaseController{
 		}else{
 			circle = circleService.findCircle(customerId,null);
 		}
+		if(circle.getHigherOrgNo().equals("000000")){//替换为泉州总行id
+			circle.setHigherOrgNo(Constant.QZ_ORG_ROOT_ID);
+		}
 		mv.addObject("circle",circle);
 		mv.addObject("operate",operate);
 		mv.addObject("appId",appId);
@@ -162,13 +165,13 @@ public class IESBForCircleController extends BaseController{
 			mv.addObject("orgId",orgId);
 			mv.addObject("parentOrgId",parentOrgId);
 			mv.addObject("externalId",externalId);
-
-			QzApplnJyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
-			mv.addObject("qzSdhjyd",qzSdhjyd);
 			
 		}
 		else{
 			mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_change", request);
+			if(circle.getHigherOrgNo().equals("000000")){//替换为泉州总行id
+				circle.setHigherOrgNo(Constant.QZ_ORG_ROOT_ID);
+			}
 			mv.addObject("circle",circle);
 		}
 		

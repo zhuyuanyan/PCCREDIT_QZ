@@ -61,11 +61,7 @@
             </tr>
             <tr>
               <td><label>还款期限:</label><font color="#ff0000">*</font></td>
-              <td>
-              		<select name="term">
-                    	#dict("APPLY_DEADLINE", $!qzSdhjyd.jyqx)
-                  	</select>
-              </td>
+              <td><input type="text"name="term" value="$!jyd.jyqx" readonly/></td>
 			  <td><label>期限类型:</label></td>
               <td><select name="termType">#dict("TERM_TYPE", "")</select></td>
             </tr>
@@ -77,13 +73,13 @@
             </tr>
 			<tr>
               <td><label>登记人:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="registeredId" name="registeredId"/></td>
+              <td><input type="text" id="registeredId" name="registeredId" readonly/></td>
 			  <td><label>登记机构:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="registOrgNo" name="registOrgNo"/></td>
+              <td><input type="text" id="registOrgNo" name="registOrgNo" readonly/></td>
             </tr>
 			<tr>
               <td><label>入账机构码:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" name="incomeOrgNo" value="$!orgId"/></td>
+              <td><input type="text" name="incomeOrgNo" value="$!orgId" readonly/></td>
 			  <td><label>登记日期:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="registeredDate" name="registeredDate" onmouseover="_calendar()" readonly/></td>
             </tr>
@@ -177,7 +173,7 @@
             </tr>
 			<tr>
               <td><label>管理机构:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" name="manaOrg" value="$!orgId"/></td>
+              <td><input type="text" name="manaOrg" value="$!orgId" readonly/></td>
 			  <td><label>主管客户经理:</label></td>
               <td><select name="chiCustManager">#dict("IS_MAIN_MANAGER", "")</select></td>
             </tr>
@@ -194,7 +190,7 @@
               <td><label>客户号:</label></td>
               <td><input type="text" id="aClientNo" name="aClientNo" disabled/></td>
 			  <td><label>客户名称:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="clientName" name="clientName"/></td>
+              <td><input type="text" id="clientName" name="clientName" readonly/></td>
             </tr>
 			<tr>
               <td><label>性别:</label></td>
@@ -206,7 +202,7 @@
               <td><label>证件类型:</label><font color="#ff0000">*</font></td>
               <td><select id="globalType" name="globalType">#dict("CERT_TYPE", "")</select></td>
 			  <td><label>证件号码:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="globalId" name="globalId"/></td>
+              <td><input type="text" id="globalId" name="globalId" readonly/></td>
             </tr>
 			<tr>
               <td><label>长期证件标志:</label></td>
@@ -280,9 +276,9 @@
             </tr>
 			<tr>
               <td><label>上级机构:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="higherOrgNo" name="higherOrgNo" value="$!parentOrgId"></td>
+              <td><input type="text" id="higherOrgNo" name="higherOrgNo" value="$!parentOrgId" readonly></td>
 			  <td><label>客户经理:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="acctExec" name="acctExec"/></td>
+              <td><input type="text" id="acctExec" name="acctExec" readonly/></td>
             </tr>
 			<tr>
               <td><label>开户日期:</label><font color="#ff0000">*</font></td>
@@ -300,7 +296,7 @@
 			<tr>
               <td><label>币种:</label></td>
               <td><select name="feeCcy">#dict("CONT_CUR_TYPE", "")</select></td>
-			  <td><label>费用金额:</label><font color="#ff0000">*</font></td>
+			  <td><label>费用金额(元):</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="feeAmount"/></td>
             </tr>
 			#if($!operate!="填写合同信息")
