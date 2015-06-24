@@ -1714,4 +1714,9 @@
 		<item name="2" title="净利润" />
 	</dictionary>
 	
+	<dictionary name="PRODUCT_TYPE" title="产品类型">
+		<item name="1" title="贷成长" />
+		<item name="2" title="贷生活" />
+	</dictionary>
+	
 </dictionaries>

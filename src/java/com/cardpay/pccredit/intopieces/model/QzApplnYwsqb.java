@@ -522,5 +522,4 @@ public class QzApplnYwsqb extends BusinessModel {
 	public void setManagerTime(Date managerTime) {
 		this.managerTime = managerTime;
 	}
-	
 }

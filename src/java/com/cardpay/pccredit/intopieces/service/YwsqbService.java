@@ -37,6 +37,7 @@ import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.JyxxDao;
 import com.cardpay.pccredit.intopieces.dao.YwsqbDao;
+import com.cardpay.pccredit.intopieces.dao.ZA_YWSQB_R_Dao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
@@ -61,6 +62,7 @@ import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbJkjl;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZygys;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZykh;
+import com.cardpay.pccredit.intopieces.model.QzAppln_Za_Ywsqb_R;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
@@ -115,6 +117,9 @@ public class YwsqbService {
 	
 	@Autowired
 	private JyxxDao jyxxDao;
+	
+	@Autowired
+	private ZA_YWSQB_R_Dao za_ywsqb_r_dao;
 	
 	//保存业务申请表
 	public void insert_page1(QzApplnYwsqb qzApplnYwsqb, QzApplnJyxx qzApplnJyxx,HttpServletRequest request) throws Exception{
@@ -346,5 +351,13 @@ public class YwsqbService {
 		if(!qzApplnJyxx.getBussType().equals("3")){
 			qzApplnJyxx.setBussTypeOther("");
 		}
+	}
+
+	public void insert_page0(QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r) {
+		commonDao.insertObject(qzappln_za_ywsqb_r);
+	}
+	
+	public void update_page0(QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r) {
+		commonDao.updateObject(qzappln_za_ywsqb_r);
 	}
 }

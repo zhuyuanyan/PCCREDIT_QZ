@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
@@ -54,6 +55,9 @@ import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbJkjl;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZygys;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZykh;
+import com.cardpay.pccredit.intopieces.model.QzApplnZa;
+import com.cardpay.pccredit.intopieces.model.QzApplnZaReturnMap;
+import com.cardpay.pccredit.intopieces.model.QzAppln_Za_Ywsqb_R;
 import com.cardpay.pccredit.intopieces.service.AttachmentListService;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
@@ -62,6 +66,8 @@ import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.JyxxService;
 import com.cardpay.pccredit.intopieces.service.NbscyjbService;
 import com.cardpay.pccredit.intopieces.service.YwsqbService;
+import com.cardpay.pccredit.intopieces.service.ZAService;
+import com.cardpay.pccredit.intopieces.service.ZA_YWSQB_R_Service;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -149,6 +155,12 @@ public class IntoPiecesApproveControl extends BaseController {
 	@Autowired
 	private NbscyjbService nbscyjbService;
 	
+	@Autowired
+	private ZAService zaService;
+	
+	@Autowired
+	private ZA_YWSQB_R_Service za_ywsqb_r_service;
+	
 	/**
 	 * 申请页面
 	 * 
@@ -222,6 +234,14 @@ public class IntoPiecesApproveControl extends BaseController {
 			try {
 				String customerId = request.getParameter("id");
 				//检查相关的表是否填写
+				//添加产品类型appId
+				QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerId);
+				if(qzappln_za_ywsqb_r==null){
+					returnMap.put(JRadConstants.MESSAGE, "请先\"选择产品\"");
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				
 				//添加业务申请表appId
 				QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
 				if(qzApplnYwsqb==null){
@@ -229,6 +249,7 @@ public class IntoPiecesApproveControl extends BaseController {
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;
 				}
+				
 				//添加担保人appId
 				/*List<QzApplnDbrxx> dbrxx_ls = dbrxxService.findDbrxx(customerId, null);
 				if(dbrxx_ls == null || dbrxx_ls.size() == 0){
@@ -390,6 +411,69 @@ public class IntoPiecesApproveControl extends BaseController {
 		return mv;
 	}
 	
+	//page0
+	@ResponseBody
+	@RequestMapping(value = "page0.page")
+	public AbstractModelAndView page0(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page0", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerInforId);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforService.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		mv.addObject("qzappln_za_ywsqb_r", qzappln_za_ywsqb_r);
+		//查找专案信息
+		List<QzApplnZaReturnMap> za_ls = zaService.findZas();
+		mv.addObject("za_ls", za_ls);
+		mv.addObject("za_ls_json", JSONArray.fromObject(za_ls).toString());
+		//查找已配置的专案信息
+		if(qzappln_za_ywsqb_r != null && qzappln_za_ywsqb_r.getProductType() != null && qzappln_za_ywsqb_r.getProductType().equals("2")){
+			QzApplnZa qzApplnZa = zaService.findZaById(qzappln_za_ywsqb_r.getZaId());
+			mv.addObject("qzApplnZa", qzApplnZa);
+		}
+		return mv;
+	}
+	
+	//insert_page0
+	@ResponseBody
+	@RequestMapping(value = "insert_page0.json")
+	public JRadReturnMap insert_page0(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("customerId");
+				String productType = request.getParameter("productType");
+				String zaId = request.getParameter("zaId");
+				
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerId);
+				if(qzappln_za_ywsqb_r == null){
+					qzappln_za_ywsqb_r = new QzAppln_Za_Ywsqb_R();
+					//未填申请时 关联客户id
+					qzappln_za_ywsqb_r.setCustomerId(customerId);
+					qzappln_za_ywsqb_r.setProductType(productType);
+					qzappln_za_ywsqb_r.setZaId(zaId);
+					ywsqbService.insert_page0(qzappln_za_ywsqb_r);
+				}else{
+					qzappln_za_ywsqb_r.setProductType(productType);
+					qzappln_za_ywsqb_r.setZaId(zaId);
+					ywsqbService.update_page0(qzappln_za_ywsqb_r);
+				}
+				
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+		
 	//page1
 	@ResponseBody
 	@RequestMapping(value = "page1.page")
@@ -1008,28 +1092,6 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("appId", appId);
 			mv.addObject("operate", Constant.status_buchong);
 		}
-		
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String loginId = user.getLogin();
-		String displayName = user.getDisplayName();
-		String orgId = user.getOrganization().getId();
-		String orgName = user.getOrganization().getName();
-		StringBuilder url = new StringBuilder(Constant.SunIASUrl);
-		url.append("UserID="+loginId+"&");
-		url.append("UserName="+displayName+"&");
-		url.append("OrgID="+orgId+"&");
-		url.append("OrgName="+orgName+"&");
-		url.append("right=1111&");
-		QzApplnAttachmentList qzApplnAttachmentList = attachmentListService.findAttachmentListByAppId(appId);
-		if(qzApplnAttachmentList.getBussType().equals("1"))//工薪类
-		{
-			url.append("info1=QKXFDW:"+appId.toUpperCase());
-		}
-		else//经营类
-		{
-			url.append("info1=QKJYDW:"+appId.toUpperCase());
-		}
-		mv.addObject("url", url);
 		return mv;
 	}
 	
