@@ -9,7 +9,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.jboss.resteasy.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,6 +55,9 @@ import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbJkjl;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZygys;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZykh;
+import com.cardpay.pccredit.intopieces.model.QzApplnZa;
+import com.cardpay.pccredit.intopieces.model.QzApplnZaReturnMap;
+import com.cardpay.pccredit.intopieces.model.QzAppln_Za_Ywsqb_R;
 import com.cardpay.pccredit.intopieces.service.AttachmentListService;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
@@ -58,6 +66,8 @@ import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.JyxxService;
 import com.cardpay.pccredit.intopieces.service.NbscyjbService;
 import com.cardpay.pccredit.intopieces.service.YwsqbService;
+import com.cardpay.pccredit.intopieces.service.ZAService;
+import com.cardpay.pccredit.intopieces.service.ZA_YWSQB_R_Service;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -83,6 +93,7 @@ import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.jrad.modules.privilege.model.User;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -143,6 +154,12 @@ public class IntoPiecesApproveControl extends BaseController {
 	
 	@Autowired
 	private NbscyjbService nbscyjbService;
+	
+	@Autowired
+	private ZAService zaService;
+	
+	@Autowired
+	private ZA_YWSQB_R_Service za_ywsqb_r_service;
 	
 	/**
 	 * 申请页面
@@ -217,6 +234,14 @@ public class IntoPiecesApproveControl extends BaseController {
 			try {
 				String customerId = request.getParameter("id");
 				//检查相关的表是否填写
+				//添加产品类型appId
+				QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerId);
+				if(qzappln_za_ywsqb_r==null){
+					returnMap.put(JRadConstants.MESSAGE, "请先\"选择产品\"");
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				
 				//添加业务申请表appId
 				QzApplnYwsqb qzApplnYwsqb = ywsqbService.findYwsqb(customerId, null);
 				if(qzApplnYwsqb==null){
@@ -224,6 +249,7 @@ public class IntoPiecesApproveControl extends BaseController {
 					returnMap.put(JRadConstants.SUCCESS, false);
 					return returnMap;
 				}
+				
 				//添加担保人appId
 				/*List<QzApplnDbrxx> dbrxx_ls = dbrxxService.findDbrxx(customerId, null);
 				if(dbrxx_ls == null || dbrxx_ls.size() == 0){
@@ -385,6 +411,69 @@ public class IntoPiecesApproveControl extends BaseController {
 		return mv;
 	}
 	
+	//page0
+	@ResponseBody
+	@RequestMapping(value = "page0.page")
+	public AbstractModelAndView page0(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page0", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerInforId);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforService.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+		}
+		mv.addObject("qzappln_za_ywsqb_r", qzappln_za_ywsqb_r);
+		//查找专案信息
+		List<QzApplnZaReturnMap> za_ls = zaService.findZas();
+		mv.addObject("za_ls", za_ls);
+		mv.addObject("za_ls_json", JSONArray.fromObject(za_ls).toString());
+		//查找已配置的专案信息
+		if(qzappln_za_ywsqb_r != null && qzappln_za_ywsqb_r.getProductType() != null && qzappln_za_ywsqb_r.getProductType().equals("2")){
+			QzApplnZa qzApplnZa = zaService.findZaById(qzappln_za_ywsqb_r.getZaId());
+			mv.addObject("qzApplnZa", qzApplnZa);
+		}
+		return mv;
+	}
+	
+	//insert_page0
+	@ResponseBody
+	@RequestMapping(value = "insert_page0.json")
+	public JRadReturnMap insert_page0(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("customerId");
+				String productType = request.getParameter("productType");
+				String zaId = request.getParameter("zaId");
+				
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerId);
+				if(qzappln_za_ywsqb_r == null){
+					qzappln_za_ywsqb_r = new QzAppln_Za_Ywsqb_R();
+					//未填申请时 关联客户id
+					qzappln_za_ywsqb_r.setCustomerId(customerId);
+					qzappln_za_ywsqb_r.setProductType(productType);
+					qzappln_za_ywsqb_r.setZaId(zaId);
+					ywsqbService.insert_page0(qzappln_za_ywsqb_r);
+				}else{
+					qzappln_za_ywsqb_r.setProductType(productType);
+					qzappln_za_ywsqb_r.setZaId(zaId);
+					ywsqbService.update_page0(qzappln_za_ywsqb_r);
+				}
+				
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+		
 	//page1
 	@ResponseBody
 	@RequestMapping(value = "page1.page")
@@ -432,7 +521,7 @@ public class IntoPiecesApproveControl extends BaseController {
 				mv.addObject("customerId", customerInfor.getId());
 			}
 			//查找开户信息 自动填充
-			ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(customerInforId).getClientNo());
+			ECIF ecif = eCIFService.findEcifByCustomerId(customerInforId);
 			mv.addObject("ecif", ecif);
 			mv.addObject("type", type);
 			mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate) );
@@ -622,6 +711,27 @@ public class IntoPiecesApproveControl extends BaseController {
 		return returnMap;
 	}
 	
+	//del_page4
+	@ResponseBody
+	@RequestMapping(value = "del_page4.json")
+	public JRadReturnMap del_page4(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String dbrxxId = request.getParameter("id");
+				dbrxxService.deleteDbrxx(dbrxxId);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+		
 	//page5
 	@ResponseBody
 	@RequestMapping(value = "page5.page")
@@ -685,6 +795,8 @@ public class IntoPiecesApproveControl extends BaseController {
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				qzApplnAttachmentList.setCreatedBy(user.getId());
 				qzApplnAttachmentList.setCreatedTime(new Date());
+				qzApplnAttachmentList.setDocid(DateHelper.getDateFormat(qzApplnAttachmentList.getCreatedTime(), "yyyyMMddHHmmss"));
+				qzApplnAttachmentList.setUploadValue("0");
 				//未填申请时 关联客户id
 				qzApplnAttachmentList.setCustomerId(customerId);
 				attachmentListService.insert_page5(qzApplnAttachmentList, request);
@@ -869,7 +981,7 @@ public class IntoPiecesApproveControl extends BaseController {
 		mv.addObject("result", qzSdhjyd);
 		mv.addObject("qzApplnNbscyjb", qzApplnNbscyjb);
 		//查找开户信息 自动填充
-		ECIF ecif = eCIFService.findEcifByClientNo(eCIFService.findEcifByCustomerId(customerId).getClientNo());
+		ECIF ecif = eCIFService.findEcifByCustomerId(customerId);
 		mv.addObject("ecif", ecif);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		mv.addObject("orgName",user.getOrganization().getName());
@@ -983,4 +1095,102 @@ public class IntoPiecesApproveControl extends BaseController {
 		return mv;
 	}
 	
+	//影像
+	@ResponseBody
+	@RequestMapping(value = "sunds_ocx.page")
+	public AbstractModelAndView sunds_ocx(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/sunds_ocx", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "sunds_ocx_display.page")
+	public AbstractModelAndView sunds_ocx_display(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/sunds_ocx_display", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "getPage5UploadValue.json")
+	public JRadReturnMap getPage5UploadValue(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			String docID = request.getParameter("docID");
+			
+			//更新客户信息状态
+			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
+			String uploadValue = attachmentList.getUploadValue();
+			attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
+			returnMap.put("uploadFlag", Integer.parseInt(uploadValue)&Integer.parseInt(docID.substring(14, docID.length())));
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put(JRadConstants.SUCCESS, true);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			returnMap.put(JRadConstants.SUCCESS, false);
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+		
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "WDScan.page")
+	public AbstractModelAndView WDScan(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/WDScan", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "WDView.page")
+	public AbstractModelAndView WDView(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/WDView", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
+		//查找page5信息
+		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+		mv.addObject("children", jsonStr);
+		return mv;
+	}
+	
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "insert_sunds.json")
+	public JRadReturnMap insert_sunds(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			String docID = request.getParameter("docID");
+			
+			//更新客户信息状态
+			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
+			String uploadValue = attachmentList.getUploadValue();
+			attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
+			commonDao.updateObject(attachmentList);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put(JRadConstants.SUCCESS, true);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			returnMap.put(JRadConstants.SUCCESS, false);
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
 }

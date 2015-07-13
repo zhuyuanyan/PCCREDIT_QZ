@@ -17,11 +17,11 @@ var validator = $($formName).validate({
 		registeredDate:{required:true},
 		term:{required:true},
 		actIntRate:{required:true},
-		overdueIntRate:{required:true},
-		penaltyIntRate:{required:true},
+		overdueIntRate:{required:true,number:true,min:1,max:100},
+		penaltyIntRate:{required:true,number:true,min:1,max:100},
 		repayDate:{required:true},
 		
-		aClientNo:{required:true},
+		//aClientNo:{required:true},
 		clientName:{required:true},
 		globalId:{required:true},
 		issDate:{required:true},
@@ -36,7 +36,7 @@ var validator = $($formName).validate({
 		acctExec:{required:true},
 		openAcctDate:{required:true},
 		
-		feeAmount:{required:true},
+		feeAmount:{required:true,number:true,min:200},
 		feeAcctNo:{required:true}
      },
 messages:
@@ -57,11 +57,11 @@ messages:
 		registeredDate:{required:"登记日期不能为空"},
 		term:{required:"期限不能为空"},
 		actIntRate:{required:"执行利率不能为空"},
-		overdueIntRate:{required:"逾期利率不能为空"},
-		penaltyIntRate:{required:"违约利率不能为空"},
+		overdueIntRate:{required:"逾期利率不能为空",number:"逾期利率只能为数字",min:"逾期利率不能小于1%",max:"逾期利率不能大于100%"},
+		penaltyIntRate:{required:"违约利率不能为空",number:"违约利率只能为数字",min:"违约利率不能小于1%",max:"违约利率不能大于100%"},
 		repayDate:{required:"还款日期不能为空"},
 		
-		aClientNo:{required:"客户号不能为空"},
+		//aClientNo:{required:"客户号不能为空"},
 		clientName:{required:"客户名称不能为空"},
 		globalId:{required:"证件号码不能为空"},
 		issDate:{required:"签发日期不能为空"},
@@ -76,7 +76,7 @@ messages:
 		acctExec:{required:"客户经理不能为空"},
 		openAcctDate:{required:"开户日期不能为空"},
 		
-		feeAmount:{required:"费用金额不能为空"},
+		feeAmount:{required:"费用金额不能为空",number:"费用金额只能为数字",min:"费用金额不能小于200"},
 		feeAcctNo:{required:"费用账号不能为空"}
    },
 	errorPlacement : function(error, element) {

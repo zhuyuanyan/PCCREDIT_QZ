@@ -31,7 +31,9 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.service.AttachmentListService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -72,6 +74,9 @@ public class IntoPiecesXindaiControl extends BaseController {
 	private CircleService circleService;
 	@Autowired
 	private ECIFService eCIFService;
+	
+	@Autowired
+	private AttachmentListService attachmentListService;
 	/**
 	 * 行政岗终进件页面
 	 * 
@@ -159,12 +164,12 @@ public class IntoPiecesXindaiControl extends BaseController {
 		try {
 			String appId = request.getParameter("id");
 			//是否上传合同单
-			Boolean ifAddHt = intoPiecesService.getDcnrList(appId);
+			/*Boolean ifAddHt = intoPiecesService.getDcnrList(appId);
 			if(!ifAddHt){
 				returnMap.put(JRadConstants.MESSAGE, "请先上传\"合同扫描件\"");
 				returnMap.put(JRadConstants.SUCCESS, false);
 				return returnMap;
-			}
+			}*/
 			CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(appId);
 			request.setAttribute("serialNumber", process.getSerialNumber());
 			request.setAttribute("applicationId", process.getApplicationId());

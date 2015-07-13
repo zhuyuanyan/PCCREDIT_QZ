@@ -47,7 +47,7 @@
 				</colgroup>
 				<tr>
 					<td class="table-label">审议日期:<font color="#ff0000">*</font></td>
-					<td colspan="8"><input type="text" name="syrq" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.syrq)"/></td>			
+					<td colspan="8"><input type="text" name="syrq" onmouseover="_calendar()" value="$!date.format("yyyy-MM-dd", $!result.syrq)" readonly/></td>			
 				</tr>
 				<tr>
 					<td class="table-label">办理机构:<font color="#ff0000">*</font></td>
@@ -66,18 +66,20 @@
 					<td colspan="3"><input type="text" name="zjhm" value="$!ecif.globalId" readonly/></td>		
 				</tr>			
 				<tr>
-					<td class="table-label">建议金额:<font color="#ff0000">*</font></td>
+					<td class="table-label">建议金额(元):<font color="#ff0000">*</font></td>
 					<td colspan="2"><input type="text" name="jyje" value="$!qzApplnNbscyjb.sugAmount" readonly/></td>
-					<td class="table-label">建议期限:<font color="#ff0000">*</font></td>
+					<td class="table-label">建议期限(月):<font color="#ff0000">*</font></td>
 					<td><input type="text" name="jyqx" value="$!qzApplnNbscyjb.sugDeadline" readonly/></td>	
-					<td class="table-label" colspan="2">建议利率（年）:<font color="#ff0000">*</font></td>
+					<td class="table-label">建议利率（年%）:<font color="#ff0000">*</font></td>
 					<td colspan="2"><input type="text" name="jyll" value="$!qzApplnNbscyjb.sugRates" readonly/></td>		
 				</tr>			
 				<tr>
 					<td class="table-label">授信用途:<font color="#ff0000">*</font></td>
 					<td colspan="4"><input type="text" name="sxyt" value="$!result.sxyt"/></td>
-					<td class="table-label" colspan="2">还款方式:<font color="#ff0000">*</font></td>
-					<td colspan="2"><input type="text" name="hkfs" value="$!result.hkfs"/></td>		
+					<td class="table-label">还款方式:<font color="#ff0000">*</font></td>
+					<td colspan="2">
+						<select name="hkfs"  >#dict("REPAY_TYPE", $!result.hkfs)</select>
+					</td>		
 				</tr>		
 				<tr>
 					<td class="table-label" rowspan="3">建议担保方式</td>					
@@ -96,18 +98,11 @@
 								<td><b>姓名</b></td>	
 								<td><b>证件号码</b></td>		
 							</tr>
-							#if(!$gtjkrs)
+							#foreach ($result in $gtjkrs)
 							<tr>
-								<td><input type="text" name="gtjkrxm"/></td>	
-								<td><input type="text" name="gtjkrhm"/></td>		
+								<td><input type="text" name="gtjkrxm" value="$!result.name"/></td>	
+								<td><input type="text" name="gtjkrhm" value="$!result.cardId"/></td>		
 							</tr>
-							#else
-								#foreach ($result in $gtjkrs)
-								<tr>
-									<td><input type="text" name="gtjkrxm" value="$!result.name"/></td>	
-									<td><input type="text" name="gtjkrhm" value="$!result.cardId"/></td>		
-								</tr>
-								#end
 							#end
 						</table>
 					</td>	
@@ -124,22 +119,11 @@
 									#end
 								</td>		
 							</tr>
-							#if(!$bzdbs)
+							#foreach ($result in $bzdbs)
 							<tr>
-								<td><b>姓名</b></td>	
-								<td><b>证件号码</b></td>		
+								<td><input type="text" name="bzdbxm" value="$!result.name"/></td>	
+								<td><input type="text" name="bzdbhm" value="$!result.cardId"/></td>		
 							</tr>
-							<tr>
-								<td><input type="text" name="bzdbxm"/></td>	
-								<td><input type="text" name="bzdbhm"/></td>		
-							</tr>
-							#else
-								#foreach ($result in $bzdbs)
-								<tr>
-									<td><input type="text" name="bzdbxm" value="$!result.name"/></td>	
-									<td><input type="text" name="bzdbhm" value="$!result.cardId"/></td>		
-								</tr>
-								#end
 							#end
 						</table>
 					</td>	
@@ -163,24 +147,14 @@
 								<td><b>权证或单据号码</b></td>	
 								<td><b>可抵押价值</b></td>	
 							</tr>
-							#if(!$dydbs)
+							#foreach ($result in $dydbs)
 							<tr>
-								<td><input type="text" name="dyr"/></td>	
-								<td><input type="text" name="dywmc"/></td>	
-								<td><input type="text" name="sl"/></td>	
-								<td><input type="text" name="djhm"/></td>	
-								<td><input type="text" name="kdyjz"/></td>		
+								<td><input type="text" name="dyr" value="$!result.userName"/></td>	
+							<td><input type="text" name="dywmc" value="$!result.goodsName"/></td>
+							<td><input type="text" name="sl" value="$!result.goodsCount"/></td>
+							<td><input type="text" name="djhm" value="$!result.card"/></td>
+							<td><input type="text" name="kdyjz" value="$!result.goodsValues"/></td>	
 							</tr>
-							#else
-								#foreach ($result in $dydbs)
-								<tr>
-									<td><input type="text" name="dyr" value="$!result.userName"/></td>	
-								<td><input type="text" name="dywmc" value="$!result.goodsName"/></td>
-								<td><input type="text" name="sl" value="$!result.goodsCount"/></td>
-								<td><input type="text" name="djhm" value="$!result.card"/></td>
-								<td><input type="text" name="kdyjz" value="$!result.goodsValues"/></td>	
-								</tr>
-								#end
 							#end
 						</table>
 					</td>	

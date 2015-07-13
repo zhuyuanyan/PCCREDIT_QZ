@@ -290,7 +290,7 @@ public class IESBForCircleCredit {
         //贷款投向
         Field LOAN_DIRECTION=new Field(new FieldAttr(FieldType.FIELD_STRING, 20));
         //LOAN_DIRECTION.setValue("01");//todo:传入贷款投向
-        LOAN_DIRECTION.setValue(circle.getLoanDirection());//todo:传入贷款投向
+        LOAN_DIRECTION.setValue(circle.getLoanDirection().substring(1, circle.getLoanDirection().length()));//todo:传入贷款投向
         body_struct.addField("LOAN_DIRECTION", LOAN_DIRECTION);
 
         //贷款归属1
@@ -691,6 +691,9 @@ public class IESBForCircleCredit {
 		</service>
      */
 	public boolean parseEcifResponse(CompositeData resp) {
+		if(resp == null){
+			return false;
+		}
 		CompositeData SYS_HEAD = resp.getStruct("SYS_HEAD");
 
         //根据数组名称去获取数组

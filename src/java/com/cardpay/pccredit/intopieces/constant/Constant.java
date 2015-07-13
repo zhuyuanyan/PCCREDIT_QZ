@@ -113,6 +113,7 @@ public class Constant {
 	public static String APPROVE_EDIT_3="4";//授信岗补充上会--退回客户经理
 	
 	/*待决策资料清单列表*/
+	public static String ATTACH_LIST0="合同扫描件";
 	public static String ATTACH_LIST1="贷款申请表";
 	public static String ATTACH_LIST2="调查报告";
 	public static String ATTACH_LIST3="征信查询授权书";

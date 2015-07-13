@@ -19,6 +19,8 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
+import com.cardpay.pccredit.intopieces.service.AttachmentListService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -76,7 +78,8 @@ public class IntoPiecesChushenControl extends BaseController {
 	@Autowired
 	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
 	
-	
+	@Autowired
+	private AttachmentListService attachmentListService;
 	/**
 	 * 团队初审进件页面
 	 * 
@@ -126,7 +129,7 @@ public class IntoPiecesChushenControl extends BaseController {
 	}
 	
 	/**
-	 * 退回进件(首节点，所以直接删除申请件)
+	 * 退回进件(首节点)
 	 * 
 	 * @param filter
 	 * @param request

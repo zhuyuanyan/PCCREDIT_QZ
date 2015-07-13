@@ -31,9 +31,11 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.service.AttachmentListService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
@@ -78,6 +80,9 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	private NbscyjbService nbscyjbService;
 	@Autowired
 	private JyxxService jyxxService;
+	
+	@Autowired
+	private AttachmentListService attachmentListService;
 	
 	/**
 	 * 行政岗初进件页面
@@ -227,6 +232,13 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 		mv.addObject("customerInfo", customerInfo);
 		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInfo.getId(), null);
 		mv.addObject("qzApplnJyxx", qzApplnJyxx);
+		
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getLogin();
+		String displayName = user.getDisplayName();
+		mv.addObject("displayName", displayName);
+		mv.addObject("loginId", loginId);
+		
 		return mv;
 	}
 	

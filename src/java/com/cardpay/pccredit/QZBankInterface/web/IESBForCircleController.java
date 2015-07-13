@@ -106,7 +106,7 @@ public class IESBForCircleController extends BaseController{
 		String customerId = request.getParameter(ID);
 		String appId = request.getParameter("appId");
 		String operate = request.getParameter("operate");
-		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+		IESBForECIFReturnMap ecif = eCIFService.findEcifMapByCustomerId(customerId);
 		mv.addObject("ecif",ecif);
 				
 		Circle circle = null;
@@ -114,6 +114,9 @@ public class IESBForCircleController extends BaseController{
 			circle = circleService.findCircleByAppId(appId);
 		}else{
 			circle = circleService.findCircle(customerId,null);
+		}
+		if(circle.getHigherOrgNo().equals("000000")){//替换为泉州总行id
+			circle.setHigherOrgNo(Constant.QZ_ORG_ROOT_ID);
 		}
 		mv.addObject("circle",circle);
 		mv.addObject("operate",operate);
@@ -136,7 +139,7 @@ public class IESBForCircleController extends BaseController{
 		String customerId = request.getParameter(ID);
 		String appId = request.getParameter("appId");
 		String operate = request.getParameter("operate");
-		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(customerId);
+		IESBForECIFReturnMap ecif = eCIFService.findEcifMapByCustomerId(customerId);
 		JSONObject json = new JSONObject();
 		json = JSONObject.fromObject(ecif);
 		//获取决议单信息
@@ -155,20 +158,20 @@ public class IESBForCircleController extends BaseController{
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String orgId = user.getOrganization().getId();//机构ID
 			String parentOrgId = user.getOrganization().getParentId();//机构ID
-//			if(parentOrgId.equals("000000")){//替换为泉州总行id
+			if(parentOrgId.equals("000000")){//替换为泉州总行id
 				parentOrgId = Constant.QZ_ORG_ROOT_ID;
-//			}
+			}
 			String externalId = user.getLogin();//工号
 			mv.addObject("orgId",orgId);
 			mv.addObject("parentOrgId",parentOrgId);
 			mv.addObject("externalId",externalId);
-
-			QzApplnJyd qzSdhjyd = intoPiecesService.getSdhjydForm(customerId);
-			mv.addObject("qzSdhjyd",qzSdhjyd);
 			
 		}
 		else{
 			mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_change", request);
+			if(circle.getHigherOrgNo().equals("000000")){//替换为泉州总行id
+				circle.setHigherOrgNo(Constant.QZ_ORG_ROOT_ID);
+			}
 			mv.addObject("circle",circle);
 		}
 		

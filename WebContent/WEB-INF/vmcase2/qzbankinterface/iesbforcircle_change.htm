@@ -1,7 +1,5 @@
 #parse ("common/iframe_page_header3.htm")
-<style type="text/css">
- input[type=text]{width:158px;}
-</style>
+
 <body>
       <form id="id_module_form">
         <div class="forms" id="formsId">
@@ -58,20 +56,26 @@
             #end
 			  <td><label>授信起始日期:</label><font color="#ff0000">*</font></td>
 			  #if($!circle.startDate == $null)
-			  	<td><input type="text" name="startDate" onmouseover="_calendar()"/></td>
+			  	<td><input type="text" name="startDate" onmouseover="_calendar()" readonly/></td>
 			  #else
-			  	<td><input type="text" name="startDate" onmouseover="_calendar()" value="$date.format('yyyy-MM-dd', $!circle.startDate)"  /></td>
+			  	<td><input type="text" name="startDate" onmouseover="_calendar()" value="$date.format('yyyy-MM-dd', $!circle.startDate)" readonly /></td>
 			  #end
 			  <td><label>授信结束日期:</label><font color="#ff0000">*</font></td>
 			  #if($!circle.endDate == $null)
-			  	<td><input type="text" name="endDate" onmouseover="_calendar()"  /></td>
+			  	<td><input type="text" name="endDate" onmouseover="_calendar()" readonly /></td>
 			  #else
-			  	<td><input type="text" name="endDate" onmouseover="_calendar()" value="$date.format('yyyy-MM-dd', $!circle.endDate)"  /></td>
+			  	<td><input type="text" name="endDate" onmouseover="_calendar()" value="$date.format('yyyy-MM-dd', $!circle.endDate)" readonly /></td>
 			  #end
             </tr>
             <tr>
               <td><label>还款期限:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" name="term" value="$!circle.term"  /></td>
+              <td><input type="text"name="term" 
+              	#if($!operate=="填写合同信息")
+              		value="$!circle.term"
+              	#else
+              		value="$!jyd.jyqx"
+              	#end
+              	readonly/></td>
 			  <td><label>期限类型:</label></td>
               <td><select name="termType"  >#dict("TERM_TYPE", $!circle.termType)</select></td>
             </tr>
@@ -79,25 +83,37 @@
 			  <td><label>业务类型:</label></td>
               <td><select id="bussType" name="bussType"  >#dict("BUSS_TYPE", $!circle.bussType)</select></td>
               <td><label>合同金额(元):</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="contractAmt" name="contractAmt" value="$!circle.contractAmt"  /></td>
+              <td><input type="text" id="contractAmt" name="contractAmt" 
+              	#if($!operate=="填写合同信息")
+              		value="$!circle.contractAmt"
+              	#else
+              		value="$!jyd.jyje"
+              	#end
+               readonly /></td>
             </tr>
 			<tr>
               <td><label>登记人:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="registeredId" name="registeredId" value="$!circle.registeredId"  /></td>
+              <td><input type="text" id="registeredId" name="registeredId" value="$!circle.registeredId" readonly /></td>
 			  <td><label>登记机构:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="registOrgNo" name="registOrgNo" value="$!circle.registOrgNo"  /></td>
+              <td><input type="text" id="registOrgNo" name="registOrgNo" value="$!circle.registOrgNo" readonly /></td>
             </tr>
 			<tr>
               <td><label>入账机构码:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" name="incomeOrgNo" value="$!circle.incomeOrgNo"   /></td>
+              <td><input type="text" name="incomeOrgNo" value="$!circle.incomeOrgNo" readonly /></td>
 			  <td><label>登记日期:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="registeredDate" name="registeredDate" value="$date.format('yyyy-MM-dd', $!circle.registeredDate)"  onmouseover="_calendar()"/></td>
+              <td><input type="text" id="registeredDate" name="registeredDate" value="$date.format('yyyy-MM-dd', $!circle.registeredDate)"  onmouseover="_calendar()" readonly/></td>
             </tr>
 			<tr>
               <td><label>顺延标志:</label></td>
               <td><select name="deferFlag"  >#dict("IS_DELAY", $!circle.deferFlag)</select></td>
 			  <td><label>年执行利率(%):</label><font color="#ff0000">*</font></td>
-              <td><input type="text" name="actIntRate" value="$!circle.actIntRate"  /></td>
+              <td><input type="text" name="actIntRate" 
+              	#if($!operate=="填写合同信息")
+              		value="$!circle.actIntRate"
+              	#else
+              		value="$!jyd.jyll"
+              	#end
+               readonly /></td>
             </tr>
 			<tr>
               <td><label>年逾期利率(%):</label><font color="#ff0000">*</font></td>
@@ -183,7 +199,7 @@
             </tr>
 			<tr>
               <td><label>管理机构:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" name="manaOrg" value="$!circle.manaOrg"  /></td>
+              <td><input type="text" name="manaOrg" value="$!circle.manaOrg" readonly /></td>
 			  <td><label>主管客户经理:</label></td>
               <td><select name="chiCustManager"  >#dict("IS_MAIN_MANAGER", $!circle.chiCustManager)</select></td>
             </tr>
@@ -197,10 +213,10 @@
               <col width="40%" />
             </colgroup>
 			<tr>
-              <td><label>客户号:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="aClientNo" name="aClientNo" value="$!circle.aClientNo"  /></td>
+              <td><label>客户号:</label></td>
+              <td><input type="text" id="aClientNo" name="aClientNo" value="$!circle.aClientNo"  readonly/></td>
 			  <td><label>客户名称:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="clientName" name="clientName" value="$!circle.clientName"  /></td>
+              <td><input type="text" id="clientName" name="clientName" value="$!circle.clientName" readonly /></td>
             </tr>
 			<tr>
               <td><label>性别:</label></td>
@@ -212,17 +228,17 @@
               <td><label>证件类型:</label><font color="#ff0000">*</font></td>
               <td><select id="globalType" name="globalType"  >#dict("CERT_TYPE", $!circle.globalType)</select></td>
 			  <td><label>证件号码:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="globalId" name="globalId" value="$!circle.globalId"  /></td>
+              <td><input type="text" id="globalId" name="globalId" value="$!circle.globalId" readonly /></td>
             </tr>
 			<tr>
               <td><label>长期证件标志:</label></td>
               <td><select id="longGlobalType" name="longGlobalType"  >#dict("IS_LONG_INDIV", $!circle.longGlobalType)</select></td>
 			  <td><label>签发日期:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="issDate" name="issDate" value="$date.format('yyyy-MM-dd', $!circle.issDate)"  onmouseover="_calendar()"/></td>
+              <td><input type="text" id="issDate" name="issDate" value="$date.format('yyyy-MM-dd', $!circle.issDate)"  onmouseover="_calendar()" readonly/></td>
             </tr>
 			<tr>
               <td><label>证件有效日期:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="globalEffDate" name="globalEffDate" value="$date.format('yyyy-MM-dd', $!circle.globalEffDate)"  onmouseover="_calendar()"/></td>
+              <td><input type="text" id="globalEffDate" name="globalEffDate" value="$date.format('yyyy-MM-dd', $!circle.globalEffDate)"  onmouseover="_calendar()" readonly/></td>
 			  <td><label>农户标识:</label></td>
               <td><select id="agriFlag" name="agriFlag"  >#dict("AGRI_FLG", $!circle.agriFlag)</select></td>
             </tr>
@@ -244,7 +260,7 @@
             </tr>
 			<tr>
               <td><label>出生日期:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="birthDate" name="birthDate" value="$date.format('yyyy-MM-dd', $!circle.birthDate)"  onmouseover="_calendar()"/></td>
+              <td><input type="text" id="birthDate" name="birthDate" value="$date.format('yyyy-MM-dd', $!circle.birthDate)"  onmouseover="_calendar()" readonly/></td>
 			  <td><label>最高学历:</label></td>
               <td><select id="education" name="education"  >#dict("INDIV_EDT", $!circle.education)</select></td>
             </tr>
@@ -252,7 +268,7 @@
               <td><label>最高学位:</label></td>
               <td><select id="degree" name="degree"  >#dict("INDIV_DGR", $!circle.degree)</select></td>
 			  <td><label>签约日期:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="signDate" name="signDate" value="$date.format('yyyy-MM-dd', $!circle.signDate)"  onmouseover="_calendar()"/></td>
+              <td><input type="text" id="signDate" name="signDate" value="$date.format('yyyy-MM-dd', $!circle.signDate)"  onmouseover="_calendar()" readonly/></td>
             </tr>
 			<tr>
               <td><label>持卡情况:</label></td>
@@ -268,7 +284,7 @@
               #if($!circle.expiryDate == $null)
               <input type="text" id="expiryDate" name="expiryDate"  onmouseover="_calendar()"/>
               #else
-              <input type="text" id="expiryDate" name="expiryDate" value="$date.format('yyyy-MM-dd', $!circle.expiryDate)"  onmouseover="_calendar()"/>
+              <input type="text" id="expiryDate" name="expiryDate" value="$date.format('yyyy-MM-dd', $!circle.expiryDate)"  onmouseover="_calendar()" readonly/>
               #end
               </td>
             </tr>
@@ -292,13 +308,13 @@
             </tr>
 			<tr>
               <td><label>上级机构:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="higherOrgNo" name="higherOrgNo" value="$!circle.higherOrgNo"  ></td>
+              <td><input type="text" id="higherOrgNo" name="higherOrgNo" value="$!circle.higherOrgNo" readonly ></td>
 			  <td><label>客户经理:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="acctExec" name="acctExec" value="$!circle.acctExec"  /></td>
+              <td><input type="text" id="acctExec" name="acctExec" value="$!circle.acctExec" readonly /></td>
             </tr>
 			<tr>
               <td><label>开户日期:</label><font color="#ff0000">*</font></td>
-              <td colspan="3"><input type="text" id="openAcctDate" name="openAcctDate" value="$!date.format('yyyy-MM-dd', $!circle.openAcctDate)"  onmouseover="_calendar()"/></td>
+              <td colspan="3"><input type="text" id="openAcctDate" name="openAcctDate" value="$!date.format('yyyy-MM-dd', $!circle.openAcctDate)"  onmouseover="_calendar()" readonly/></td>
             </tr>
 		  </table>
 		  <table class="rule myTable" bordercolor="#cccccc" border="1">
@@ -312,7 +328,7 @@
 			<tr>
               <td><label>币种:</label></td>
               <td><select name="feeCcy"  >#dict("CONT_CUR_TYPE", $!circle.feeCcy)</select></td>
-			  <td><label>费用金额:</label><font color="#ff0000">*</font></td>
+			  <td><label>费用金额(元):</label><font color="#ff0000">*</font></td>
               <td><input type="text" name="feeAmount" value="$!circle.feeAmount"  /></td>
             </tr>
 			#if($!operate!="填写合同信息")
@@ -328,10 +344,8 @@
       </form>
       <div class="submit controlbtn">
          <a id="id_save_button" class="btn_g" >保存</a>
-         #if($!operate=="填写合同信息")
+         #if($!operate=="填写合同信息" && $!circle.acctNo1 != $null)
          <a class="btn_g" id="id_zx_in_button">审批通过</a>
-         #elseif($!operate!="补充上会")
-		 
          #end
          <a class="btn_gr" onclick="parent.location.href='${contextPath}/intopieces/intopiecesapprove/approve.page'">返回</a>
       </div>

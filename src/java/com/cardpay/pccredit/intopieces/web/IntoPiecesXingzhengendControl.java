@@ -33,8 +33,10 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.QzApplnHtqdtz;
 import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
+import com.cardpay.pccredit.intopieces.service.AttachmentListService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -77,6 +79,8 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	@Autowired
 	private ECIFService eCIFService;
 	
+	@Autowired
+	private AttachmentListService attachmentListService;
 	/**
 	 * 行政岗终进件页面
 	 * 
@@ -184,7 +188,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			
-			//通过applicationId查找circle并放款 
+			//先开户 后通过applicationId查找circle并放款 
 			boolean rtn = circleService.updateCustomerInforCircle_ESB(circle);
 			if(rtn){
 				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);

@@ -38,12 +38,14 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.model.QzApplnJydBzdb;
 import com.cardpay.pccredit.intopieces.model.QzApplnJydDydb;
 import com.cardpay.pccredit.intopieces.model.QzApplnJydGtjkr;
 import com.cardpay.pccredit.intopieces.model.QzApplnSdhjy;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.service.AttachmentListService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -87,6 +89,8 @@ public class IntoPiecesShouxinControl extends BaseController {
 	@Autowired
 	private CircleService circleService;
 	
+	@Autowired
+	private AttachmentListService attachmentListService;
 	/**
 	 * 授信岗进件页面
 	 * 
@@ -313,7 +317,7 @@ public class IntoPiecesShouxinControl extends BaseController {
 		mv.addObject("ECIF_ls_json",json.toString());*/
 		String applicationId = request.getParameter(ID);
 		CustomerApplicationInfo appInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(applicationId);
-		IESBForECIFReturnMap ecif = eCIFService.findEcifByCustomerId(appInfo.getCustomerId());
+		IESBForECIFReturnMap ecif = eCIFService.findEcifMapByCustomerId(appInfo.getCustomerId());
 		mv.addObject("ecif",ecif);
 				
 		Circle circle = circleService.findCircleByClientNo(ecif.getClientNo());
