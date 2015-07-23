@@ -35,7 +35,9 @@ $(function() {
 					onClick : function(node) {
 						if (node.tree.isUserEvent()) {
 							if(!node.data.isFolder){
+								//alert(node.data.key.split("_")[0]);
 								//alert(node.data.key.split("_")[1]);
+								//alert(node.data.title);
 								var url = "${contextPath}/intopieces/intopiecesapprove/getPage5UploadValue.json?appId=${appId}&docID="+node.data.key.split("_")[1];
 								$.ajax({
 									url : url,
@@ -66,7 +68,7 @@ $(function() {
 	}
 	function loadBydocId(val){
 		docID = val;
-		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDView.page?appId=${appId}";
+		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDModify.page?appId=${appId}";
 	}
 		</script>
 		

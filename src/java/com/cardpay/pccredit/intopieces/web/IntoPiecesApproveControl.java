@@ -13,8 +13,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.jboss.resteasy.util.DateUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -160,6 +159,8 @@ public class IntoPiecesApproveControl extends BaseController {
 	
 	@Autowired
 	private ZA_YWSQB_R_Service za_ywsqb_r_service;
+	
+	public static final Logger logger = Logger.getLogger(IntoPiecesApproveControl.class);
 	
 	/**
 	 * 申请页面
@@ -309,13 +310,14 @@ public class IntoPiecesApproveControl extends BaseController {
 	 * @param customer_id
 	 */
 	public void saveApply(String customer_id){
-		//先判断是否为初审退件的客户，如果是，只需改变状态不需再次新增申请件
+		//先判断是否为其他岗位退件的客户，如果是，只需改变状态不需再次新增申请件
 		CustomerApplicationInfo info = intoPiecesService.ifReturnToApprove(customer_id);
 		String appId = "";
 		if(info!=null){
 			info.setStatus(Constant.APPROVE_INTOPICES);
 			commonDao.updateObject(info);
 			appId = info.getId();
+			//新增修改不是初审退下来的进件，流程信息要改为初审，不然进件重新申请回直接到退回的岗位？
 		}else{
 			//设置申请
 			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
@@ -483,6 +485,14 @@ public class IntoPiecesApproveControl extends BaseController {
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String type = RequestHelper.getStringValue(request, "type");
 		String operate = RequestHelper.getStringValue(request, "operate");
+		String ifHideUser = RequestHelper.getStringValue(request, "ifHideUser");
+		//查询产品信息
+		QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = null;
+		if(appId != null && !appId.equals("")){
+			qzappln_za_ywsqb_r = za_ywsqb_r_service.findByAppId(appId);
+		}else{
+			qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerInforId);
+		}
 		//查找page1信息
 		QzApplnYwsqb qzApplnYwsqb = null;
 		if(appId != null && !appId.equals("")){
@@ -496,7 +506,19 @@ public class IntoPiecesApproveControl extends BaseController {
 		
 		JRadModelAndView mv = null;
 		if(qzApplnYwsqb != null){
-			mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1_change", request);
+			//获取产品类型，是贷生活就调整至page1ForLife_change
+			if(qzappln_za_ywsqb_r != null){
+				if("2".equals(qzappln_za_ywsqb_r.getProductType())){
+					//获取专案信息
+					QzApplnZa qzApplnZa = zaService.findZaById(qzappln_za_ywsqb_r.getZaId());
+					mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1ForLife_change", request);
+					mv.addObject("qzApplnZa", qzApplnZa);
+				}else{
+					mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1_change", request);
+				}
+			}else{
+				mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1_change", request);
+			}
 			List<QzApplnYwsqbZygys> zygys_ls = ywsqbService.findYwsqbZygys(qzApplnYwsqb.getId());
 			List<QzApplnYwsqbZykh> zykh_ls = ywsqbService.findYwsqbZykh(qzApplnYwsqb.getId());
 			List<QzApplnYwsqbJkjl> jkjl_ls = ywsqbService.findYwsqbJkjl(qzApplnYwsqb.getId());
@@ -507,7 +529,19 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("type", type);
 		}
 		else{
-			mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1", request);
+			//获取产品类型，是贷生活就调整至page1ForLife
+			if(qzappln_za_ywsqb_r != null){
+				if("2".equals(qzappln_za_ywsqb_r.getProductType())){
+					//获取专案信息
+					QzApplnZa qzApplnZa = zaService.findZaById(qzappln_za_ywsqb_r.getZaId());
+					mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1ForLife", request);
+					mv.addObject("qzApplnZa", qzApplnZa);
+				}else{
+					mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1", request);
+				}
+			}else{
+				mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/page1", request);
+			}
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			mv.addObject("orgName",user.getOrganization().getName());
 			mv.addObject("orgId",user.getOrganization().getId());
@@ -524,8 +558,9 @@ public class IntoPiecesApproveControl extends BaseController {
 			ECIF ecif = eCIFService.findEcifByCustomerId(customerInforId);
 			mv.addObject("ecif", ecif);
 			mv.addObject("type", type);
-			mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate) );
 		}
+		mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate) );
+		mv.addObject("ifHideUser", ifHideUser);
 		mv.addObject("qzApplnJyxx", qzApplnJyxx);
 		return mv;
 	}
@@ -596,6 +631,118 @@ public class IntoPiecesApproveControl extends BaseController {
 		return returnMap;
 	}
 	
+	//insert_page1ForLife
+	@ResponseBody
+	@RequestMapping(value = "insert_page1ForLife.json")
+	public JRadReturnMap insert_page1ForLife(@ModelAttribute QzApplnYwsqbForm qzApplnYwsqbForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customerId = request.getParameter("customerId");
+				String bussAddDedail = qzApplnYwsqbForm.getBussdisAddDetail();
+				String bussDistrictAdd = qzApplnYwsqbForm.getBussdistrictAddress();
+				qzApplnYwsqbForm.setBussdistrictAddress(bussDistrictAdd+bussAddDedail);
+				QzApplnYwsqb qzApplnYwsqb = qzApplnYwsqbForm.createModel(QzApplnYwsqb.class);
+//				QzApplnJyxx qzApplnJyxx = qzApplnYwsqbForm.createModelJyxx();
+//				ywsqbService.dealWithNullValueJyxx(qzApplnJyxx);
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				qzApplnYwsqb.setCreatedBy(user.getId());
+				qzApplnYwsqb.setCreatedTime(new Date());
+				//未填申请时 关联客户id
+				qzApplnYwsqb.setCustomerId(customerId);
+					
+//				qzApplnJyxx.setCreatedBy(user.getId());
+//				qzApplnJyxx.setCreatedTime(new Date());
+				//未填申请时 关联客户id
+//				qzApplnJyxx.setCustomerId(customerId);
+					
+				ywsqbService.insert_page1ForLife(qzApplnYwsqb,request);
+				//returnMap.put(RECORD_ID, id);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+		}
+		//update_page1ForLife("贷生活")
+		@ResponseBody
+		@RequestMapping(value = "update_page1ForLife.json")
+		public JRadReturnMap update_page1ForLife(@ModelAttribute QzApplnYwsqbForm qzApplnYwsqbForm, HttpServletRequest request) {
+			JRadReturnMap returnMap = new JRadReturnMap();
+			if (returnMap.isSuccess()) {
+				try {
+					String ywsqbId = request.getParameter("id");
+					String customerId = request.getParameter("customerId");
+					QzApplnYwsqb qzApplnYwsqb = qzApplnYwsqbForm.createModel(QzApplnYwsqb.class);
+					qzApplnYwsqb.setCustomerId(customerId);
+					//ywsqbService.dealWithNullValue(qzApplnYwsqb);
+					
+					//判断空值
+					//证件类型
+					if(!qzApplnYwsqb.getGlobalType().equals("026")){
+						qzApplnYwsqb.setGlobalTypeOther("");
+					}
+					//教育水平
+					if(!qzApplnYwsqb.getEducationLevel().equals("000")){
+						qzApplnYwsqb.setEducationLevelOther("");
+					}
+					//婚姻状况
+					if(!qzApplnYwsqb.getMaritalStatus().equals("20")){
+						qzApplnYwsqb.setMaritalStatusOther("");
+						qzApplnYwsqb.setMaritalName("");
+						qzApplnYwsqb.setMaritalGlobalType("001");
+						qzApplnYwsqb.setMaritalGlobalTypeOther("");
+						qzApplnYwsqb.setMaritalGlobalId("");
+						qzApplnYwsqb.setMaritalWorkunit("");
+						qzApplnYwsqb.setMaritalPhone("");
+					}
+					//配偶证件类型
+					if(qzApplnYwsqb.getMaritalGlobalType() == null || !qzApplnYwsqb.getMaritalGlobalType().equals("026")){
+						qzApplnYwsqb.setMaritalGlobalTypeOther("");
+					}
+					//家庭住址类型
+					if(!qzApplnYwsqb.getAddressType().equals("5")){
+						qzApplnYwsqb.setAddressTypeOther("");
+					}
+					//是否曾在泉州银行申请过贷款
+					if(!qzApplnYwsqb.getHaveApplyLoan().equals("1")){
+						qzApplnYwsqb.setHaveLoanTime(null);
+					}
+					//是否曾使用泉州银行电子银行产品
+					if(!qzApplnYwsqb.getHaveElePro().equals("1")){
+						qzApplnYwsqb.setHaveEleProType("");
+					}
+					//有关联的个人或实体是否获得过泉州银行贷款
+					if(!qzApplnYwsqb.getHaveGotLoan().equals("1")){
+						qzApplnYwsqb.setHaveGotLoanName("");
+						qzApplnYwsqb.setHaveGotLoanRelation("");
+					}
+					//信息渠道
+					if(!qzApplnYwsqb.getInfoType().equals("8")){
+						qzApplnYwsqb.setInfoTypeOther("");
+					}
+//					QzApplnJyxx qzApplnJyxx = qzApplnYwsqbForm.createModelJyxx();
+//					ywsqbService.dealWithNullValueJyxx(qzApplnJyxx);
+					User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+					//未填申请时 关联客户id
+					qzApplnYwsqb.setId(ywsqbId);
+					ywsqbService.update_page1ForLife(qzApplnYwsqb,request);
+					returnMap.addGlobalMessage(CREATE_SUCCESS);
+					returnMap.setSuccess(true);
+				}catch (Exception e) {
+					return WebRequestHelper.processException(e);
+				}
+			}else{
+				returnMap.setSuccess(false);
+				returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+			}
+			return returnMap;
+		}
 	//page4_list
 	@ResponseBody
 	@RequestMapping(value = "page4_list.page")
@@ -896,6 +1043,7 @@ public class IntoPiecesApproveControl extends BaseController {
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				qzApplnNbscyjb.setCreatedBy(user.getId());
 				qzApplnNbscyjb.setCreatedTime(new Date());
+				String shopName = qzApplnNbscyjb.getShopName();
 				//未填申请时 关联客户id
 				qzApplnNbscyjb.setCustomerId(customerId);
 				nbscyjbService.insert_page7(qzApplnNbscyjb, request);
@@ -922,6 +1070,7 @@ public class IntoPiecesApproveControl extends BaseController {
 				QzApplnNbscyjb qzApplnNbscyjb = qzApplnNbscyjbForm.createModel(QzApplnNbscyjb.class);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				qzApplnNbscyjb.setId(id);
+				String shopName = qzApplnNbscyjb.getShopName();
 				nbscyjbService.update_page7(qzApplnNbscyjb, request);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 				returnMap.setSuccess(true);
@@ -1133,6 +1282,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
 			String uploadValue = attachmentList.getUploadValue();
 			attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
+			// TODO 逻辑设计思路？现在不满足要求？？？
 			returnMap.put("uploadFlag", Integer.parseInt(uploadValue)&Integer.parseInt(docID.substring(14, docID.length())));
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			returnMap.put(JRadConstants.SUCCESS, true);
@@ -1171,6 +1321,19 @@ public class IntoPiecesApproveControl extends BaseController {
 	}
 	
 	//新增/修改影像
+		@ResponseBody
+		@RequestMapping(value = "WDModify.page")
+		public AbstractModelAndView WDModify(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/WDModify", request);
+			String appId = RequestHelper.getStringValue(request, "appId");
+			mv.addObject("appId", appId);
+			//查找page5信息
+			JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
+			mv.addObject("children", jsonStr);
+			return mv;
+		}
+	
+	//新增/修改影像
 	@ResponseBody
 	@RequestMapping(value = "insert_sunds.json")
 	public JRadReturnMap insert_sunds(HttpServletRequest request) throws SQLException {
@@ -1189,6 +1352,59 @@ public class IntoPiecesApproveControl extends BaseController {
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("保存失败");
 			returnMap.put(JRadConstants.SUCCESS, false);
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+	
+	//客户号检测
+	@ResponseBody
+	@RequestMapping(value = "detect_clientNo.json")
+	public JRadReturnMap detect_clientNo(@ModelAttribute IESBForCircleForm iesbForCircleForm, HttpServletRequest request){
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try{
+			String circleId = RequestHelper.getStringValue(request, "id");
+			String customerId = RequestHelper.getStringValue(request, "customerId");
+			String clientNo = iesbForCircleForm.getClientNo();
+			String clientType = iesbForCircleForm.getClientType();
+			String globalId = iesbForCircleForm.getGlobalId();
+			String globalType = iesbForCircleForm.getGlobalType();
+			
+			logger.info("circleId=" + circleId + "customerId= " +customerId+ "clientType= " +clientType
+					+ "globalId=" +globalId+ "globalType=" + globalType);
+			Map ECIFResp = eCIFService.detectECIF(globalId, clientType,globalType);
+			
+			String retCode = (String)ECIFResp.get("RET_CODE");
+			if("000000".equals(retCode)){
+				String clientName = (String)ECIFResp.get("CLIENT_NAME");
+				String golbalType = (String)ECIFResp.get("GLOBAL_TYPE");
+				String golbalId = (String)ECIFResp.get("GLOBAL_ID");
+				String resClientNo = (String)ECIFResp.get("CLIENT_NO");
+				
+				//把获取的客户号存在库中
+				Circle circle = commonDao.findObjectById(Circle.class, circleId);
+				if(circle != null){
+					circle.setaClientNo(resClientNo);
+					circleService.updateCustomerInforCircle(circle);
+				}
+				
+				if(clientName.equals(iesbForCircleForm.getClientName()) && golbalType.equals(iesbForCircleForm.getGlobalType())
+						&& golbalId.equals(iesbForCircleForm.getGlobalId())){
+					returnMap.put(JRadConstants.SUCCESS, true);
+					returnMap.addGlobalMessage("获取成功");
+					returnMap.put("resClientNo", resClientNo);
+					return returnMap;
+				}
+				returnMap.put(JRadConstants.SUCCESS, false);
+				returnMap.put("resClientNo", resClientNo);
+				returnMap.put("message", "请检查客户身份信息和名称是否一致~!");
+				return returnMap;
+			}
+			returnMap.put("message", "客户信息不存在 ~！");
+			returnMap.put(JRadConstants.SUCCESS, false);
+		}catch(Exception e){
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("message", "检测失败");
 			e.printStackTrace();
 		}
 		return returnMap;

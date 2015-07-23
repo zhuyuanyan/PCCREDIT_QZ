@@ -10,7 +10,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 	<div class="box">
 		<div name="content">
 			<table class="myTable">
-				<caption>业务申请表</caption>
+				<caption>"贷生活"业务申请表</caption>
 				<colgroup>
 					<col width="10%">
 					<col width="40%">
@@ -18,12 +18,14 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<col width="40%">
 				</colgroup>
 				<tr>
+					<tr>
 					<td class="table-label">机构名称：</td>
 					<td><input type="text" value="$!qzApplnYwsqb.orgName" name="orgName" disabled><input type="hidden" name="orgId" value="$!qzApplnYwsqb.orgId"></select></td>
 					<td class="table-label">申请日期：</td>
 					<td><input type="text" name="applyTime" 
 					#if($!qzApplnYwsqb.applyTime != $null) value="$date.format('yyyy-MM-dd', $!qzApplnYwsqb.applyTime)" #end 
 					onmouseover="_calendar()" readonly/></td>					
+				</tr>					
 				</tr>
 			</table>
 		</div>
@@ -48,7 +50,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<td class="table-label">姓名：<font color="#ff0000">*</font></td>
 					<td>
 						<input type="text" value="$!qzApplnYwsqb.name" disabled />
-						<input type="hidden" name="name" value="$!qzApplnYwsqb.name" /></td>	
+						<input type="hidden" name="name" value="$!qzApplnYwsqb.name" /></td>
 					<td class="table-label">性别：<font color="#ff0000">*</font></td>
 					<td>
 						<select name="sex">
@@ -103,7 +105,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 				</tr>
 				<tr>
 					<td class="table-label">配偶姓名：</td>
-					<td><input type="text" id="maritalName" name="maritalName" value="$!qzApplnYwsqb.maritalName" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end/></td>	
+					<td><input type="text" id="maritalName" name="maritalName" value="$!qzApplnYwsqb.maritalName" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end/></td>
 					<td class="table-label">配偶证件类型：</td>
 					<td>
 						<select id="maritalGlobalType" name="maritalGlobalType" onchange="setSelect(this,'qtpozjlx')" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end>
@@ -117,20 +119,20 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 				</tr>
 				<tr>
 					<td class="table-label">配偶证件号码：</td>
-					<td><input type="text" id="maritalGlobalId" name="maritalGlobalId" value="$!qzApplnYwsqb.maritalGlobalId" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end/></td>	
+					<td><input type="text" id="maritalGlobalId" name="maritalGlobalId" value="$!qzApplnYwsqb.maritalGlobalId" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end/></td>		
 					<td class="table-label">配偶工作单位：</td>					
-					<td><input type="text" id="maritalWorkunit" name="maritalWorkunit" value="$!qzApplnYwsqb.maritalWorkunit" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end/></td>		
+					<td><input type="text" id="maritalWorkunit" name="maritalWorkunit" value="$!qzApplnYwsqb.maritalWorkunit" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end/></td>			
 				</tr>
 				<tr>
 					<td class="table-label">配偶联系方式：</td>
 					<td><input type="text" id="maritalPhone" name="maritalPhone" value="$!qzApplnYwsqb.maritalPhone" #if($!qzApplnYwsqb.maritalStatus!='20') disabled #end/></td>	
 					<td class="table-label">家庭人数：</td>					
-					<td><input type="text" name="familyNum" value="$!qzApplnYwsqb.familyNum" />人</td>		
+					<td><input type="text" name="familyNum" value="$!qzApplnYwsqb.familyNum" />人</td>	
 				</tr>
 				<tr>
 					<td class="table-label">家庭住址类型：</td>
 					<td colspan="3">
-						（<select id="addressType" name="addressType" onchange="setSelect(this,'qtjtzz')" style="width:80px">
+					     （<select id="addressType" name="addressType" onchange="setSelect(this,'qtjtzz')" style="width:80px">
 							#dict("ADDRESS_TYPE_NEW", "$!qzApplnYwsqb.addressType")
 						</select>
 						<input type="text" name="addressTypeOther" id="qtjtzz" value="$!qzApplnYwsqb.addressType" #if($!qzApplnYwsqb.addressType!='5') disabled #end/>）：		
@@ -140,21 +142,25 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 				<tr>
 					<td class="table-label">移动电话1：<font color="#ff0000">*</font></td>
 					<td><input type="text" name="phone_1" value="$!qzApplnYwsqb.phone_1" /></td>	
-					<td class="table-label">移动电话2：</td>					
-					<td><input type="text" name="phone_2" value="$!qzApplnYwsqb.phone_2" /></td>		
+					<td class="table-label">家庭固定电话：</td>
+					<td colspan="3"><input type="text" name="homePhone" value="$!qzApplnYwsqb.homePhone" /></td>		
 				</tr>			
 				<tr>
-					<td class="table-label">家庭固定电话：</td>
-					<td colspan="3"><input type="text" name="homePhone" value="$!qzApplnYwsqb.homePhone" /></td>	
+					<td class="table-label">电子邮箱：</td>
+					<td colspan="3"><input type="text" name="email" value="$!qzApplnYwsqb.email" /></td>	
+				</tr>
+				<tr>
+					<td class="table-label">所属的商圈地址：<font color="#ff0000">*</font></td>
+					<td colspan="3"><input type="text" name="bussdistrictAddress" value="$!qzApplnYwsqb.bussdistrictAddress"/>	
 				</tr>
 			</table>
 		</div><!--/content-->
 	</div>
-	<!--*************************************************************营业信息*************************************************************-->
+	<!--*************************************************************工作信息*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
 			<tr>
-				<td>营业信息</td>
+				<td>工作信息</td>
 				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
@@ -167,37 +173,37 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<col width="40%">
 				</colgroup>
 				<tr>
-					<td class="table-label">经营名称：</td>
-					<td><input type="text" name="bussName" value="$!qzApplnJyxx.bussName" /></td>	
-					<td class="table-label">经营范围：</td>					
-					<td><input type="text" name="bussScope" value="$!qzApplnJyxx.bussScope" /></td>		
+					<td class="table-label">单位名称：</td>
+					<td><input type="text" name="unit" value="$!qzApplnYwsqb.unit" /></td>	
+					<td class="table-label">行业：</td>					
+					<td><input type="text" name="profession" value="$!qzApplnYwsqb.profession" /></td>		
 				</tr>	
 				<tr>
-					<td class="table-label">开业时间：</td>
-					<td><input type="text" name="bussStartYear" value="$!qzApplnJyxx.bussStartYear" />年</td>	
-					<td class="table-label">实际经营地址：</td>					
-					<td>
-						(<select id="bussAddrType" name="bussAddrType" onchange="setSelect(this,'qtsjjydz')" style="width:80px">
-							#dict("ADDRESS_TYPE_NEW", "$!qzApplnJyxx.bussAddrType")
-						</select>
-						<input type="text" name="bussAddrTypeOther" id="qtsjjydz" value="$!qzApplnJyxx.bussAddrTypeOther" #if($!qzApplnJyxx.bussAddrType!='5') disabled #end/>)：			
-						<input type="text" name="bussAddr" value="$!qzApplnJyxx.bussAddr" />
-					</td>		
+					<td class="table-label">职业：</td>
+					<td><input type="text" name="occupation" value="$!qzApplnYwsqb.occupation" /></td>	
+					<td class="table-label">职位：</td>					
+					<td><input type="text" name="jobPost" value="$!qzApplnYwsqb.jobPost" /></td>	
 				</tr>
 				<tr>
-					<td class="table-label">营业地址电话：</td>
-					<td><input type="text" name="bussPhone" value="$!qzApplnJyxx.bussPhone" /></td>	
-					<td class="table-label">雇员人数：</td>					
-					<td><input type="text" name="bussEmployeeNum" value="$!qzApplnJyxx.bussEmployeeNum" />人</td>		
+					<td class="table-label">职称：</td>
+					<td><input type="text" name="positionTitle" value="$!qzApplnYwsqb.positionTitle" /></td>	
+					<td class="table-label">单位地址：</td>					
+					<td><input type="text" name="unitAddress" value="$!qzApplnYwsqb.unitAddress" /></td>		
 				</tr>	
 				<tr>
+					<td class="table-label">工作年限：</td>
+					<td><input type="text" name="workYear" value="$!qzApplnYwsqb.workYear" />年</td>		
+					<td class="table-label">单位电话：</td>
+					<td><input type="text" name="unitPhone" value="$!qzApplnYwsqb.unitPhone" /></td>				
+				</tr>
+				<tr>
+					<td class="table-label">公司规模：</td>
+					<td><input type="text" name="companySize" value="$!qzApplnYwsqb.companySize" />人</td>		
 					<td class="table-label">组织形式：</td>
-					<td colspan="3">
-						<select id="bussType" name="bussType" onchange="setSelect(this,'qtzzxs')">
-							#dict("BUSS_TYPE_NEW", "$!qzApplnJyxx.bussType")
+					<td><select id="unitType" name="unitType" onchange="setSelect(this,'qtzzxs')">
+							#dict("UNIT_TYPE", "$!qzApplnYwsqb.unitType")
 						</select>
-						<input type="text" name="bussTypeOther" id="qtzzxs" value="$!qzApplnJyxx.bussTypeOther" #if($!qzApplnJyxx.bussType!='3') disabled #end/>	
-					</td>			
+						<input type="text" name="bussTypeOther" id="qtzzxs" value="$!qzApplnYwsqb.bussTypeOther" #if($!$!qzApplnYwsqb.unitType!='9') disabled #end/></td>		
 				</tr>
 			</table>
 		</div><!--/content-->
@@ -249,11 +255,11 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 			</table>
 		</div><!--/content-->
 	</div>	
-	<!--*************************************************************财务信息*************************************************************-->
+	<!--*************************************************************收入情况*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
 			<tr>
-				<td>财务信息</td>
+				<td>收入情况</td>
 				<td><img src="${contextPath}/images/min.gif"/></td>
 			</tr>
 		</table>
@@ -266,31 +272,14 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<col width="40%">
 				</colgroup>
 				<tr>
-					<td class="table-label">年营业额：</td>
-					<td><input type="text" name="yearIncome" value="$!qzApplnYwsqb.yearIncome" />万元</td>	
-					<td class="table-label">利润：</td>					
+					<td class="table-label">年薪(年/元)：</td>
+					<td><input type="text" name="yearIncome" value="$!qzApplnYwsqb.yearIncome" />元</td>	
+					<td class="table-label">负债情况：</td>					
 					<td>
-						<select name="profitType">
-							#dict("PROFIT_TYPE", "$!qzApplnYwsqb.profitType")
-						</select>
-						<input type="text" name="profit" value="$!qzApplnYwsqb.profit" />万元
+					<input type="text" name="outMoney" value="$!qzApplnYwsqb.outMoney" />
 					</td>		
 				</tr>	
 				<tr>
-					<td class="table-label">总资产：</td>
-					<td><input type="text" name="totalAssets" value="$!qzApplnYwsqb.totalAssets" />万元</td>	
-					<td class="table-label">应收账款：</td>	
-					<td><input type="text" name="inMoney" value="$!qzApplnYwsqb.inMoney" />万元</td>	
-				</tr>		
-				<tr>
-					<td class="table-label">应付账款：</td>
-					<td><input type="text" name="outMoney" value="$!qzApplnYwsqb.outMoney" />万元</td>	
-					<td class="table-label">其他负债：</td>	
-					<td><input type="text" name="otherOut" value="$!qzApplnYwsqb.otherOut" />万元</td>	
-				</tr>	
-				<tr>
-					<td class="table-label">每月其他收入金额：</td>
-					<td><input type="text" name="monthOtherIncome" value="$!qzApplnYwsqb.monthOtherIncome" />万元</td>	
 					<td class="table-label">其他收入来源：</td>	
 					<td><input type="text" name="otherIncomeSrc" value="$!qzApplnYwsqb.otherIncomeSrc" /></td>	
 				</tr>
@@ -298,7 +287,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 		</div><!--/content-->
 	</div>		
 	<!--*************************************************************业务信息*************************************************************-->
-	<div class="box">
+	<!--<div class="box">
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>业务信息</td>
@@ -309,10 +298,10 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="zygys">
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
-						主要供应商
+						主要供应商						
 						<a class="add" onclick="addTd('zygys')"><img src="${contextPath}/images/add.png"/></a>
 						<a class="del" onclick="removeTd('zygys')"><img src="${contextPath}/images/del.png"/></a>
-						<input type="hidden" value="$zygys_ls.size()" id="zygys_cnt" name="zygys_cnt">
+						<input type="hidden" value="1" id="zygys_cnt" name="zygys_cnt">
 					</td>		
 				</tr>
 				<tr>
@@ -320,21 +309,19 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<td><b>所占份额 (%) </b></td>					
 					<td><b>付款条件</b></td>		
 				</tr>
-				#foreach ($obj in $zygys_ls)
 				<tr>
-					<td><input type="text" name="name_zygys_${obj.lsh}" value="$!obj.name" /></td>	
-					<td><input type="text" name="rate_zygys_${obj.lsh}" value="$!obj.rate" /></td>					
-					<td><input type="text" name="condition_zygys_${obj.lsh}" value="$!obj.condition" /></td>		
+					<td><input type="text" name="name_zygys_1"/></td>	
+					<td><input type="text" name="rate_zygys_1"/></td>					
+					<td><input type="text" name="condition_zygys_1"/></td>		
 				</tr>
-				#end
 			</table>
 			<table class="myTable" style="width:95%;margin:5px auto;text-align:center;" id="zykh">
 				<tr>
 					<td class="tableTitle" colspan="3" style="text-align:left;">
-						主要客户						
+						主要客户
 						<a class="add" onclick="addTd('zykh')"><img src="${contextPath}/images/add.png"/></a>
 						<a class="del" onclick="removeTd('zykh')"><img src="${contextPath}/images/del.png"/></a>
-						<input type="hidden" value="$zykh_ls.size()" id="zykh_cnt" name="zykh_cnt">
+						<input type="hidden" value="1" id="zykh_cnt" name="zykh_cnt">
 					</td>		
 				</tr>
 				<tr>
@@ -342,16 +329,14 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<td><b>所占份额 (%) </b></td>					
 					<td><b>付款条件</b></td>		
 				</tr>
-				#foreach ($obj in $zykh_ls)
 				<tr>
-					<td><input type="text" name="name_zykh_${obj.lsh}" value="$!obj.name" /></td>	
-					<td><input type="text" name="rate_zykh_${obj.lsh}" value="$!obj.rate" /></td>					
-					<td><input type="text" name="condition_zykh_${obj.lsh}" value="$!obj.condition" /></td>		
+					<td><input type="text" name="name_zykh_1"/></td>	
+					<td><input type="text" name="rate_zykh_1"/></td>					
+					<td><input type="text" name="condition_zykh_1"/></td>		
 				</tr>
-				#end
-			</table>	
-		</div><!--/content-->
-	</div>		
+			</table>	 
+		</div>
+	</div>	 -->	
 	<!--*************************************************************借款记录*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
@@ -397,40 +382,40 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 				</tr>
 				#end
 			</table>
-			<table class="myTable" style="width:95%;margin:5px auto;" id="dywp">
+			<!--<table class="myTable" style="width:95%;margin:5px auto;" id="dywp">
 				<tr>
 					<td class="tableTitle" colspan="5" >
 						抵押物品
-						<label><input type="radio" name="haveGunt" value="1" onclick="$('#dywp .input').removeAttr('disabled')" #if($!qzApplnYwsqb.haveGunt=='1') checked #end/>有</label>
-						<label><input type="radio" name="haveGunt" value="0" onclick="$('#dywp .input').val('');$('#dywp .input').attr('disabled','disabled')" #if($!qzApplnYwsqb.haveGunt=='0') checked #end/>无</label>						
+						<label><input type="radio" name="haveGunt" value="1" onclick="$('#dywp .input').removeAttr('disabled')"/>有</label>
+						<label><input type="radio" name="haveGunt" value="0" onclick="$('#dywp .input').val('');$('#dywp .input').attr('disabled','disabled')" checked/>无</label>						
 					</td>		
 				</tr>
 				<tr>
 					<td><b>物品：</b></td>
-					<td>1、<input type="text" class="input" name="thing_1" value="$!qzApplnYwsqb.thing_1" #if($!qzApplnYwsqb.haveGunt=='0') disabled #end/></td>	
-					<td>2、<input type="text" class="input" name="thing_2" value="$!qzApplnYwsqb.thing_2" #if($!qzApplnYwsqb.haveGunt=='0') disabled #end/></td>					
-					<td>3、<input type="text" class="input" name="thing_3" value="$!qzApplnYwsqb.thing_3" #if($!qzApplnYwsqb.haveGunt=='0') disabled #end/></td>	
-					<td>4、<input type="text" class="input" name="thing_4" value="$!qzApplnYwsqb.thing_4" #if($!qzApplnYwsqb.haveGunt=='0') disabled #end/></td>		
+					<td>1、<input type="text" class="input" name="thing_1" disabled/></td>	
+					<td>2、<input type="text" class="input" name="thing_2" disabled/></td>					
+					<td>3、<input type="text" class="input" name="thing_3" disabled/></td>	
+					<td>4、<input type="text" class="input" name="thing_4" disabled/></td>		
 				</tr>
 			</table>
 			<table class="myTable" style="width:95%;margin:5px auto;">				
 				<tr>
 					<td><b>贷款使用人：</b></td>
-					<td>1、<input type="text" class="input" name="loanUser_1" value="$!qzApplnYwsqb.loanUser_1" /></td>	
-					<td>2、<input type="text" class="input" name="loanUser_2" value="$!qzApplnYwsqb.loanUser_2" /></td>					
-					<td>3、<input type="text" class="input" name="loanUser_3" value="$!qzApplnYwsqb.loanUser_3" /></td>	
-					<td>4、<input type="text" class="input" name="loanUser_4" value="$!qzApplnYwsqb.loanUser_4" /></td>		
+					<td>1、<input type="text" class="input" name="loanUser_1" /></td>	
+					<td>2、<input type="text" class="input" name="loanUser_2" /></td>					
+					<td>3、<input type="text" class="input" name="loanUser_3" /></td>	
+					<td>4、<input type="text" class="input" name="loanUser_4" /></td>		
 				</tr>
 				<tr>
 					<td><b>是否为其他人担保？</b></td>
 					<td colspan="4">
-						<label><input type="radio" name="guntForOther" value="1" onclick="$('#yh').removeAttr('disabled');$('#khmc').removeAttr('disabled')" #if($!qzApplnYwsqb.guntForOther=='1') checked #end/>是</label>
-						银行：<input type="text" name="guntForOtherBankname" id="yh" value="$!qzApplnYwsqb.guntForOtherBankname" #if($!qzApplnYwsqb.guntForOther=='0') disabled #end/>
-						客户名称：<input type="text" name="guntForOtherClientname" id="khmc" value="$!qzApplnYwsqb.guntForOtherClientname" #if($!qzApplnYwsqb.guntForOther=='0') disabled #end/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<label><input type="radio" name="guntForOther" value="0" onclick="$('#yh').val('');$('#khmc').val('');$('#yh').attr('disabled','disabled');$('#khmc').attr('disabled','disabled')" #if($!qzApplnYwsqb.guntForOther=='0') checked #end/>否</label>
+						<label><input type="radio" name="guntForOther" value="1" onclick="$('#yh').removeAttr('disabled');$('#khmc').removeAttr('disabled')"/>是</label>
+						银行：<input type="text" name="guntForOtherBankname" id="yh" disabled/>
+						客户名称：<input type="text" name="guntForOtherClientname" id="khmc" disabled/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" name="guntForOther" value="0" onclick="$('#yh').val('');$('#khmc').val('');$('#yh').attr('disabled','disabled');$('#khmc').attr('disabled','disabled')" checked/>否</label>
 					</td>		
 				</tr>
-			</table>
+			</table> -->
 		</div><!--/content-->
 	</div>		
 	<!--*************************************************************其他信息 *************************************************************-->
@@ -519,7 +504,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 		</div><!--/content-->
 	</div>	
 	<!--*************************************************************信息渠道*************************************************************-->
-	<div class="box">
+	<<div class="box">
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>信息渠道</td>
@@ -578,87 +563,87 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 </form>	
 <div class="controlbtn">
 	#if($!type=="readonly")
-			<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 	#else
 		<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
 		<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 	#end
 	</div>
 	<script type="text/javascript">			
-		function setSelect(obj,id){//其他证件类型、其他教育水平等
-			if($(obj).children('option:selected').text()=="其他"){
-				$("#"+id).removeAttr('disabled');
-			}
-			else{
-				$("#"+id).val('');
-				$("#"+id).attr('disabled','disabled');
-			}
+	function setSelect(obj,id){//其他证件类型、其他教育水平等
+		if($(obj).children('option:selected').text()=="其他"){
+			$("#"+id).removeAttr('disabled');
 		}
-		
-		function setSelect2(obj,id){//婚姻状况
-			if($(obj).children('option:selected').text()=="已婚"){
-				$("#"+id).removeAttr('disabled');
-			}
-			else{
-				$("#"+id).val('');
-				$("#"+id).attr('disabled','disabled');
-			}
+		else{
+			$("#"+id).val('');
+			$("#"+id).attr('disabled','disabled');
 		}
-		
-		function setSelect3(obj,id){//婚姻状况
-			if($(obj).children('option:selected').text()=="已婚"){
-				$("#"+id).removeAttr('disabled');
-			}
-			else{
-				$("#"+id).val('001');//置为身份证
-				$("#"+id).attr('disabled','disabled');
-			}
+	}
+	
+	function setSelect2(obj,id){//婚姻状况
+		if($(obj).children('option:selected').text()=="已婚"){
+			$("#"+id).removeAttr('disabled');
 		}
-		
-		var layout=new FormsLayout("formsId");	
-		window.top.currentWindow.setLayout(layout);
-		
-		#set ($formName = "'#id_module_form'")
-		#parse ("qzbankinterface/appIframeInfo/page1_validation.js")
-		
-		$(document).ready(function() {	
-			//初始化
-			if("${type}"=="readonly"){
-				$("input[type='text']").attr("disabled",true);
-				$("input[type='radio']").attr("disabled",true);
-				$("input[type='checkbox']").attr("disabled",true);
-				$("textarea").attr("disabled",true);
-				$("select").attr("disabled",true);
+		else{
+			$("#"+id).val('');
+			$("#"+id).attr('disabled','disabled');
+		}
+	}
+	
+	function setSelect3(obj,id){//婚姻状况
+		if($(obj).children('option:selected').text()=="已婚"){
+			$("#"+id).removeAttr('disabled');
+		}
+		else{
+			$("#"+id).val('001');//置为身份证
+			$("#"+id).attr('disabled','disabled');
+		}
+	}
+	
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	
+	#set ($formName = "'#id_module_form'")
+	#parse ("qzbankinterface/appIframeInfo/page1_validation.js")
+	
+	$(document).ready(function() {	
+		//初始化
+		if("${type}"=="readonly"){
+			$("input[type='text']").attr("disabled",true);
+			$("input[type='radio']").attr("disabled",true);
+			$("input[type='checkbox']").attr("disabled",true);
+			$("textarea").attr("disabled",true);
+			$("select").attr("disabled",true);
+		}
+		//保存
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
 			}
-			//保存
-			$("#id_save_button").click(function() {
-				if(submitFlag == 1){
-					alert("请勿重复提交!")
-					return;
-				}
-				submitFlag = 1;
-				if ($($formName).valid()) {
-					var formjson = $($formName).serialize();
-					var url = "${contextPath}/intopieces/intopiecesapprove/update_page1.json?id=${qzApplnYwsqb.id}&customerId=${qzApplnYwsqb.customerId}";
-					$.ajax({
-						url : url,
-						type : "get",
-						data : formjson,
-						success : function(data) {
-							if (data.success) {
-								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?id=${qzApplnYwsqb.customerId}";
-							}
-							else{
-								topWin.Dialog.message("保存失败！");
-						    }
-							submitFlag = 0;
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+				var url = "${contextPath}/intopieces/intopiecesapprove/update_page1ForLife.json?id=${qzApplnYwsqb.id}&customerId=${qzApplnYwsqb.customerId}";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?id=${qzApplnYwsqb.customerId}";
 						}
-					});
-				}else{
-					submitFlag = 0;
-				}
-			});
+						else{
+							topWin.Dialog.message("保存失败！");
+					    }
+						submitFlag = 0;
+					}
+				});
+			}else{
+				submitFlag = 0;
+			}
+		});
 			
 			//返回
 			$("#id_back_button").click(function() {

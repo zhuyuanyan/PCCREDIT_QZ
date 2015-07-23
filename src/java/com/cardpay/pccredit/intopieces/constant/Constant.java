@@ -36,6 +36,8 @@ public class Constant {
 	
 	/* 退件*/
 	public static String NOPASS_INTOPICES = "nopass";
+	/* 审核退回*/
+	public static String TRTURN_INTOPICES = "RETURNAPPROVE";
 	
 	/* 退件到申请状态*/
 	public static String RETURN_INTOPICES = "returnedToFirst";
@@ -101,7 +103,9 @@ public class Constant {
 	public static String jyd_id="00001";//决议单默认ID
 	public static String htd_id="00002";//合同单默认ID
 	public static String status_buchong="补充上会";
-	
+	public static String status_scan="影像补扫";
+	public static String status_cardquery="卡中心进件查询";
+	public static String status_query="进件查询";
 	/*审批结果*/
 	public static String APPLN_TYPE_1="审批通过";
 	public static String APPLN_TYPE_2="退件";
@@ -141,4 +145,8 @@ public class Constant {
 	public static String ATTACH_LIST25="担保人贷款卡复印件";
 	public static String ATTACH_LIST26="担保人收入证明";
 	public static String ATTACH_LIST27="信用等级证复印件（如有）";
+	
+	//影像空间放置路劲
+	public static String OCX_FILEPATH="/home/pccredit/sunds_ocx.exe";//生产环境
+	
 }

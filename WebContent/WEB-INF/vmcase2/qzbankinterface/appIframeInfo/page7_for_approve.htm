@@ -26,8 +26,8 @@
 					<td><input type="text" value="$!customerInfo.chineseName" readonly/>
 						<input type="hidden" name="clientName" value="$!customerInfo.chineseName"/></td>
 					<td class="table-label">店铺/企业名称：</td>
-					<td><input type="text" value="$!qzApplnJyxx.shopName" readonly/>
-						<input type="hidden" name="shopName" value="$!qzApplnJyxx.bussName"/></td>	
+					<td><input type="text" name="shopName" value="$!qzApplnNbscyjb.shopName" readonly/>
+						<input type="hidden" name="bussName" value="$!qzApplnJyxx.bussName"/></td>	
 				</tr>
 				<tr>
 					<td class="table-label">申请金额(元)：<font color="#ff0000">*</font></td>
@@ -83,7 +83,7 @@
 						#else
 							value="$!qzApplnNbscyjb.hcryqz"
 						#end
-						readonly/>
+						/>
 					</td>
 					<td class="table-label">客户资料是否完整：</td>
 					<td>
@@ -111,7 +111,7 @@
 	
 	$(document).ready(function() {	
 		if("${type}"=="readonly"){
-			$("input[type='text']").attr("disabled",true);
+			//$("input[type='text']").attr("disabled",true);
 			$("input[type='radio']").attr("disabled",true);
 			$("input[type='checkbox']").attr("disabled",true);
 			$("select").attr("disabled",true);

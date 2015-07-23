@@ -23,7 +23,7 @@
 	<select id="findByAppId" resultMap="ResultMap">
 		 select * 
 		 from qz_appln_za_ywsqb_r   
-		 where APPLICATION_ID=#{id}
+		 where APPLICATION_ID=#{applicationId}
 	</select>
 	<select id="findByZaId" resultMap="ResultMap">
 		 select * 
