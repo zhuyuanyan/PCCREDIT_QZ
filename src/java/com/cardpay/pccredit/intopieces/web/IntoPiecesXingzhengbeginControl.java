@@ -202,8 +202,19 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	public JRadReturnMap returnAppln(HttpServletRequest request) throws SQLException {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
+			int nodeNo = 3;//内部审核
 			String appId = request.getParameter("appId");
-			intoPiecesService.returnAppln(appId, request);
+			String operate = request.getParameter("operate");
+			String nodeName = request.getParameter("nodeName");
+			if(Integer.parseInt(nodeName) > nodeNo){
+				returnMap.put(JRadConstants.SUCCESS, false);
+				returnMap.put(JRadConstants.MESSAGE, "退回进件不能退回至当前节点的后面~！");
+			}
+			if("1".equals(nodeName)){
+				intoPiecesService.checkDoNotToManager(appId,request,Integer.parseInt(nodeName),nodeNo);
+			}else{
+				intoPiecesService.returnAppln(appId, request,Integer.parseInt(nodeName),nodeNo);
+			}
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("保存失败");
@@ -258,5 +269,4 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 		}
 		return mv;
 	}
-
 }

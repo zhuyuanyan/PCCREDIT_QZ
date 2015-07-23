@@ -144,7 +144,7 @@ public class IntoPiecesZhongxinControl extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			String appId = request.getParameter("appId");
-			intoPiecesService.returnAppln(appId, request);
+			//intoPiecesService.returnAppln(appId, request);
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("保存失败");
