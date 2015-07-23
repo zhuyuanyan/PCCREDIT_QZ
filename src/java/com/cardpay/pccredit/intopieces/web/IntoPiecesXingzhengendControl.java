@@ -263,12 +263,14 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
 		String customerInforId = RequestHelper.getStringValue(request, ID);
 		String appId = RequestHelper.getStringValue(request, "appId");
+		String ifHideUser = RequestHelper.getStringValue(request, "ifHideUser");
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
 			mv.addObject("customerInfor", customerInfor);
 			mv.addObject("customerId", customerInfor.getId());
 			mv.addObject("appId", appId);
 			mv.addObject("operate", Constant.status_xingzheng2);
+			mv.addObject("ifHideUser", ifHideUser);
 		}
 		return mv;
 	}
@@ -278,8 +280,19 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 	public JRadReturnMap returnAppln(HttpServletRequest request) throws SQLException {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
+			int nodeNo = 7;//中心终审
 			String appId = request.getParameter("appId");
-			intoPiecesService.returnAppln(appId, request);
+			String operate = request.getParameter("operate");
+			String nodeName = request.getParameter("nodeName");
+			if(Integer.parseInt(nodeName) > nodeNo){
+				returnMap.put(JRadConstants.SUCCESS, false);
+				returnMap.put(JRadConstants.MESSAGE, "退回进件不能退回至当前节点的后面~！");
+			}
+			if("1".equals(nodeName)){
+				intoPiecesService.checkDoNotToManager(appId,request,Integer.parseInt(nodeName),nodeNo);
+			}else{
+				intoPiecesService.returnAppln(appId, request,Integer.parseInt(nodeName),nodeNo);
+			}
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("保存失败");
@@ -287,5 +300,40 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		}
 		return returnMap;
 	}
-	
+	//进件查询(卡中心)入口
+	@ResponseBody
+	@RequestMapping(value = "iframe_approve_query.page")
+	public AbstractModelAndView iframeApproveQuery(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String ifHideUser = RequestHelper.getStringValue(request, "ifHideUser");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("operate", Constant.status_cardquery);
+			mv.addObject("ifHideUser", ifHideUser);
+		}
+		return mv;
+	}
+	//进件查询入口
+		@ResponseBody
+		@RequestMapping(value = "iframe_cardapprove.page")
+		public AbstractModelAndView iframeApproveCard(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_approve", request);
+			String customerInforId = RequestHelper.getStringValue(request, ID);
+			String appId = RequestHelper.getStringValue(request, "appId");
+			String ifHideUser = RequestHelper.getStringValue(request, "ifHideUser");
+			if (StringUtils.isNotEmpty(customerInforId)) {
+				CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+				mv.addObject("customerInfor", customerInfor);
+				mv.addObject("customerId", customerInfor.getId());
+				mv.addObject("appId", appId);
+				mv.addObject("operate", Constant.status_query);
+				mv.addObject("ifHideUser", ifHideUser);
+			}
+			return mv;
+		}
 }

@@ -9,6 +9,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -104,8 +105,12 @@ public class IESBForCircleController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforcircle_display", request);
 		
 		String customerId = request.getParameter(ID);
+		//区分影像补扫入口和内部审核入口的跳转标志（1:影像补扫，默认是内部审核）
+		String flag = request.getParameter("flag");
+		
 		String appId = request.getParameter("appId");
 		String operate = request.getParameter("operate");
+		String ifHideUser = request.getParameter("ifHideUser");
 		IESBForECIFReturnMap ecif = eCIFService.findEcifMapByCustomerId(customerId);
 		mv.addObject("ecif",ecif);
 				
@@ -122,6 +127,7 @@ public class IESBForCircleController extends BaseController{
 		mv.addObject("operate",operate);
 		mv.addObject("appId",appId);
 		mv.addObject("returnUrl",intoPiecesService.getReturnUrl(operate));
+		mv.addObject("ifHideUser", ifHideUser);
 		return mv;
 	}
 	
@@ -286,6 +292,13 @@ public class IESBForCircleController extends BaseController{
 					iesbForCircleForm.setLoanBelong1_5("");
 				}
 				
+				if(StringUtils.isEmpty(iesbForCircleForm.getFeeAmount())){
+					iesbForCircleForm.setFeeAmount("0");
+				}
+				if(StringUtils.isEmpty(iesbForCircleForm.getFeeCcy())){
+					iesbForCircleForm.setFeeCcy("CNY");
+				}
+				
 				iesbForCircleForm.setRegPermResidence(iesbForCircleForm.getRegPermResidence_3().split("_")[1]);
 				
 				//替换为总行id
@@ -417,6 +430,13 @@ public class IESBForCircleController extends BaseController{
 					iesbForCircleForm.setLoanBelong1_5("");
 				}
 				
+				if(StringUtils.isEmpty(iesbForCircleForm.getFeeAmount())){
+					iesbForCircleForm.setFeeAmount("0");
+				}
+				if(StringUtils.isEmpty(iesbForCircleForm.getFeeCcy())){
+					iesbForCircleForm.setFeeCcy("CNY");
+				}
+				
 				iesbForCircleForm.setRegPermResidence(iesbForCircleForm.getRegPermResidence_3().split("_")[1]);
 				
 				//替换为总行id
@@ -444,6 +464,5 @@ public class IESBForCircleController extends BaseController{
 		}
 		return returnMap;
 	}
-	
 }
 

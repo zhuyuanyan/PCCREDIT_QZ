@@ -51,9 +51,21 @@
 				</tr>
 				<tr>
 					<td class="table-label">办理机构:<font color="#ff0000">*</font></td>
-					<td colspan="2"><input type="text" name="bljg" value="$!orgName" readonly/></td>
+					<td colspan="2"><input type="text" name="bljg" 
+					#if($!result.bljg != $null )
+					value="$!result.bljg" 
+					#else
+					value="$!orgName" 
+					#end
+					 readonly/></td>
 					<td class="table-label">主办客户经理:<font color="#ff0000">*</font></td>
-					<td><input type="text" name="zbkhjl" value="$!userName" readonly/></td>	
+					<td><input type="text" name="zbkhjl" 
+					#if($!result.zbkhjl != $null )
+					value="$!result.zbkhjl" 
+					#else
+					value="$!userName" 
+					#end
+					readonly/></td>	
 					<td class="table-label">客户名称:<font color="#ff0000">*</font></td>
 					<td colspan="3"><input type="text" name="khmc" value="$!ecif.clientName" readonly/></td>		
 				</tr>				
@@ -67,11 +79,16 @@
 				</tr>			
 				<tr>
 					<td class="table-label">建议金额(元):<font color="#ff0000">*</font></td>
-					<td colspan="2"><input type="text" name="jyje" value="$!qzApplnNbscyjb.sugAmount" readonly/></td>
+					<td colspan="2"><input type="text" name="jyje" value="$!result.jyje" /></td>
 					<td class="table-label">建议期限(月):<font color="#ff0000">*</font></td>
-					<td><input type="text" name="jyqx" value="$!qzApplnNbscyjb.sugDeadline" readonly/></td>	
+					<!--<td><input type="text" name="jyqx" value="$!result.jyqx" /></td>  -->
+					<td>
+						<select name="jyqx">
+	                    	#dict("APPLY_DEADLINE", $!result.jyqx)
+	                  	</select>
+	                </td>
 					<td class="table-label">建议利率（年%）:<font color="#ff0000">*</font></td>
-					<td colspan="2"><input type="text" name="jyll" value="$!qzApplnNbscyjb.sugRates" readonly/></td>		
+					<td colspan="2"><input type="text" name="jyll" value="$!result.jyll" /></td>		
 				</tr>			
 				<tr>
 					<td class="table-label">授信用途:<font color="#ff0000">*</font></td>

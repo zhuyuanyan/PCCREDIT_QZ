@@ -8,7 +8,7 @@
 	var submitFlag = 0;
 	function connectScan(){
 		var InitScanWndResult = SunScan.TestInitScanWnd("168.168.241.75", "8023");//测试环境 
-		//var InitScanWndResult = SunScan.TestInitScanWnd("168.168.214.15", "8023");//生产环境 
+		//var InitScanWndResult = SunScan.TestInitScanWnd("168.168.214.15", "8023");//生产环境
 	    
 	    if (InitScanWndResult != "0")
 	    {
@@ -18,7 +18,10 @@
 	    if(parent.docID != ""){
 	    	docID = parent.docID;
 	        document.getElementById("docid").value=docID;
-	        SunScan.CreateTask(docID);
+	        //SunScan.CreateTask(docID);
+	        SunScan.SetModifyMode("1");
+	        var result = SunScan.ViewImageByCaseIDEx("WD_CASES",docID);
+	        //alert(result);
 	    }
 	}
     
@@ -30,25 +33,28 @@
 		submitFlag = 1;
     	if(confirm("确认提交吗?提交后暂不支持修改!")){
     		//SunScan.SetFormNoEx("0-0021000001001000|1-0|2-0021000004001000|3-0","");
-            var result = SunScan.TestSubmitImageEx("WD_CASES", "WD_IMAGES",docID);
+            //var result = SunScan.TestSubmitImageEx("WD_CASES", "WD_IMAGES",docID);
+            var result = SunScan.UpdateImageToEcmEx(docID,"WD_CASES");
             if (result == 200)
             {
-                var url = "${contextPath}/intopieces/intopiecesapprove/insert_sunds.json?appId=${appId}&docID="+docID;
-				$.ajax({
-					url : url,
-					type : "get",
-					success : function(data) {
-						if (data.success) {
+                //var url = "${contextPath}/intopieces/intopiecesapprove/insert_sunds.json?appId=${appId}&docID="+docID;
+				//$.ajax({
+				//	url : url,
+				//	type : "get",
+				//	success : function(data) {
+				//		if (data.success) {
 							//topWin.Dialog.message("影像提交成功！");
-							window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDModify.page?appId=${appId}";
-						}
-						else{
-							topWin.Dialog.message("影像提交失败！");
-					    }
-						submitFlag = 0;
-					}
-				});
-				
+				//			window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDModify.page?appId=${appId}";
+				//		}
+				//		else{
+				//			topWin.Dialog.message("影像提交失败!");
+				//	    }
+				//		submitFlag = 0;
+				//	}
+				//});
+				//系统不做修改
+            	//topWin.Dialog.message("影像提交成功！");
+            	submitFlag = 0;
             }
             else {
             	topWin.Dialog.message("影像提交失败！");
