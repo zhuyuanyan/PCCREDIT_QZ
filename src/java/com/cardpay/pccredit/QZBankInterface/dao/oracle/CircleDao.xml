@@ -117,6 +117,7 @@
 		<result property="acctNo2" column="ACCT_NO2" />
 		
 		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
 	</resultMap>
 	
 	<resultMap id="ResultMap2"

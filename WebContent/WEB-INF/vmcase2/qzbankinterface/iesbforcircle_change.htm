@@ -527,6 +527,17 @@
 		$("#loanKind_4 option").each(function(){ //遍历全部option
 			loan_type_array4.push($(this));
 	    });
+		//判断级联是否为null
+		if("$!circle.loanKind_2" == ""){
+			$("#loanKind_2").empty();
+		}
+		if("$!circle.loanKind_3" == ""){
+			$("#loanKind_3").empty();
+		}
+		if("$!circle.loanKind_4" == ""){
+			$("#loanKind_4").empty();
+		}
+		
 		//涉农贷款类型
 		$("#agriLoanKind_2 option").each(function(){ //遍历全部option
 			agriculture_type_array2.push($(this));
@@ -540,6 +551,20 @@
 		$("#agriLoanKind_5 option").each(function(){ //遍历全部option
 			agriculture_type_array5.push($(this));
 	    });
+		//判断级联是否为null
+		if("$!circle.agriLoanKind_2" == ""){
+			$("#agriLoanKind_2").empty();
+		}
+		if("$!circle.agriLoanKind_3" == ""){
+			$("#agriLoanKind_3").empty();
+		}
+		if("$!circle.agriLoanKind_4" == ""){
+			$("#agriLoanKind_4").empty();
+		}
+		if("$!circle.agriLoanKind_5" == ""){
+			$("#agriLoanKind_5").empty();
+		}
+		
 		//贷款投向
 		$("#loanDirection_2 option").each(function(){ //遍历全部option
 			loan_direction_array2.push($(this));
@@ -563,6 +588,20 @@
 		$("#loanBelong1_5 option").each(function(){ //遍历全部option
 			loan_belong1_array5.push($(this));
 	    });
+		//判断级联是否为null
+		if("$!circle.loanBelong1_2" == ""){
+			$("#loanBelong1_2").empty();
+		}
+		if("$!circle.loanBelong1_3" == ""){
+			$("#loanBelong1_3").empty();
+		}
+		if("$!circle.loanBelong1_4" == ""){
+			$("#loanBelong1_4").empty();
+		}
+		if("$!circle.loanBelong1_5" == ""){
+			$("#loanBelong1_5").empty();
+		}
+		
 		//户籍所在地
 		$("#regPermResidence_2 option").each(function(){ //遍历全部option
 			indiv_brt_place_array2.push($(this));
