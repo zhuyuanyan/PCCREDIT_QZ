@@ -284,14 +284,12 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			String appId = request.getParameter("appId");
 			String operate = request.getParameter("operate");
 			String nodeName = request.getParameter("nodeName");
-			if(Integer.parseInt(nodeName) > nodeNo){
-				returnMap.put(JRadConstants.SUCCESS, false);
-				returnMap.put(JRadConstants.MESSAGE, "退回进件不能退回至当前节点的后面~！");
-			}
+			//退回客户经理和其他岗位不一致
 			if("1".equals(nodeName)){
-				intoPiecesService.checkDoNotToManager(appId,request,Integer.parseInt(nodeName),nodeNo);
+				
+				intoPiecesService.checkDoNotToManager(appId,request);
 			}else{
-				intoPiecesService.returnAppln(appId, request,Integer.parseInt(nodeName),nodeNo);
+				intoPiecesService.returnAppln(appId, request,nodeName);
 			}
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {

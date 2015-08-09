@@ -88,7 +88,7 @@
 			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
-				var url = "${contextPath}/intopieces/intopiecesapprove/insert_page7.json?customerId=${customerId}";
+				var url = "${contextPath}/intopieces/intopiecesapprove/insert_page7.json?customerId=${customerId}&appId=${appId}";
 				$.ajax({
 					url : url,
 					type : "get",
@@ -96,7 +96,7 @@
 					success : function(data) {
 						if (data.success) {
 							topWin.Dialog.message("保存成功！");
-							window.location.href = "${contextPath}/intopieces/intopiecesapprove/page7.page?id=${customerId}";
+							window.location.href = "${contextPath}/intopieces/intopiecesapprove/page7.page?id=${customerId}&appId=${appId}";
 						}
 						else{
 							topWin.Dialog.message("保存失败！");

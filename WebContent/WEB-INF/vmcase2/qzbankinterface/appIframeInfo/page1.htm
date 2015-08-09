@@ -22,7 +22,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<td>
 						<input type="text" value="$!orgName" disabled>
 						<input type="hidden" value="$!orgName" name="orgName">
-						<input type="hidden" name="orgId" value="$!orgId"></select></td>
+						<input type="hidden" name="orgId" value="$!orgId"></td>
 					<td class="table-label">申请日期：</td>
 					<td><input type="text" name="applyTime" onmouseover="_calendar()" readonly/></td>					
 				</tr>
@@ -614,7 +614,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 				submitFlag = 1;
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
-					var url = "${contextPath}/intopieces/intopiecesapprove/insert_page1.json?customerId=${customerId}";
+					var url = "${contextPath}/intopieces/intopiecesapprove/insert_page1.json?customerId=${customerId}&appId=${appId}";
 					$.ajax({
 						url : url,
 						type : "get",
@@ -622,7 +622,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?id=${customerId}";
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page1.page?id=${customerId}&appId=${appId}";
 							}
 							else{
 								topWin.Dialog.message("保存失败！");

@@ -76,7 +76,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}_$!{intoPieces.customerId}"/></td>
               <td nowrap="nowrap">$!intoPieces.chineseName</td>
               <td nowrap="nowrap">$!intoPieces.cardId</td>
-              <td nowrap="nowrap">$!intoPieces.productName</td>
+              <td nowrap="nowrap">#dictVal("ProductName",$!intoPieces.productId)</td>
               <td nowrap="nowrap">$format.formatNumber($!intoPieces.applyQuota, 2, 1)</td>
               <td nowrap="nowrap">
 	              #if($!intoPieces.status=='audit')已申请  
@@ -95,7 +95,7 @@
         </div>
       </div>
       <div class="pagebar">
-        <div class="controlbtn"><a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>
+        <div class="controlbtn"><a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a></div>
         <div class="controlbtn"><a class="btn_g" href="javascript:void(0);" title="查看申请信息" onclick="viewIntoPicesApproveDisplay('NO')">查看申请信息</a>
         </div>
         #parse ("common/pagination.htm")

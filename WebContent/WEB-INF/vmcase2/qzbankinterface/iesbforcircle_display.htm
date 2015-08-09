@@ -57,7 +57,7 @@
 		.dialog4 .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(${contextPath}/images/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
 		.dialog4 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
 		.dialog4 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
-		.dialog4 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		.dialog4 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}	
 	</style>
 </head>
 <body>
@@ -439,7 +439,7 @@
 			<div class="content" style="height:100px;padding-top:15px;">
 				<p>
 					退回至哪一个岗:<font color="red">*</font>
-					<select id="nodeName" name="nodeName">#dict("NODE_LIST", $!operate)</select><br>
+					<select id="nodeName" name="nodeName">#dict("NODE_LIST","",false,$nodeId)</select><br>
 					退件原因:<font color="red">*</font>
 					<textarea name="remark" rows="2" style="width: 300px;"></textarea>
 				</p>
@@ -478,7 +478,7 @@
 				<div class="content" style="height:100px;padding-top:15px;">
 					<p>
 						退回至哪一个岗:<font color="red">*</font>
-						<select id="nodeName" name="nodeName">#dict("NODE_LIST", $!operate)</select><br>
+						<select id="nodeName" name="nodeName">#dict("NODE_LIST","",false,$nodeId)</select><br>
 						退件原因:<font color="red">*</font>
 						<textarea name="remark" rows="2" style="width:300px;"></textarea>
 					</p>
@@ -500,7 +500,7 @@
 				<div class="content" style="height:100px;padding-top:15px;">
 					<p>
 						退回至哪一个岗:<font color="red">*</font>
-						<select id="nodeName" name="nodeName">#dict("NODE_LIST", $!operate)</select><br>
+						<select id="nodeName" name="nodeName">#dict("NODE_LIST","",false,$nodeId)</select><br>
 						退件原因:<font color="red">*</font>
 						<textarea name="remark" rows="2" style="width:300px;"></textarea>
 					</p>
@@ -511,6 +511,7 @@
 				</div>
 			</form>
 		</div>
+		
       <div class="submit controlbtn">
 	      #if($!operate=="初审")
 	      	<a id="id_chushen_button" class="btn_g" >审批</a>
@@ -829,6 +830,7 @@
 					}); 
 			});
 		});
+		
 		
 		//判断级联是否为null
 		if("$!circle.loanKind_2" == ""){

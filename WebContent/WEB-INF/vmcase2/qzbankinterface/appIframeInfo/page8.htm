@@ -269,7 +269,7 @@
 				submitFlag = 1;
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
-		   	        var url = "${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}";
+		   	        var url = "${contextPath}/intopieces/intopiecesapprove/page8insert.json?id=${customerId}&appId=${appId}&flag=${flag}";
 		   	        	$.ajax({
 							url : url,
 							type : "get",
@@ -277,7 +277,7 @@
 							success : function(data) {
 								if (data.success) {
 									topWin.Dialog.message("保存成功！");
-									window.location.href ="${contextPath}/intopieces/intopiecesapprove/page8.page?id=${customerId}&appId=${appId}";
+									window.location.href ="${contextPath}/intopieces/intopiecesapprove/page8.page?id=${customerId}&appId=${appId}&flag=${flag}";
 								}
 								else{
 									topWin.Dialog.message("保存失败！");

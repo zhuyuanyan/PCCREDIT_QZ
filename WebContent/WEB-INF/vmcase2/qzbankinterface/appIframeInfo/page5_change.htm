@@ -769,7 +769,7 @@
 				submitFlag = 1;
 				if ($($formName).valid()) {
 					var formjson = $($formName).serialize();
-					var url = "${contextPath}/intopieces/intopiecesapprove/update_page5.json?id=${qzApplnAttachmentList.id}&customerId=${qzApplnAttachmentList.customerId}";
+					var url = "${contextPath}/intopieces/intopiecesapprove/update_page5.json?id=${qzApplnAttachmentList.id}&customerId=${qzApplnAttachmentList.customerId}&appId=${appId}";
 					$.ajax({
 						url : url,
 						type : "get",
@@ -777,7 +777,7 @@
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");
-								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page5.page?id=${qzApplnAttachmentList.customerId}";
+								window.location.href = "${contextPath}/intopieces/intopiecesapprove/page5.page?id=${qzApplnAttachmentList.customerId}&appId=${appId}";
 							}
 							else{
 								topWin.Dialog.message("保存失败！");
