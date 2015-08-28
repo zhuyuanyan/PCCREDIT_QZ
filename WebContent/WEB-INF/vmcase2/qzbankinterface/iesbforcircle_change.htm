@@ -51,7 +51,7 @@
             </colgroup>
             <tr>
             	<td><label>客户名称:</label></td>
-              	<td><input type="text" value="$!ecif.clientName" disabled/></td>
+              	<td><input type="text" value="$!ecif.clientName" readonly/></td>
               	<td><input type="hidden" id="clientNo" name="clientNo" value="$!circle.clientNo"/></td>
               	<td><input type="hidden" id="circleId" name="$!circleId" value="$!circle.id"/></td>
             </tr>
@@ -145,7 +145,7 @@
              	#elseif($!operate=="一级审核")
             	value="$!circle.contractAmt"
             	#else
-            	value="$!jyd.jyje"
+            	value="$!circle.contractAmt"
             	#end
                 /></td>
             </tr>
@@ -175,7 +175,7 @@
               	#elseif($!operate=="一级审核")
               	    value="$!circle.actIntRate"
               	#else        	
-              		value="$!jyd.jyll"
+              		value="$!circle.actIntRate"
               	#end
                 /></td>
             </tr>
@@ -334,8 +334,6 @@
 			<tr>
               <td><label>最高学位:</label></td>
               <td><select id="degree" name="degree"  >#dict("INDIV_DGR", $!circle.degree)</select></td>
-			  <td><label>签约日期:</label><font color="#ff0000">*</font></td>
-              <td><input type="text" id="signDate" name="signDate" value="$date.format('yyyy-MM-dd', $!circle.signDate)"  onmouseover="_calendar()" readonly/></td>
             </tr>
 			<tr>
               <td><label>持卡情况:</label></td>
@@ -351,7 +349,7 @@
               #if($!circle.expiryDate == $null)
               <input type="text" id="expiryDate" name="expiryDate"  onmouseover="_calendar()"/>
               #else
-              <input type="text" id="expiryDate" name="expiryDate" value="$date.format('yyyy-MM-dd', $!circle.expiryDate)"  onmouseover="_calendar()" readonly/>
+              <input type="text" id="expiryDate" name="expiryDate" value="$date.format('yyyy-MM-dd', $!circle.expiryDate)"  onmouseover="_calendar()" />
               #end
               </td>
             </tr>
@@ -381,7 +379,9 @@
             </tr>
 			<tr>
               <td><label>开户日期:</label><font color="#ff0000">*</font></td>
-              <td colspan="3"><input type="text" id="openAcctDate" name="openAcctDate" value="$!date.format('yyyy-MM-dd', $!circle.openAcctDate)"  onmouseover="_calendar()" readonly/></td>
+              <td><input type="text" id="openAcctDate" name="openAcctDate" value="$!date.format('yyyy-MM-dd', $!circle.openAcctDate)"  onmouseover="_calendar()" readonly/></td>
+              <td><label>签约日期:</label><font color="#ff0000">*</font></td>
+              <td><input type="text" id="signDate" name="signDate" value="$date.format('yyyy-MM-dd', $!circle.signDate)"  onmouseover="_calendar()" readonly/></td>
             </tr>
 		  </table>
 		  <!--<table class="rule myTable" bordercolor="#cccccc" border="1">
@@ -856,12 +856,12 @@
 								type : "get",
 								success : function(data) {
 									if (data.success) {
-										topWin.Dialog.message("审批成功!");	
+										topWin.Dialog.message(data.retMsg);	
 						            	var url = "${contextPath}${returnUrl}";
 						                parent.location.href = url;
 									}
 									else{
-										topWin.Dialog.message("审批失败！");
+										topWin.Dialog.message(data.retMsg);
 								    }
 									submitFlag = 0;
 								}

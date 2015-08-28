@@ -109,7 +109,7 @@
 			if(productType == "2"){
 				zaId = jsoObjs[document.getElementById("zaId").selectedIndex].id
 			}
-			var url = "${contextPath}/intopieces/intopiecesapprove/insert_page0.json?productType="+productType+"&zaId="+zaId;
+			/**var url = "${contextPath}/intopieces/intopiecesapprove/insert_page0.json?productType="+productType+"&zaId="+zaId;
 			$.ajax({
 				url : url,
 				type : "get",
@@ -124,7 +124,9 @@
 				    }
 					submitFlag = 0;
 				}
-			});
+			});*/
+			var url="${contextPath}/intopieces/intopiecesapprove/queryCustomerInfo.page?productType="+productType+"&zaId="+zaId;
+			window.location.href = url;
 		});
 		
 		$("#id_back_button").click(function() {

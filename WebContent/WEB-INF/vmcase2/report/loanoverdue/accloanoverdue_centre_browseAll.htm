@@ -27,10 +27,14 @@
                 <span>客户名称：<input type="text" name="clientName" value='$!filter.clientName' /></span>
               </li>
               
+             <li class="search_button">
+              	<input id="id_export_button" type="button" value="导出excel" class="search_button_export"
+                  title="#i18n('button.export.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
-              </li>
+               </li>
             </ul>
           </form>
         </div>
@@ -130,8 +134,8 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.browseUrl = "${modulePath}/browse.page";
-
+		opsObj.browseUrl = "${modulePath}/browseAll.page";
+		opsObj.exportUrl = "${modulePath}/exportAll.page";
 		prepareOperations(opsObj);
 	});
 </script>

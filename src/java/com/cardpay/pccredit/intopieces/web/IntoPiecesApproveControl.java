@@ -567,7 +567,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			qzApplnYwsqb = ywsqbService.findYwsqb(customerInforId, null);
 		}
 		
-		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInforId, appId);
+		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(null, appId);
 		
 		JRadModelAndView mv = null;
 		if(qzApplnYwsqb != null){
@@ -680,10 +680,12 @@ public class IntoPiecesApproveControl extends BaseController {
 			try {
 				String ywsqbId = request.getParameter("id");
 				String customerId = request.getParameter("customerId");
+				String appId = request.getParameter("appId");
 				QzApplnYwsqb qzApplnYwsqb = qzApplnYwsqbForm.createModel(QzApplnYwsqb.class);
 				qzApplnYwsqb.setCustomerId(customerId);
 				ywsqbService.dealWithNullValue(qzApplnYwsqb);
 				QzApplnJyxx qzApplnJyxx = qzApplnYwsqbForm.createModelJyxx();
+				qzApplnJyxx.setApplicationId(appId);
 				ywsqbService.dealWithNullValueJyxx(qzApplnJyxx);
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				//未填申请时 关联客户id
@@ -1005,6 +1007,7 @@ public class IntoPiecesApproveControl extends BaseController {
 		mv.addObject("customerInfo", customerInfo);
 		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(null, appId);
 		mv.addObject("qzApplnJyxx", qzApplnJyxx);
+		mv.addObject("appId", appId);
 		return mv;
 	}
 	
@@ -1109,7 +1112,7 @@ public class IntoPiecesApproveControl extends BaseController {
 		mv.addObject("customerInfo", customerInfo);
 		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInforId, appId);
 		mv.addObject("qzApplnJyxx", qzApplnJyxx);
-				
+		mv.addObject("appId", appId);		
 		return mv;
 	}
 	
@@ -1470,22 +1473,23 @@ public class IntoPiecesApproveControl extends BaseController {
 				
 				//把获取的客户号存在库中
 				Circle circle = commonDao.findObjectById(Circle.class, circleId);
-				if(circle != null){
-					circle.setaClientNo(resClientNo);
-					circleService.updateCustomerInforCircle(circle);
-				}
-				
-				if(clientName.equals(iesbForCircleForm.getClientName()) && golbalType.equals(iesbForCircleForm.getGlobalType())
-						&& golbalId.equals(iesbForCircleForm.getGlobalId())){
+				//modified by nihc 201050814 先获取客户号人工去判断客户号是否与开户 一致 
+//				if(clientName.equals(iesbForCircleForm.getClientName()) && golbalType.equals(iesbForCircleForm.getGlobalType())
+//						&& golbalId.equals(iesbForCircleForm.getGlobalId())){
+					if(circle != null){
+						circle.setaClientNo(resClientNo);
+						circle.setClientNo(resClientNo);
+						circleService.updateCustomerInforCircle(circle);
+					}
 					returnMap.put(JRadConstants.SUCCESS, true);
-					returnMap.addGlobalMessage("获取成功");
+					returnMap.addGlobalMessage("客户号获取成功,请核实客户号是否与开户一致，如果不一致请检查证件类型或 证件号码是否有误！");
 					returnMap.put("resClientNo", resClientNo);
 					return returnMap;
-				}
-				returnMap.put(JRadConstants.SUCCESS, false);
-				returnMap.put("resClientNo", resClientNo);
-				returnMap.put("message", "请检查客户身份信息和名称是否一致~!");
-				return returnMap;
+//				}
+//				returnMap.put(JRadConstants.SUCCESS, false);
+//				returnMap.put("resClientNo", resClientNo);
+//				returnMap.put("message", "请检查客户身份信息和名称是否一致~!");
+//				return returnMap;
 			}
 			returnMap.put("message", "客户信息不存在 ~！");
 			returnMap.put(JRadConstants.SUCCESS, false);
@@ -1507,14 +1511,16 @@ public class IntoPiecesApproveControl extends BaseController {
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			filter.setUserId(user.getId());
 			//获取新生成的appid
-			String appId = request.getParameter("appId");
-			String productId = request.getParameter("productId");
+			//String appId = request.getParameter("appId");
+			//String productId = request.getParameter("productId");
+			//String zaId = request.getParameter("zaId");
+			String productType = request.getParameter("productType");
 			String zaId = request.getParameter("zaId");
 			//根据appid查找产品信息
-			QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByAppId(appId);
+			//QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByAppId(appId);
 //			
 			//判断产品类型获取满足该产品进件的客户
-			String productType = qzappln_za_ywsqb_r.getProductType();
+			//String productType = qzappln_za_ywsqb_r.getProductType();
 			if("3".equals(productType)){
 				QueryResult<CustomerInfor> result = customerInforService.findCustomerInfoWithLoanByFilter(filter);
 				JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
@@ -1533,9 +1539,10 @@ public class IntoPiecesApproveControl extends BaseController {
 			
 			
 			//mv.addObject("customerId", customerInfor.getId());
-			mv.addObject("appId", appId);
-			mv.addObject("productId", productId);
+			//mv.addObject("appId", appId);
+			mv.addObject("productType", productType);
 			mv.addObject("zaId", zaId);
+			mv.addObject("filter",filter);
 			return mv;
 		}
 		//客户经理选择产品
@@ -1558,47 +1565,50 @@ public class IntoPiecesApproveControl extends BaseController {
 		public AbstractModelAndView iframeCreate(HttpServletRequest request) {
 			JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe", request);
 			String customerId= request.getParameter("id");//客户id
-			String appId = request.getParameter("appId");//进件申请id
-			String productId = request.getParameter("productId");//选择产品id
+			//String appId = request.getParameter("appId");//进件申请id
+			String productType = request.getParameter("productType");//选择类型
 			String zaId = request.getParameter("zaId");//专案id
+			
+			//修改为新增一跳客户申请记录，产品表关联到该记录
+			//查找默认产品
+			ProductFilter filter = new ProductFilter();
+			filter.setDefault_type(productType);
+			ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
+			//设置申请
+			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+			//customerApplicationInfo.setStatus(status);
+			customerApplicationInfo.setId(IDGenerator.generateID());
+			customerApplicationInfo.setApplyQuota("0");//设置额度
+			customerApplicationInfo.setCustomerId(customerId);
+			if(customerApplicationInfo.getApplyQuota()!=null){
+				customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
+			}
+			customerApplicationInfo.setCreatedTime(new Date());
+			customerApplicationInfo.setStatus(Constant.SAVE_INTOPICES);
+			customerApplicationInfo.setProductId(productAttribute.getId());
+			
+			commonDao.insertObject(customerApplicationInfo);
+			//新增产品专案
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			//QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByCustomerId(customerId);
+			//if(qzappln_za_ywsqb_r == null){
+			QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = new QzAppln_Za_Ywsqb_R();
+			//未填申请时 关联客户id
+			qzappln_za_ywsqb_r.setCustomerId(customerId);
+			qzappln_za_ywsqb_r.setProductType(productType);
+			qzappln_za_ywsqb_r.setZaId(zaId);
+			qzappln_za_ywsqb_r.setApplicationId(customerApplicationInfo.getId());
+			ywsqbService.insert_page0(qzappln_za_ywsqb_r);
+				
 			//选择产品记录表关联客户，
-			QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByAppId(appId);
+			//QzAppln_Za_Ywsqb_R qzappln_za_ywsqb_r = za_ywsqb_r_service.findByAppId(appId);
 			//根据产品类型调整不同的的页签（产品类型3表示安居贷）
-			ProductAttribute productAttribute = commonDao.findObjectById(ProductAttribute.class, productId);
+			//ProductAttribute productAttribute = commonDao.findObjectById(ProductAttribute.class, productId);
 			if("3".equals(productAttribute.getDefaultType())){
 				mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_create", request);
 			}
-			//没有产品信息，新增
-			if(qzappln_za_ywsqb_r==null){
-				//根据产品id查询产品信息
-				qzappln_za_ywsqb_r = new QzAppln_Za_Ywsqb_R();
-				qzappln_za_ywsqb_r.setProductType(productAttribute.getDefaultType());
-				qzappln_za_ywsqb_r.setZaId(zaId);
-				qzappln_za_ywsqb_r.setApplicationId(appId);
-				qzappln_za_ywsqb_r.setCustomerId(customerId);
-				ywsqbService.insert_page0(qzappln_za_ywsqb_r);
-			}
-			//存在关联客户
-			qzappln_za_ywsqb_r.setCustomerId(customerId);
-			commonDao.updateObject(qzappln_za_ywsqb_r);
-			//判断有没有生成申请信息，没有新增
-			CustomerApplicationInfo cusAppInfo = intoPiecesService.findCusAppInforByAppId(appId);
-			if(cusAppInfo == null){
-				//新增进件申请
-				cusAppInfo = new CustomerApplicationInfo();
-				cusAppInfo.setId(IDGenerator.generateID());
-				cusAppInfo.setApplyQuota("0");//设置额度
-				cusAppInfo.setCreatedTime(new Date());
-				cusAppInfo.setStatus(Constant.SAVE_INTOPICES);
-				cusAppInfo.setProductId(productId);
-				cusAppInfo.setCustomerId(customerId);
-				
-				commonDao.insertObject(cusAppInfo);
-			}
-			//申请记录存在。关联客户
-			cusAppInfo.setCustomerId(customerId);
-			commonDao.updateObject(cusAppInfo);
-			
+			String appId = customerApplicationInfo.getId();
+			System.out.println("appId="+appId);
 		    mv.addObject("customerId",customerId);
 			mv.addObject("appId",appId);
 			return mv;

@@ -10,6 +10,8 @@ public class AfterLoanCheckFilter extends BaseQueryFilter{
 	private String productName;//产品编号
 	private String userId;//客户经理id
 	private String clientNo;//客户号
+	private String checkType;//检查类型
+	private String userNo;//客户经理号
 	
 	public String getChineseName() {
 		return chineseName;
@@ -40,5 +42,17 @@ public class AfterLoanCheckFilter extends BaseQueryFilter{
 	}
 	public void setClientNo(String clientNo) {
 		this.clientNo = clientNo;
+	}
+	public String getCheckType() {
+		return checkType;
+	}
+	public void setCheckType(String checkType) {
+		this.checkType = checkType;
+	}
+	public String getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
 	}
 }

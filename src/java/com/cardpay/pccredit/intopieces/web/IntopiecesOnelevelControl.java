@@ -125,15 +125,17 @@ public class IntopiecesOnelevelControl extends BaseController{
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			
 			//先开户 后通过applicationId查找circle并放款 
-			boolean rtn = circleService.updateCustomerInforCircle_ESB(circle);
-			if(rtn){
+			String rtn = circleService.updateCustomerInforCircle_ESB(circle);
+			if("放款成功".equals(rtn)){
 				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
 				returnMap.put(JRadConstants.SUCCESS, true);
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+				returnMap.put("retMsg",rtn);
 			}
 			else{
 				returnMap.put(JRadConstants.SUCCESS, false);
 				returnMap.addGlobalMessage("保存失败");
+				returnMap.put("retMsg",rtn);
 			}
 			
 		} catch (Exception e) {

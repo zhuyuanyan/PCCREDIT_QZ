@@ -38,105 +38,94 @@
 		<div id="topDiv" class="inquiry_list inquiry_top">
            <table>
             <colgroup>
-              <col width="60"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-               <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="150"/>
-              <col width="150"/>
-              <col width="150"/>
-              <col width="150"/>
-              <col width="150"/>
             </colgroup>
             <tr class="title" align="center">
-              <th nowrap="nowrap">序号</th>
-              <th nowrap="nowrap">起始日期</th>
+              <td nowrap="nowrap" style="background:#6699FF">汇总列名</td>
+              <td nowrap="nowrap" style="background:#6699FF">统计值</td>
               
-              <th nowrap="nowrap">截止日期</th>
-              <th nowrap="nowrap">新增贷款客户数</th>
-              <th nowrap="nowrap">贷款客户总数</th>
+              <td nowrap="nowrap" style="background:#6699FF">汇总列名</td>
+              <td nowrap="nowrap" style="background:#6699FF">统计值</td>
               
-              <th nowrap="nowrap">当月新增客户数</th>
-              <th nowrap="nowrap">中心授信总数</th>
-              <th nowrap="nowrap">当前贷款总余额</th>
-              
-              <th nowrap="nowrap">贷款实际用信率</th>
-              <th nowrap="nowrap">当月新增授信</th>
-              <th nowrap="nowrap">当月新增用信余额</th>
-              <th nowrap="nowrap">当月逾期金额</th>
-              <th nowrap="nowrap">累计逾期总额</th>
-              <th nowrap="nowrap">当月新增逾期客户数</th>
-              <th nowrap="nowrap">累计逾期客户数M0以上</th>
-              <th nowrap="nowrap">累计逾期客户数M1以上</th>
-              <th nowrap="nowrap">累计逾期客户数M2以上</th>
-              <th nowrap="nowrap">累计逾期客户数M3以上</th>
-              <th nowrap="nowrap">累计逾期客户数M4以上</th>
+              <td nowrap="nowrap" style="background:#6699FF">汇总列名</td>
+              <td nowrap="nowrap" style="background:#6699FF">统计值</td>
             </tr>
+            #foreach ($accloan in $list)
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">新增用信客户</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.increaseLoancount</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">新增用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.loanBalanceSum)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M0以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM0</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">累计用信客户</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.loanCustomerSum</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.contBalace)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M1以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM1</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">新增授信客户</td>
+            	<td nowrap="nowrap" ><font size='4'>$!accloan.increaseCusSum</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">新增授信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseLoanCredit)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M2以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM2</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">累计授信客户</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.centreLoansSun</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计授信总额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.contAmt)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M3以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM3</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">新增逾期客户数</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.increseOverdueCusTheMon</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">新增逾期余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.overdueBalanceTheMon)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数M4以上</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.overdueCusM4</font></td>
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期客户数</td>
+            	<td nowrap="nowrap"><font size='4'>$!accloan.alloverdue</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">累计逾期余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.overdueBalance)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">实收利息总额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.resvIntAccum)</font></td>
+            	
+            </tr>
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
+            	
+            	
+            </tr>
+             #end
           </table>
         </div>  
-        
-        <div id="downDiv" class="inquiry_list inquiry_down">
-          <table>
-            <colgroup>
-              <col width="60"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-               <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="120"/>
-              <col width="150"/>
-              <col width="150"/>
-              <col width="150"/>
-              <col width="150"/>
-              <col width="150"/>
-            </colgroup>
-            #foreach ($accloan in $list)
-            	<tr id="$!accloan.rowIndex">
-	              <td nowrap="nowrap">$!accloan.rowIndex</td>
-	              <td nowrap="nowrap">$!filter.startDate</td>
-	              <td nowrap="nowrap">$!filter.endDate</td>
-	              <td nowrap="nowrap">$!accloan.increaseLoancount</td>
-	              <td nowrap="nowrap">$!accloan.loanCustomerSum</td>
-	              <td nowrap="nowrap">$!accloan.increaseCusSum</td>
-	              <td nowrap="nowrap">$!accloan.centreLoansSun</td>
-	              <td nowrap="nowrap">$!accloan.loanBalanceSum</td>
-	              <td nowrap="nowrap">$format.formatNumber(6,$!accloan.loanRealityRate)</td>
-	              <td nowrap="nowrap">$!accloan.increaseLoanCredit</td>
-	              <td nowrap="nowrap">$!accloan.increaseBalanceTheMonth</td>
-	              <td nowrap="nowrap">$!accloan.overdueBalanceTheMon</td>
-	              <td nowrap="nowrap">$!accloan.overdueBalance</td>
-	              <td nowrap="nowrap">$!accloan.increseOverdueCusTheMon</td>
-	              
-	              <td nowrap="nowrap">$!accloan.overdueCusM0</td>
-	              <td nowrap="nowrap">$!accloan.overdueCusM1</td>
-	              <td nowrap="nowrap">$!accloan.overdueCusM2</td>
-	              <td nowrap="nowrap">$!accloan.overdueCusM3</td>
-	              <td nowrap="nowrap">$!accloan.overdueCusM4</td>
-	             
-	            </tr>
-            #end
-          </table>
-        </div>
       </div>		
         <div class="clear"></div>
       </div>

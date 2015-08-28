@@ -28,6 +28,7 @@ public class AfterLoaninfo extends BusinessModel{
 	private String repayment;
 	private String reciprocalType;//回访类型
 	private String contactInformation;
+	private String repaymentOther;
 	
 	private String chineseName;
 	private String cardId;
@@ -175,6 +176,12 @@ public class AfterLoaninfo extends BusinessModel{
 	}
 	public void setContactInformation(String contactInformation) {
 		this.contactInformation = contactInformation;
+	}
+	public String getRepaymentOther() {
+		return repaymentOther;
+	}
+	public void setRepaymentOther(String repaymentOther) {
+		this.repaymentOther = repaymentOther;
 	}
 	
 }

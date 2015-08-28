@@ -27,6 +27,7 @@ public class AccLoanInfo extends BusinessModel{
 	private String distrDate;//发放日期
 	private String accStatus;//贷款状态
 	private String clientName;//客户名称
+	private Double loanBalance;//贷款余额
 	
 	public String getRowIndex() {
 		return rowIndex;
@@ -125,5 +126,12 @@ public class AccLoanInfo extends BusinessModel{
 	public void setIntAccum(Double intAccum) {
 		this.intAccum = intAccum;
 	}
+	public Double getLoanBalance() {
+		return loanBalance;
+	}
+	public void setLoanBalance(Double loanBalance) {
+		this.loanBalance = loanBalance;
+	}
+	
 	
 }

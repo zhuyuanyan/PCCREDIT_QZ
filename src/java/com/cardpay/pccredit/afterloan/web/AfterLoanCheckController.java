@@ -67,7 +67,7 @@ public class AfterLoanCheckController extends BaseController{
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })	
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute AfterLoanCheckFilter filter,HttpServletRequest request){
 		filter.setRequest(request);
@@ -144,7 +144,7 @@ public class AfterLoanCheckController extends BaseController{
 	}
 	
 	/**
-	 * 插入
+	 * 插入insert_loanpage1.json
 	 */
 	@ResponseBody
 	@RequestMapping(value = "insert_loanpage0.json")
@@ -157,11 +157,11 @@ public class AfterLoanCheckController extends BaseController{
 				String type = request.getParameter("type");//
 				PspCheckTask pspCheckTask = new PspCheckTask();
 				pspCheckTask.setAgreedPerson(spCheckTask.getAgreedPerson());
-				if(type==null){
-					pspCheckTask.setApproveStatus(Constants.approve_status_second);
-				}else{
-					pspCheckTask.setApproveStatus(Constants.approve_status_threed);
-				}
+//				if(type==null){
+//					pspCheckTask.setApproveStatus(Constants.approve_status_second);
+//				}else{
+//					pspCheckTask.setApproveStatus(Constants.approve_status_threed);
+//				}
 				pspCheckTask.setCheckAddr(spCheckTask.getCheckAddr());
 				pspCheckTask.setCheckTime(spCheckTask.getCheckTime());
 				pspCheckTask.setCusId(spCheckTask.getCusId());
@@ -181,6 +181,7 @@ public class AfterLoanCheckController extends BaseController{
 				pspCheckTask.setRepayment(spCheckTask.getRepayment());
 				pspCheckTask.setReciprocalType(spCheckTask.getReciprocalType());
 				pspCheckTask.setContactInformation(spCheckTask.getContactInformation());
+				pspCheckTask.setRepaymentOther(spCheckTask.getRepaymentOther());
 				//插入数据库
 				afterloanCheckService.update_page0(pspCheckTask);
 				
@@ -203,6 +204,7 @@ public class AfterLoanCheckController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/afterloan/page0_display", request);
 		String clientNo = RequestHelper.getStringValue(request, "clientNo");//客户编号
 		String taskId = RequestHelper.getStringValue(request, "taskId");//任务编号
+		String type = RequestHelper.getStringValue(request, "type");
 		if (StringUtils.isNotEmpty(clientNo)) {
 			List<PspCheckTask> pspCheckTaskLsit = afterloanCheckService.findPspCheckTaskByTaskId(taskId);
 			if(pspCheckTaskLsit != null &&pspCheckTaskLsit.size()!=0){
@@ -214,7 +216,7 @@ public class AfterLoanCheckController extends BaseController{
 		ECIF ecif = eCIFService.findEcifByClientNo(clientNo);
 		mv.addObject("ecif",ecif);
 		mv.addObject("clientNo",clientNo);
-		mv.addObject("type","readonly");
+		mv.addObject("type",type);
 		return mv;
 	}
 	
@@ -239,59 +241,70 @@ public class AfterLoanCheckController extends BaseController{
 			mv.addObject("taskId", taskId);
 		}
 		mv.addObject("clientNo",clientNo);
-		mv.addObject("type","readonly");
+		mv.addObject("taskId",taskId);
 		mv.addObject("type",type);
 		return mv;
 	}
-	
 	/**
-	 * 贷后检查任务查看(审核)
-	 * 
-	 * @param filter 
-	 * @param request
-	 * @return
+	 * 客户经理提交检查到审核
 	 */
 	@ResponseBody
-	@RequestMapping(value = "approve.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView approve(@ModelAttribute AfterLoanCheckFilter filter,HttpServletRequest request){
-		filter.setRequest(request);
-//		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-//		String userId = user.getId();
-//		filter.setUserId(userId);
-		QueryResult<AfterLoaninfo> result = afterloanCheckService.findAfterLoanCheckTaskToByFilter(filter);
-		JRadPagedQueryResult<AfterLoaninfo> pagedResult = new JRadPagedQueryResult<AfterLoaninfo>(
-				filter, result);
-		JRadModelAndView mv = new JRadModelAndView(
-				"/afterloan/afterloan_approve", request);
-		mv.addObject(PAGED_RESULT, pagedResult);
-
-		return mv;
+	@RequestMapping(value = "insert_loanpage1.json")
+	public JRadReturnMap insert_loanpage1(@ModelAttribute PspCheckTask spCheckTask, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try{
+				String taskId = request.getParameter("taskId");//贷后检查任务编号
+				String clientNo = request.getParameter("clientNo");//客户编号
+				String type = request.getParameter("type");//
+				PspCheckTask pspCheckTask = new PspCheckTask();
+				
+				if("write".equals(type)){
+					pspCheckTask.setApproveStatus(Constants.approve_status_second);
+				}else{
+					pspCheckTask.setApproveStatus(Constants.approve_status_threed);
+				}
+				pspCheckTask.setTaskId(taskId);
+				//插入数据库
+				afterloanCheckService.update_page1(pspCheckTask);
+				
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch(Exception e){
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
 	}
 	
 	/**
-	 * 贷后检查任务查看(提醒)
-	 * 
-	 * @param filter 
-	 * @param request
-	 * @return
+	 * 团队长退回检查
 	 */
-	@ResponseBody
-	@RequestMapping(value = "remind.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView remind(@ModelAttribute AfterLoanCheckFilter filter,HttpServletRequest request){
-		filter.setRequest(request);
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String userId = user.getId();
-		filter.setUserId(userId);
-		QueryResult<AfterLoaninfo> result = afterloanCheckService.findAfterLoanCheckTaskRemindByFilter(filter);
-		JRadPagedQueryResult<AfterLoaninfo> pagedResult = new JRadPagedQueryResult<AfterLoaninfo>(
-				filter, result);
-		JRadModelAndView mv = new JRadModelAndView(
-				"/afterloan/afterloan_remind", request);
-		mv.addObject(PAGED_RESULT, pagedResult);
-
-		return mv;
-	}
 	
+	@ResponseBody
+	@RequestMapping(value = "return_loanpage1.json")
+	public JRadReturnMap return_loanpage1(@ModelAttribute PspCheckTask spCheckTask, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try{
+				String taskId = request.getParameter("taskId");//贷后检查任务编号
+				String clientNo = request.getParameter("clientNo");//客户编号
+				String type = request.getParameter("type");//
+				PspCheckTask pspCheckTask = new PspCheckTask();
+				
+				
+					pspCheckTask.setApproveStatus(Constants.approve_status_first);
+				
+				pspCheckTask.setTaskId(taskId);
+				//插入数据库
+				afterloanCheckService.update_page1(pspCheckTask);
+				
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch(Exception e){
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
+	}
 }

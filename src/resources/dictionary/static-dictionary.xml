@@ -963,11 +963,11 @@
 	</dictionary>
 	
 	<dictionary name="LOAN_BELONG4" title="贷款归属4">
+	    <item name="1040" title="农户及个人经营性贷款" />
 		<item name="1030" title="个人消费贷款" />
 		<item name="1020" title="个体合作贷款" />
 		<item name="1010" title="个体户贷款" />
 		<item name="0000" title="对公贷款" />
-		<item name="1040" title="农户及个人经营性贷款" />
 	</dictionary>
 	
 	<dictionary name="ACCT_ATTR" title="账户属性">
@@ -1778,5 +1778,20 @@
 	    <item name="1" title="电话" />
 	    <item name="2" title="实地考察" />
 	    <item name="3" title="客户上门" />
+	</dictionary>
+	
+	<dictionary name="cusRisk" title="客户风险判断">
+	    <item name="极小" title="极小" />
+	    <item name="小" title="小" />
+	    <item name="较小" title="较小" />
+	    <item name="中等" title="中等" />
+	    <item name="较大" title="较大" />
+	    <item name="大" title="大" />
+	    <item name="极大" title="极大" />
+	</dictionary>
+	<dictionary name="loanStatus" title="贷款状态">
+	    <item name="00" title="正常" />
+	    <item name="10" title="冻结" />
+	    <item name="30" title="终止" />
 	</dictionary>
 </dictionaries>

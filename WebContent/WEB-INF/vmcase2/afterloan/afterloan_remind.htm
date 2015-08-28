@@ -8,19 +8,20 @@
         <div class="title">贷后检查提醒</div>
       </div>
       <div class="inquiry">
-      <!--<div class="inquiry">
+     <div class="inquiry">
        <div class="search_tag">贷后检查提醒</div>
         <div class="search">
-          <form id="queryForm" action="${contextPath}/afterloan/afterloancheck/remind.page">
+          <form id="queryForm" action="${contextPath}/afterloan/afterloanremind/remind.page">
           <ul>
               <li>
-                <span>客户名称：<input type="text" id="clientName" name="clientName" value="$!result.filter.chineseName" /></span>
+                <span>客户经理号：<input type="text" id="userNo" name="userNo" value="$!result.filter.userNo" /></span>
               </li>
                <li>
-                <span>证件号码：<input type="text" id="globalId" name="globalId" value="$!result.filter.cardId" /></span>
-              </li>
-               <li>
-                <span>客户编号：<input type="text" id="globalId" name="globalId" value="$!result.filter.clientNo" /></span>
+                <span>检查类型：<select id="checkType" name="checkType">
+                       <option value="">请选择...</option>
+	                   #dict("TASK_TYPE", $!result.filter.checkType)
+	                </select>
+				</span>
               </li>
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -28,7 +29,7 @@
               </li>
           </ul>
           </form>
-        </div>  -->
+        </div>
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
@@ -92,7 +93,7 @@
         #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>
-    </div> -->
+    </div>
     <div class="clear"></div>
     </div>
   </div>

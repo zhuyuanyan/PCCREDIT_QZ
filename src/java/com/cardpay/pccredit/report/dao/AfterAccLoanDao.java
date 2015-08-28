@@ -26,11 +26,17 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface AfterAccLoanDao {
 	/**
+	 * 贷款借据清单不分页
+	 */
+	public List<AccLoanInfo> getAfterAccLoanAll(OClpmAccLoanFilter filter);
+	/**
      * 贷款借据清单
      * @param filter
      * @return 
      */
 	public List<AccLoanInfo> getAfterAccLoan(OClpmAccLoanFilter filter);
+	
+	public int getAfterAccLoanCount(OClpmAccLoanFilter filter);
 	/**
      * 客户逾期清单
      * @param filter

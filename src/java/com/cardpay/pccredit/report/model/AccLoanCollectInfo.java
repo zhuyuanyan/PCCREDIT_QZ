@@ -16,12 +16,11 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String loanCustomerSum;//贷款客户总数
 	private String increaseCusSum;//新增客户数
 	private String centreLoansSun;//中心授信总数
-	private String loanBalanceSum;//当前贷款总余额
-	private Double loanRealityRate;//贷款实际用信率
-	private String increaseLoanCredit;//新增授信金额
-	private String increaseBalanceTheMonth;//新增用信余额(日均)
-	private String overdueBalanceTheMon;//逾期金额
-	private String overdueBalance; //累计逾期总额
+	private Double loanBalanceSum;//新增用信余额
+	private Double increaseLoanCredit;//新增授信金额
+	private Double increaseBalanceTheMonth;//新增用信余额(日均)
+	private Double overdueBalanceTheMon;//逾期金额
+	private Double overdueBalance; //累计逾期总额
 	private String increseOverdueCusTheMon;//新增逾期客户数
 	private String resvIntAccum;//累计实收利息
 	private String overdueCusM0;//累计逾期客户数M0以上
@@ -29,7 +28,9 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String overdueCusM2;//累计逾期客户数M2以上
 	private String overdueCusM3;//累计逾期客户数M3以上
 	private String overdueCusM4;//累计逾期客户数M4以上
-	
+	private String contAmt;//累计授信金额
+	private String contBalace;//累计用信余额
+	private String alloverdue;//累计逾期客户数
 
 	public String getIncreaseLoancount() {
 		return increaseLoancount;
@@ -55,34 +56,34 @@ public class AccLoanCollectInfo extends BusinessModel{
 	public void setCentreLoansSun(String centreLoansSun) {
 		this.centreLoansSun = centreLoansSun;
 	}
-	public String getLoanBalanceSum() {
+	public Double getLoanBalanceSum() {
 		return loanBalanceSum;
 	}
-	public void setLoanBalanceSum(String loanBalanceSum) {
+	public void setLoanBalanceSum(Double loanBalanceSum) {
 		this.loanBalanceSum = loanBalanceSum;
 	}
-	public String getIncreaseLoanCredit() {
+	public Double getIncreaseLoanCredit() {
 		return increaseLoanCredit;
 	}
-	public void setIncreaseLoanCredit(String increaseLoanCredit) {
+	public void setIncreaseLoanCredit(Double increaseLoanCredit) {
 		this.increaseLoanCredit = increaseLoanCredit;
 	}
-	public String getIncreaseBalanceTheMonth() {
+	public Double getIncreaseBalanceTheMonth() {
 		return increaseBalanceTheMonth;
 	}
-	public void setIncreaseBalanceTheMonth(String increaseBalanceTheMonth) {
+	public void setIncreaseBalanceTheMonth(Double increaseBalanceTheMonth) {
 		this.increaseBalanceTheMonth = increaseBalanceTheMonth;
 	}
-	public String getOverdueBalanceTheMon() {
+	public Double getOverdueBalanceTheMon() {
 		return overdueBalanceTheMon;
 	}
-	public void setOverdueBalanceTheMon(String overdueBalanceTheMon) {
+	public void setOverdueBalanceTheMon(Double overdueBalanceTheMon) {
 		this.overdueBalanceTheMon = overdueBalanceTheMon;
 	}
-	public String getOverdueBalance() {
+	public Double getOverdueBalance() {
 		return overdueBalance;
 	}
-	public void setOverdueBalance(String overdueBalance) {
+	public void setOverdueBalance(Double overdueBalance) {
 		this.overdueBalance = overdueBalance;
 	}
 	public String getIncreseOverdueCusTheMon() {
@@ -133,11 +134,23 @@ public class AccLoanCollectInfo extends BusinessModel{
 	public void setResvIntAccum(String resvIntAccum) {
 		this.resvIntAccum = resvIntAccum;
 	}
-	public Double getLoanRealityRate() {
-		return loanRealityRate;
+	public String getContAmt() {
+		return contAmt;
 	}
-	public void setLoanRealityRate(Double loanRealityRate) {
-		this.loanRealityRate = loanRealityRate;
+	public void setContAmt(String contAmt) {
+		this.contAmt = contAmt;
+	}
+	public String getContBalace() {
+		return contBalace;
+	}
+	public void setContBalace(String contBalace) {
+		this.contBalace = contBalace;
+	}
+	public String getAlloverdue() {
+		return alloverdue;
+	}
+	public void setAlloverdue(String alloverdue) {
+		this.alloverdue = alloverdue;
 	}
 
 }

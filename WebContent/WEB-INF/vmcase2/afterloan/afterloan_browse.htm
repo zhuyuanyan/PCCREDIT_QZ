@@ -21,6 +21,13 @@
                <li>
                 <span>客户编号：<input type="text" id="clientNo" name="clientNo" value="$!result.filter.clientNo" /></span>
               </li>
+              <li>
+                <span>检查类型：<select id="checkType" name="checkType">
+                       <option value="">请选择...</option>
+	                   #dict("TASK_TYPE", $!result.filter.checkType)
+	                </select>
+				</span>
+				</li>
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
@@ -105,7 +112,7 @@
 				var cardId = getCurrentRowId().split("@")[1];
 				var taskId = getCurrentRowId().split("@")[2];
 				if(taskId!=null){
-					var url="${contextPath}/afterloan/afterloancheck/iframe.page?id="+clientNo+"&cardId="+cardId+"&taskId="+taskId;
+					var url="${contextPath}/afterloan/afterloancheck/iframe.page?id="+clientNo+"&cardId="+cardId+"&taskId="+taskId+"&type=write";
 					window.location.href = url;
 				}
 			}

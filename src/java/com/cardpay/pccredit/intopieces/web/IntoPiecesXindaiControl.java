@@ -178,11 +178,17 @@ public class IntoPiecesXindaiControl extends BaseController {
 			//查找审批金额
 			Circle circle = circleService.findCircleByAppId(appId);
 			
+			if(StringUtils.isBlank(circle.getaClientNo())){
+				returnMap.setSuccess(false);
+				returnMap.put("message", "客户号不能为空");
+				return returnMap;
+			}
 			request.setAttribute("examineAmount", circle.getContractAmt());
 			customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("保存失败");
+			returnMap.put("message", "保存失败");
 			e.printStackTrace();
 		}
 		return returnMap;

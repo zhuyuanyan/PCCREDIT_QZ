@@ -362,7 +362,7 @@
 		and b.status='audit' 
 		</select>
 		
-		<select id="IntopieceWaitFormM" resultMap="BaseResultMap">
+		<select id="IntopieceWaitFormM" resultMap="BaseResultMap" parameterType="com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter">
 		SELECT
 		b.*, U.CHINESE_NAME as chineseName,
 		U.RESIDENTIAL_ADDRESS AS residentialAddress,
@@ -405,7 +405,7 @@
 		</if>
 		</select>
 		
-		<select id="CountIntopieceWaitFormM" resultType="int">
+		<select id="CountIntopieceWaitFormM" resultType="int" parameterType="com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter">
 		SELECT
 		count(*) 
 		FROM

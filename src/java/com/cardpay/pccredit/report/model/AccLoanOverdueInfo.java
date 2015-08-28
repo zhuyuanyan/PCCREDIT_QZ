@@ -26,6 +26,7 @@ public class AccLoanOverdueInfo extends BusinessModel{
 	private Double overdueMoney;//累计逾期金额
 	private String overdue;//逾期期数
 	private String clientName;//客户名称
+	private Double loanBalance;//贷款余额
 	
 	public String getRowIndex() {
 		return rowIndex;
@@ -123,4 +124,11 @@ public class AccLoanOverdueInfo extends BusinessModel{
 	public void setAcctName(String acctName) {
 		this.acctName = acctName;
 	}
+	public Double getLoanBalance() {
+		return loanBalance;
+	}
+	public void setLoanBalance(Double loanBalance) {
+		this.loanBalance = loanBalance;
+	}
+	
 }

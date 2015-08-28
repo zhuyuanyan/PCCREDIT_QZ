@@ -33,6 +33,7 @@ public class PspCheckTask extends BusinessModel{
 	private String repayment;
 	private String reciprocalType;//回访类型
 	private String contactInformation;
+	private String repaymentOther;//还款情况说明
 	
 	public String getTaskId() {
 		return taskId;
@@ -159,6 +160,12 @@ public class PspCheckTask extends BusinessModel{
 	}
 	public void setContactInformation(String contactInformation) {
 		this.contactInformation = contactInformation;
+	}
+	public String getRepaymentOther() {
+		return repaymentOther;
+	}
+	public void setRepaymentOther(String repaymentOther) {
+		this.repaymentOther = repaymentOther;
 	}
 	
 	

@@ -16,23 +16,27 @@
               <li>
                 <span>所属机构：<select id="orgId" name="orgId">
                 		<option value="">请选择...</option>
-	                   #dict("Organizations", $!filter.orgId)
+	                   #dict("Organizations", $!result.filter.orgId)
 	                </select>
 				</span>
               </li>
               <li>
-                <span>开始日期：<input type="text" name="startDate" value='$!date.format("yyyy-MM-dd",$!filter.startDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+                <span>开始日期：<input type="text" name="startDate" value='$!date.format("yyyy-MM-dd",$!result.filter.startDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
               <li>
-                <span>结束日期：<input type="text" name="endDate" value='$!date.format("yyyy-MM-dd",$!filter.endDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+                <span>结束日期：<input type="text" name="endDate" value='$!date.format("yyyy-MM-dd",$!result.filter.endDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
               <li>
-                <span>客户经理号：<input type="text" name="managerId" value='$!filter.managerId' /></span>
+                <span>客户经理号：<input type="text" name="managerId" value='$!result.filter.managerId' /></span>
               </li>
               <li>
-                <span>客户名称：<input type="text" name="clientName" value='$!filter.clientName' /></span>
+                <span>客户名称：<input type="text" name="clientName" value='$!result.filter.clientName' /></span>
               </li>
               
+              <li class="search_button">
+              	<input id="id_export_button" type="button" value="导出excel" class="search_button_export"
+                  title="#i18n('button.export.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
@@ -48,13 +52,14 @@
               <col width="60"/>
               <col width="80"/>
               <col width="200"/>
+              <col width="200"/>
               <col width="180"/>
-              <col width="180"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
+               <col width="120"/>
                <col width="120"/>
               <col width="120"/>
               <col width="120"/>
@@ -76,6 +81,7 @@
               <th nowrap="nowrap">到期日期</th>
               <th nowrap="nowrap">授信金额</th>
               <th nowrap="nowrap">贷款金额</th>
+              <th nowrap="nowrap">贷款余额</th>
               <th nowrap="nowrap">欠息总额</th>
               <th nowrap="nowrap">起息日期</th>
               <th nowrap="nowrap">发放日期</th>
@@ -90,7 +96,7 @@
               <col width="60"/>
               <col width="80"/>
               <col width="200"/>
-              <col width="180"/>
+              <col width="200"/>
               <col width="180"/>
               <col width="120"/>
               <col width="120"/>
@@ -98,12 +104,13 @@
               <col width="120"/>
               <col width="120"/>
                <col width="120"/>
+               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
               <col width="120"/>
             </colgroup>
-            #foreach ($accloan in $list)
+            #foreach ($accloan in $result.items)
             	<tr id="$!accloan.rowIndex">
 	              <td nowrap="nowrap">$!accloan.rowIndex</td>
 	              <td nowrap="nowrap">$!accloan.managerId</td>
@@ -116,6 +123,7 @@
 	              <td nowrap="nowrap">$!accloan.contEndDate</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!accloan.contAmt)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!accloan.loanAmt)</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $!accloan.loanBalance)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!accloan.intAccum)</td>
 	              <td nowrap="nowrap">$!accloan.qixiDate</td>
 	              <td nowrap="nowrap">$!accloan.distrDate</td>
@@ -124,7 +132,8 @@
             #end
           </table>
         </div>
-      </div>		
+      </div>
+       #parse ("common/pagination.htm")		
         <div class="clear"></div>
       </div>
     </div>
@@ -138,7 +147,7 @@
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
 		opsObj.browseUrl = "${modulePath}/browse.page";
-
+		opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
 	});
 </script>

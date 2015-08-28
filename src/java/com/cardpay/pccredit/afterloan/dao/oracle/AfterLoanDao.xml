@@ -27,6 +27,7 @@
     	<result column="contactInformation" property="contactInformation"  />
     	<result column="chineseName" property="chineseName"  />
     	<result column="cardId" property="cardId"  />
+    	<result column="repaymentOther" property="repaymentOther"  />
     </resultMap>
     
     <select id="findAfterLoanCheckTaskByFilter" parameterType="com.cardpay.pccredit.afterloan.filter.AfterLoanCheckFilter"
@@ -57,8 +58,9 @@
     			task.reciprocal_type as reciprocalType,
     			task.contact_information as contactInformation,
     			ecif.client_name as chineseName,
-    			ecif.global_id as cardId
-  			from psp_check_task task
+    			ecif.global_id as cardId,
+    			task.REPAYMENT_OTHER as repaymentOther
+  			from psp_check_task task 
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
  			where 1 = 1
    			and ecif.USER_ID = #{userId}
@@ -71,6 +73,9 @@
 			</if>
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
+			</if>
+			<if test="checkType != null and checkType != '' ">
+				AND task.task_type=#{checkType}
 			</if>
 			<![CDATA[		
 				) ROW_
@@ -106,7 +111,8 @@
     			task.reciprocal_type as reciprocalType,
     			task.contact_information as contactInformation,
     			ecif.client_name as chineseName,
-    			ecif.global_id as cardId
+    			ecif.global_id as cardId,
+    			task.REPAYMENT_OTHER as repaymentOther
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
  			where 1 = 1
@@ -120,6 +126,9 @@
 			</if>
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
+			</if>
+			<if test="checkType != null and checkType != '' ">
+				AND task.task_type=#{checkType}
 			</if>) a
 	</select>
 	
@@ -151,7 +160,8 @@
     			task.reciprocal_type as reciprocalType,
     			task.contact_information as contactInformation,
     			ecif.client_name as chineseName,
-    			ecif.global_id as cardId
+    			ecif.global_id as cardId,
+    			task.REPAYMENT_OTHER as repaymentOther
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
  			where 1 = 1
@@ -164,6 +174,9 @@
 			</if>
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
+			</if>
+			<if test="checkType != null and checkType != '' ">
+				AND task.task_type=#{checkType}
 			</if>
 			<![CDATA[		
 				) ROW_
@@ -188,6 +201,9 @@
 			</if>
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
+			</if>
+			<if test="checkType != null and checkType != '' ">
+				AND task.task_type=#{checkType}
 			</if>
 	</select>
 	
@@ -219,9 +235,11 @@
     			task.reciprocal_type as reciprocalType,
     			task.contact_information as contactInformation,
     			ecif.client_name as chineseName,
-    			ecif.global_id as cardId
+    			ecif.global_id as cardId,
+    			task.REPAYMENT_OTHER as repaymentOther
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
+  			inner join sys_user s on s.id=ecif.user_id
  			where 1 = 1
    			and task.approve_status='0'
    			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> 10
@@ -233,6 +251,12 @@
 			</if>
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.a_client_no=#{clientNo}
+			</if>
+			<if test="userNo != null and userNo != '' ">
+				AND s.login=#{userNo}
+			</if>
+			<if test="checkType != null and checkType != '' ">
+				AND task.task_type=#{checkType}
 			</if>
 			<![CDATA[		
 				) ROW_
@@ -247,6 +271,7 @@
 				count(*)
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
+  			inner join sys_user s on s.id=ecif.user_id
  			where 1 = 1
    			and task.approve_status='0'
    			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> 10
@@ -259,6 +284,12 @@
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.a_client_no=#{clientNo}
 			</if>
+			<if test="checkType != null and checkType != '' ">
+				AND task.task_type=#{checkType}
+			</if>
+			<if test="userNo != null and userNo != '' ">
+				AND s.login=#{userNo}
+			</if>
 	</select>
 	 <select id="findAferLoanCheckCountByUserId" 
         resultType="int">
@@ -269,6 +300,17 @@
  			where 1 = 1
    			and task.approve_status='0'
    			and ecif.user_Id=#{userId}
+   			 
+	</select>
+	<select id="findAferLoanCheckRemindCount" 
+        resultType="int">
+			select 
+				count(*)
+  			from psp_check_task task
+  			inner join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
+ 			where 1 = 1
+   			and task.approve_status='0'
+   			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> 10
    			 
 	</select>
 </mapper>

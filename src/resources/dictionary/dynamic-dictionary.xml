@@ -369,6 +369,7 @@ AND A.IS_DELETED = '0'
 
 	</dictionary>
 
+
 	<!-- ESB 数据字典 -->
 	<dictionary name="INDIV_BRT_PLACE_LEVEL_1" title="籍贯" timeout="10000">
 		select
@@ -519,7 +520,7 @@ AND A.IS_DELETED = '0'
 		parent_code ||'_'|| type_code as name,type_name as title
 		from AGRICULTURE_TYPE
 		where levels=1
-		order by name
+		order by name  
 	</dictionary>
 	<dictionary name="AGRICULTURE_TYPE_LEVEL_2" title="涉农贷款类型" timeout="10000">
 		select

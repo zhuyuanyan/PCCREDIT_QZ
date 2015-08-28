@@ -336,6 +336,7 @@ public class CustomerInforUpdateController extends BaseController {
 	public AbstractModelAndView create_jcjy(@ModelAttribute CustomerInforFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 		String customerId = request.getParameter(ID);
+		String type = request.getParameter("type");
 
 		List<CustomerInforUpdateCrossExamination> crossExaminationList =
                 customerInforUpdateService.getCustomerInforUpdateCrossExaminationById(customerId);
@@ -350,6 +351,7 @@ public class CustomerInforUpdateController extends BaseController {
 		mv.addObject("sjsy", balanceSheet != null ? balanceSheet.getContentsTextNumbers() : "");
 		mv.addObject("crossExaminationList",	crossExaminationList);
 		mv.addObject("customerId",customerId);
+		mv.addObject("type",type);
 		return mv;
 	}
 	

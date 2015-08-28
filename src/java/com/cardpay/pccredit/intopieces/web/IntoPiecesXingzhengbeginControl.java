@@ -238,7 +238,8 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 		mv.addObject("type", type);
 		CustomerInfor customerInfo = customerInforService.findCustomerInforById(intoPiecesService.findCustomerApplicationInfoByApplicationId(appId).getCustomerId());
 		mv.addObject("customerInfo", customerInfo);
-		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInfo.getId(), null);
+		//修改为appid查询
+		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(null, appId);
 		mv.addObject("qzApplnJyxx", qzApplnJyxx);
 		
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);

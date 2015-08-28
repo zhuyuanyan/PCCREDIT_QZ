@@ -164,6 +164,8 @@ public class MainController {
 		AccountManagerParameterForm accountManagerParameter = accountManagerParameterService.findAccountManagerParameterByUserId(userId);
 		//查询贷后检查任务数
 		int loanCount = afterLoanCheckService.findAferLoanCheckCountByUserId(userId);
+		//查询所检查提醒任务
+		int remindCount = afterLoanCheckService.findAferLoanCheckRemindCount();
 		//获取该用户角色
 		String roleName = accountManagerParameterService.findRoleNameByUserId(userId);
 		//客户经理层级
@@ -195,6 +197,7 @@ public class MainController {
 		mv.addObject("day1",day1);
 		mv.addObject("day2",day2);
 		mv.addObject("loanCount",loanCount);
+		mv.addObject("remindCount",remindCount);
 		mv.addObject("roleName",roleName);
 		/*center*/
 		mv.addObject("marketing",homeData.get("marketing"));

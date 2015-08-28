@@ -89,10 +89,10 @@ public class AfterloanCheckService {
 		Connection conn = null;
 		Statement sta = null;
 		try{
-		String sql = "update psp_check_task SET agreed_person='"+pspCheckTask.getAgreedPerson()+"', approve_status='"+pspCheckTask.getApproveStatus()+"'"
+		String sql = "update psp_check_task SET agreed_person='"+pspCheckTask.getAgreedPerson()+"'"
 				+ ", check_addr='"+pspCheckTask.getCheckAddr()+"',  check_time='"+pspCheckTask.getCheckTime()+"'"
 				+ ",remarks='"+pspCheckTask.getRemarks()+"', industry_outlook='"+pspCheckTask.getIndustryOutlook()+"', repayment='"+pspCheckTask.getRepayment()+"'"
-				+ ", reciprocal_type='"+pspCheckTask.getReciprocalType()+"', contact_information='"+pspCheckTask.getContactInformation()+"'"
+				+ ", reciprocal_type='"+pspCheckTask.getReciprocalType()+"', contact_information='"+pspCheckTask.getContactInformation()+"',repayment_other='"+pspCheckTask.getRepaymentOther()+"'"
 				+ "where task_id='"+pspCheckTask.getTaskId()+"'";
 		conn = commonDao.getSqlSession().getConnection();
 		sta = conn.createStatement();
@@ -109,6 +109,26 @@ public class AfterloanCheckService {
 		}
 	}
 	
+	public void update_page1(PspCheckTask pspCheckTask){
+		Connection conn = null;
+		Statement sta = null;
+		try{
+		String sql = "update psp_check_task SET  approve_status='"+pspCheckTask.getApproveStatus()+"'"
+				+ "where task_id='"+pspCheckTask.getTaskId()+"'";
+		conn = commonDao.getSqlSession().getConnection();
+		sta = conn.createStatement();
+		boolean flag = sta.execute(sql);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				sta.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	/**
 	 * 根据客户编号查询台账表
 	 * 过滤产品(经营类和消费类) 
@@ -117,7 +137,7 @@ public class AfterloanCheckService {
 	 */
 	public List<O_CLPM_ACC_LOAN> findAccLoanByclientNo(String clientNo){
 		//TODO 产品类型
-		String sql ="select loan.* from o_clpm_acc_loan loan where loan.cus_id='"+clientNo+"'";
+		String sql ="select loan.* from o_clpm_acc_loan loan where loan.cus_id='"+clientNo+"' order by loan.distr_date desc";
 		List<O_CLPM_ACC_LOAN> qz= commonDao.queryBySql(O_CLPM_ACC_LOAN.class, sql, null);
 		if(qz.size()>0){
 			return qz;
@@ -132,5 +152,14 @@ public class AfterloanCheckService {
 	 */
 	public int findAferLoanCheckCountByUserId(String userId){
 		return afterLoanDao.findAferLoanCheckCountByUserId(userId);
+	}
+	
+	/**
+	 * 查询超过十天的检查
+	 * @param userId
+	 * @return
+	 */
+	public int findAferLoanCheckRemindCount(){
+		return afterLoanDao.findAferLoanCheckRemindCount();
 	}
 }
