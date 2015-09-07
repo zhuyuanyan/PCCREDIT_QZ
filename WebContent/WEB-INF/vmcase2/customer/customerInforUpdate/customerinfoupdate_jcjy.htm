@@ -23,7 +23,7 @@
          </div>  -->
 			
 
-			<form id="id_module_form" action="${modulePath}/update.json">
+			<form id="id_module_form" action="${modulePath}/saveCrossExamination.page">
 				<input type="hidden" id="customerId" name="customerId" value="$!customerId"/>
 				<div  id="formsId">
 				 <div class="form-bd" style="min-width:1000px;">
@@ -199,7 +199,7 @@
 				<input id="id_save_button" type="button" value='#i18n("button.save")' class="current" /> 
 				<input type="button" onclick="returnClick();" value='#i18n("button.cancel")' />
 				#else
-				<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
+			<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 				#end
 			</div>
 		</div>

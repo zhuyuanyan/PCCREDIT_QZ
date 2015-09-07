@@ -520,8 +520,12 @@
         </div>
       </form>
       <div class="submit">
-        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
-        <input type="button" onclick="returnClick();" value="#i18n("button.cancel")" />
+        #if($!type!='readonly')
+			<input id="id_save_button" type="button" value='#i18n("button.save")' class="current" /> 
+			<input type="button" onclick="returnClick();" value='#i18n("button.cancel")' />
+		#else
+			<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
+		#end
       </div>
     </div>
   </div>
