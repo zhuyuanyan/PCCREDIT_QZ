@@ -69,7 +69,7 @@ public class IESBForECIFQuery {
         
         //客户类型
         Field CLIENT_TYPE=new Field(new FieldAttr(FieldType.FIELD_STRING, 6));
-        CLIENT_TYPE.setValue(clientType);//todo:客户类型
+        CLIENT_TYPE.setValue("");//todo:客户类型
         body_struct.addField("CLIENT_TYPE", CLIENT_TYPE);
         
         //证件号码

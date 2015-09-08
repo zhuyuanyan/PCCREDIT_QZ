@@ -144,7 +144,7 @@
 		ID AS name,
 		PRODUCT_NAME AS title
 		FROM
-		PRODUCT_ATTRIBUTE
+		PRODUCT_ATTRIBUTE order by created_time
 	</dictionary>
 	<dictionary name="CustomerName" title="客户名称" timeout="1000">
 		select
@@ -248,7 +248,6 @@
 		and
 		Dict_Type = 'CMMSCCOM-单位性质分值'
 	</dictionary>
-	
 
 	<dictionary name="CUSTOMERMANAGER" title="客户经理" timeout="10000">
 		SELECT
@@ -266,6 +265,7 @@ WHERE
 AND A.USER_TYPE = '1'
 AND A.IS_DELETED = '0'
 	</dictionary>
+	
 	<dictionary name="ALLMANAGER" title="所有客户经理" timeout="10000">
 		SELECT
 		A ."ID" AS NAME,
@@ -368,6 +368,7 @@ AND A.IS_DELETED = '0'
 		b.seq_no asc
 
 	</dictionary>
+
 
 	<!-- ESB 数据字典 -->
 	<dictionary name="INDIV_BRT_PLACE_LEVEL_1" title="籍贯" timeout="10000">
@@ -519,7 +520,7 @@ AND A.IS_DELETED = '0'
 		parent_code ||'_'|| type_code as name,type_name as title
 		from AGRICULTURE_TYPE
 		where levels=1
-		order by name
+		order by name  
 	</dictionary>
 	<dictionary name="AGRICULTURE_TYPE_LEVEL_2" title="涉农贷款类型" timeout="10000">
 		select
@@ -548,6 +549,23 @@ AND A.IS_DELETED = '0'
 		from AGRICULTURE_TYPE
 		where levels=5
 		order by name
+	</dictionary>
+	<dictionary name="product" title="涉农贷款类型" timeout="10000">
+		select
+		default_type as name,product_name as title
+		from product_attribute order by created_time
+	</dictionary>
+	<dictionary name="NODE_LIST" title="进件流程节点">
+		select name,title from (
+	   select n.node_name as title,n.id as name from (
+		select t.* from node_control t
+		<![CDATA[where level <>1]]>
+		start with current_node='#P{0}'
+		connect by next_node= prior current_node
+		) m,node_audit n where m.current_node=n.id
+		union 
+		select '客户经理' as name,'1' as title from dual
+		)
 	</dictionary>
 	<!-- ESB 数据字典 -->
 </dictionaries>
