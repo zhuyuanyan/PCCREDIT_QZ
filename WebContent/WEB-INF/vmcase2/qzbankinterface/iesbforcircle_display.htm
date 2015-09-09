@@ -516,10 +516,10 @@
 	      #if($!operate=="初审")
 	      	<a id="id_chushen_button" class="btn_g" >审批</a>
 		  #elseif($!operate=="内部审查")
-	      	<a id="id_in1_button" class="btn_g" >审批通过</a>
+	      	<a id="id_in1_button" class="btn_g" >通过</a>
 	      	<a id="id_return1_button" class="btn_g" >退件</a>
        	#elseif($!operate=="授信审批"||$!operate=="中心复核")
-	      	<a id="id_in2_button" class="btn_g" >审批通过</a>
+	      	<a id="id_in2_button" class="btn_g" >通过</a>
 	      	<a id="id_return_button" class="btn_g" >退件</a>
 	      	<a id="id_s_reject_button" class="btn_g" >拒件</a>
 	        #if($!operate=="授信审批")
@@ -553,7 +553,7 @@
 					var formjson = $($formName).serialize();
 					 var url = $($formName).attr("action");
 		   	        	$.ajax({
-		   	        		timeout : 500,
+		   	        		
 							url : url,
 							type : "get",
 							data : formjson,
@@ -578,7 +578,7 @@
 					#set ($formName = "'#checkForm'")
 					var formjson = $($formName).serialize();
 						 $.ajax({
-							    timeout : 500,
+							   
 								url : "${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json",
 								type : "get",
 								data : formjson,
@@ -609,7 +609,7 @@
 					#set ($formName = "'#checkForm'")
 					var formjson = $($formName).serialize();
 					 $.ajax({
-						    timeout : 1000,
+						   
 							url : "${contextPath}/intopieces/intopiecesrecieve/reject.json",
 							type : "get",
 							data : formjson,
@@ -634,7 +634,7 @@
            	    function() {
 	              	var url = "${contextPath}/intopieces/intopiecesxingzheng1/save_apply.json?id=${appId}";
 	 	        	$.ajax({
-	 	            timeout : 500,
+	 	            
 					url : url,
 					type : "get",
 					success : function(data) {
@@ -658,7 +658,7 @@
 			    			#set ($formName = "'#checkForm1'")
 			    			var formjson = $($formName).serialize();
 		    				 $.ajax({
-		    					    timeout : 500,
+		    					   
 									url : "${contextPath}/intopieces/intopiecesxingzheng1/returnAppln.json",
 									type : "get",
 									data : formjson,
@@ -687,7 +687,7 @@
 	            Dialog.confirm("确定提交吗？", "提示",
 	            	    function() {
 			                $.ajax({
-			                	timeout : 500,
+			                	
 								url : "${contextPath}/intopieces/intopiecesshouxin/pass.json?id=${appId}",
 								type : "get",
 								success : function(data) {
@@ -711,7 +711,7 @@
 					#set ($formName = "'#checkForm3'")
 					var formjson = $($formName).serialize();
 						 $.ajax({
-							 	timeout : 500,
+							 	
 								url : "${contextPath}/intopieces/intopiecesshouxin/returnAppln.json",
 								type : "get",
 								data : formjson,
@@ -793,7 +793,6 @@
                 	    function() {
                				url="${contextPath}/intopieces/intopiecesxingzheng2/save_apply.json?id=${appId}";
 			                $.ajax({ 
-			                	timeout : 500,
 								url : url,
 								type : "get",
 								success : function(data) {
@@ -822,7 +821,7 @@
 					#set ($formName = "'#checkForm4'")
 					var formjson = $($formName).serialize();
 					 $.ajax({
-						 	timeout : 500,
+						 	
 							url : "${contextPath}/intopieces/intopiecesxingzheng2/returnAppln.json",
 							type : "get",
 							data : formjson,
@@ -839,6 +838,7 @@
 					}); 
 			});
 		});
+		
 		
 		//判断级联是否为null
 		if("$!circle.loanKind_2" == ""){

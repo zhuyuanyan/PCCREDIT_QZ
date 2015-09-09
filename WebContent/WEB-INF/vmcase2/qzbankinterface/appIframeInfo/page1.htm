@@ -549,6 +549,11 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<td><input type="text" value="$!userName" readonly/>
 						<input type="hidden" name="managerName" value="$!userName"/>
 						<input type="hidden" name="managerId" value="$!externalId"/></td>	
+					<td class="table-label">协办客户经理：</td>
+					<td><input type="text" name="helpManagerName" value="$!qzApplnYwsqb.helpManagerName" />
+					</td>	
+				</tr>
+				<tr>		
 					<td class="table-label">日期：<font color="#ff0000">*</font></td>	
 					<td><input type="text" name="managerTime" onmouseover="_calendar()" readonly/></td>	
 				</tr>	
@@ -616,7 +621,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					var formjson = $($formName).serialize();
 					var url = "${contextPath}/intopieces/intopiecesapprove/insert_page1.json?customerId=${customerId}&appId=${appId}";
 					$.ajax({
-						timeout : 500,
+						
 						url : url,
 						type : "get",
 						data : formjson,

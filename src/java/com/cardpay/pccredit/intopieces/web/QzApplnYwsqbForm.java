@@ -107,6 +107,7 @@ public class QzApplnYwsqbForm extends BaseForm{
 	private String unitType;
 	private String bussdistrictAddress;
 	private String bussdisAddDetail;
+	private String helpManagerName;
 	
 	public String getApplicationId() {
 		return applicationId;
@@ -680,6 +681,12 @@ public class QzApplnYwsqbForm extends BaseForm{
 	}
 	public void setBussdisAddDetail(String bussdisAddDetail) {
 		this.bussdisAddDetail = bussdisAddDetail;
+	}
+	public String getHelpManagerName() {
+		return helpManagerName;
+	}
+	public void setHelpManagerName(String helpManagerName) {
+		this.helpManagerName = helpManagerName;
 	}
 	
 }

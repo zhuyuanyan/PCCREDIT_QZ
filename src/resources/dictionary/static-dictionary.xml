@@ -188,6 +188,12 @@
 		<item name="approved" title="审批结束" />
 		<item name="succeed" title="申请成功" />
 	</dictionary>
+	<dictionary name="nowapplicationStatus" title="申请件状态">
+		<item name="save" title="未申请" />
+		<item name="audit" title="已申请" />
+		<item name="refuse" title="被拒接" />
+		<item name="approved" title="审批结束" />
+	</dictionary>
 	<dictionary name="QuotaAdjustType" title="调额类型">
 		<item name="up" title="升额" />
 		<item name="down" title="降额" />
@@ -1731,6 +1737,7 @@
 	    <item name="15" title="15" />
 
 	</dictionary>
+	
 	<dictionary name="UNIT_TYPE" title="公司类型">
 	    <item name="1" title="国有" />
 	    <item name="2" title="外商独资" />
@@ -1742,6 +1749,7 @@
 		<item name="8" title="国内上市公司" />
 		<item name="9" title="其他" />
 	</dictionary>
+	
 	<dictionary name="LOAN_STATUS" title="台账状态">
 	    <item name="0" title="出帐未确认" />
 	    <item name="1" title="正常" />

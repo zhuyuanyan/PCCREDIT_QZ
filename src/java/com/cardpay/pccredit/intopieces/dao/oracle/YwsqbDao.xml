@@ -98,6 +98,7 @@
 		<result property="companySize" column="COMPANY_SIZE" />
 		<result property="unitType" column="UNIT_TYPE" />
 		<result property="bussdistrictAddress" column="BUSSDISTRICT_ADDRESS" />
+		<result property="helpManagerName" column="HELP_MANAGER_NAME" />
 		
 	</resultMap>
 	<resultMap id="ResultMapYwsqbZygys" type="com.cardpay.pccredit.intopieces.model.QzApplnYwsqbZygys">

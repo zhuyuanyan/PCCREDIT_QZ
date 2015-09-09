@@ -19,18 +19,16 @@
                <li>
                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
-              <!-- <li>
+              <li>
                 <span>进件状态：<select id="status" name="status" value="$!result.filter.status" >
                 <option  value="" >ALL</option>
                 <option #if($!result.filter.status=='save') selected="selected" #end value="save">暂存 </option>
-                <option #if($!result.filter.status=='audit') selected="selected" #end value="audit">已申请 </option>
-                <option #if($!result.filter.status=='nopass') selected="selected" #end value="nopass">申请未通过 </option>
+                <option #if($!result.filter.status=='audit' || $!result.filter.status=='RETURNAPPROVE') selected="selected" #end value="audit">已申请 </option>
                 <option #if($!result.filter.status=='refuse') selected="selected" #end value="refuse">被拒绝</option>
                 <option #if($!result.filter.status=='approved') selected="selected" #end value="approved">审批结束  </option>
-                <option #if($!result.filter.status=='succeed') selected="selected" #end value="succeed">申请成功</option>
+                 <option #if($!result.filter.status=='returnedToFirst') selected="selected" #end value="returnedToFirst">退回至客户经理</option>
                 </select>
-              </li> -->
-               
+              </li>
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
@@ -79,12 +77,12 @@
               <td nowrap="nowrap">#dictVal("ProductName",$!intoPieces.productId)</td>
               <td nowrap="nowrap">$format.formatNumber($!intoPieces.applyQuota, 2, 1)</td>
               <td nowrap="nowrap">
-	              #if($!intoPieces.status=='audit')已申请  
+	              #if($!intoPieces.status=='audit' || $!intoPieces.status=='RETURNAPPROVE')已申请  
 	              #elseif($!intoPieces.status=='save')暂存 
 	              #elseif($!intoPieces.status=='nopass')申请未通过 
 	              #elseif($!intoPieces.status=='refuse')被拒绝
-	              #elseif($!intoPieces.status=='RETURNAPPROVE')审核退回
-	              #elseif($!intoPieces.status=='approved')审批结束  
+	              #elseif($!intoPieces.status=='approved')审批结束 
+	              #elseif($!intoPieces.status=='returnedToFirst')退回至客户经理 
 	              #elseif($!intoPieces.status=='succeed')申请成功 
 	              #end
               </td>
@@ -103,7 +101,7 @@
           #btnpriv("import")<a class="btn_g" href="javascript:void(0);" title="导入" onclick="linkImport('${contextPath}/intopieces/intopiecesquery/importCustomerInfo.page')">导入</a>#end
           #btnpriv("approveloguser")<a class="btn_g" href="javascript:void(0);" title="查看审批记录(显示用户)" onclick="viewIntoPicesApproveHistory('YES')">查看审批记录(显示用户)</a>#end
            -->
-          #btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end
+          #btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('YES')">查看审批记录</a>#end
           #btnpriv("scan")<a class="btn_g" href="javascript:void(0);" title="影像补扫" onclick="scan('NO')">影像补扫</a>#end
           #btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看申请信息" onclick="viewIntoPicesApproveDisplay('YES')">查看申请信息</a>#end
         </div>

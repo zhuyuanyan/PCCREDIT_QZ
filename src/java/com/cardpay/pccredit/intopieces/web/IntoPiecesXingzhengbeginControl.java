@@ -202,7 +202,6 @@ public class IntoPiecesXingzhengbeginControl extends BaseController {
 	public JRadReturnMap returnAppln(HttpServletRequest request) throws SQLException {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
-			int nodeNo = 3;//内部审核
 			String appId = request.getParameter("appId");
 			String operate = request.getParameter("operate");
 			String nodeName = request.getParameter("nodeName");

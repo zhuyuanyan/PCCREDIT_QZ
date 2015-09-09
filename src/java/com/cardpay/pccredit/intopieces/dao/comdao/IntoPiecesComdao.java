@@ -353,6 +353,7 @@ public class IntoPiecesComdao {
 		String chineseName  = filter.getChineseName();
 		String userId = filter.getUserId();
 		String cardId = filter.getCardId();
+		String status = filter.getStatus();
 		params.put("userId", userId);
 		
 		StringBuffer sql = new StringBuffer("SELECT cai. ID,cai.customer_id,cai.chinese_name,cai.product_id,cai.card_id,cai.apply_quota,cai.status,cai.Created_Time ");
@@ -360,37 +361,93 @@ public class IntoPiecesComdao {
 		sql.append("(SELECT * FROM WF_STATUS_QUEUE_RECORD WHERE EXAMINE_USER = #{userId}) wsqr ");
 		sql.append("LEFT JOIN ( SELECT T.ID, T.customer_id, b.chinese_name, T.product_id, b.card_id, circle.CONTRACT_AMT as apply_quota, T.status, T.SERIAL_NUMBER ,T.Created_Time ");
 		sql.append("FROM customer_application_info T inner JOIN basic_customer_information b ON T .customer_id = b. ID ");
-
 		sql.append("LEFT JOIN QZ_IESB_FOR_CIRCLE circle on T.id = circle.application_id ");
 		sql.append(") cai ");
 		sql.append("ON wsqr.CURRENT_PROCESS = CAI.SERIAL_NUMBER where 1=1 ");
-		
-		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){
-			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
-			    sql.append(" and (cai.card_id like '%"+cardId+"%' or cai.chinese_name like '%"+chineseName+"%' )");
-			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null){
+		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null || StringUtils.trimToNull(status)!=null){
+			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null && StringUtils.trimToNull(status)!=null){
+				if("audit".equals(status)){
+					sql.append(" and (cai.card_id like '%"+cardId+"%' or cai.chinese_name like '%"+chineseName+"%' or cai.status='"+status+"' or car.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and (cai.card_id like '%"+cardId+"%' or cai.chinese_name like '%"+chineseName+"%' or cai.status='"+status+"')");
+				}
+			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null&& StringUtils.trimToNull(status)==null){
 				params.put("cardId", cardId);
 				sql.append(" and cai.card_id like '%'||#{cardId}||'%' ");
-			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null){
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null&& StringUtils.trimToNull(status)==null){
 				params.put("chineseName", chineseName);
 				sql.append(" and cai.chinese_name like '%'||#{chineseName}||'%' ");
+			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null&& StringUtils.trimToNull(status)!=null){
+				params.put("cardId", cardId);
+				if("audit".equals(status)){
+					sql.append(" and cai.card_id like '%'||#{cardId}||'%' and (cai.status='"+status+"' or car.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and cai.card_id like '%'||#{cardId}||'%' and cai.status='"+status+"'");
+				}
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null&& StringUtils.trimToNull(status)!=null){
+				params.put("chineseName", chineseName);
+				if("audit".equals(status)){
+					sql.append(" and cai.chinese_name like '%'||#{chineseName}||'%' and (cai.status='"+status+"' or car.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and cai.chinese_name like '%'||#{chineseName}||'%' and cai.status='"+status+"'");
+				}
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)==null&& StringUtils.trimToNull(status)!=null){
+				if("audit".equals(status)){
+					sql.append(" and (cai.status='"+status+"' or cai.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and cai.status='"+status+"'");
+				}
 			}
 		}
-		sql.append("union ");
+		sql.append(" union ");
 		sql.append("SELECT T.ID, T.customer_id, b.chinese_name, T.product_id, b.card_id, circle.CONTRACT_AMT as apply_quota, T.status, T.Created_Time ");
 		sql.append("FROM customer_application_info T inner JOIN basic_customer_information b ON T .customer_id = b. ID ");
 		sql.append("LEFT JOIN QZ_IESB_FOR_CIRCLE circle on T.id = circle.application_id ");
 		sql.append("where b.user_id = #{userId} ");
-		sql.append("or b.user_id in (select t.child_id from manager_belong_map t left join account_manager_parameter amp on amp.id = t.child_id where amp.user_id = #{userId})");
-		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){
-			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
-			    sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' )");
-			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null){
+//		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){
+//			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
+//			    sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' )");
+//			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null){
+//				params.put("cardId", cardId);
+//				sql.append(" and b.card_id like '%'||#{cardId}||'%' ");
+//			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null){
+//				params.put("chineseName", chineseName);
+//				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' ");
+//			}
+//		}
+		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null || StringUtils.trimToNull(status)!=null){
+			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null && StringUtils.trimToNull(status)!=null){
+				if("audit".equals(status)){
+					sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' or T.status='"+status+"' or T.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' or T.status='"+status+"')");
+				}
+			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null&& StringUtils.trimToNull(status)==null){
 				params.put("cardId", cardId);
 				sql.append(" and b.card_id like '%'||#{cardId}||'%' ");
-			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null){
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null&& StringUtils.trimToNull(status)==null){
 				params.put("chineseName", chineseName);
 				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' ");
+			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null&& StringUtils.trimToNull(status)!=null){
+				params.put("cardId", cardId);
+				if("audit".equals(status)){
+					sql.append(" and b.card_id like '%'||#{cardId}||'%' and (T.status='"+status+"' or T.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and b.card_id like '%'||#{cardId}||'%' and T.status='"+status+"'");
+				}
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null&& StringUtils.trimToNull(status)!=null){
+				params.put("chineseName", chineseName);
+				if("audit".equals(status)){
+					sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' and (T.status='"+status+"' or T.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' and T.status='"+status+"'");
+				}
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)==null&& StringUtils.trimToNull(status)!=null){
+				if("audit".equals(status)){
+					sql.append(" and (T.status='"+status+"' or T.status='RETURNAPPROVE')");
+				}else{
+					sql.append(" and T.status='"+status+"'");
+				}
 			}
 		}
 		//sql.append("order by created_time desc");

@@ -84,6 +84,7 @@ public class Constant {
 	public static String APP_STATE_1="已申请";
 	public static String APP_STATE_2="未申请";
 	public static String APP_STATE_3="退回";
+	public static String APP_STATE_5="拒件";
 	public static String APP_STATE_4="审批完成";
 	
 	//泉州银行根机构id
