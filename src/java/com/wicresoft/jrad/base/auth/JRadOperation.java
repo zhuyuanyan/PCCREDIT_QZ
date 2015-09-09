@@ -113,5 +113,4 @@ public @interface JRadOperation {
 	
 	public static final long CONTEND = 8796093022208L;
 	
-	
 }

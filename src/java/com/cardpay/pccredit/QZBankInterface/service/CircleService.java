@@ -136,7 +136,6 @@ public class CircleService {
 			commonDao.insertObject(acct_Info1);
 			commonDao.insertObject(acct_Info2);
 			//commonDao.insertObject(fee_Acct_Info);
-			
 		}
 		return res;
 	}

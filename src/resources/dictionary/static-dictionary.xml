@@ -1731,7 +1731,6 @@
 	    <item name="15" title="15" />
 
 	</dictionary>
-	
 	<dictionary name="UNIT_TYPE" title="公司类型">
 	    <item name="1" title="国有" />
 	    <item name="2" title="外商独资" />
@@ -1743,7 +1742,6 @@
 		<item name="8" title="国内上市公司" />
 		<item name="9" title="其他" />
 	</dictionary>
-	
 	<dictionary name="LOAN_STATUS" title="台账状态">
 	    <item name="0" title="出帐未确认" />
 	    <item name="1" title="正常" />

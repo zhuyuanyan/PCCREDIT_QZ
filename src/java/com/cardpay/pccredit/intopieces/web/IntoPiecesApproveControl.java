@@ -1697,5 +1697,4 @@ public class IntoPiecesApproveControl extends BaseController {
 			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 			return returnMap;
 		}
-		
 }

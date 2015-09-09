@@ -111,7 +111,6 @@ public class IESBForED {
             for (int i = 0; i < m; i++) {
                 //数组中的元素也是CompositeData，这是固定的写法。根据游标就可以获取到数组中的所有元素
                 array_element = array.getStruct(i);
-
                 RET_MSG=array_element.getField("RET_MSG").strValue();
                 RET_CODE=array_element.getField("RET_CODE").strValue();
             }
