@@ -84,22 +84,57 @@ public class IESBForECIFController extends BaseController{
 		filter.setUserId(user.getId());
 		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInfoWithEcifByFilter(filter);
 		for(int i=0;i<result.getItems().size();i++){
-				CustomerApplicationInfo info = customerInforservice.ifProcess(result.getItems().get(i).getId());
-				//目前存在申请件
-				if(info!=null){
-					if(info.getStatus().equals(Constant.APPROVED_INTOPICES)){
-						result.getItems().get(i).setProcessId(Constant.APP_STATE_4);
-					}else{
-						result.getItems().get(i).setProcessId(Constant.APP_STATE_1);
-					}
-					//目前不存在申请件（初审退回）
-				}else if(result.getItems().get(i).getProcessId()==null){
-					result.getItems().get(i).setProcessId(Constant.APP_STATE_2);
+			List<CustomerApplicationInfo> appliationinfo = customerInforservice.ifProcess(result.getItems().get(i).getId(),filter.getAppStatus());
+			//目前存在申请件
+			String statusDetail = "";
+			if(appliationinfo == null ){
+				//目前不存在申请件（初审退回）
+				if(result.getItems().get(i).getProcessId()==null){
+					statusDetail = Constant.APP_STATE_2;
+						
 					//没申请件
 				}else{
-					result.getItems().get(i).setProcessId(Constant.APP_STATE_3);
+					statusDetail = Constant.APP_STATE_3;
+				//result.getItems().get(i).setProcessId(Constant.APP_STATE_3);
+				}
+			}else{
+				for(int j=0; j<appliationinfo.size();j++){
+					CustomerApplicationInfo info = appliationinfo.get(j);
+					if(info!=null){
+						if(info.getStatus().equals(Constant.APPROVED_INTOPICES)){
+							if("".equals(statusDetail)){
+								statusDetail = Constant.APP_STATE_4;
+							}else{
+								statusDetail += "/"+Constant.APP_STATE_4;
+							}
+							
+							//result.getItems().get(i).setProcessId(Constant.APP_STATE_4);
+						}else if(info.getStatus().equals(Constant.REFUSE_INTOPICES)){
+							if("".equals(statusDetail)){
+								statusDetail = Constant.APP_STATE_5;
+							}else{
+								statusDetail += "/"+Constant.APP_STATE_5;
+							}
+							//result.getItems().get(i).setProcessId(Constant.APP_STATE_5);
+						}else if(info.getStatus().equals(Constant.SAVE_INTOPICES)){
+							if("".equals(statusDetail)){
+								statusDetail = Constant.APP_STATE_2;
+							}else{
+								statusDetail += "/"+Constant.APP_STATE_2;
+							}
+						}else{
+							if("".equals(statusDetail)){
+								statusDetail = Constant.APP_STATE_1;
+							}else{
+								statusDetail += "/"+Constant.APP_STATE_1;
+							}
+							//result.getItems().get(i).setProcessId(Constant.APP_STATE_1);
+						}
+					}
 				}
 			}
+			result.getItems().get(i).setProcessId(statusDetail);
+		}
 		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/iesbforecif_browse",
                                                     request);

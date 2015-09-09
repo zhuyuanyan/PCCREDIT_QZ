@@ -93,7 +93,7 @@
   		inner join SYS_ORGANIZATION sd on circle.regist_org_no = sd.id
  	  where 1 = 1
   		and acct.acct_attr = '03'
-  		
+  		and  (loan.prd_id='100084' or loan.prd_id='100085')
   		and to_date(loan.distr_date,'yyyy-mm-dd') between #{startDate} and #{endDate}
   		<if test="managerId != null and managerId != '' ">
 			and circle.registered_id = #{managerId}
@@ -141,7 +141,7 @@
   		inner join SYS_ORGANIZATION sd on circle.regist_org_no = sd.id
  	  where 1 = 1
   		and acct.acct_attr = '03'
-  		
+  		and  (loan.prd_id='100084' or loan.prd_id='100085')
   		and to_date(loan.distr_date,'yyyy-mm-dd') between #{startDate} and #{endDate}
   		<if test="managerId != null and managerId != '' ">
 			and circle.registered_id = #{managerId}
@@ -184,7 +184,7 @@
   		inner join SYS_ORGANIZATION sd on circle.regist_org_no = sd.id
  	  where 1 = 1
   		and acct.acct_attr = '03'
-  		and (cont.prd_id='100084' or cont.prd_id='100085')
+  		and (loan.prd_id='100084' or loan.prd_id='100085')
   		and (loan.Rec_Int_Accum - loan.recv_int_accum)<![CDATA[ >  ]]>0
       <if test="managerId != null and managerId != '' ">
       and circle.registered_id = #{managerId}
@@ -236,7 +236,7 @@ select t1.*,
                 and info.product_id = #{productId}
                 </if>
                 <if test="userId != null and userId != '' ">
-                  and ecif.customer_id =#{userId}
+                  and ecif.user_id =#{userId}
                 </if>        
                and  (loan.prd_id='100084' or loan.prd_id='100085') 
               order by loan.cont_no)  laons ) t1,
@@ -253,7 +253,7 @@ select t1.*,
                 and info.product_id = #{productId}
                 </if>
                 <if test="userId != null and userId != '' ">
-                  and ecif.customer_id =#{userId}
+                  and ecif.user_id =#{userId}
                 </if>        
                and  (loan.prd_id='100084' or loan.prd_id='100085') 
               order by loan.cont_no)  laons) t2,
@@ -269,7 +269,7 @@ select t1.*,
                 and info.product_id = #{productId}
             </if>
             <if test="userId != null and userId != '' ">
-                and ecif.customer_id =#{userId}
+                and ecif.user_id =#{userId}
             </if>) t3,
  (select count(cont.cont_no) as allCreditLoans
           from o_clpm_ctr_loan_cont cont
@@ -282,7 +282,7 @@ select t1.*,
                 and info.product_id = #{productId}
             </if>
             <if test="userId != null and userId != '' ">
-                and ecif.customer_id =#{userId}
+                and ecif.user_id =#{userId}
             </if>) t4,
  (select sum(loan.LOAN_BALANCE) as loanBalanceSum
           from o_clpm_acc_loan loan
@@ -296,7 +296,7 @@ select t1.*,
                 and info.product_id = #{productId}
             </if>
             <if test="userId != null and userId != '' ">
-                and ecif.customer_id =#{userId}
+                and ecif.user_id =#{userId}
             </if>) t5,
  (select sum(cont.cont_amt) as contAmt
                           from o_clpm_ctr_loan_cont cont
@@ -311,7 +311,7 @@ select t1.*,
                       and info.product_id = #{productId}
                        </if>
                        <if test="userId != null and userId != '' ">
-                        and ecif.customer_id =#{userId}
+                        and ecif.user_id =#{userId}
                     </if>) t6,
  (select sum(loan.loan_balance) as contBalace
                           from o_clpm_acc_loan loan
@@ -328,7 +328,7 @@ select t1.*,
                         and info.product_id = #{productId}
                        </if>
                        <if test="userId != null and userId != '' ">
-                        and ecif.customer_id =#{userId}
+                        and ecif.user_id =#{userId}
                     </if>) t7,
  (select sum(cont.CONT_AMT) as newCreditMoney
           from o_clpm_ctr_loan_cont cont
@@ -342,7 +342,7 @@ select t1.*,
                 and info.product_id = #{productId}
             </if>
             <if test="userId != null and userId != '' ">
-                and ecif.customer_id =#{userId}
+                and ecif.user_id =#{userId}
             </if>) t8,
  (select sum(balance) / count(data_dt) as newUsedAge
           from (select sum(his.loan_balance) balance, data_dt
@@ -359,7 +359,7 @@ select t1.*,
                     and info.product_id = #{productId}
                     </if>
                     <if test="userId != null and userId != '' ">
-                    and ecif.customer_id =#{userId}
+                    and ecif.user_id =#{userId}
                 </if>
                  group by data_dt)) t9,
  (select sum(loan.overdue_balance) as overdueBalance
@@ -376,7 +376,7 @@ select t1.*,
                 and info.product_id = #{productId}
             </if>
             <if test="userId != null and userId != '' ">
-                and ecif.customer_id =#{userId}
+                and ecif.user_id =#{userId}
             </if>) t10,
  (select sum(loan.overdue_balance) as overdueBalanceCount
           from o_clpm_acc_loan loan
@@ -390,7 +390,7 @@ select t1.*,
                 and info.product_id = #{productId}
             </if>
             <if test="userId != null and userId != '' ">
-                and ecif.customer_id =#{userId}
+                and ecif.user_id =#{userId}
             </if>) t11,
  (select count(loans.cus_id) as newoverdue
           from (select loan.cus_id
@@ -408,7 +408,7 @@ select t1.*,
                    </if>
                    and loan.overdue_balance > 0
                    <if test="userId != null and userId != '' ">
-                  and ecif.customer_id =#{userId}
+                  and ecif.user_id =#{userId}
                  </if>
                  order by loan.cus_id) loans) t12,
  (select count(loans.cus_id) as alloverdue
@@ -426,7 +426,7 @@ select t1.*,
                    </if>
                    and loan.overdue_balance > 0
                    <if test="userId != null and userId != '' ">
-                  and ecif.customer_id =#{userId}
+                  and ecif.user_id =#{userId}
                  </if>
                  order by loan.cus_id) loans) t13,
  (select sum(loan.recv_int_accum) as resvIntAccum
@@ -442,7 +442,7 @@ select t1.*,
                 and info.product_id = #{productId}
             </if>
             <if test="userId != null and userId != '' ">
-                and ecif.customer_id =#{userId}
+                and ecif.user_id =#{userId}
             </if>) t14,
  (select count(*) as M0
           from (select a.cus_id
@@ -460,7 +460,7 @@ select t1.*,
                        </if>
                            and loan.overdue = 0
                            <if test="userId != null and userId != '' ">
-                      and ecif.customer_id =#{userId}
+                      and ecif.user_id =#{userId}
                      </if>) a
                  group by a.cus_id)) t15,
  (select count(*) as M1
@@ -479,7 +479,7 @@ select t1.*,
                        </if>
                            and loan.overdue = 1
                            <if test="userId != null and userId != '' ">
-                      and ecif.customer_id =#{userId}
+                      and ecif.user_id =#{userId}
                      </if>) a
                  group by a.cus_id)) t16,                
  (select count(*) as M2
@@ -498,7 +498,7 @@ select t1.*,
                        </if>
                            and loan.overdue = 2
                            <if test="userId != null and userId != '' ">
-                      and ecif.customer_id =#{userId}
+                      and ecif.user_id =#{userId}
                      </if>) a
                  group by a.cus_id)) t17,
  (select count(*) as M3
@@ -517,7 +517,7 @@ select t1.*,
                        </if>
                            and loan.overdue = 3
                            <if test="userId != null and userId != '' ">
-                      and ecif.customer_id =#{userId}
+                      and ecif.user_id =#{userId}
                      </if>) a
                  group by a.cus_id)) t18,
  (select count(*) as M4
@@ -536,7 +536,7 @@ select t1.*,
                        </if>
                            and loan.overdue >= 4
                            <if test="userId != null and userId != '' ">
-                      and ecif.customer_id =#{userId}
+                      and ecif.user_id =#{userId}
                      </if>) a
                  group by a.cus_id)) t19
  
@@ -586,7 +586,7 @@ select t1.*,
   		inner join SYS_ORGANIZATION sd on circle.regist_org_no = sd.id
  	  where 1 = 1
   		and acct.acct_attr = '03'
-  		
+  		and (loan.prd_id='100084' or loan.prd_id='100085')
   		and to_date(loan.distr_date,'yyyy-mm-dd') between #{startDate} and #{endDate}
   		<if test="managerId != null and managerId != '' ">
 			and circle.registered_id = #{managerId}

@@ -250,6 +250,13 @@ public class CustomerInforService {
 		return nationalities;
 	}
 	/**
+	 * 根据dictType获取字典
+	 */
+	public List<Dict> findDict(String dict_type){
+		List<Dict> dict = customerInforDao.findDict(dict_type);
+		return dict;
+	}
+	/**
 	 * 获取证件类型
 	 * @return
 	 */
@@ -1423,12 +1430,13 @@ public class CustomerInforService {
 	/**
 	 * 查询客户是否已有进件流程
 	 */
-	public CustomerApplicationInfo ifProcess(String customerId){
+	public List<CustomerApplicationInfo> ifProcess(String customerId,String appStatus){
 		CustomerApplicationInfoFilter info = new CustomerApplicationInfoFilter();
 		info.setCustomerId(customerId);
-		List<CustomerApplicationInfo> listApplicationInfo = customerinforcommDao.ifProcess(customerId);
+		info.setStatus(appStatus);
+		List<CustomerApplicationInfo> listApplicationInfo = customerinforcommDao.ifProcess(customerId,appStatus);
 		if(listApplicationInfo.size()>0){
-			return listApplicationInfo.get(0);
+			return listApplicationInfo;
 		}else{
 			return null;
 		}

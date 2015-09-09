@@ -3,6 +3,10 @@ package com.cardpay.pccredit.afterloan.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -66,6 +70,22 @@ public class AfterloanCheckService {
 	 */
 	public QueryResult<AfterLoaninfo> findAfterLoanCheckTaskRemindByFilter(AfterLoanCheckFilter filter){
 		List<AfterLoaninfo> pList = afterLoanDao.findAfterLoanCheckTaskRemindByFilter(filter);
+		for(int i=0;i<pList.size();i++){
+			AfterLoaninfo loan = pList.get(i);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date loanCreateDate = sdf.parse(loan.getTaskCreateDate());
+				int endDate = Integer.parseInt(filter.getEnddate());
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(loanCreateDate);
+				calendar.add(Calendar.HOUR, endDate*24);
+				String TaskRequestDate = sdf.format(calendar.getTime());
+				loan.setTaskRequestTime(TaskRequestDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		int size = afterLoanDao.findAfterLoanCheckTaskCountRemindByFilter(filter);
 		QueryResult<AfterLoaninfo> qs = new QueryResult<AfterLoaninfo>(size, pList);
 		return qs;

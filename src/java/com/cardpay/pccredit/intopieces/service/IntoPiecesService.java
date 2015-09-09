@@ -66,7 +66,6 @@ import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
 import com.cardpay.pccredit.intopieces.web.QzDcnrUploadForm;
-import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
@@ -1218,6 +1217,7 @@ public class IntoPiecesService {
 		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
 		//插入流程log表
 		insertProcessLog(applicationId,Constant.APPLN_TYPE_2,request,request.getParameter("remark"),process);
+
 		//更新业务流程表
 		process.setNextNodeId(nodeId);
 		process.setAuditUser(loginId);
@@ -1541,6 +1541,7 @@ public class IntoPiecesService {
 		String[] zbkhjl = request.getParameterValues("zbkhjl");
 		String[] jbr = request.getParameterValues("jbr");
 		String[] bz = request.getParameterValues("bz");
+		String[] lrz = request.getParameterValues("lrz");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		if(slrq!=null){
 			for(int i=0;i<slrq.length;i++){
@@ -1555,6 +1556,7 @@ public class IntoPiecesService {
 				tz.setBz(bz[i]);
 				tz.setApplicationId(appId);
 				tz.setCreatedTime(new Date());
+				tz.setLrz(lrz[i]);
 				commonDao.insertObject(tz);
 			}
 		}

@@ -242,7 +242,7 @@
   			inner join sys_user s on s.id=ecif.user_id
  			where 1 = 1
    			and task.approve_status='0'
-   			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> 10
+   			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> #{remindate}
    			 <if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
@@ -274,7 +274,7 @@
   			inner join sys_user s on s.id=ecif.user_id
  			where 1 = 1
    			and task.approve_status='0'
-   			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> 10
+   			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]>  #{remindate}
    			 <if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
