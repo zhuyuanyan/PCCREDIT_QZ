@@ -565,7 +565,13 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<td class="table-label">经办人：</td>
 					<td><input type="text" value="$!qzApplnYwsqb.managerName" readonly/>
 						<input type="hidden" name="managerName" value="$!qzApplnYwsqb.managerName"/>
-						<input type="hidden" name="managerId" value="$!qzApplnYwsqb.managerId"/></td>	
+						<input type="hidden" name="managerId" value="$!qzApplnYwsqb.managerId"/></td>
+					<td class="table-label">协办客户经理：</td>
+					<td>
+						<input type="text" name="helpManagerName" value="$!qzApplnYwsqb.helpManagerName"/>
+					</td>
+				</tr>
+				<tr>	
 					<td class="table-label">日期：<font color="#ff0000">*</font></td>	
 					<td><input type="text" name="managerTime" 
 					#if($!qzApplnYwsqb.managerTime != $null) value="$date.format('yyyy-MM-dd', $!qzApplnYwsqb.managerTime)" #end 
@@ -641,9 +647,13 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					var formjson = $($formName).serialize();
 					var url = "${contextPath}/intopieces/intopiecesapprove/update_page1.json?id=${qzApplnYwsqb.id}&customerId=${qzApplnYwsqb.customerId}&appId=${appId}";
 					$.ajax({
+					
 						url : url,
 						type : "get",
 						data : formjson,
+						error: function(){
+							alert();
+						},
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");

@@ -129,7 +129,7 @@
 			Dialog.confirm("确定要冻结该笔贷款吗？", "提示",
 					function(){
 				    $.ajax({
-				    	timeout:1000,
+				    
 				    	url:"${contextPath}/intopieces/quotafreezeorthaw/quot_operate.json?clientNo="+clientNo+"&contNo="+contNo+"&cardNo="+cardNo+"&operateType="+operateType+"&loanStatus="+loanStatus,
 				    	type : "get",
 						success : function(data) {

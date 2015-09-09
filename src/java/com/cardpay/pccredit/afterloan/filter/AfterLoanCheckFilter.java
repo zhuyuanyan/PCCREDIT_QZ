@@ -12,6 +12,8 @@ public class AfterLoanCheckFilter extends BaseQueryFilter{
 	private String clientNo;//客户号
 	private String checkType;//检查类型
 	private String userNo;//客户经理号
+	private String remindate;//提醒时间
+	private String enddate;//截止时间
 	
 	public String getChineseName() {
 		return chineseName;
@@ -55,4 +57,17 @@ public class AfterLoanCheckFilter extends BaseQueryFilter{
 	public void setUserNo(String userNo) {
 		this.userNo = userNo;
 	}
+	public String getRemindate() {
+		return remindate;
+	}
+	public void setRemindate(String remindate) {
+		this.remindate = remindate;
+	}
+	public String getEnddate() {
+		return enddate;
+	}
+	public void setEnddate(String enddate) {
+		this.enddate = enddate;
+	}
+	
 }

@@ -226,6 +226,8 @@
 			 from BASIC_CUSTOMER_INFORMATION bci
 			 left join QZ_IESB_FOR_ECIF ecif
 			 on bci.ID = ecif.CUSTOMER_ID
+			 left join customer_application_info i
+			 on bci.ID=i.customer_id
 		    where 1=1
 		    and bci.USER_ID = #{userId}
 		    <if test="chineseName != null and chineseName != '' ">
@@ -233,6 +235,9 @@
 			</if>
 			<if test="cardId != null and cardId != '' ">
 				AND bci.CARD_ID=#{cardId}
+			</if>
+			<if test="appStatus != null and appStatus != '' ">
+				AND i.status=#{appStatus}
 			</if>
 		<![CDATA[		
 				) ROW_
@@ -255,6 +260,9 @@
 			</if>
 			<if test="cardId != null and cardId != '' ">
 				AND ecif.global_id=#{cardId}
+			</if>
+			<if test="appStatus != null and appStatus != '' ">
+				AND info.status=#{appStatus}
 			</if>
 	</select>
 	
@@ -312,7 +320,10 @@
     
     <select id="findCustomerInfoWithNotByFilter" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter"
 	    resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
-			select ecif.customer_id as id,
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (	
+        select ecif.customer_id as id,
        			ecif.client_name as chineseName,
        			ecif.client_no   as clientNo,
        			ecif.global_id   as cardId,
@@ -340,6 +351,11 @@
 			<if test="cardId != null and cardId != '' ">
 				AND ecif.global_id=#{cardId}
 			</if>
+			<![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
     </select>
     <select id="findCustomerInfoWithNotCountByFilter" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter"
 	    resultType="int">
@@ -350,7 +366,8 @@
        		(select distinct ecif.customer_id
           		from qz_iesb_for_ecif ecif
          		inner join customer_application_info info 
-         		on ecif.customer_id =info.customer_id)
+         		on ecif.customer_id =info.customer_id
+         		where (info.status='audit' or info.status='RETURNAPPROVE'))
    			and ecif.customer_id not in
        		(select ecif.customer_id
           		from qz_iesb_for_ecif ecif

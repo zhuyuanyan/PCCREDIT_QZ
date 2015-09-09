@@ -224,6 +224,8 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String type = RequestHelper.getStringValue(request, "type");
 		String operate = RequestHelper.getStringValue(request, "operate");
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getLogin();
 		if (StringUtils.isNotEmpty(appId)) {
 			List<QzApplnHtqdtz> qzTz = intoPiecesService.getTzList(appId);
 			mv.addObject("appId", appId);
@@ -231,6 +233,7 @@ public class IntoPiecesXingzhengendControl extends BaseController {
 			mv.addObject("type", type);
 			mv.addObject("returnUrl", intoPiecesService.getReturnUrl(operate));
 		}
+		mv.addObject("loginId",loginId);
 		return mv;
 	}
 	/**

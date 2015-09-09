@@ -35,6 +35,7 @@
 		.dialog6 .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/icon_button_qx_hover.png) repeat-x;}
 		.dialog6 .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
 		.dialog6 .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/icon_button_hover.png") repeat-x;}
+		
 </style>
 </head>
 <body>
@@ -472,16 +473,17 @@
 				</div>
 			</form>
 		</div>
+		
       <div class="submit controlbtn">
          <a id="id_save_button" class="btn_g" >保存</a>
          #if($!operate=="填写合同信息" && $!circle.acctNo1 != $null)
-         <a class="btn_g" id="id_zx_in_button">审批通过</a>
+         <a class="btn_g" id="id_zx_in_button">通过</a>
          #end
          #if($!operate=="一级审核")
 	    	<a id="id_in5_button" class="btn_g" >审批通过</a>
 	     #end
 	    #if($!operate=="二级审核")
-	    	<a id="id_in6_button" class="btn_g" >审批通过</a>
+	    	<a id="id_in6_button" class="btn_g" >通过</a>
 	      #end  	
          #if($!operate=="填写合同信息")
          <a class="btn_g" id="id_zx_return_button">退件</a>

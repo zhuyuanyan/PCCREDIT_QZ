@@ -17,7 +17,12 @@
               <li>
                 <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
-              
+               <li>
+                <span>进件状态：<select id="appStatus" name="appStatus">
+                       <option value="">请选择...</option>
+	                   #dict("nowapplicationStatus", $!result.filter.appStatus)
+	                </select></span>
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>

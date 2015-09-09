@@ -59,7 +59,7 @@ public class AfterLoanCollectController extends BaseController{
 			filter.setStartDate("2013-08-01");
 		}
 		if(StringUtils.isEmpty(filter.getEndDate())){
-			filter.setEndDate(DateHelper.getDateFormat(new Date(),"yyyy-mm-dd"));
+			filter.setEndDate(DateHelper.getDateFormat(new Date(),"yyyy-MM-dd"));
 		}
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
