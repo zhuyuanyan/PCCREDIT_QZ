@@ -47,11 +47,6 @@ public interface CustomerApplicationIntopieceWaitDao {
 	public void autoAfterApplyTimeReleaseApply(String riskReviewProcessMaxDay);
 	
 	public List<CustomerApplicationIntopieceWaitForm> findNotEqualsActualAndFinalAmount();
-	
-	// 获取相应状态的进件-手动搜件
-	public List<CustomerApplicationIntopieceWaitForm> IntopieceWaitFormM(CustomerApplicationProcessFilter filter);
-	// 获取相应状态的进件count-手动搜件
-	public int CountIntopieceWaitFormM(CustomerApplicationProcessFilter filter);
 		
 	// 获取相应状态的进件-全部显示
 	public List<CustomerApplicationIntopieceWaitForm> IntopieceWaitForm(CustomerApplicationProcessFilter filter);

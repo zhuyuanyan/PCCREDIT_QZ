@@ -21,6 +21,7 @@ import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
+import com.cardpay.pccredit.afterloan.model.AfterLoaninfo;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -136,7 +137,10 @@ public class IntoPiecesService {
 	 */
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
-		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilterWF(filter);
+		List<IntoPieces> pList = intoPiecesDao.findintoPiecesByFilterWF(filter);
+		int size = intoPiecesDao.findCountintoPiecesByFilterWF(filter);
+		QueryResult<IntoPieces> queryResult = new QueryResult<IntoPieces>(size, pList);
+		
 		List<IntoPieces> intoPieces = queryResult.getItems();
 		for(IntoPieces pieces : intoPieces){
 			if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
