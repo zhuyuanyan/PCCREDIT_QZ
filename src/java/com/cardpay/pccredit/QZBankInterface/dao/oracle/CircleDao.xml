@@ -118,6 +118,9 @@
 		
 		<result property="customerId" column="CUSTOMER_ID" />
 		<result property="applicationId" column="APPLICATION_ID" />
+		
+		<result property="shenHeRen1" column="SHEN_HE_REN1" />
+		<result property="shenHeRen2" column="SHEN_HE_REN2" />
 	</resultMap>
 	
 	<resultMap id="ResultMap2"
@@ -156,6 +159,11 @@
 	
 	<select id="findCircleByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
 	    resultMap="ResultMap2">
+	 	
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (
+			
 		select 
 			circle.id as id,
 			circle.CLIENT_NO as CLIENT_NO,
@@ -173,6 +181,12 @@
 			<if test="globalId != null and globalId != '' ">
 				AND ecif.GLOBAL_ID=#{globalId}
 			</if>
+			
+			<![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
 	</select>
 	
 	<select id="findCircleCountByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"

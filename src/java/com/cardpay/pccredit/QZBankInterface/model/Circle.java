@@ -143,6 +143,9 @@ public class Circle extends BusinessModel{
 	private String customerId;
 	private String applicationId;
 	
+	private String shenHeRen1;
+	private String shenHeRen2;
+	
 	public String getContractNo() {
 		return contractNo;
 	}
@@ -774,4 +777,17 @@ public class Circle extends BusinessModel{
 	public void setLoanStatus(String loanStatus) {
 		this.loanStatus = loanStatus;
 	}
+	public String getShenHeRen1() {
+		return shenHeRen1;
+	}
+	public void setShenHeRen1(String shenHeRen1) {
+		this.shenHeRen1 = shenHeRen1;
+	}
+	public String getShenHeRen2() {
+		return shenHeRen2;
+	}
+	public void setShenHeRen2(String shenHeRen2) {
+		this.shenHeRen2 = shenHeRen2;
+	}
+	
 }
