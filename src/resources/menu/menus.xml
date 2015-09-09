@@ -60,7 +60,7 @@
 		<menu id="070000" name="manager" title="客户经理管理" url="" img="images/icon_sys.gif" operations="">
 		    <menu id="070001" name="managercreate" title="客户经理参数配置" url="/manager/managercreate/browse.page" img="" operations="create|change|delete|display|browse"/>
 			<menu id="070002" name="ledgeraccount" title="客户经理台账列表" url="/manager/ledgeraccount/browse.page" img="" operations="change|display|browse"/>
-			<menu id="070003" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/updatejigz.page" img="" operations="browse|change|create"/>
+			<menu id="070003" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/displayjjgz.page" img="" operations="browse|change|create"/>
 			<menu id="070004" name="leveladjustment" title="客户经理级别调整" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
 			<menu id="070005" name="belongmap" title="客户经理从属设置" url="/manager/belongmap/browse.page" img="" operations="create|subturnother|delete|browse"/>
 			<menu id="070006" name="retraining" title="客户经理培训计划列表（卡中心、组长）" url="/manager/retraining/browse.page" img="" operations="create|change|delete|display|browse"/>
