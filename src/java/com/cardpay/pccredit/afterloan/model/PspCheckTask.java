@@ -35,6 +35,8 @@ public class PspCheckTask extends BusinessModel{
 	private String contactInformation;
 	private String repaymentOther;//还款情况说明
 	
+	private String checkDescribe;//记录所有贷款检查种类
+	
 	public String getTaskId() {
 		return taskId;
 	}
@@ -167,7 +169,11 @@ public class PspCheckTask extends BusinessModel{
 	public void setRepaymentOther(String repaymentOther) {
 		this.repaymentOther = repaymentOther;
 	}
-	
-	
+	public String getCheckDescribe() {
+		return checkDescribe;
+	}
+	public void setCheckDescribe(String checkDescribe) {
+		this.checkDescribe = checkDescribe;
+	}
 	
 }

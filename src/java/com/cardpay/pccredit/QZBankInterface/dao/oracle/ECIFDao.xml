@@ -275,6 +275,11 @@
 	
 	<select id="findCustomerInfoWithLoanByFilter" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter"
 	    resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+			
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (
+			
 			select ecif.customer_id as id,
        			ecif.client_name as chineseName,
        			ecif.client_no   as clientNo,
@@ -296,6 +301,12 @@
 			<if test="cardId != null and cardId != '' ">
 				AND ecif.global_id=#{cardId}
 			</if>
+			
+			<![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
     </select>
     <select id="findCustomerInfoWithLoanCountByFilter" parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter"
 	    resultType="int">

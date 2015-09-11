@@ -288,13 +288,20 @@ public class IntoPiecesComdao {
 		if(dataType.equals("application")){
 			sql += " left join customer_application_process aa on pr.id = aa.serial_number" +
 					" left join sys_user su on t.examine_user = su.id " +
-					" where aa.application_id = #{id}";
+					" where aa.application_id = #{id} and su.display_name is not null";
 		} else if(dataType.equals("amountadjustment")){
 			sql += " left join amount_adjustment_process aa on pr.id = aa.serial_number" +
 					" left join sys_user su on t.examine_user = su.id " +
 					" where aa.amount_adjustment_id = #{id}";
 		}
-		sql += " order by t.start_examine_time desc";
+		
+		sql += " union select r.node_name as status_name," +
+       "r.operate_type ||','|| r.Remark as examine_result," +
+       " r.user_name as display_name,"+
+       " '' as examine_amount,"+
+       " r.created_time as start_examine_time " +
+				" from qz_appln_process_result r where r.application_id=#{id}";
+		sql += " order by start_examine_time desc";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		
