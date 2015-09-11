@@ -57,10 +57,10 @@
 		where (b.user_id = #{userId} 
 		or b.user_id in ( 
 		select user_id from ACCOUNT_MANAGER_PARAMETER where id in (SELECT 
-		T .child_id 
+		mbm.child_id 
 		FROM 
-		manager_belong_map T 
-		LEFT JOIN account_manager_parameter amp ON amp. ID = T .parent_id 
+		manager_belong_map mbm 
+		LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
 		WHERE 
 		amp.user_id = #{userId})))
 		
@@ -72,10 +72,10 @@
 		</if>
 		<if test="status != null and status != '' ">
 		    <if test="status == 'audit' ">
-				and (b.status=#{status} or b.status='RETURNAPPROVE')
+				and (T.status=#{status} or T.status='RETURNAPPROVE')
 			</if>
 			<if test="status != 'audit' ">
-				and b.status=#{status}
+				and T.status=#{status}
 			</if>
 		</if>
 			<![CDATA[		
@@ -119,10 +119,10 @@
 		where (b.user_id = #{userId} 
 		or b.user_id in ( 
 		select user_id from ACCOUNT_MANAGER_PARAMETER where id in (SELECT 
-		T .child_id 
+		mbm.child_id 
 		FROM 
-		manager_belong_map T 
-		LEFT JOIN account_manager_parameter amp ON amp. ID = T .parent_id 
+		manager_belong_map mbm 
+		LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
 		WHERE 
 		amp.user_id = #{userId})))
 		
@@ -134,10 +134,10 @@
 		</if>
 		<if test="status != null and status != '' ">
 		    <if test="status == 'audit' ">
-				and (b.status=#{status} or b.status='RETURNAPPROVE')
+				and (T.status=#{status} or T.status='RETURNAPPROVE')
 			</if>
 			<if test="status != 'audit' ">
-				and b.status=#{status}
+				and T.status=#{status}
 			</if>
 		</if>
 		)

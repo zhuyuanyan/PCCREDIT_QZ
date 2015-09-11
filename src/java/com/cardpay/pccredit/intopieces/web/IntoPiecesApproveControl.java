@@ -1472,6 +1472,9 @@ public class IntoPiecesApproveControl extends BaseController {
 				String resClientNo = (String)ECIFResp.get("CLIENT_NO");
 				
 				//把获取的客户号存在库中
+				ECIF ecif = eCIFService.findEcifByCustomerId(customerId);
+				ecif.setClientNo(resClientNo);
+				
 				Circle circle = commonDao.findObjectById(Circle.class, circleId);
 				//modified by nihc 201050814 先获取客户号人工去判断客户号是否与开户 一致 
 //				if(clientName.equals(iesbForCircleForm.getClientName()) && golbalType.equals(iesbForCircleForm.getGlobalType())
