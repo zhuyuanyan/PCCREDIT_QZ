@@ -28,10 +28,10 @@
     	<result column="chineseName" property="chineseName"  />
     	<result column="cardId" property="cardId"  />
     	<result column="repaymentOther" property="repaymentOther"  />
+    	<result column="checkDescribe" property="checkDescribe"  />
     </resultMap>
     
-    <select id="findAfterLoanCheckTaskByFilter" parameterType="com.cardpay.pccredit.afterloan.filter.AfterLoanCheckFilter"
-        resultMap="ResultMap">
+    <select id="findAfterLoanCheckTaskByFilter" resultMap="ResultMap">
     	SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 			FROM (
@@ -59,12 +59,14 @@
     			task.contact_information as contactInformation,
     			ecif.client_name as chineseName,
     			ecif.global_id as cardId,
-    			task.REPAYMENT_OTHER as repaymentOther
+    			task.REPAYMENT_OTHER as repaymentOther,
+    			task.CHECK_DESCRIBE as checkDescribe
   			from psp_check_task task 
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
  			where 1 = 1
    			and ecif.USER_ID = #{userId}
    			and task.approve_status='0'
+   			and ecif.CLIENT_NO is not null
    			 <if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
@@ -74,8 +76,21 @@
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
 			</if>
-			<if test="checkType != null and checkType != '' ">
-				AND task.task_type=#{checkType}
+		    <if test="checkType != null and checkType != ''">
+		        AND (task.task_type=#{checkType}
+			        <if test='checkType == "1" '>
+					  or task.CHECK_DESCRIBE like '%首次放款检查%'
+					 </if>
+					 <if test='checkType == "2" '>
+					 or task.CHECK_DESCRIBE like '%满额用信%'
+					 </if>
+					 <if test='checkType == "3" '>
+					 or task.CHECK_DESCRIBE like '%授信到期前最高额用信检查%'
+					 </if>
+					 <if test='checkType == "4" '>
+					 or task.CHECK_DESCRIBE like '%放款次月客户回访%'
+					 </if>
+				 )
 			</if>
 			<![CDATA[		
 				) ROW_
@@ -84,8 +99,7 @@
 		]]>
 	</select>
 	
-     <select id="findAfterLoanCheckTaskCountByFilter" parameterType="com.cardpay.pccredit.afterloan.filter.AfterLoanCheckFilter"
-        resultType="int">
+     <select id="findAfterLoanCheckTaskCountByFilter" resultType="int">
 			select count(*)
 			from(
 			select 
@@ -118,7 +132,8 @@
  			where 1 = 1
    			and ecif.USER_ID = #{userId}
    			and task.approve_status='0'
-   			 <if test="chineseName != null and chineseName != '' ">
+   			and ecif.CLIENT_NO is not null
+   			<if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
 			<if test="cardId != null and cardId != '' ">
@@ -127,13 +142,26 @@
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
 			</if>
-			<if test="checkType != null and checkType != '' ">
-				AND task.task_type=#{checkType}
-			</if>) a
+			<if test="checkType != null and checkType != ''">
+		        AND (task.task_type=#{checkType}
+			        <if test='checkType == "1" '>
+					  or task.CHECK_DESCRIBE like '%首次放款检查%'
+					 </if>
+					 <if test='checkType == "2" '>
+					 or task.CHECK_DESCRIBE like '%满额用信%'
+					 </if>
+					 <if test='checkType == "3" '>
+					 or task.CHECK_DESCRIBE like '%授信到期前最高额用信检查%'
+					 </if>
+					 <if test='checkType == "4" '>
+					 or task.CHECK_DESCRIBE like '%放款次月客户回访%'
+					 </if>
+				 )
+			</if>
+			) a
 	</select>
 	
-     <select id="findAfterLoanCheckTaskToByFilter" parameterType="com.cardpay.pccredit.afterloan.filter.AfterLoanCheckFilter"
-        resultMap="ResultMap">
+     <select id="findAfterLoanCheckTaskToByFilter" resultMap="ResultMap">
     	SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 			FROM (
@@ -161,11 +189,21 @@
     			task.contact_information as contactInformation,
     			ecif.client_name as chineseName,
     			ecif.global_id as cardId,
-    			task.REPAYMENT_OTHER as repaymentOther
+    			task.REPAYMENT_OTHER as repaymentOther,
+    			task.CHECK_DESCRIBE as checkDescribe
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
  			where 1 = 1
    			and task.approve_status='1'
+   			and ecif.CLIENT_NO is not null
+   			AND ecif.CUST_MANAGER_ID in ( 
+				select T2.EXTERNAL_ID from ACCOUNT_MANAGER_PARAMETER t1 left join SYS_USER t2 on t1.USER_ID = T2.id where T1.id in (SELECT 
+				mbm.child_id 
+				FROM 
+				manager_belong_map mbm 
+				LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
+				WHERE 
+				amp.user_id = #{userId}))
    			 <if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
@@ -175,8 +213,21 @@
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
 			</if>
-			<if test="checkType != null and checkType != '' ">
-				AND task.task_type=#{checkType}
+			<if test="checkType != null and checkType != ''">
+		        AND (task.task_type=#{checkType}
+			        <if test='checkType == "1" '>
+					  or task.CHECK_DESCRIBE like '%首次放款检查%'
+					 </if>
+					 <if test='checkType == "2" '>
+					 or task.CHECK_DESCRIBE like '%满额用信%'
+					 </if>
+					 <if test='checkType == "3" '>
+					 or task.CHECK_DESCRIBE like '%授信到期前最高额用信检查%'
+					 </if>
+					 <if test='checkType == "4" '>
+					 or task.CHECK_DESCRIBE like '%放款次月客户回访%'
+					 </if>
+				 )
 			</if>
 			<![CDATA[		
 				) ROW_
@@ -185,14 +236,22 @@
 		]]>
 	</select>
 	
-      <select id="findAfterLoanCheckTaskCountToByFilter" parameterType="com.cardpay.pccredit.afterloan.filter.AfterLoanCheckFilter"
-        resultType="int">
+      <select id="findAfterLoanCheckTaskCountToByFilter" resultType="int">
 			select 
 				count(*)
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
  			where 1 = 1
    			and task.approve_status='1'
+   			and ecif.CLIENT_NO is not null
+   			AND ecif.CUST_MANAGER_ID in ( 
+				select T2.EXTERNAL_ID from ACCOUNT_MANAGER_PARAMETER t1 left join SYS_USER t2 on t1.USER_ID = T2.id where T1.id in (SELECT 
+				mbm.child_id 
+				FROM 
+				manager_belong_map mbm 
+				LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
+				WHERE 
+				amp.user_id = #{userId}))
    			 <if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
@@ -202,13 +261,25 @@
 			<if test="clientNo != null and clientNo != '' ">
 				AND ecif.client_no=#{clientNo}
 			</if>
-			<if test="checkType != null and checkType != '' ">
-				AND task.task_type=#{checkType}
+			<if test="checkType != null and checkType != ''">
+		        AND (task.task_type=#{checkType}
+			        <if test='checkType == "1" '>
+					  or task.CHECK_DESCRIBE like '%首次放款检查%'
+					 </if>
+					 <if test='checkType == "2" '>
+					 or task.CHECK_DESCRIBE like '%满额用信%'
+					 </if>
+					 <if test='checkType == "3" '>
+					 or task.CHECK_DESCRIBE like '%授信到期前最高额用信检查%'
+					 </if>
+					 <if test='checkType == "4" '>
+					 or task.CHECK_DESCRIBE like '%放款次月客户回访%'
+					 </if>
+				 )
 			</if>
 	</select>
 	
-      <select id="findAfterLoanCheckTaskRemindByFilter" parameterType="com.cardpay.pccredit.afterloan.filter.AfterLoanCheckFilter"
-        resultMap="ResultMap">
+      <select id="findAfterLoanCheckTaskRemindByFilter" resultMap="ResultMap">
     	SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 			FROM (
@@ -236,13 +307,22 @@
     			task.contact_information as contactInformation,
     			ecif.client_name as chineseName,
     			ecif.global_id as cardId,
-    			task.REPAYMENT_OTHER as repaymentOther
+    			task.REPAYMENT_OTHER as repaymentOther,
+    			task.CHECK_DESCRIBE as checkDescribe
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
-  			inner join sys_user s on s.id=ecif.user_id
  			where 1 = 1
    			and task.approve_status='0'
+			and ecif.CLIENT_NO is not null
    			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> #{remindate}
+   			AND ecif.CUST_MANAGER_ID in ( 
+				select T2.EXTERNAL_ID from ACCOUNT_MANAGER_PARAMETER t1 left join SYS_USER t2 on t1.USER_ID = T2.id where T1.id in (SELECT 
+				mbm.child_id 
+				FROM 
+				manager_belong_map mbm 
+				LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
+				WHERE 
+				amp.user_id = #{userId}))
    			 <if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
@@ -250,13 +330,26 @@
 				AND ecif.global_id=#{cardId}
 			</if>
 			<if test="clientNo != null and clientNo != '' ">
-				AND ecif.a_client_no=#{clientNo}
+				AND ecif.client_no=#{clientNo}
 			</if>
 			<if test="userNo != null and userNo != '' ">
-				AND s.login=#{userNo}
+				AND task.MANAGER_ID=#{userNo}
 			</if>
-			<if test="checkType != null and checkType != '' ">
-				AND task.task_type=#{checkType}
+			<if test="checkType != null and checkType != ''">
+		        AND (task.task_type=#{checkType}
+			        <if test='checkType == "1" '>
+					  or task.CHECK_DESCRIBE like '%首次放款检查%'
+					 </if>
+					 <if test='checkType == "2" '>
+					 or task.CHECK_DESCRIBE like '%满额用信%'
+					 </if>
+					 <if test='checkType == "3" '>
+					 or task.CHECK_DESCRIBE like '%授信到期前最高额用信检查%'
+					 </if>
+					 <if test='checkType == "4" '>
+					 or task.CHECK_DESCRIBE like '%放款次月客户回访%'
+					 </if>
+				 )
 			</if>
 			<![CDATA[		
 				) ROW_
@@ -265,16 +358,23 @@
 		]]>
 	</select>
 	
-       <select id="findAfterLoanCheckTaskCountRemindByFilter" parameterType="com.cardpay.pccredit.afterloan.filter.AfterLoanCheckFilter"
-        resultType="int">
+       <select id="findAfterLoanCheckTaskCountRemindByFilter" resultType="int">
 			select 
 				count(*)
   			from psp_check_task task
   			left join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
-  			inner join sys_user s on s.id=ecif.user_id
  			where 1 = 1
    			and task.approve_status='0'
+   			and ecif.CLIENT_NO is not null
    			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]>  #{remindate}
+   			AND ecif.CUST_MANAGER_ID in ( 
+				select T2.EXTERNAL_ID from ACCOUNT_MANAGER_PARAMETER t1 left join SYS_USER t2 on t1.USER_ID = T2.id where T1.id in (SELECT 
+				mbm.child_id 
+				FROM 
+				manager_belong_map mbm 
+				LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
+				WHERE 
+				amp.user_id = #{userId}))
    			 <if test="chineseName != null and chineseName != '' ">
 				AND ecif.client_name=#{chineseName}
 			</if>
@@ -282,17 +382,29 @@
 				AND ecif.global_id=#{cardId}
 			</if>
 			<if test="clientNo != null and clientNo != '' ">
-				AND ecif.a_client_no=#{clientNo}
-			</if>
-			<if test="checkType != null and checkType != '' ">
-				AND task.task_type=#{checkType}
+				AND ecif.client_no=#{clientNo}
 			</if>
 			<if test="userNo != null and userNo != '' ">
-				AND s.login=#{userNo}
+				AND task.MANAGER_ID=#{userNo}
+			</if>
+			<if test="checkType != null and checkType != ''">
+		        AND (task.task_type=#{checkType}
+			        <if test='checkType == "1" '>
+					  or task.CHECK_DESCRIBE like '%首次放款检查%'
+					 </if>
+					 <if test='checkType == "2" '>
+					 or task.CHECK_DESCRIBE like '%满额用信%'
+					 </if>
+					 <if test='checkType == "3" '>
+					 or task.CHECK_DESCRIBE like '%授信到期前最高额用信检查%'
+					 </if>
+					 <if test='checkType == "4" '>
+					 or task.CHECK_DESCRIBE like '%放款次月客户回访%'
+					 </if>
+				 )
 			</if>
 	</select>
-	 <select id="findAferLoanCheckCountByUserId" 
-        resultType="int">
+	 <select id="findAferLoanCheckCountByUserId" resultType="int">
 			select 
 				count(*)
   			from psp_check_task task
@@ -300,17 +412,24 @@
  			where 1 = 1
    			and task.approve_status='0'
    			and ecif.user_Id=#{userId}
-   			 
+   			and ecif.CLIENT_NO is not null
 	</select>
-	<select id="findAferLoanCheckRemindCount" 
-        resultType="int">
+	<select id="findAferLoanCheckRemindCount" resultType="int">
 			select 
 				count(*)
   			from psp_check_task task
   			inner join qz_iesb_for_ecif ecif on task.cus_id = ecif.client_no
  			where 1 = 1
    			and task.approve_status='0'
-   			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]> 10
-   			 
+   			and trunc(sysdate-to_date(task.TASK_CREATE_DATE,'yyyy-mm-dd'))<![CDATA[ >  ]]>  #{reminddate}
+   			and ecif.CLIENT_NO is not null
+   			AND ecif.CUST_MANAGER_ID in ( 
+				select T2.EXTERNAL_ID from ACCOUNT_MANAGER_PARAMETER t1 left join SYS_USER t2 on t1.USER_ID = T2.id where T1.id in (SELECT 
+				mbm.child_id 
+				FROM 
+				manager_belong_map mbm 
+				LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
+				WHERE 
+				amp.user_id = #{userId}))
 	</select>
 </mapper>

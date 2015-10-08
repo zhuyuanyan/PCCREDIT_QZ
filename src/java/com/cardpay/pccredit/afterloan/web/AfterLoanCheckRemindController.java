@@ -66,9 +66,9 @@ public class AfterLoanCheckRemindController extends BaseController{
 		for(int i=0;i<dict.size();i++){
 			Dict dictd = dict.get(i);
 			if("reminddate".equals(dictd.getTypeCode())){
-				reminddate=dictd.getBankCode();
+				reminddate=dictd.getTypeName();
 			}else if("enddate".equals(dictd.getTypeCode())){
-				enddate=dictd.getBankCode();
+				enddate=dictd.getTypeName();
 			}
 		}
 		filter.setRemindate(reminddate);

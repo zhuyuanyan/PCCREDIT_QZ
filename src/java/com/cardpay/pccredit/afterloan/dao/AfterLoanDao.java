@@ -29,5 +29,5 @@ public interface AfterLoanDao {
 	public int findAferLoanCheckCountByUserId(@Param("userId") String userId);
 	
     //查询超过十天未做检查的任务
-	public int findAferLoanCheckRemindCount();
+	public int findAferLoanCheckRemindCount(@Param("reminddate") String reminddate,@Param("userId") String userId);
 }

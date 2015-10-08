@@ -28,6 +28,7 @@ import com.cardpay.pccredit.intopieces.web.QzApplnYwsqbForm;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -298,6 +299,47 @@ public class AfterLoanCheckController extends BaseController{
 				pspCheckTask.setTaskId(taskId);
 				//插入数据库
 				afterloanCheckService.update_page1(pspCheckTask);
+				
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.setSuccess(true);
+			}catch(Exception e){
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
+	}
+	
+	//影像资料
+	@ResponseBody
+	@RequestMapping(value = "loanWDModify.page")
+	public AbstractModelAndView loanWDModify(HttpServletRequest request) {
+		JRadModelAndView mv = null;
+		String taskId = RequestHelper.getStringValue(request, "taskId");//任务编号
+		String type = RequestHelper.getStringValue(request, "type");
+		PspCheckTask task = afterloanCheckService.findPspCheckTaskByTaskId(taskId).get(0);
+		if(task.getUploadFlag() == null || task.getUploadFlag().equals("0")){
+			mv = new JRadModelAndView("/afterloan/WDScan", request);
+		}
+		else{
+			mv = new JRadModelAndView("/afterloan/WDModify", request);
+		}
+		if(type.equals("readonly")){
+			mv = new JRadModelAndView("/afterloan/WDView", request);
+		}
+		mv.addObject("docId",taskId);
+		mv.addObject("taskId",taskId);
+		mv.addObject("type",type);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "insert_sunds.json")
+	public JRadReturnMap insert_sunds(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try{
+				String taskId = request.getParameter("taskId");//贷后检查任务编号
+				afterloanCheckService.updateTask(taskId);
 				
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 				returnMap.setSuccess(true);

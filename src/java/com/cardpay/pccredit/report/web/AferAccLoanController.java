@@ -187,7 +187,7 @@ public class AferAccLoanController extends BaseController{
 		cell.setCellValue("序号");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 1);
-		cell.setCellValue("客户经理号");
+		cell.setCellValue("客户经理");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 2);
 		cell.setCellValue("所属机构");
@@ -205,10 +205,10 @@ public class AferAccLoanController extends BaseController{
 		cell.setCellValue("利率");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 7);
-		cell.setCellValue("贷款日期");
+		cell.setCellValue("授信日期");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 8);
-		cell.setCellValue("到期日期");
+		cell.setCellValue("授信到期日");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 9);
 		cell.setCellValue("授信金额");
@@ -223,10 +223,10 @@ public class AferAccLoanController extends BaseController{
 		cell.setCellValue("欠息总额");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 13);
-		cell.setCellValue("起息日期");
+		cell.setCellValue("贷款日期");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 14);
-		cell.setCellValue("发放日期");
+		cell.setCellValue("贷款到期日");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) 15);
 		cell.setCellValue("贷款状态");

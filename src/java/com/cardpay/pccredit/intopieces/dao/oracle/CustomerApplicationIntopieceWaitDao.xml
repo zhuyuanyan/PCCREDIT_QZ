@@ -256,6 +256,19 @@
 			and N.node_name=#{nodeName}
 		</if>
 		
+		<if test="filterTeamLeader!=null and filterTeamLeader!=''">
+			<if test='filterTeamLeader=="1"'>
+				and u.user_id in ( 
+					select user_id from ACCOUNT_MANAGER_PARAMETER where id in (SELECT 
+					mbm.child_id 
+					FROM 
+					manager_belong_map mbm 
+					LEFT JOIN account_manager_parameter amp ON amp. ID = mbm.parent_id 
+					WHERE 
+					amp.user_id = #{loginId}))
+			</if>
+		</if>
+		
 		<![CDATA[		
 				) ROW_
 			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

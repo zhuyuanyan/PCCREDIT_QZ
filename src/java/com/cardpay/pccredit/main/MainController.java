@@ -38,6 +38,7 @@ import com.cardpay.pccredit.report.service.StatisticalCommonService;
 import com.cardpay.pccredit.riskControl.dao.NplsInfomationDao;
 import com.cardpay.pccredit.riskControl.service.CustomerOverdueService;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
+import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.service.SystemUserService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.enviroment.GlobalSetting;
@@ -165,7 +166,19 @@ public class MainController {
 		//查询贷后检查任务数
 		int loanCount = afterLoanCheckService.findAferLoanCheckCountByUserId(userId);
 		//查询所检查提醒任务
-		int remindCount = afterLoanCheckService.findAferLoanCheckRemindCount();
+		//获取贷后点击通知时限和截止时限
+		List<Dict> dict = customerInforService.findDict("afterloan");
+		String reminddate="";
+		String enddate="";
+		for(int i=0;i<dict.size();i++){
+			Dict dictd = dict.get(i);
+			if("reminddate".equals(dictd.getTypeCode())){
+				reminddate=dictd.getTypeName();
+			}else if("enddate".equals(dictd.getTypeCode())){
+				enddate=dictd.getTypeName();
+			}
+		}
+		int remindCount = afterLoanCheckService.findAferLoanCheckRemindCount(reminddate,userId);
 		//获取该用户角色
 		String roleName = accountManagerParameterService.findRoleNameByUserId(userId);
 		//客户经理层级

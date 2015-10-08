@@ -366,7 +366,7 @@
             <tr>
               <td><label>录入岗:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="shenHeRen1" name="shenHeRen1" value="$!circle.shenHeRen1" readonly></td>
-			  <td><label>评审岗:</label><font color="#ff0000">*</font></td>
+			  <td><label>复核岗:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="shenHeRen2" name="shenHeRen2" value="$!circle.shenHeRen2" readonly/></td>
             </tr>
 		  </table>
@@ -773,7 +773,6 @@
 							 $.ajax({
 									url : "${contextPath}/intopieces/intopiecesshouxin/return_to_cu.json?id=${appId}",
 									type : "get",
-									data : formjson,
 									success : function(data) {
 										if (data.success) {
 											topWin.Dialog.message("补充上会成功!");	

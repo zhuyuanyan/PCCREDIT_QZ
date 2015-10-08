@@ -95,6 +95,7 @@ public class IntoPiecesChushenControl extends BaseController {
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
 		filter.setNodeName(Constant.status_chushen);
+		filter.setFilterTeamLeader("1");//团队长
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 

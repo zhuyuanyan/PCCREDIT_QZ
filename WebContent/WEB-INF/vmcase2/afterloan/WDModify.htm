@@ -15,14 +15,12 @@
 	        alert("影像控件初始化失败！");
 	    }
 	    
-	    if(parent.docID != ""){
-	    	docID = parent.docID;
-	        document.getElementById("docid").value=docID;
-	        //SunScan.CreateTask(docID);
-	        SunScan.SetModifyMode("1");
-	        var result = SunScan.ViewImageByCaseIDEx("WD_CASES",docID);
-	        //alert(result);
-	    }
+	    docID = "${docId}";
+        document.getElementById("docid").value=docID;
+        //SunScan.CreateTask(docID);
+        SunScan.SetModifyMode("1");
+        var result = SunScan.ViewImageByCaseIDEx("WD_CASES",docID);
+        //alert(result);
 	}
     
     function submitBT(){
@@ -69,7 +67,7 @@
 </HEAD>
 <body class="classEditBody" scroll="no">
 <div style="border:1px solid #CCCCCC;margin-bottom:10px;">
-    <OBJECT ID="SunScan" CLASSID="CLSID:CB127588-6BA2-4336-82F6-83DD6947FB4C" CODEBASE="TerminalScan.ocx" width="100%" height="90%" border=0 >
+    <OBJECT ID="SunScan" CLASSID="CLSID:CB127588-6BA2-4336-82F6-83DD6947FB4C" CODEBASE="TerminalScan.ocx" width="100%" height="80%" border=0 >
         </OBJECT>
     <script>setTimeout(connectScan,500);</script>
 </div>

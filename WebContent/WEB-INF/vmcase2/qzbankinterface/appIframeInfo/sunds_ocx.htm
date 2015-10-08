@@ -39,16 +39,40 @@ $(function() {
 								//alert(node.data.key.split("_")[1]);
 								//alert(node.data.title);
 								var url = "${contextPath}/intopieces/intopiecesapprove/getPage5UploadValue.json?appId=${appId}&docID="+node.data.key.split("_")[1];
+								if(node.data.key.split("_").length>2){
+									url = "${contextPath}/intopieces/intopiecesapprove/getPage5UploadValueAdd.json?appId=${appId}&docID="+
+											node.data.key.split("_")[1]+"_"+node.data.key.split("_")[2]+"_"+node.data.key.split("_")[3];
+								}
+								
 								$.ajax({
 									url : url,
 									type : "get",
 									success : function(data) {
 										if (data.success) {
 											if(data.uploadFlag != "0"){
-												loadBydocId(node.data.key.split("_")[1]);
+												if(node.data.key.split("_").length>2){
+													loadBydocId(node.data.key.split("_")[1]+node.data.key.split("_")[2]+node.data.key.split("_")[3],"level2");
+													level2_chk_value = node.data.key.split("_")[3];
+													parentValue = node.data.key.split("_")[2];
+												}
+												else{
+													loadBydocId(node.data.key.split("_")[1],"level1");
+													level2_chk_value = "";
+													parentValue = "";
+												}
 											}
 											else{
-												initBydocId(node.data.key.split("_")[1]);
+												if(node.data.key.split("_").length>2){
+													initBydocId(node.data.key.split("_")[1]+node.data.key.split("_")[2]+node.data.key.split("_")[3],"level2");
+													level2_chk_value = node.data.key.split("_")[3];
+													parentValue = node.data.key.split("_")[2];
+													
+												}
+												else{
+													initBydocId(node.data.key.split("_")[1],"level1");
+													level2_chk_value = "";
+													parentValue = "";
+												}
 											}
 										}
 									}
@@ -62,13 +86,15 @@ $(function() {
 	});
 
 	var docID = "";
-	function initBydocId(val){
+	var level2_chk_value ="";
+	var parentValue = "";
+	function initBydocId(val,level){
 		docID = val;
-		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDScan.page?appId=${appId}";
+		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDScan.page?appId=${appId}&level="+level;
 	}
-	function loadBydocId(val){
+	function loadBydocId(val,level){
 		docID = val;
-		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDModify.page?appId=${appId}";
+		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDModify.page?appId=${appId}&level="+level;
 	}
 		</script>
 		

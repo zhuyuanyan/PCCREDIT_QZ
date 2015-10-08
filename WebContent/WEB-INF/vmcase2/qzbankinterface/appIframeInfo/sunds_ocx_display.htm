@@ -35,7 +35,12 @@ $(function() {
 					onClick : function(node) {
 						if (node.tree.isUserEvent()) {
 							if(!node.data.isFolder){
-								loadBydocId(node.data.key.split("_")[1]);
+								if(node.data.key.split("_").length>2){
+									loadBydocId(node.data.key.split("_")[1]+node.data.key.split("_")[2]+node.data.key.split("_")[3],"level2");
+								}
+								else{
+									loadBydocId(node.data.key.split("_")[1],"level1");
+								}
 							}
 						}
 					}
@@ -45,13 +50,13 @@ $(function() {
 	});
 
 	var docID = "";
-	function initBydocId(val){
+	function initBydocId(val,level){
 		docID = val;
-		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDScan.page?appId=${appId}";
+		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDScan.page?appId=${appId}&level="+level;
 	}
-	function loadBydocId(val){
+	function loadBydocId(val,level){
 		docID = val;
-		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDView.page?appId=${appId}";
+		displayIframe.window.location.href = "${contextPath}/intopieces/intopiecesapprove/WDView.page?appId=${appId}&level="+level;
 	}
 		</script>
 		

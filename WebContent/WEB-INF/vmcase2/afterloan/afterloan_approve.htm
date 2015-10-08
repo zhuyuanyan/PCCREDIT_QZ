@@ -73,7 +73,11 @@
               <td nowrap="nowrap">$!obj.chineseName</td>
               <td nowrap="nowrap">$!obj.cardId</td>
               <td nowrap="nowrap">$!obj.cusId</td>
+              #if($!obj.checkDescribe != $null)
+              <td nowrap="nowrap" title="$!obj.checkDescribe" >$!obj.checkDescribe</td>
+              #else
               <td nowrap="nowrap">#dictVal("TASK_TYPE",$!obj.taskType)</td>
+              #end
               <td nowrap="nowrap">$!obj.taskCreateDate</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!obj.LoanTotlAmt)</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!obj.loanBalance)</td>
@@ -108,6 +112,9 @@
 					var url="${contextPath}/afterloan/afterloancheck/iframe.page?id="+clientNo+"&cardId="+cardId+"&taskId="+taskId+"&type=readonly";
 					window.location.href = url;
 				}
+			}
+			else{
+				topWin.Dialog.message("请选择一条记录！");
 			}
 		});
 	});

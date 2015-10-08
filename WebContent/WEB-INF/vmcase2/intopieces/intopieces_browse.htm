@@ -28,9 +28,10 @@
                 <option #if($!result.filter.status=='approved') selected="selected" #end value="approved">审批结束  </option>
                  <option #if($!result.filter.status=='returnedToFirst') selected="selected" #end value="returnedToFirst">退回至客户经理</option>
                 </select>
+                </span>
               </li>
               <li class="search_button">
-                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+              <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
               </li>
           </ul>

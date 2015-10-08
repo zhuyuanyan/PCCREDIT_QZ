@@ -147,8 +147,8 @@
 				var rowId = getCurrentRowId().split("@")[0];
 				var appId = getCurrentRowId().split("@")[1];
 				var sec = getCurrentRowId().split("@")[2];
-			 	  if(sec=='audit' || sec=='RETURNAPPROVE'){
-					Dialog.message("已申请进件，无法继续添加进件信息！");
+			 	  if(sec=='audit' || sec=='RETURNAPPROVE' || sec=='approved'){
+					Dialog.message("已申请进件，无法修改进件信息！");
 					return;
 				}   
 				if(rowId!=null){
