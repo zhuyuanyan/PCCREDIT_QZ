@@ -1478,6 +1478,14 @@ public class IntoPiecesService {
 		}
 			commonDao.insertObject(qzSdhjyd);
 			
+			//重新关联决议单id
+		sql="update qz_appln_jyd_bzdb set jyd_id='"+qzSdhjyd.getId()+"' where jyd_id = '"+qz.get(0).getId()+"'";
+		commonDao.queryBySql(QzApplnJyd.class,sql, null);
+		sql="update qz_appln_jyd_dydb set jyd_id='"+qzSdhjyd.getId()+"' where jyd_id = '"+qz.get(0).getId()+"'";
+		commonDao.queryBySql(QzApplnJyd.class,sql, null);
+		sql="update qz_appln_jyd_gtjkr set jyd_id='"+qzSdhjyd.getId()+"' where jyd_id = '"+qz.get(0).getId()+"'";
+		commonDao.queryBySql(QzApplnJyd.class,sql, null);
+		
 		//将决策金额和利率以及期限填入circle
 		Circle circle = circleService.findCircleByAppId(qzSdhjyd.getApplicationId());
 		circle.setContractAmt(qzSdhjyd.getJe());

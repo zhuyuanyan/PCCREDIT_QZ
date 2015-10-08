@@ -647,13 +647,9 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					var formjson = $($formName).serialize();
 					var url = "${contextPath}/intopieces/intopiecesapprove/update_page1.json?id=${qzApplnYwsqb.id}&customerId=${qzApplnYwsqb.customerId}&appId=${appId}";
 					$.ajax({
-					
 						url : url,
 						type : "get",
 						data : formjson,
-						error: function(){
-							alert();
-						},
 						success : function(data) {
 							if (data.success) {
 								topWin.Dialog.message("保存成功！");

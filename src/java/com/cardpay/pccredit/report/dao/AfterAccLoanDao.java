@@ -39,7 +39,8 @@ public interface AfterAccLoanDao {
 	public int getAfterAccLoanCount(OClpmAccLoanFilter filter);
 	/**
      * 客户逾期清单
-     * @param filter
+     * @param filter 
+     * '03'收款收息账号
      * @return
      */
 	public List<AccLoanOverdueInfo> getLoanOverdue(OClpmAccLoanFilter filter);

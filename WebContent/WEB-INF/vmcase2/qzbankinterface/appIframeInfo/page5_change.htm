@@ -319,6 +319,29 @@
 					<td></td>	
 					<td></td>				
 				</tr>
+				<tr>
+					<td class="tableTitle" colspan="6">第四部分  其他</td>				
+				</tr>
+				<tr>
+					<td>1</td>	
+					<td>其他</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='1')
+							<script>
+								if(parseInt(chkValue&1073741824) != 0){
+									document.write('<input type="checkbox" name="checkbox1" onclick="return false" value="1073741824" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox1" onclick="return false" value="1073741824"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox1" onclick="return false" value="1073741824"/>
+						#end
+					</td>						
+					<td></td>	
+					<td></td>	
+					<td></td>			
+				</tr>
 			</table>
 		</div>
 	<!--*************************************************************经营类*************************************************************-->
@@ -684,6 +707,26 @@
 							<input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288"/>
 						#end
 						</td>				
+				</tr>
+				<tr>
+					<td>1</td>	
+					<td>其他</td>	
+					<td>
+						#if($!qzApplnAttachmentList.bussType=='2')
+							<script>
+								if(parseInt(chkValue&1073741824) != 0){
+									document.write('<input type="checkbox" name="checkbox2" onclick="return false" value="1073741824" checked/>');
+								}else{
+									document.write('<input type="checkbox" name="checkbox2" onclick="return false" value="1073741824"/>');
+								}
+							</script>
+						#else
+							<input type="checkbox" name="checkbox2" onclick="return false" value="1073741824"/>
+						#end
+					</td>						
+					<td></td>	
+					<td></td>	
+					<td></td>			
 				</tr>
 			</table>
 		</div>

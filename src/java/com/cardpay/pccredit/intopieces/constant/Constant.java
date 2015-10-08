@@ -149,6 +149,18 @@ public class Constant {
 	public static String ATTACH_LIST26="担保人收入证明";
 	public static String ATTACH_LIST27="信用等级证复印件（如有）";
 	
+	public static String ATTACH_LIST99="其他";
+	
+	public static String ATTACH_LIST_ADD_1 = "1";
+	public static String ATTACH_LIST_ADD_2 = "2";
+	public static String ATTACH_LIST_ADD_3 = "3";
+	public static String ATTACH_LIST_ADD_4 = "4";
+	public static String ATTACH_LIST_ADD_5 = "5";
+	public static String ATTACH_LIST_ADD_6 = "6";
+	public static String ATTACH_LIST_ADD_7 = "7";
+	public static String ATTACH_LIST_ADD_8 = "8";
+	public static String ATTACH_LIST_ADD_9 = "9";
+	public static String ATTACH_LIST_ADD_10 = "10";
 	//影像空间放置路劲
 	public static String OCX_FILEPATH="/home/pccredit/sunds_ocx.exe";//生产环境
 	

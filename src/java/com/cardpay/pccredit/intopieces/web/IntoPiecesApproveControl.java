@@ -43,6 +43,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentListAdd;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxDkjl;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxFc;
@@ -567,7 +568,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			qzApplnYwsqb = ywsqbService.findYwsqb(customerInforId, null);
 		}
 		
-		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(null, appId);
+		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInforId, null);
 		
 		JRadModelAndView mv = null;
 		if(qzApplnYwsqb != null){
@@ -1005,7 +1006,7 @@ public class IntoPiecesApproveControl extends BaseController {
 		//查找客户信息和经营信息
 		CustomerInfor customerInfo = customerInforService.findCustomerInforById(customerInforId);
 		mv.addObject("customerInfo", customerInfo);
-		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(null, appId);
+		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInforId, null);
 		mv.addObject("qzApplnJyxx", qzApplnJyxx);
 		mv.addObject("appId", appId);
 		return mv;
@@ -1110,7 +1111,7 @@ public class IntoPiecesApproveControl extends BaseController {
 		//查找客户信息和经营信息
 		CustomerInfor customerInfo = customerInforService.findCustomerInforById(customerInforId);
 		mv.addObject("customerInfo", customerInfo);
-		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInforId, appId);
+		QzApplnJyxx qzApplnJyxx = jyxxService.findJyxx(customerInforId, null);
 		mv.addObject("qzApplnJyxx", qzApplnJyxx);
 		mv.addObject("appId", appId);		
 		return mv;
@@ -1371,7 +1372,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			//更新客户信息状态
 			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
 			String uploadValue = attachmentList.getUploadValue();
-			attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
+			//attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
 			// TODO 逻辑设计思路？现在不满足要求？？？
 			returnMap.put("uploadFlag", Integer.parseInt(uploadValue)&Integer.parseInt(docID.substring(14, docID.length())));
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
@@ -1386,11 +1387,38 @@ public class IntoPiecesApproveControl extends BaseController {
 		
 	//新增/修改影像
 	@ResponseBody
+	@RequestMapping(value = "getPage5UploadValueAdd.json")
+	public JRadReturnMap getPage5UploadValueAdd(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			String docID = request.getParameter("docID");
+			
+			//更新客户信息状态
+			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
+			QzApplnAttachmentListAdd qzApplnAttachmentListAdd = attachmentListService.findAttachmentListAddByAttId(attachmentList.getId(),docID.split("_")[1]);
+			//attachmentList.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(docID.substring(14, docID.length()))+"");
+			// TODO 逻辑设计思路？现在不满足要求？？？
+			returnMap.put("uploadFlag", Integer.parseInt(qzApplnAttachmentListAdd.getUploadValue())&Integer.parseInt(docID.split("_")[2]));
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put(JRadConstants.SUCCESS, true);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			returnMap.put(JRadConstants.SUCCESS, false);
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+			
+		
+	//新增/修改影像
+	@ResponseBody
 	@RequestMapping(value = "WDScan.page")
 	public AbstractModelAndView WDScan(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/WDScan", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		mv.addObject("appId", appId);
+		mv.addObject("level", request.getParameter("level"));
 		//查找page5信息
 		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
 		mv.addObject("children", jsonStr);
@@ -1404,6 +1432,7 @@ public class IntoPiecesApproveControl extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/WDView", request);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		mv.addObject("appId", appId);
+		mv.addObject("level", request.getParameter("level"));
 		//查找page5信息
 		JSONObject jsonStr = JSONObject.fromObject(attachmentListService.findAttachmentListJsonByAppId(appId));
 		mv.addObject("children", jsonStr);
@@ -1447,6 +1476,33 @@ public class IntoPiecesApproveControl extends BaseController {
 		return returnMap;
 	}
 	
+	//新增/修改影像
+	@ResponseBody
+	@RequestMapping(value = "insert_sunds_add.json")
+	public JRadReturnMap insert_sunds_add(HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String appId = request.getParameter("appId");
+			String docID = request.getParameter("docID");
+			String level2_chk_value = request.getParameter("level2_chk_value");
+			String parentValue = request.getParameter("parentValue");
+			
+			//更新客户信息状态
+			QzApplnAttachmentList attachmentList = attachmentListService.findAttachmentListByAppId(appId);
+			QzApplnAttachmentListAdd qzApplnAttachmentListAdd = attachmentListService.findAttachmentListAddByAttId(attachmentList.getId(), parentValue);
+			String uploadValue = qzApplnAttachmentListAdd.getUploadValue();
+			qzApplnAttachmentListAdd.setUploadValue(Integer.parseInt(uploadValue)+Integer.parseInt(level2_chk_value)+"");
+			commonDao.updateObject(qzApplnAttachmentListAdd);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put(JRadConstants.SUCCESS, true);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			returnMap.put(JRadConstants.SUCCESS, false);
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
+		
 	//客户号检测
 	@ResponseBody
 	@RequestMapping(value = "detect_clientNo.json")
@@ -1611,7 +1667,6 @@ public class IntoPiecesApproveControl extends BaseController {
 				mv = new JRadModelAndView("/qzbankinterface/appIframeInfo/iframe_create", request);
 			}
 			String appId = customerApplicationInfo.getId();
-			System.out.println("appId="+appId);
 		    mv.addObject("customerId",customerId);
 			mv.addObject("appId",appId);
 			return mv;

@@ -89,6 +89,7 @@ public class IntoPiecesZhongxinControl extends BaseController {
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
 		filter.setNodeName(Constant.status_zhongxin);
+		filter.setFilterTeamLeader("1");
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 

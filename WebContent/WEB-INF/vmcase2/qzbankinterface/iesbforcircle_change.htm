@@ -383,14 +383,14 @@
               <td><label>签约日期:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="signDate" name="signDate" value="$date.format('yyyy-MM-dd', $!circle.signDate)"  onmouseover="_calendar()" readonly/></td>
             </tr>
-            
-            <tr>
+            #if($!operate=="填写合同信息")
+              <tr>
               <td><label>录入岗:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="shenHeRen1" name="shenHeRen1" value="$!circle.shenHeRen1" ></td>
-			  <td><label>评审岗:</label><font color="#ff0000">*</font></td>
+			  <td><label>复核岗:</label><font color="#ff0000">*</font></td>
               <td><input type="text" id="shenHeRen2" name="shenHeRen2" value="$!circle.shenHeRen2" /></td>
             </tr>
-            
+            #end
 		  </table>
 		  <!--<table class="rule myTable" bordercolor="#cccccc" border="1">
           <caption>费用信息</caption>

@@ -179,7 +179,12 @@ public class AfterloanCheckService {
 	 * @param userId
 	 * @return
 	 */
-	public int findAferLoanCheckRemindCount(){
-		return afterLoanDao.findAferLoanCheckRemindCount();
+	public int findAferLoanCheckRemindCount(String reminddate,String userId){
+		return afterLoanDao.findAferLoanCheckRemindCount(reminddate,userId);
+	}
+	
+	public void updateTask(String taskid){
+		String sql ="update psp_check_task set upload_flag = '1' where TASK_ID = '"+taskid+"'";
+		commonDao.queryBySql(PspCheckTask.class, sql, null);
 	}
 }
