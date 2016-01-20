@@ -118,6 +118,9 @@
 		
 		<result property="customerId" column="CUSTOMER_ID" />
 		<result property="applicationId" column="APPLICATION_ID" />
+		
+		<result property="shenHeRen1" column="SHEN_HE_REN1" />
+		<result property="shenHeRen2" column="SHEN_HE_REN2" />
 	</resultMap>
 	
 	<resultMap id="ResultMap2"
@@ -144,6 +147,17 @@
 		AND APPLICATION_ID is null
 	</select>
 	
+	<select id="findCircleApproved" resultMap="ResultMap">
+		select *
+		from 
+			QZ_IESB_FOR_CIRCLE
+			where 1=1
+	 	<if test="customerId != null and customerId != '' ">
+			AND CUSTOMER_ID=#{customerId}
+		</if>
+		AND ret_code = '000000'
+	</select>
+	
 	<select id="findCircleByAppId" resultMap="ResultMap">
 		select *
 		from 
@@ -156,6 +170,11 @@
 	
 	<select id="findCircleByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
 	    resultMap="ResultMap2">
+	 	
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (
+			
 		select 
 			circle.id as id,
 			circle.CLIENT_NO as CLIENT_NO,
@@ -173,6 +192,12 @@
 			<if test="globalId != null and globalId != '' ">
 				AND ecif.GLOBAL_ID=#{globalId}
 			</if>
+			
+			<![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
 	</select>
 	
 	<select id="findCircleCountByFilter" parameterType="com.cardpay.pccredit.QZBankInterface.filter.EcifFilter"
@@ -197,6 +222,14 @@
 		*
 		from QZ_IESB_FOR_CIRCLE
 		where client_no  = #{clientNo}
+		order by credit_time
+	</select>
+	
+	<select id="findCircleByCONTRACT_NO" resultMap="ResultMap">
+		select 
+		*
+		from QZ_IESB_FOR_CIRCLE
+		where RET_CONTNO  = #{CONTRACT_NO}
 	</select>
 	
 	<select id="findCircleByCustomerId" resultMap="ResultMap">

@@ -9,6 +9,8 @@ import java.util.List;
 
 
 
+
+
 import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
@@ -16,6 +18,8 @@ import com.cardpay.pccredit.report.filter.OClpmAccLoanFilter;
 import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.model.AccLoanInfo;
 import com.cardpay.pccredit.report.model.AccLoanOverdueInfo;
+import com.cardpay.pccredit.report.model.PsNormIntAmt;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -39,7 +43,8 @@ public interface AfterAccLoanDao {
 	public int getAfterAccLoanCount(OClpmAccLoanFilter filter);
 	/**
      * 客户逾期清单
-     * @param filter
+     * @param filter 
+     * '03'收款收息账号
      * @return
      */
 	public List<AccLoanOverdueInfo> getLoanOverdue(OClpmAccLoanFilter filter);
@@ -57,4 +62,9 @@ public interface AfterAccLoanDao {
 	 * @return
 	 */
 	public List<AccLoanInfo> getAfterAccLoanByCustomerId(@Param("customerId")String customerId);
+	
+	//查询借据对应当月的还计划表
+	public List<PsNormIntAmt> getPsNormIntAmt(OClpmAccLoanFilter filter);
+	public int getPsNormIntAmtCount(OClpmAccLoanFilter filter);
+	public List<PsNormIntAmt> getPsNormIntAmtList(OClpmAccLoanFilter filter);
 }

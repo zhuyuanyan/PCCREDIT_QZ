@@ -49,6 +49,7 @@ function addTd(table){	//表格添加行
 	if(table=="jkjl"){//借款记录
 		$("#"+table).append("<tr>" + 
 								"<td><input type='text' class='input' name='bankOrOtherType_jkjl_"+cnt+"'/></td>" + 
+								"<td><input type='text' class='input' name='guaranteeMode_jkjl_"+cnt+"'/></td>" +
 								"<td><input type='text' class='input' name='purpose_jkjl_"+cnt+"'/></td>" + 
 								"<td><input type='text' class='input' name='totalAmount_jkjl_"+cnt+"'/></td>" + 
 								"<td><input type='text' class='input' name='loanDate_jkjl_"+cnt+"' value='"+timestr+"' onmouseover='_calendar()' readonly/></td>" + 
@@ -118,7 +119,8 @@ function addTd(table){	//表格添加行
 								"<td><input type='text' class='input' name='yyqdrq' onmouseover='_calendar()' readonly/></td>" + 
 								"<td><input type='text' class='input' name='sjqdrq' onmouseover='_calendar()' readonly/></td>" + 
 								"<td><input type='text' class='input' name='zbkhjl'/></td>" + 
-								"<td><input type='text' class='input' name='jbr'/></td>" + 
+								"<td><input type='text' class='input' name='jbr'/></td>" +
+								"<td><input type='text' class='input' name='lrz' value='$!loginId'/></td>" +
 								"<td><input type='text' class='input' name='bz'/></td>" + 
 							"</tr>");      
 	}
@@ -144,6 +146,27 @@ function addTd(table){	//表格添加行
 							"</tr>");      
 	}
 	
+}
+
+function addTdforT(table,loginId){	//表格添加行
+	var tr= document.getElementById(table).getElementsByTagName("tr");
+	//更新行数
+	var cnt = tr.length-2+1;
+	$("#"+table+"_cnt").val(cnt);
+	if(table=="htqdtz"){//合同签订台账
+		$("#"+table).append("<tr>" + 
+								"<td><input type='text' class='input' name='slrq' onmouseover='_calendar()' readonly/></td>" + 
+								"<td><input type='text' class='input' name='jkrxm'/></td>" + 
+								"<td><input type='text' class='input' name='pzje'/></td>" + 
+								"<td><input type='text' class='input' name='yyqdrq' onmouseover='_calendar()' readonly/></td>" + 
+								"<td><input type='text' class='input' name='sjqdrq' onmouseover='_calendar()' readonly/></td>" + 
+								"<td><input type='text' class='input' name='zbkhjl'/></td>" + 
+								"<td><input type='text' class='input' name='jbr'/></td>" +
+								"<td><input type='text' class='input' name='lrz' value='"+loginId+"' readonly/></td>" +
+								"<td><input type='text' class='input' name='bz'/></td>" + 
+							"</tr>");      
+	}
+
 }
 
 function removeTd(table){ //表格删除行 

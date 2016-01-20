@@ -17,7 +17,7 @@
 							<option value="1">工薪类</option>
 							<option value="2">经营类</option>
 						</select>
-						<input type="hidden" id="chkValue" name="chkValue" value="1">
+						<input type="hidden" id="chkValue" name="chkValue" value="1073741825">
 					</td>
 				</tr>
 			</table>	
@@ -69,7 +69,7 @@
 				<tr>
 					<td>1</td>	
 					<td>合同扫描件</td>	
-					<td><input type="checkbox" name="checkbox1" onclick="return false" value="1" checked/></td>						
+					<td><input type="checkbox" class="mustCheck" name="checkbox1" onclick="return false" value="1" checked/></td>						
 					<td></td>	
 					<td></td>	
 					<td></td>			
@@ -145,6 +145,17 @@
 					<td></td>	
 					<td></td>				
 				</tr>
+				<tr>
+					<td class="tableTitle" colspan="6">第四部分  其他</td>				
+				</tr>
+				<tr>
+					<td>1</td>	
+					<td>其他</td>	
+					<td><input type="checkbox" class="mustCheck" name="checkbox1" onclick="return false" value="1073741824" checked/></td>						
+					<td></td>	
+					<td></td>	
+					<td></td>			
+				</tr>
 			</table>
 		</div>
 	<!--*************************************************************经营类*************************************************************-->
@@ -194,7 +205,7 @@
 				<tr>
 					<td>1</td>	
 					<td>合同扫描件</td>	
-					<td><input type="checkbox" name="checkbox2" onclick="return false" value="1" checked/></td>						
+					<td><input type="checkbox" class="mustCheck" name="checkbox2" onclick="return false" value="1" checked/></td>						
 					<td></td>	
 					<td></td>	
 					<td></td>			
@@ -285,6 +296,17 @@
 					<td>信用等级证复印件（如有）</td>	
 					<td><input type="checkbox" name="checkbox2" onclick="getSum(2);" value="524288"/></td>				
 				</tr>
+				<tr>
+					<td class="tableTitle" colspan="6">第四部分  其他</td>				
+				</tr>
+				<tr>
+					<td>1</td>	
+					<td>其他</td>	
+					<td><input type="checkbox" class="mustCheck" name="checkbox2" onclick="return false" value="1073741824" checked/></td>						
+					<td></td>	
+					<td></td>	
+					<td></td>			
+				</tr>
 			</table>
 		</div>
 		
@@ -323,13 +345,13 @@
 			if($("#jdlx option:selected").text()=="工薪类"){
 				$("#gxl").show();
 				$("#jyl").hide();
-				$("input[type=checkbox][name=checkbox2]:checked").attr("checked",false);
+				$("input[type=checkbox][name=checkbox2][class!=mustCheck]:checked").attr("checked",false);
 				getSum(1);
 			}
 			if($("#jdlx option:selected").text()=="经营类"){
 				$("#gxl").hide();
 				$("#jyl").show();
-				$("input[type=checkbox][name=checkbox1]:checked").attr("checked",false);
+				$("input[type=checkbox][name=checkbox1][class!=mustCheck]:checked").attr("checked",false);
 				getSum(2);
 			}
 		}
@@ -352,7 +374,7 @@
 			//保存
 			$("#id_save_button").click(function() {
 				if(submitFlag == 1){
-					alert("请勿重复提交!")
+					alert("等待后台响应,请勿重复提交!")
 					return;
 				}
 				submitFlag = 1;

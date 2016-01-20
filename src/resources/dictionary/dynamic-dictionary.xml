@@ -146,6 +146,26 @@
 		FROM
 		PRODUCT_ATTRIBUTE order by created_time
 	</dictionary>
+	
+	<dictionary name="ProductName_1" title="产品名称" timeout="1000">
+		SELECT
+		ID AS name,
+		PRODUCT_NAME AS title
+		FROM
+		PRODUCT_ATTRIBUTE 
+		where  PRODUCT_NAME != '安居贷'
+		order by created_time
+	</dictionary>
+	
+	<dictionary name="ProductName_2" title="产品名称" timeout="1000">
+		SELECT
+		ID AS name,
+		PRODUCT_NAME AS title
+		FROM
+		PRODUCT_ATTRIBUTE 
+		where  PRODUCT_NAME = '安居贷'
+		order by created_time
+	</dictionary>
 	<dictionary name="CustomerName" title="客户名称" timeout="1000">
 		select
 		t.id as name ,
@@ -248,6 +268,7 @@
 		and
 		Dict_Type = 'CMMSCCOM-单位性质分值'
 	</dictionary>
+	
 
 	<dictionary name="CUSTOMERMANAGER" title="客户经理" timeout="10000">
 		SELECT
@@ -265,7 +286,6 @@ WHERE
 AND A.USER_TYPE = '1'
 AND A.IS_DELETED = '0'
 	</dictionary>
-	
 	<dictionary name="ALLMANAGER" title="所有客户经理" timeout="10000">
 		SELECT
 		A ."ID" AS NAME,
@@ -369,6 +389,12 @@ AND A.IS_DELETED = '0'
 
 	</dictionary>
 
+	<dictionary name="INDIV_BRT_PLACE" title="籍贯" timeout="10000">
+		select
+		parent_code ||'_'|| type_code as name,type_name as title
+		from INDIV_BRT_PLACE
+		order by name
+	</dictionary>
 
 	<!-- ESB 数据字典 -->
 	<dictionary name="INDIV_BRT_PLACE_LEVEL_1" title="籍贯" timeout="10000">

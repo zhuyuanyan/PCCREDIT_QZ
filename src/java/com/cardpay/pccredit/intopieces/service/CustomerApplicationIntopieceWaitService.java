@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
-import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationInfoDao;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
@@ -166,10 +165,10 @@ public class CustomerApplicationIntopieceWaitService {
 	    if(Constant.APPROVED_INTOPICES.equalsIgnoreCase(customerApplicationInfo.getStatus())){
 	    	intoPiecesService.exportData(applicationId, customerId, null);
 	    }
-		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
+		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())) {
 			String fallbackReason = request.getParameter("reason");
 			customerApplicationProcess.setFallbackReason(fallbackReason);
-		} else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.REJECTAPPROVE)) {
+		} else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())) {
 			String refusalReason = request.getParameter("reason");
 			customerApplicationProcess.setRefusalReason(refusalReason);
 		}
@@ -202,17 +201,9 @@ public class CustomerApplicationIntopieceWaitService {
 			int size = customerApplicationIntopieceWaitDao.CountIntopieceWaitFormByUsered(filter);
 			QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
 			return qs;
-
+	
 		}
 		
-	//手动搜件
-	public QueryResult<CustomerApplicationIntopieceWaitForm> recieveIntopieceWaitFormM(CustomerApplicationProcessFilter filter) {
-		List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.IntopieceWaitFormM(filter);
-		int size = customerApplicationIntopieceWaitDao.CountIntopieceWaitFormM(filter);
-		QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
-		return qs;
-
-	}
 	
 	// 查询需要团队初审拒件的进件
 	public QueryResult<CustomerApplicationIntopieceWaitForm> IntopieceChushenRejectForm() {
@@ -281,10 +272,10 @@ public class CustomerApplicationIntopieceWaitService {
 			
 			customerApplicationProcess.setNextNodeId(examineResutl);
 		}
-		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
+		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())) {
 			String fallbackReason = request.getParameter("reason");
 			customerApplicationProcess.setFallbackReason(fallbackReason);
-		} else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.REJECTAPPROVE)) {
+		} else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())) {
 			String refusalReason = request.getParameter("reason");
 			customerApplicationProcess.setRefusalReason(refusalReason);
 		}else{

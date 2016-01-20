@@ -33,6 +33,8 @@ public class AfterLoaninfo extends BusinessModel{
 	private String chineseName;
 	private String cardId;
 	
+	private String checkDescribe;
+	
 	public String getTaskId() {
 		return taskId;
 	}
@@ -165,6 +167,15 @@ public class AfterLoaninfo extends BusinessModel{
 	public void setRepayment(String repayment) {
 		this.repayment = repayment;
 	}
+	public String getCheckDescribe() {
+		return checkDescribe;
+	}
+	public void setCheckDescribe(String checkDescribe) {
+		this.checkDescribe = checkDescribe;
+	}
+	public void setAgreedPerson(String agreedPerson) {
+		this.agreedPerson = agreedPerson;
+	}
 	public String getReciprocalType() {
 		return reciprocalType;
 	}
@@ -183,5 +194,4 @@ public class AfterLoaninfo extends BusinessModel{
 	public void setRepaymentOther(String repaymentOther) {
 		this.repaymentOther = repaymentOther;
 	}
-	
 }

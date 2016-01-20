@@ -371,6 +371,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 				</tr>
 				<tr>
 					<td><b>银行或其他方式</b></td>	
+					<td><b>担保方式</b></td>	
 					<td><b>目的</b></td>					
 					<td><b>贷款总额</b></td>	
 					<td><b>发放日期</b></td>					
@@ -381,6 +382,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 				</tr>
 				<tr>
 					<td><input type="text" class="input" name="bankOrOtherType_jkjl_1" disabled/></td>	
+					<td><input type="text" class="input" name="guaranteeMode_jkjl_1" disabled/></td>
 					<td><input type="text" class="input" name="purpose_jkjl_1" disabled/></td>					
 					<td><input type="text" class="input" name="totalAmount_jkjl_1" disabled/></td>	
 					<script>
@@ -549,6 +551,11 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					<td><input type="text" value="$!userName" readonly/>
 						<input type="hidden" name="managerName" value="$!userName"/>
 						<input type="hidden" name="managerId" value="$!externalId"/></td>	
+					<td class="table-label">协办客户经理：</td>
+					<td><input type="text" name="helpManagerName" value="$!qzApplnYwsqb.helpManagerName" />
+					</td>	
+				</tr>
+				<tr>		
 					<td class="table-label">日期：<font color="#ff0000">*</font></td>	
 					<td><input type="text" name="managerTime" onmouseover="_calendar()" readonly/></td>	
 				</tr>	
@@ -561,7 +568,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 	#if($!type=="readonly")
 		<a class="btn_gr"  onclick="parent.location.href = '${contextPath}${returnUrl}'" title="返回">返回</a>
 	#else
-		<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="提交">提交</a>
+		<a id="id_save_button" class="btn_g" href="javascript:void(0);" title="保存">保存</a>
 		<a id="id_back_button" class="btn_gr" href="javascript:void(0);" title="返回">返回</a>
 	#end
 	</div>
@@ -608,7 +615,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 			//保存
 			$("#id_save_button").click(function() {
 				if(submitFlag == 1){
-					alert("请勿重复提交!")
+					alert("等待后台响应,请勿重复提交!")
 					return;
 				}
 				submitFlag = 1;
@@ -616,7 +623,7 @@ var timestr = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth
 					var formjson = $($formName).serialize();
 					var url = "${contextPath}/intopieces/intopiecesapprove/insert_page1.json?customerId=${customerId}&appId=${appId}";
 					$.ajax({
-						timeout : 500,
+						
 						url : url,
 						type : "get",
 						data : formjson,

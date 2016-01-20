@@ -201,15 +201,17 @@
 					</td>	
 				</tr>		
 				<tr>				
-					<td class="table-label">其他要求</td>					
-					<td colspan="7"><textarea name="qtyq">$!result.qtyq</textarea></td>	
+					<td class="table-label">组长建议</td>					
+					<td colspan="3"><textarea name="zzjy">$!result.zzjy</textarea></td>	
+					<td class="table-label">评审建议</td>					
+					<td colspan="3"><textarea name="psjy">$!result.psjy</textarea></td>	
 				</tr>		
 				<tr>				
 					<td class="table-label">拒绝申请</td>					
 					<td colspan="7">主要原因：<textarea name="jjsq">$!result.jjsq</textarea></td>	
 				</tr>			
 				<tr>				
-					<td class="table-label">组员</td>					
+					<td class="table-label">审贷会成员</td>					
 					<td colspan="8">
 						组员:<input type="text" name="zy1" value="$!result.zy1"/>
 						组员:<input type="text" name="zy2" value="$!result.zy2"/>
@@ -238,15 +240,15 @@
 		
 		$(document).ready(function() {
 			if("${type}"=="readonly"){
-				//$("input[type='text']").attr("disabled",true);
-				$("input[type='radio']").attr("readonly",true);
-				$("input[type='checkbox']").attr("readonly",true);
-				$("select").attr("readonly",true);
-				$("textarea").attr("readonly",true);
+				$("input[type='text']").attr("disabled",true).css({"background-color":"#fff","color":"#000","font-color":"#000"});
+				$("input[type='radio']").attr("disabled",true);
+				$("input[type='checkbox']").attr("disabled",true);
+				$("select").attr("disabled",true).css({"background-color":"#fff","color":"#000","font-color":"#000"});
+				$("textarea").attr("disabled",true).css({"background-color":"#fff","color":"#000","font-color":"#000"});
 			}
 			$("#id_save_button").click(function() {
 				if(submitFlag == 1){
-					alert("请勿重复提交!")
+					alert("等待后台响应,请勿重复提交!")
 					return;
 				}
 				submitFlag = 1;
