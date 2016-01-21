@@ -3,7 +3,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
 import com.cardpay.pccredit.manager.filter.ManagerBelongMapFilter;
+import com.cardpay.pccredit.manager.filter.ManagerJxBcFilter;
+import com.cardpay.pccredit.manager.model.KhjljxbcForm;
+import com.cardpay.pccredit.manager.model.Khjltjzl;
 import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
@@ -58,5 +62,14 @@ public interface ManagerBelongMapDao {
 	 * @return
 	 */
 	List<AccountManagerParameterForm> findAccountManagerParameterByChildIds(@Param("childIdInStr") String childIdInStr);
+	
+	/**
+	 * 找子节点
+	 */
+	public List<ManagerBelongMapForm> findChildId(@Param("id") String userId);
+	
+	public List<KhjljxbcForm> findManJxList(MaintenanceFilter filter);
+	public int findManJxCountList(MaintenanceFilter filter);
+	
 	
 }

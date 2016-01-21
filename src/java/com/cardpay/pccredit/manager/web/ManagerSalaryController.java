@@ -68,15 +68,13 @@ public class ManagerSalaryController extends BaseController {
 	@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap generateData(@ModelAttribute ManagerSalaryForm form, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
-		returnMap.setSuccess(true);
-		if (returnMap.isSuccess()) {
-			try {
-				managerSalaryService.calculateMonthlySalary(Integer.valueOf(form.getYear()), Integer.valueOf(form.getMonth()));
-				returnMap.addGlobalMessage(CHANGE_SUCCESS);
-			}
-			catch (Exception e) {
-				return WebRequestHelper.processException(e);
-			}
+		try {
+			managerSalaryService.calculateMonthlySalaryTy(Integer.valueOf(form.getYear()), Integer.valueOf(form.getMonth()));
+		}
+		catch (Exception e) {
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(e.getMessage());
+			return returnMap;
 		}
 		return returnMap;
 	}

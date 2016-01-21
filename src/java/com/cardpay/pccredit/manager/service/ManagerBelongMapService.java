@@ -12,12 +12,17 @@ import org.apache.axis.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
 import com.cardpay.pccredit.manager.dao.ManagerBelongMapDao;
 import com.cardpay.pccredit.manager.dao.comdao.ManagerBelongMapComdao;
 import com.cardpay.pccredit.manager.filter.ManagerBelongMapFilter;
+import com.cardpay.pccredit.manager.filter.ManagerJxBcFilter;
+import com.cardpay.pccredit.manager.model.KhjljxbcForm;
+import com.cardpay.pccredit.manager.model.Khjltjzl;
 import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.modules.privilege.model.TreeNode;
@@ -213,5 +218,33 @@ public class ManagerBelongMapService {
 		}
 		
 	}
+	
+	
+	public List<AccountManagerParameterForm>  findSubListManagerByManagerId(IUser user){
+		//客户经理list
+		 List<AccountManagerParameterForm>  forms = new ArrayList<AccountManagerParameterForm>();
+		 
+		 List<ManagerBelongMapForm> childBelongMapList = managerBelongMapDao.findChildId(user.getId());
+		 if(childBelongMapList != null && childBelongMapList.size() > 0){
+				StringBuffer belongChildIds = new StringBuffer();
+				belongChildIds.append("(");
+				for(ManagerBelongMapForm belongMapForm : childBelongMapList){
+					belongChildIds.append("'").append(belongMapForm.getChildId()).append("'").append(",");
+				}
+				belongChildIds = belongChildIds.deleteCharAt(belongChildIds.length() - 1);
+				belongChildIds.append(")");
+				return managerBelongMapDao.findAccountManagerParameterByChildIds(belongChildIds.toString());
+		 }
+		return forms;
+	}
+	
+	
+	public QueryResult<KhjljxbcForm> findManJxList(MaintenanceFilter filter){
+		List<KhjljxbcForm> plans = managerBelongMapDao.findManJxList(filter);
+		int size = managerBelongMapDao.findManJxCountList(filter);
+		QueryResult<KhjljxbcForm> qr = new QueryResult<KhjljxbcForm>(size,plans);
+		return qr;
+	}
+	
 
 }

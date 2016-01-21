@@ -142,7 +142,7 @@
 							Dialog.message("成功");
 							window.location.href="${modulePath}/browse.page?year="+year+"&month="+month;
 						}else{
-							Dialog.message("失败");
+							Dialog.message(msg.errors.errors[0].message);
 						}
 						
 					}
