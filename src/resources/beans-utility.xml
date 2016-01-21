@@ -415,6 +415,52 @@
         </property>
     </bean>
     
+    <!--泉州绩效  每月定时生成客户经理评估信息 start -->
+    <bean id="addManagerAssmentScoreJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="managerAssessmentScoreScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>addAssessment</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addManagerAssmentScoreTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addManagerAssmentScoreJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 29 13 * * ?</value><!-- 0 0 0/1 * * ? -->
+        </property>
+    </bean>
+    <!-- 泉州绩效  每月定时生成客户经理评估信息  end -->
+    
+     <!--泉州绩效  客户经理级别调整 start -->
+    <bean id="addManagerLevelAdjustmentJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="managerAssessmentScoreScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>doGenerateManagerAdjustment</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addManagerLevelAdjustmentTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addManagerLevelAdjustmentJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 00 15 * * ?</value><!-- 0 0 0/1 * * ? -->
+        </property>
+    </bean>
+    <!-- 泉州绩效   客户经理级别调整  end -->
+    
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
    
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -438,6 +484,8 @@
 				<ref bean="updateJobTigger"/>
 				<ref bean="uploadPspCheckJobTigger"/>
 				<ref bean="updatePspCheckJobTigger"/>-->
+				<ref bean="addManagerAssmentScoreTigger"/>
+				<ref bean="addManagerLevelAdjustmentTigger"/>
             </list>
         </property>
     </bean>
