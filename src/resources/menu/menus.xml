@@ -84,7 +84,8 @@
 			<menu id="070016" name="dailyaccount" title="客户经理日报" url="/manager/dailyaccount/browse.page" img="" operations="change|display|browse"/>		    
 			<menu id="070017" name="information" title="信息员信息列表" url="/manager/information/browse.page" img="" operations="create|change|relevancecustomer|assess|browse"/>
 			<menu id="070018" name="informationmaintenance" title="信息员维护计划列表" url="/manager/informationmaintenance/browse.page" img="" operations="create|change|display|browse"/>
-			
+ 			<menu id="070019" name="assessscorerecordpg" title="客户经理评估列表(新)" url="/manager/assessscorerecordpg/browse.page" img="" operations="change|display|browse"/> 
+			<menu id="070020" name="jxbc" title="客户经理绩效补充" url="/manager/jxbc/browse.page" img="" operations="create|change|delete|display|browse"/>	
 		</menu>
 		
 		<menu id="081000" name="riskcontrol" title="综合风控管理" operations=""> 

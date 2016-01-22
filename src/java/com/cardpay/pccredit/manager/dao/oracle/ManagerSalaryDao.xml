@@ -340,4 +340,44 @@
 		DELETE FROM manager_salary a
 		  WHERE a.year=#{year} and a.month=#{month}
 	</delete>
+	
+	<delete id="deleteManagerAssessmentByYearAndMonth">
+		DELETE FROM TY_MANAGER_ASSESSMENT a
+		  WHERE a.year=#{year} and a.month=#{month}
+	</delete>
+	
+	
+	<insert id="copyManagerScore" >
+	    insert into TY_MANAGER_ASSESSMENT										  									 
+				  (id,                                                                   
+				   year,                                                                 
+				   month,                                                                
+				   customer_id,                                                          
+				   score,                                                                
+				   total_score,                                                          
+				   create_time,                                                          
+				   create_user,                                                          
+				   customer_name,                                                        
+				   remark)                                                               
+				  (select sys_guid(),                                                    
+				          s.data_year,                                                   
+				          s.data_month,                                                  
+				          s.assessor,                                                    
+				          '',                                                            
+				          s.total_score,                                                 
+				          s.created_time,                                                
+				          s.created_time,                                                
+				          u.display_name,                                                
+				          OTHER_EVALUATION                                               
+				     from manager_assessment_score s,sys_user u where u.id =s.assessor and s.data_year=#{year} and s.data_month=#{month})  
+	</insert>
+	
+	
+	<select id="findManagerSalaryCount" resultType="int">
+		SELECT count(*)
+		   FROM manager_salary salary
+		  WHERE 1=1
+			AND salary.month=#{month}
+			AND salary.year=#{year}
+	</select>
 </mapper>

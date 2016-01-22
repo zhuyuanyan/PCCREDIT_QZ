@@ -59,6 +59,12 @@ public interface ManagerSalaryDao {
 	 * @return
 	 */
 	public int deleteManagerSalaryByYearAndMonth(@Param("year")int year, @Param("month")int month);
+	
+	public int findManagerSalaryCount(@Param("year")int year, @Param("month")int month);
+	
+	public int deleteManagerAssessmentByYearAndMonth(@Param("year")int year, @Param("month")int month);
+	
+	public void copyManagerScore(@Param("year")int year, @Param("month")int month);
 	/**
 	 * 批量插入客户经理薪资
 	 * @param list
