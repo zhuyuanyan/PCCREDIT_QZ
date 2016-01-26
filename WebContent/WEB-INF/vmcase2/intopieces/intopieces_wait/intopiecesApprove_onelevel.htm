@@ -163,6 +163,7 @@
 		<a id="id_reject_button" class="btn_g" title="拒件">拒件</a>
         <a id="id_return_to_cu_button" class="btn_g" href="javascript:void(0);"  title="补充上会">补充上会</a>-->
         <!--  <a id="id_chureject_button" class="btn_g" title="初审拒件记录">初审拒件记录</a>-->
+        <a class="btn_g" id ="id_report_button" title="调查模板" >调查模板</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -177,6 +178,33 @@
 	window.top.currentWindow.setLayout(layout);
 
 	$(document).ready(function() {
+		
+		//查看调查模板
+		$("#id_report_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url = "${contextPath}/intopieces/intopiecesapprove/report_khxx.page?appId=" + rowid.split("@")[0];
+				if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
+			}
+	    });
 		
 		$('.dialog').hide();
 		$("#id_return_button").click(function() {

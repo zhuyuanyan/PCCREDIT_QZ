@@ -1,9 +1,7 @@
 package com.cardpay.pccredit.intopieces.web;
 
-import java.util.ArrayList;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,13 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import sun.misc.BASE64Decoder;
+
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
 import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
 import com.cardpay.pccredit.QZBankInterface.web.IESBForCircleForm;
-import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
-import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
@@ -45,11 +43,14 @@ import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.LocalExcel;
+import com.cardpay.pccredit.intopieces.model.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
@@ -57,10 +58,11 @@ import com.cardpay.pccredit.intopieces.model.QzApplnDbrxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxDkjl;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxFc;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxxJdc;
-import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.model.QzApplnJydBzdb;
 import com.cardpay.pccredit.intopieces.model.QzApplnJydDydb;
 import com.cardpay.pccredit.intopieces.model.QzApplnJydGtjkr;
+import com.cardpay.pccredit.intopieces.model.QzApplnJyxx;
 import com.cardpay.pccredit.intopieces.model.QzApplnNbscyjb;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqb;
 import com.cardpay.pccredit.intopieces.model.QzApplnYwsqbJkjl;
@@ -70,13 +72,11 @@ import com.cardpay.pccredit.intopieces.model.QzApplnZa;
 import com.cardpay.pccredit.intopieces.model.QzApplnZaReturnMap;
 import com.cardpay.pccredit.intopieces.model.QzAppln_Za_Ywsqb_R;
 import com.cardpay.pccredit.intopieces.service.AttachmentListService;
-import com.cardpay.pccredit.intopieces.model.QzApplnJyd;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.DbrxxService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.JyxxService;
 import com.cardpay.pccredit.intopieces.service.NbscyjbService;
-import com.cardpay.pccredit.intopieces.service.SundsHelper;
 import com.cardpay.pccredit.intopieces.service.YwsqbService;
 import com.cardpay.pccredit.intopieces.service.ZAService;
 import com.cardpay.pccredit.intopieces.service.ZA_YWSQB_R_Service;
@@ -1768,5 +1768,146 @@ public class IntoPiecesApproveControl extends BaseController {
 		}
 		return returnMap;
 	}
+	
+	
+//================================================================//	
+	//导入调查报告
+	@ResponseBody
+	@RequestMapping(value = "reportImport.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView reportImport(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		QueryResult<LocalExcelForm> result = intoPiecesService.findLocalExcel(filter);
+		JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/report_import",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		
+		return mv;
+	}
+		
+		
+	//导入调查报告
+	@ResponseBody
+	@RequestMapping(value = "reportImport.json")
+	public Map<String, Object> reportImport_json(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
+		response.setContentType("text/html;charset=utf-8");
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if(file==null||file.isEmpty()){
+				map.put(JRadConstants.SUCCESS, false);
+				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
+				return map;
+			}
+			String productId = request.getParameter("productId");
+			String customerId = request.getParameter("customerId");
+			String appId = request.getParameter("applicationId");
+			intoPiecesService.importExcel(file,productId,customerId,appId);
+			map.put(JRadConstants.SUCCESS, true);
+			map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
+			JSONObject obj = JSONObject.fromObject(map);
+			response.getWriter().print(obj.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put(JRadConstants.SUCCESS, false);
+			map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
+			JSONObject obj = JSONObject.fromObject(map);
+			response.getWriter().print(obj.toString());
+		}
+		return null;
+	}
+	
+	
+	
+	
+
+    //显示维护信息--建议
+	@ResponseBody
+	@RequestMapping(value = "report_khxx.page")
+	public AbstractModelAndView report_jy(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/report_khxx", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		//String urlType = RequestHelper.getStringValue(request, "urlType");
+		if (StringUtils.isNotEmpty(appId)) {
+			LocalExcel localExcel = intoPiecesService.findLocalEXcelByApplication(appId);
+			String tableContent = getFromBASE64(localExcel.getSheetKhxx()).replaceAll("\n", "<br>").replace("><br><", "><");
+			mv.addObject("tableContent", tableContent);
+			mv.addObject("appId", appId);
+			/*
+			mv.addObject("urlType", urlType);
+			//查询权限 非本人只能查看 不能操作
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			boolean lock = false;
+			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+				lock = true;
+			}
+			mv.addObject("lock", lock);*/
+		}
+		return mv;
+	}
+	
+	//显示维护信息--基本状况
+	@ResponseBody
+	@RequestMapping(value = "report_zcfz.page")
+	public AbstractModelAndView report_jbzk(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/report_zcfz", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		//String urlType = RequestHelper.getStringValue(request, "urlType");
+		if (StringUtils.isNotEmpty(appId)) {
+			LocalExcel localExcel = intoPiecesService.findLocalEXcelByApplication(appId);
+			String tableContent = getFromBASE64(localExcel.getSheet_zcfz()).replaceAll("\n", "<br>").replace("><br><", "><");
+			mv.addObject("tableContent", tableContent);
+			mv.addObject("appId", appId);
+			/*mv.addObject("urlType", urlType);
+			//查询权限 非本人只能查看 不能操作
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			boolean lock = false;
+			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+				lock = true;
+			}
+			mv.addObject("lock", lock);*/
+		}
+		return mv;
+	}
+	
+	
+	//显示维护信息--经营状态
+	@ResponseBody
+	@RequestMapping(value = "report_sy.page")
+	public AbstractModelAndView report_jyzt(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/report_sy", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		//String urlType = RequestHelper.getStringValue(request, "urlType");
+		if (StringUtils.isNotEmpty(appId)) {
+			LocalExcel localExcel = intoPiecesService.findLocalEXcelByApplication(appId);
+			String tableContent = getFromBASE64(localExcel.getSheetSy()).replaceAll("\n", "<br>").replace("><br><", "><");
+			mv.addObject("tableContent", tableContent);
+			mv.addObject("appId", appId);
+			/*mv.addObject("urlType", urlType);
+			//查询权限 非本人只能查看 不能操作
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			boolean lock = false;
+			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+				lock = true;
+			}
+			mv.addObject("lock", lock);*/
+		}
+		return mv;
+	}
+
+	//base64解码
+	public static String getFromBASE64(String s) { 
+		if (s == null) return null; 
+		BASE64Decoder decoder = new BASE64Decoder(); 
+		try { 
+		byte[] b = decoder.decodeBuffer(s); 
+		return new String(b); 
+		} catch (Exception e) { 
+		return null; 
+		} 
+	} 
+	
 		
 }

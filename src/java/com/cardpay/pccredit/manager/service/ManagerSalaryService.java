@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +25,6 @@ import com.cardpay.pccredit.manager.model.TyRiskMarginSpecific;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
-import com.wicresoft.jrad.base.web.result.JRadReturnMap;
-import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 
 /**
  * @author chenzhifang

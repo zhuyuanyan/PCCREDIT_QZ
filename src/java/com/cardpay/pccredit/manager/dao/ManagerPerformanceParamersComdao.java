@@ -40,7 +40,7 @@ public class ManagerPerformanceParamersComdao {
 	
 	public void deleteCenterList(){
 		String sql = "delete from TY_PERFORMANCE_CENTER";
-		commonDao.queryBySql(TyPerformanceParameters.class, sql, null);
+		commonDao.queryBySql(TyPerformanceCenter.class, sql, null);
 	}
 
 	/**
