@@ -54,7 +54,7 @@ public class ManagerPerformanceParametersService {
 		//删除历史记录
 		managerPerformanceParamersComdao.deleteList();
 		for(int i=0;i<levelCodes.length;i++){
-		    TyPerformanceParameters parameters = new TyPerformanceParameters();
+			TyPerformanceParameters parameters = new TyPerformanceParameters();
 			String levelCode= levelCodes[i];
 			String managerLevel=managerLevels[i];
 			String basicPerformance=basicPerformances[i];

@@ -24,7 +24,7 @@ public class Constant {
 	public static String RESULT_LIST2 = "resultList2";
 	
 	/* 影像资料上传路径 */
-	public static String FILE_PATH = "/home/pccredit/pccredit_upload/";
+	public static String FILE_PATH = "/usr/pccreditFile/";///home/pccredit/pccredit_upload/
 	
 	/* 保存进件*/
 	public static String SAVE_INTOPICES = "save";//泉州用到(进件)

@@ -155,6 +155,39 @@ public class UploadFileTool {
 		return map;
 	}
 	
+	/* 上传影像资料专用 */
+	public static Map<String, String> uploadYxzlFileBySpring_quanz(MultipartFile file,String customerId) {
+		String newFileName = null;
+		String fileName = null;
+		Map<String, String> map = new HashMap<String, String>();
+		String path = Constant.FILE_PATH + customerId + File.separator;
+		File tempDir = new File(path);
+		if (!tempDir.isDirectory()) {
+			tempDir.mkdirs();
+		}
+		try {
+			// 取得上传文件
+			if (file != null && !file.isEmpty()) {
+				fileName = file.getOriginalFilename();
+				File tempFile = new File(path
+						+ file.getOriginalFilename());
+				if (tempFile.exists()) {
+					newFileName = IDGenerator.generateID() + "."
+							+ file.getOriginalFilename().split("\\.")[1];
+				} else {
+					newFileName = file.getOriginalFilename();
+				}
+				File localFile = new File(path + newFileName);
+				file.transferTo(localFile);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("fileName", fileName);
+		map.put("url", path + newFileName);
+		return map;
+	}
+	
 	/* 删除资料 */
 	public static void deleteFile(String filePath) {
 		File tempFile = new File(filePath);

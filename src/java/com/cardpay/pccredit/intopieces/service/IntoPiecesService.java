@@ -17,11 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.QZBankInterface.model.Circle;
-import com.cardpay.pccredit.QZBankInterface.model.ECIF;
 import com.cardpay.pccredit.QZBankInterface.service.CircleService;
 import com.cardpay.pccredit.QZBankInterface.service.ECIFService;
-import com.cardpay.pccredit.QZBankInterface.web.IESBForECIFReturnMap;
-import com.cardpay.pccredit.afterloan.model.AfterLoaninfo;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -33,6 +30,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
@@ -47,6 +45,8 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.LocalExcel;
+import com.cardpay.pccredit.intopieces.model.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.QzApplnDbrxx;
@@ -68,14 +68,13 @@ import com.cardpay.pccredit.intopieces.web.QzApplnSxjcForm;
 import com.cardpay.pccredit.intopieces.web.QzDcnrUploadForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.system.model.NodeAudit;
-import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.workflow.constant.ApproveOperationTypeEnum;
 import com.cardpay.workflow.dao.WfStatusResultDao;
 import com.cardpay.workflow.models.WfProcessRecord;
 import com.cardpay.workflow.models.WfStatusQueueRecord;
 import com.cardpay.workflow.service.ProcessService;
+import com.cardpay.workflow.utils.JXLReadExcel;
 import com.wicresoft.jrad.base.auth.IUser;
-import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
@@ -1919,5 +1918,63 @@ public class IntoPiecesService {
 		if(cusAppInfo != null){
 			commonDao.deleteObject(CustomerApplicationInfo.class, cusAppInfo.getId());
 		}
+	}
+	
+	
+	
+	//
+	/* 查询调查报告信息 */
+	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer(AddIntoPiecesFilter filter) {
+		List<LocalExcelForm> ls = intoPiecesDao.findByProductAndCustomer(filter);
+		int size = intoPiecesDao.findCountByProductAndCustomer(filter);
+		QueryResult<LocalExcelForm> qr = new QueryResult<LocalExcelForm>(size,ls);
+		return qr;
+	}
+	
+	/* 查询调查报告信息 */
+	public QueryResult<LocalExcelForm> findLocalExcel(AddIntoPiecesFilter filter) {
+		List<LocalExcelForm> ls = intoPiecesDao.findLocalExcelForm(filter);
+		int size = intoPiecesDao.findCountByProductAndCustomer(filter);
+		QueryResult<LocalExcelForm> qr = new QueryResult<LocalExcelForm>(size,ls);
+		return qr;
+	}
+
+	//导入调查报告
+	public void importExcel(MultipartFile file,String productId, String customerId,String appId) {
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring_quanz(file,customerId);
+		String fileName = map.get("fileName");
+		String url = map.get("url");
+		LocalExcel localExcel = new LocalExcel();
+		localExcel.setProductId(productId);
+		localExcel.setCustomerId(customerId);
+		localExcel.setApplicationId(appId);
+		localExcel.setCreatedTime(new Date());
+		if (StringUtils.trimToNull(url) != null) {
+			localExcel.setUri(url);
+		}
+		if (StringUtils.trimToNull(fileName) != null) {
+			localExcel.setAttachment(fileName);
+		}
+		
+		//读取excel内容
+		JXLReadExcel readExcel = new JXLReadExcel();
+		String sheet[] = readExcel.readExcelToHtml(url, true);
+		for(String str : sheet){
+			if(StringUtils.isEmpty(str)){
+				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
+			}
+		}
+		localExcel.setSheetKhxx(sheet[0]);
+		localExcel.setSheet_zcfz(sheet[1]);
+		localExcel.setSheetSy(sheet[2]);
+		//删除旧模板
+		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
+		commonDao.queryBySql(LocalExcel.class, sql, null);
+		//添加模板
+		commonDao.insertObject(localExcel);
+	}
+	
+	public LocalExcel findLocalEXcelByApplication(String appId){
+		return intoPiecesDao.findByApplication(appId);
 	}
 }
